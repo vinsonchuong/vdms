@@ -1,0 +1,8 @@
+/coverage/
+/db/*.sqlite3
+/log/
+/tmp/
+/.bundle
+/.project
+/Gemfile.lock
+/webrat.log
