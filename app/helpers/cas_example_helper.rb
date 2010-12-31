@@ -1,0 +1,2 @@
+module CasExampleHelper
+end
