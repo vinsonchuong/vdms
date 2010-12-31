@@ -17,6 +17,9 @@ Rails::Initializer.run do |config|
   # Specify gems that this application depends on and have them installed with rake gems:install
   config.gem 'facets'
 
+  config.gem "rubycas-client"
+  config.gem "ruby-net-ldap", :lib => 'net/ldap'
+  
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
@@ -36,3 +39,36 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 end
+
+=begin
+The following code block sets up CAS (CalNet Authentication).
+CAS requires the following gems:
+
+   rubycas-client 2.2.1
+   ruby-net-ldap  0.0.4
+
+Instructions were followed exactly from:
+
+   http://rubycas-client.rubyforge.org/
+   https://wikihub.berkeley.edu/display/istas/10+minutes+to+container+based+CAS+and+Directory+Lookups#10minutestocontainerbasedCASandDirectoryLookups-InRails
+ 
+=end
+
+require 'casclient'
+require 'casclient/frameworks/rails/filter'
+
+# enable detailed CAS logging
+cas_logger = CASClient::Logger.new(RAILS_ROOT+'/log/cas.log')
+cas_logger.level = Logger::DEBUG
+
+# set CAS server URL
+CASClient::Frameworks::Rails::Filter.configure(
+    :cas_base_url  => "https://auth-test.berkeley.edu/cas",
+    #:login_url     => "https://cas.example.foo/login",
+    #:logout_url    => "https://cas.example.foo/logout",
+    #:validate_url  => "https://cas.example.foo/proxyValidate",
+    :username_session_key => :cas_user,
+    :extra_attributes_session_key => :cas_extra_attributes,
+    :logger => cas_logger,
+    :authenticate_on_every_request => true
+  )
