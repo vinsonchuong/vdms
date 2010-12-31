@@ -7,6 +7,7 @@ require 'spec/rails'
 
 # Uncomment the next line to use webrat's matchers
 #require 'webrat/integrations/rspec-rails'
+require 'shoulda'
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
