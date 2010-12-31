@@ -1,2 +1,4 @@
 class Staff < Person
+
+  
 end
