@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   # filter_parameter_logging :password
 
   # Ensures logging in with CAS before seeing ANY view at all
-  before_filter CASClient::Frameworks::Rails::Filter
+  prepend_before_filter CASClient::Frameworks::Rails::Filter
 
   # Defines the current_user method for use by the CanCan gem
   

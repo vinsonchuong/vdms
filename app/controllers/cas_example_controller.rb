@@ -16,6 +16,8 @@ class CasExampleController < ApplicationController
     end
   end
 
+## The following methods involving authentication will be moved out to its own module at a later time.
+
   def logout
     #CASClient::Frameworks::Rails::Filter.logout(self)
     st = session[:cas_last_valid_ticket]
@@ -28,7 +30,12 @@ class CasExampleController < ApplicationController
     redirect_to("#{logout_url}?url=#{protocol}#{app_url}")    
   end
 
-## The following 2 helper functions copied straight from CASClient::Frameworks::Rails::Filter, b/c they were private methods
+=begin
+  The following 2 helper functions copied straight from
+  CASClient::Frameworks::Rails::Filter, b/c they were private methods.
+  They are used here instead to accompany the logout method,
+  such that the page after logout displays URL link to log back in
+=end
   
   # Removes a stored relationship between a ServiceTicket and a local
   # Rails session id. This should be called when the session is being
