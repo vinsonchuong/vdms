@@ -947,3 +947,821 @@ ActionController::RoutingError (No route matches "/cas_example/index" with {:met
   C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
 
 Rendering rescues/layout (not_found)
+/!\ FAILSAFE /!\  Sun Jan 02 21:23:48 -0800 2011
+  Status: 500 Internal Server Error
+  /Users/jackywu07/Desktop/Research/VDMS/app/helpers/ldap.rb:39: syntax error, unexpected $end, expecting kEND
+    /Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+    /Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `require'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.3.10/lib/active_support/dependencies.rb:182:in `require'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.3.10/lib/active_support/dependencies.rb:547:in `new_constants_in'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.3.10/lib/active_support/dependencies.rb:182:in `require'
+    /Users/jackywu07/Desktop/Research/VDMS/app/controllers/application_controller.rb:3
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.3.10/lib/active_support/dependencies.rb:406:in `load_without_new_constant_marking'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.3.10/lib/active_support/dependencies.rb:406:in `load_file'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.3.10/lib/active_support/dependencies.rb:547:in `new_constants_in'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.3.10/lib/active_support/dependencies.rb:405:in `load_file'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.3.10/lib/active_support/dependencies.rb:285:in `require_or_load'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.3.10/lib/active_support/dependencies.rb:451:in `load_missing_constant'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.3.10/lib/active_support/dependencies.rb:106:in `const_missing'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.3.10/lib/active_support/dependencies.rb:118:in `const_missing'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.3.10/lib/action_controller/dispatcher.rb:89:in `dispatch'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.3.10/lib/action_controller/dispatcher.rb:121:in `_call'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.3.10/lib/action_controller/dispatcher.rb:130:in `build_middleware_stack'
+    /Library/Ruby/Gems/1.8/gems/activerecord-2.3.10/lib/active_record/query_cache.rb:29:in `call'
+    /Library/Ruby/Gems/1.8/gems/activerecord-2.3.10/lib/active_record/query_cache.rb:29:in `call'
+    /Library/Ruby/Gems/1.8/gems/activerecord-2.3.10/lib/active_record/connection_adapters/abstract/query_cache.rb:34:in `cache'
+    /Library/Ruby/Gems/1.8/gems/activerecord-2.3.10/lib/active_record/query_cache.rb:9:in `cache'
+    /Library/Ruby/Gems/1.8/gems/activerecord-2.3.10/lib/active_record/query_cache.rb:28:in `call'
+    /Library/Ruby/Gems/1.8/gems/activerecord-2.3.10/lib/active_record/connection_adapters/abstract/connection_pool.rb:361:in `call'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.3.10/lib/action_controller/string_coercion.rb:25:in `call'
+    /Library/Ruby/Gems/1.8/gems/rack-1.1.0/lib/rack/head.rb:9:in `call'
+    /Library/Ruby/Gems/1.8/gems/rack-1.1.0/lib/rack/methodoverride.rb:24:in `call'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.3.10/lib/action_controller/params_parser.rb:15:in `call'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.3.10/lib/action_controller/session/cookie_store.rb:100:in `call'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.3.10/lib/action_controller/failsafe.rb:26:in `call'
+    /Library/Ruby/Gems/1.8/gems/rack-1.1.0/lib/rack/lock.rb:11:in `call'
+    /Library/Ruby/Gems/1.8/gems/rack-1.1.0/lib/rack/lock.rb:11:in `synchronize'
+    /Library/Ruby/Gems/1.8/gems/rack-1.1.0/lib/rack/lock.rb:11:in `call'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.3.10/lib/action_controller/dispatcher.rb:114:in `call'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.3.10/lib/action_controller/reloader.rb:34:in `run'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.3.10/lib/action_controller/dispatcher.rb:108:in `call'
+    /Library/Ruby/Gems/1.8/gems/rails-2.3.10/lib/rails/rack/static.rb:31:in `call'
+    /Library/Ruby/Gems/1.8/gems/rack-1.1.0/lib/rack/urlmap.rb:47:in `call'
+    /Library/Ruby/Gems/1.8/gems/rack-1.1.0/lib/rack/urlmap.rb:41:in `each'
+    /Library/Ruby/Gems/1.8/gems/rack-1.1.0/lib/rack/urlmap.rb:41:in `call'
+    /Library/Ruby/Gems/1.8/gems/rails-2.3.10/lib/rails/rack/log_tailer.rb:17:in `call'
+    /Library/Ruby/Gems/1.8/gems/rack-1.1.0/lib/rack/content_length.rb:13:in `call'
+    /Library/Ruby/Gems/1.8/gems/rack-1.1.0/lib/rack/chunked.rb:15:in `call'
+    /Library/Ruby/Gems/1.8/gems/rack-1.1.0/lib/rack/handler/mongrel.rb:67:in `process'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:159:in `process_client'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `each'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `process_client'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `initialize'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `new'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `initialize'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `new'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `run'
+    /Library/Ruby/Gems/1.8/gems/rack-1.1.0/lib/rack/handler/mongrel.rb:38:in `run'
+    /Library/Ruby/Gems/1.8/gems/rails-2.3.10/lib/commands/server.rb:111
+    /Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+    /Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `require'
+    script/server:3
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:24:17) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 2ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:24:17) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.5ms)
+Rendered layouts/_footer (0.3ms)
+Completed in 318ms (View: 17, DB: 0) | 200 OK [http://localhost/?ticket=ST-469-gynUyc52bA32Z4DbCYaC-cas-t2]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:24:19) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fapplication%2Flogout
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/application/logout]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:24:19) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/logout?url=http://localhost:3000/
+Completed in 297ms (DB: 0) | 302 Found [http://localhost/application/logout?ticket=ST-470-LSLs5bbsM0pSPi6ox4Ph-cas-t2]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:24:23) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:24:29) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 265ms (View: 2, DB: 0) | 200 OK [http://localhost/?ticket=ST-471-9YrfKT5zseLRANR3MM2E-cas-t2]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:24:49) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fapplication%2Flogout
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/application/logout]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:24:49) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/logout?url=http://localhost:3000/
+Completed in 266ms (DB: 0) | 302 Found [http://localhost/application/logout?ticket=ST-472-QddIrqPV0FUbpXBfSQHH-cas-t2]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:25:00) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:25:06) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.1ms)
+Completed in 294ms (View: 2, DB: 0) | 200 OK [http://localhost/?ticket=ST-473-o25yawxa1mqb6Peb7L7U-cas-t2]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:25:07) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fapplication%2Flogout
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/application/logout]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:25:08) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/logout?url=http://localhost:3000/
+Completed in 285ms (DB: 0) | 302 Found [http://localhost/application/logout?ticket=ST-474-gfBxaasnXxJ4t1rTN3CH-cas-t2]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:25:11) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:25:18) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.1ms)
+Completed in 312ms (View: 2, DB: 0) | 200 OK [http://localhost/?ticket=ST-475-NBEU2UQmcywiVXjKyBDe-cas-t2]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:25:19) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fapplication%2Flogout
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/application/logout]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:25:19) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/logout?url=http://localhost:3000/
+Completed in 271ms (DB: 0) | 302 Found [http://localhost/application/logout?ticket=ST-476-x1efWPJq19i9NKhfnXjU-cas-t2]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:25:32) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 2ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:25:39) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.5ms)
+Rendered layouts/_footer (0.3ms)
+Completed in 281ms (View: 17, DB: 0) | 200 OK [http://localhost/?ticket=ST-477-bmOND4WlcZGFtJASCq2Y-cas-t2]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:25:41) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fapplication%2Flogout
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/application/logout]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:25:41) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/logout?destination=https%3A%2F%2Fauth-test.berkeley.edu%2Fcas%2Flogout
+Completed in 266ms (DB: 0) | 302 Found [http://localhost/application/logout?ticket=ST-478-OLUMOttJYcdaWgbhQyGL-cas-t2]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:32:52) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 2ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:32:57) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.6ms)
+Rendered layouts/_footer (0.3ms)
+Completed in 325ms (View: 18, DB: 0) | 200 OK [http://localhost/?ticket=ST-18164-lz7eb2ZZS9dFlzvFaAZX-cas-t1]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:33:00) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fapplication%2Flogout
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/application/logout]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:33:00) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/logout?url=http://localhost:3000/
+Completed in 268ms (DB: 0) | 302 Found [http://localhost/application/logout?ticket=ST-18165-TJziNpXkEWgYNfq7rMES-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:34:50) [GET]
+  Parameters: {:action=>"index", :controller=>"faculties", :_method=>nil, :format=>nil}
+Redirected to https://localhost:3000?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 2ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:36:33) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 3ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:36:33) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.5ms)
+Rendered layouts/_footer (0.3ms)
+Completed in 332ms (View: 17, DB: 0) | 200 OK [http://localhost/?ticket=ST-18170-UzLXAsH30KQSXMWnyfla-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:36:53) [GET]
+  Parameters: {:action=>"index", :controller=>"faculties", :_method=>nil, :format=>nil}
+
+URI::InvalidURIError (query conflicts with opaque):
+  /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/uri/generic.rb:507:in `check_query'
+  /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/uri/generic.rb:526:in `query='
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/client.rb:204:in `add_service_to_login_url'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:163:in `login_url'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:200:in `redirect_to_cas_for_authentication'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:195:in `unauthorized!'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:130:in `filter'
+
+Rendered rescues/_trace (24.4ms)
+Rendered rescues/_request_and_response (0.9ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:36:56) [GET]
+  Parameters: {:action=>"index", :controller=>"faculties", :_method=>nil, :format=>nil}
+
+URI::InvalidURIError (query conflicts with opaque):
+  /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/uri/generic.rb:507:in `check_query'
+  /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/uri/generic.rb:526:in `query='
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/client.rb:204:in `add_service_to_login_url'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:163:in `login_url'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:200:in `redirect_to_cas_for_authentication'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:195:in `unauthorized!'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:130:in `filter'
+
+Rendered rescues/_trace (22.0ms)
+Rendered rescues/_request_and_response (0.3ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:37:04) [GET]
+  Parameters: {:action=>"index", :controller=>"faculties", :_method=>nil, :format=>nil}
+
+URI::InvalidURIError (query conflicts with opaque):
+  /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/uri/generic.rb:507:in `check_query'
+  /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/uri/generic.rb:526:in `query='
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/client.rb:204:in `add_service_to_login_url'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:163:in `login_url'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:200:in `redirect_to_cas_for_authentication'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:195:in `unauthorized!'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:130:in `filter'
+
+Rendered rescues/_trace (22.2ms)
+Rendered rescues/_request_and_response (0.3ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:37:15) [GET]
+  Parameters: {:action=>"index", :controller=>"faculties", :_method=>nil, :format=>nil}
+
+URI::InvalidURIError (query conflicts with opaque):
+  /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/uri/generic.rb:507:in `check_query'
+  /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/uri/generic.rb:526:in `query='
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/client.rb:204:in `add_service_to_login_url'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:163:in `login_url'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:200:in `redirect_to_cas_for_authentication'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:195:in `unauthorized!'
+  /Library/Ruby/Gems/1.8/gems/rubycas-client-2.2.1/lib/casclient/frameworks/rails/filter.rb:130:in `filter'
+
+Rendered rescues/_trace (21.9ms)
+Rendered rescues/_request_and_response (0.3ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:37:21) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 3ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:37:21) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.5ms)
+Rendered layouts/_footer (0.2ms)
+Completed in 318ms (View: 17, DB: 0) | 200 OK [http://localhost/?ticket=ST-18172-zORM0LhbNvEdXpZKZ2f3-cas-t1]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:37:23) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fapplication%2Flogout
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/application/logout]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:37:23) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/logout?url=http://localhost:3000/
+Completed in 285ms (DB: 0) | 302 Found [http://localhost/application/logout?ticket=ST-18173-ejUbU96jnXJnR3zbGcc6-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:39:44) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:39:50) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+
+ActionView::TemplateError (You have a nil object when you didn't expect it!
+You might have expected an instance of Array.
+The error occurred while evaluating nil.each) on line #3 of app/views/faculties/index.html.erb:
+1: <div id="login_bar">
+2:   Welcome, <%= current_user %> </br >
+3:   <% @ldapparams.each do |k, v| %>
+4:   <p><%= "#{k}\t#{v}"%></p>
+5:   <% end%>
+6:   <%= link_to 'logout of CalNet', :controller => :application, :action => :logout %>
+
+    app/views/faculties/index.html.erb:3
+
+Rendered rescues/_trace (24.5ms)
+Rendered rescues/_request_and_response (1.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:41:01) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+
+ActionView::TemplateError (You have a nil object when you didn't expect it!
+You might have expected an instance of Array.
+The error occurred while evaluating nil.each) on line #3 of app/views/faculties/index.html.erb:
+1: <div id="login_bar">
+2:   Welcome, <%= current_user %> </br >
+3:   <% @ldapparams.each do |k, v| %>
+4:   <p><%= "#{k}\t#{v}"%></p>
+5:   <% end%>
+6:   
+
+    app/views/faculties/index.html.erb:3
+
+Rendered rescues/_trace (81.8ms)
+Rendered rescues/_request_and_response (0.3ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:41:05) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:41:05) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+
+ActionView::TemplateError (You have a nil object when you didn't expect it!
+You might have expected an instance of Array.
+The error occurred while evaluating nil.each) on line #3 of app/views/faculties/index.html.erb:
+1: <div id="login_bar">
+2:   Welcome, <%= current_user %> </br >
+3:   <% @ldapparams.each do |k, v| %>
+4:   <p><%= "#{k}\t#{v}"%></p>
+5:   <% end%>
+6:   
+
+    app/views/faculties/index.html.erb:3
+
+Rendered rescues/_trace (23.1ms)
+Rendered rescues/_request_and_response (0.3ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:41:22) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 3ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:41:23) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+
+ActionView::TemplateError (You have a nil object when you didn't expect it!
+You might have expected an instance of Array.
+The error occurred while evaluating nil.each) on line #3 of app/views/faculties/index.html.erb:
+1: <div id="login_bar">
+2:   Welcome, <%= current_user %> </br >
+3:   <% @ldapparams.each do |k, v| %>
+4:   <p><%= "#{k}\t#{v}"%></p>
+5:   <% end%>
+6:   
+
+    app/views/faculties/index.html.erb:3
+
+Rendered rescues/_trace (25.4ms)
+Rendered rescues/_request_and_response (0.9ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:51:18) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 3ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:51:18) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+
+ActionView::TemplateError (undefined local variable or method `current_user' for #<ActionView::Base:0x1035192e0>) on line #2 of app/views/faculties/index.html.erb:
+1: <div id="login_bar">
+2:   Welcome, <%= current_user %> </br >
+3:   
+4:   <%= link_to 'logout of CalNet', :controller => :application, :action => :logout %>
+5: </div>
+
+    app/views/faculties/index.html.erb:2
+
+Rendered rescues/_trace (77.4ms)
+Rendered rescues/_request_and_response (0.9ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:51:45) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:51:46) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.5ms)
+Rendered layouts/_footer (0.2ms)
+Completed in 347ms (View: 12, DB: 0) | 200 OK [http://localhost/?ticket=ST-18193-yp6CEmn7tq6TGSmlW7u0-cas-t1]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:51:49) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fapplication%2Flogout
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/application/logout]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 21:51:50) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/logout?url=http://localhost:3000/
+Completed in 287ms (DB: 0) | 302 Found [http://localhost/application/logout?ticket=ST-18194-OZDKM5seX9O2xcF9V01W-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:51:52) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:51:59) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.1ms)
+Completed in 269ms (View: 2, DB: 0) | 200 OK [http://localhost/?ticket=ST-18195-vHooe7OcOf7uZYIHLXX5-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:54:19) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 3ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:54:19) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+
+ActionView::TemplateError (You have a nil object when you didn't expect it!
+You might have expected an instance of Array.
+The error occurred while evaluating nil.each) on line #4 of app/views/faculties/index.html.erb:
+1: <div id="login_bar">
+2:   Welcome, <%= @current_user %> </br >
+3:   
+4:   <% @current_user_attributes.each do |k, v| %>
+5:   <p><%= "#{k}\t#{v}"%></p>
+6:   <% end%>
+7:   
+
+    app/views/faculties/index.html.erb:4
+
+Rendered rescues/_trace (28.4ms)
+Rendered rescues/_request_and_response (1.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:58:45) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 3ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 21:58:45) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+
+ActionView::TemplateError (You have a nil object when you didn't expect it!
+You might have expected an instance of Array.
+The error occurred while evaluating nil.each) on line #4 of app/views/faculties/index.html.erb:
+1: <div id="login_bar">
+2:   Welcome, <%= @current_user %> </br >
+3:   
+4:   <% @current_user_attributes.each do |k, v| %>
+5:   <p><%= "#{k}\t#{v}"%></p>
+6:   <% end%>
+7:   
+
+    app/views/faculties/index.html.erb:4
+
+Rendered rescues/_trace (26.2ms)
+Rendered rescues/_request_and_response (0.9ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:00:04) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:00:04) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.5ms)
+Rendered layouts/_footer (0.3ms)
+Completed in 322ms (View: 14, DB: 0) | 200 OK [http://localhost/?ticket=ST-18207-fUgBW7buTQAtbCHF4y4O-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:00:33) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.5ms)
+Rendered layouts/_footer (0.2ms)
+Completed in 21ms (View: 18, DB: 0) | 200 OK [http://localhost/?ticket=ST-18207-fUgBW7buTQAtbCHF4y4O-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:01:28) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 7ms (View: 5, DB: 0) | 200 OK [http://localhost/?ticket=ST-18207-fUgBW7buTQAtbCHF4y4O-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:01:36) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 7ms (View: 5, DB: 0) | 200 OK [http://localhost/?ticket=ST-18207-fUgBW7buTQAtbCHF4y4O-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:03:16) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 7ms (View: 5, DB: 0) | 200 OK [http://localhost/?ticket=ST-18207-fUgBW7buTQAtbCHF4y4O-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:03:37) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 8ms (View: 5, DB: 0) | 200 OK [http://localhost/?ticket=ST-18207-fUgBW7buTQAtbCHF4y4O-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:03:53) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 7ms (View: 4, DB: 0) | 200 OK [http://localhost/?ticket=ST-18207-fUgBW7buTQAtbCHF4y4O-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:05:54) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 7ms (View: 5, DB: 0) | 200 OK [http://localhost/?ticket=ST-18207-fUgBW7buTQAtbCHF4y4O-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:06:20) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 4ms (View: 1, DB: 0) | 200 OK [http://localhost/?ticket=ST-18207-fUgBW7buTQAtbCHF4y4O-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:06:57) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 4ms (View: 1, DB: 0) | 200 OK [http://localhost/?ticket=ST-18207-fUgBW7buTQAtbCHF4y4O-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:07:11) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.5ms)
+Rendered layouts/_footer (0.3ms)
+Completed in 19ms (View: 15, DB: 0) | 200 OK [http://localhost/?ticket=ST-18207-fUgBW7buTQAtbCHF4y4O-cas-t1]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 22:07:13) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fapplication%2Flogout
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/application/logout]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 22:07:13) [GET]
+  Parameters: {:controller=>"application", :_method=>nil, :action=>"logout", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/logout?url=http://localhost:3000/
+Completed in 307ms (DB: 0) | 302 Found [http://localhost/application/logout?ticket=ST-18215-o4JJSu1ax2bUSGjkdTx4-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:07:15) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:07:20) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.1ms)
+Completed in 274ms (View: 2, DB: 0) | 200 OK [http://localhost/?ticket=ST-18216-CYNXLjrt0KOyNbKgucch-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:10:51) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 4ms (View: 2, DB: 0) | 200 OK [http://localhost/?ticket=ST-18216-CYNXLjrt0KOyNbKgucch-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:11:01) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 7ms (View: 5, DB: 0) | 200 OK [http://localhost/?ticket=ST-18216-CYNXLjrt0KOyNbKgucch-cas-t1]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 22:12:15) [GET]
+  Parameters: {:controller=>nil, :_method=>nil, :action=>nil, :format=>nil}
+
+ActionController::RoutingError (No route matches "/cas_example" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:12:39) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:12:39) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 1180ms (View: 2, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:14:05) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 252ms (View: 6, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:14:21) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 272ms (View: 59, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:14:57) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 248ms (View: 6, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:16:01) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 255ms (View: 6, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 22:16:34) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.1ms)
+Completed in 252ms (View: 7, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]

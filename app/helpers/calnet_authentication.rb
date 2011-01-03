@@ -13,7 +13,7 @@ module CalNetAuthentication
     protocol = request.ssl? ? "https://" : "http://"
     app_url = "localhost:3000/"
     logout_url = "https://auth-test.berkeley.edu/cas/logout"
-    redirect_to("#{logout_url}?url=#{protocol}#{app_url}")        
+    redirect_to("#{logout_url}?url=#{protocol}#{app_url}")
   end
 
   private

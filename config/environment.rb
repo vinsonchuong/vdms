@@ -18,7 +18,8 @@ Rails::Initializer.run do |config|
   config.gem 'facets'
   config.gem 'rubycas-client'
   config.gem 'ruby-net-ldap', :lib => 'net/ldap'
-  config.gem "ucb_ldap"
+  config.gem 'ucb_ldap'
+  config.gem 'cancan'
   
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -64,7 +65,7 @@ cas_logger.level = Logger::DEBUG
 # set CAS server URL
 CASClient::Frameworks::Rails::Filter.configure(
     :cas_base_url  => "https://auth-test.berkeley.edu/cas",
-    #:login_url     => "https://cas.example.foo/login",
+    #:login_url     => "localhost:3000",
     #:logout_url    => "https://cas.example.foo/logout",
     #:validate_url  => "https://cas.example.foo/proxyValidate",
     :username_session_key => :cas_user,
