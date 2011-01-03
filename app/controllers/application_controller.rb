@@ -12,9 +12,7 @@ class ApplicationController < ActionController::Base
   # Ensures logging in with CAS before seeing ANY view at all
   prepend_before_filter CASClient::Frameworks::Rails::Filter
 
-  # Defines the current_user method for use by the CanCan gem
-  
-  
+  # Defines the current_user method for use by the CanCan gem  
   def current_user
     # TO BE IMPLEMENTED!!!
     # CAS LDAP ID (session[:cas_user]) is the most consistent way of identification
