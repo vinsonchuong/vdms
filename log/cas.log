@@ -159,3 +159,20 @@ D, [2011-01-02T17:52:43.347005 #397] DEBUG -- : Extra user attributes provided a
 D, [2011-01-02T17:52:56.640785 #397] DEBUG -- : Guessed service url: "http://localhost:3000/"
 D, [2011-01-02T17:52:56.640981 #397] DEBUG -- : Generated login url: https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
 D, [2011-01-02T17:52:56.641047 #397] DEBUG -- : Redirecting to "https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F"
+D, [2011-01-02T18:24:38.646113 #397] DEBUG -- : Guessed service url: "http://localhost:3000/"
+D, [2011-01-02T18:24:38.646309 #397] DEBUG -- : Generated login url: https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+D, [2011-01-02T18:24:38.646438 #397] DEBUG -- : Redirecting to "https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F"
+D, [2011-01-02T18:24:45.143059 #397] DEBUG -- : Request contains ticket "ST-442-NXy0emzrjljoCfi5ZX4o-cas-t2".
+D, [2011-01-02T18:24:45.143436 #397] DEBUG -- : Guessed service url: "http://localhost:3000/"
+D, [2011-01-02T18:24:45.143632 #397] DEBUG -- : Requesting CAS response for URI https://auth-test.berkeley.edu/cas/proxyValidate?ticket=ST-442-NXy0emzrjljoCfi5ZX4o-cas-t2&service=http%3A%2F%2Flocalhost%3A3000%2F
+D, [2011-01-02T18:24:45.524299 #397] DEBUG -- : CAS server responded with #<Net::HTTPOK 200 OK readbody=true>:
+<cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'>
+	<cas:authenticationSuccess>
+		<cas:user>310061</cas:user>
+
+
+	</cas:authenticationSuccess>
+</cas:serviceResponse>
+
+I, [2011-01-02T18:24:45.529031 #397]  INFO -- : Ticket "ST-442-NXy0emzrjljoCfi5ZX4o-cas-t2" for service "http://localhost:3000/" belonging to user "310061" is VALID.
+D, [2011-01-02T18:24:45.529156 #397] DEBUG -- : Extra user attributes provided along with ticket "ST-442-NXy0emzrjljoCfi5ZX4o-cas-t2": {}.

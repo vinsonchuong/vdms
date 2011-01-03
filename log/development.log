@@ -254,3 +254,19 @@ Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 17:52:56) [GET
 Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
 Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
 Completed in 1ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 18:24:38) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 1ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 18:24:45) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.1ms)
+Completed in 390ms (View: 2, DB: 0) | 200 OK [http://localhost/?ticket=ST-442-NXy0emzrjljoCfi5ZX4o-cas-t2]
