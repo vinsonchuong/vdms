@@ -5,7 +5,7 @@ require 'casclient/frameworks/rails/filter'
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   helper_method :current_user # make current_user a helper method, which can be called from views
-  before_filter CASClient::Frameworks::Rails::Filter  # Ensures logging in with CAS before seeing ANY view at all
+  prepend_before_filter CASClient::Frameworks::Rails::Filter  # Ensures logging in with CAS before seeing ANY view at all
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   # Scrub sensitive parameters from your log

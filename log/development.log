@@ -47,6 +47,7 @@ Rendering faculties/index
 Rendered layouts/_header (0.6ms)
 Rendered layouts/_footer (0.4ms)
 Completed in 429ms (View: 98, DB: 0) | 200 OK [http://localhost/?ticket=ST-17811-jI47mo5DskWqcNkekefp-cas-t1]
+<<<<<<< HEAD
 
 
 Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 17:31:39) [GET]
@@ -270,3 +271,457 @@ Rendering faculties/index
 Rendered layouts/_header (0.2ms)
 Rendered layouts/_footer (0.1ms)
 Completed in 390ms (View: 2, DB: 0) | 200 OK [http://localhost/?ticket=ST-442-NXy0emzrjljoCfi5ZX4o-cas-t2]
+=======
+
+
+Processing PeerAdvisorsController#index (for 127.0.0.1 at 2011-01-02 16:14:06) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"peer_advisors", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fpeer_advisors
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 9507ms (DB: 0) | 302 Found [http://localhost/peer_advisors]
+
+
+Processing PeerAdvisorsController#index (for 127.0.0.1 at 2011-01-02 16:14:21) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"peer_advisors", :_method=>nil}
+Rendering template within layouts/application
+Rendering peer_advisors/index
+Rendered layouts/_header (2.0ms)
+Rendered layouts/_footer (1.0ms)
+Completed in 526ms (View: 55, DB: 0) | 200 OK [http://localhost/peer_advisors?ticket=ST-420-P7c2eT6ph2Bm0c0QogBr-cas-t2]
+
+
+Processing PeerAdvisorsController#index (for 127.0.0.1 at 2011-01-02 16:14:29) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"peer_advisors", :_method=>nil}
+Rendering template within layouts/application
+Rendering peer_advisors/index
+Rendered layouts/_header (1.0ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 16ms (View: 7, DB: 0) | 200 OK [http://localhost/peer_advisors?ticket=ST-420-P7c2eT6ph2Bm0c0QogBr-cas-t2]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 16:14:48) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"faculties", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 8ms (DB: 0) | 302 Found [http://localhost/faculties]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 16:15:07) [GET]
+  Parameters: {:action=>nil, :format=>nil, :controller=>nil, :_method=>nil}
+
+ActionController::RoutingError (No route matches "/staff" with {:method=>:get}):
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendering rescues/layout (not_found)
+
+
+Processing StaffsController#index (for 127.0.0.1 at 2011-01-02 16:15:10) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"staffs", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fstaffs
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 7ms (DB: 0) | 302 Found [http://localhost/staffs]
+
+
+Processing StaffsController#index (for 127.0.0.1 at 2011-01-02 16:15:10) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"staffs", :_method=>nil}
+Rendering template within layouts/application
+Rendering staffs/index
+Rendered layouts/_header (0.0ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 562ms (View: 16, DB: 0) | 200 OK [http://localhost/staffs?ticket=ST-422-6XK0rZbolK1cpfDUYKZr-cas-t2]
+
+
+Processing StaffsController#index (for 127.0.0.1 at 2011-01-02 16:15:22) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"staffs", :_method=>nil}
+Rendering template within layouts/application
+Rendering staffs/index
+Rendered layouts/_header (1.0ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 16ms (View: 7, DB: 0) | 200 OK [http://localhost/staffs?ticket=ST-422-6XK0rZbolK1cpfDUYKZr-cas-t2]
+
+
+Processing StaffsController#index (for 127.0.0.1 at 2011-01-02 16:15:24) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"staffs", :_method=>nil}
+Rendering template within layouts/application
+Rendering staffs/index
+Rendered layouts/_header (1.0ms)
+Rendered layouts/_footer (1.0ms)
+Completed in 10ms (View: 5, DB: 0) | 200 OK [http://localhost/staffs?ticket=ST-422-6XK0rZbolK1cpfDUYKZr-cas-t2]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 16:15:33) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fcas_example
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 4ms (DB: 0) | 302 Found [http://localhost/cas_example]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 16:15:33) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Rendering template within layouts/application
+Rendering cas_example/index
+Rendered layouts/_header (1.0ms)
+Rendered layouts/_footer (1.0ms)
+Completed in 3842ms (View: 28, DB: 0) | 200 OK [http://localhost/cas_example?ticket=ST-423-FL3F9ZdISQA9xTsJNk3b-cas-t2]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 16:15:55) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fcas_example
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 7ms (DB: 0) | 302 Found [http://localhost/cas_example]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 16:15:55) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Rendering template within layouts/application
+Rendering cas_example/index
+Rendered layouts/_header (1.0ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 605ms (View: 9, DB: 0) | 200 OK [http://localhost/cas_example?ticket=ST-424-Uz52B7GFnwOixqTGXkmk-cas-t2]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 16:15:59) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Rendering template within layouts/application
+Rendering cas_example/index
+Rendered layouts/_header (1.0ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 92ms (View: 9, DB: 0) | 200 OK [http://localhost/cas_example?ticket=ST-424-Uz52B7GFnwOixqTGXkmk-cas-t2]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 16:18:26) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fcas_example
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 4ms (DB: 0) | 302 Found [http://localhost/cas_example]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 16:18:26) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Rendering template within layouts/application
+Rendering cas_example/index
+Rendered layouts/_header (1.0ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 457ms (View: 10, DB: 0) | 200 OK [http://localhost/cas_example?ticket=ST-425-0I7B1TZAHs6oTpVfsTYt-cas-t2]
+
+
+Processing CasExampleController#logout (for 127.0.0.1 at 2011-01-02 16:18:33) [GET]
+  Parameters: {:action=>"logout", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fcas_example%2Flogout
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 9ms (DB: 0) | 302 Found [http://localhost/cas_example/logout]
+
+
+Processing CasExampleController#logout (for 127.0.0.1 at 2011-01-02 16:18:33) [GET]
+  Parameters: {:action=>"logout", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/logout?url=http://localhost:3000/cas_example
+Completed in 2386ms (DB: 0) | 302 Found [http://localhost/cas_example/logout?ticket=ST-426-MAe4LmDfnKRgVEdCrEue-cas-t2]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 16:18:52) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fcas_example
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 13ms (DB: 0) | 302 Found [http://localhost/cas_example]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 16:19:31) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fcas_example
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 7ms (DB: 0) | 302 Found [http://localhost/cas_example]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 16:19:31) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Rendering template within layouts/application
+Rendering cas_example/index
+Rendered layouts/_header (1.0ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 291ms (View: 18, DB: 0) | 200 OK [http://localhost/cas_example?ticket=ST-427-4xdsqjsLSitPthMAf5fv-cas-t2]
+
+
+Processing CasExampleController#logout (for 127.0.0.1 at 2011-01-02 16:19:39) [GET]
+  Parameters: {:action=>"logout", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fcas_example%2Flogout
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 15ms (DB: 0) | 302 Found [http://localhost/cas_example/logout]
+
+
+Processing CasExampleController#logout (for 127.0.0.1 at 2011-01-02 16:19:39) [GET]
+  Parameters: {:action=>"logout", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/logout?url=http://localhost:3000/cas_example
+Completed in 408ms (DB: 0) | 302 Found [http://localhost/cas_example/logout?ticket=ST-428-Pw4id4MmHOW90ioVBgHr-cas-t2]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 16:19:42) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fcas_example
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 15ms (DB: 0) | 302 Found [http://localhost/cas_example]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 16:19:47) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Rendering template within layouts/application
+Rendering cas_example/index
+Rendered layouts/_header (1.0ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 482ms (View: 15, DB: 0) | 200 OK [http://localhost/cas_example?ticket=ST-429-ddOGfV4fGNo19czgcnxl-cas-t2]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 16:19:58) [GET]
+  Parameters: {:action=>nil, :format=>nil, :controller=>nil, :_method=>nil}
+
+ActionController::RoutingError (No route matches "/logout" with {:method=>:get}):
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 16:20:24) [GET]
+  Parameters: {:action=>nil, :format=>nil, :controller=>nil, :_method=>nil}
+
+ActionController::RoutingError (No route matches "/faculty" with {:method=>:get}):
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendering rescues/layout (not_found)
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 16:20:26) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"faculties", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 7ms (DB: 0) | 302 Found [http://localhost/faculties]
+
+
+Processing FacultiesController#logout (for 127.0.0.1 at 2011-01-02 16:20:31) [GET]
+  Parameters: {:action=>"logout", :format=>nil, :controller=>"faculties", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Ffaculties%2Flogout
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 7ms (DB: 0) | 302 Found [http://localhost/faculties/logout]
+
+
+Processing FacultiesController#logout (for 127.0.0.1 at 2011-01-02 16:20:31) [GET]
+  Parameters: {:action=>"logout", :format=>nil, :controller=>"faculties", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/logout?url=http://localhost:3000/cas_example
+Completed in 422ms (DB: 0) | 302 Found [http://localhost/faculties/logout?ticket=ST-431-xfQIYJ7vmbcsTxJdL0Hn-cas-t2]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 16:20:56) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"faculties", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 2ms (DB: 0) | 302 Found [http://localhost/faculties]
+  [4;36;1mSQL (66.0ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (1.0ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (102.0ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("schema_migrations")[0m
+  [4;36;1mSQL (107.0ms)[0m   [0;1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+Migrating to CreatePeople (20101229042640)
+  [4;35;1mSQL (2.0ms)[0m   [0mCREATE TABLE "people" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "calnet_id" varchar(255), "first_name" varchar(255), "last_name" varchar(255), "email" varchar(255), "type" varchar(255), "area" varchar(255), "division" varchar(255), "schedule" varchar(255), "default_room" varchar(255), "max_students_per_meeting" integer, "max_additional_students" integer, "phone" varchar(255), "area1" varchar(255), "area2" varchar(255), "attending" boolean, "available_times" varchar(255), "peer_advisor_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20101229042640')[0m
+Migrating to CreateMeetings (20101229052558)
+  [4;35;1mSQL (2.0ms)[0m   [0mCREATE TABLE "meetings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "time" time, "room" varchar(255), "faculty_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (1.0ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20101229052558')[0m
+Migrating to CreateRankings (20101229061331)
+  [4;35;1mSQL (3.0ms)[0m   [0mCREATE TABLE "rankings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "rank" integer, "type" varchar(255), "faculty_id" integer, "admit_id" integer, "mandatory" boolean, "time_slots" integer, "one_on_one" boolean, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (1.0ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20101229061331')[0m
+Migrating to CreateAdmitsMeetings (20101229190904)
+  [4;35;1mSQL (3.0ms)[0m   [0mCREATE TABLE "admits_meetings" ("admit_id" integer NOT NULL, "meeting_id" integer NOT NULL) [0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("admits_meetings")[0m
+  [4;35;1mSQL (3.0ms)[0m   [0mCREATE UNIQUE INDEX "index_admits_meetings_on_admit_id_and_meeting_id" ON "admits_meetings" ("admit_id", "meeting_id")[0m
+  [4;36;1mSQL (1.0ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20101229190904')[0m
+Migrating to AddSettingsTable (20101229235652)
+  [4;35;1mSQL (1.0ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (1.0ms)[0m   [0;1mCREATE TABLE "settings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "var" varchar(255) NOT NULL, "value" text, "target_id" integer, "target_type" varchar(30), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("settings")[0m
+  [4;36;1mSQL (2.0ms)[0m   [0;1mCREATE UNIQUE INDEX "index_settings_on_target_type_and_target_id_and_var" ON "settings" ("target_type", "target_id", "var")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20101229235652')[0m
+  [4;36;1mSQL (1.0ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (1.0ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("admits_meetings")[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_info('index_admits_meetings_on_admit_id_and_meeting_id')[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("meetings")[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("people")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("rankings")[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("settings")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_info('index_settings_on_target_type_and_target_id_and_var')[0m
+  [4;36;1mSQL (1.0ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (1.0ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (1.0ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 18:12:35) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+
+NameError (uninitialized constant CasExampleController::CalNetAuthentication):
+  app/controllers/cas_example_controller.rb:2
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendered rescues/_trace (68.0ms)
+Rendered rescues/_request_and_response (50.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 18:14:51) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+
+NameError (uninitialized constant CasExampleController::CalNetAuthentication):
+  app/controllers/cas_example_controller.rb:2
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendered rescues/_trace (51.0ms)
+Rendered rescues/_request_and_response (1.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 18:14:55) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+
+NameError (uninitialized constant CasExampleController::CalNetAuthentication):
+  app/controllers/cas_example_controller.rb:2
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendered rescues/_trace (64.0ms)
+Rendered rescues/_request_and_response (0.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 18:16:16) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fcas_example
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 24ms (DB: 0) | 302 Found [http://localhost/cas_example]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 18:16:16) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Rendering template within layouts/application
+Rendering cas_example/index
+Rendered layouts/_header (5.0ms)
+Rendered layouts/_footer (2.0ms)
+Completed in 10440ms (View: 75, DB: 0) | 200 OK [http://localhost/cas_example?ticket=ST-439-WmuH9XKeGLybU3S3EqeE-cas-t2]
+
+
+Processing CasExampleController#logout (for 127.0.0.1 at 2011-01-02 18:16:30) [GET]
+  Parameters: {:action=>"logout", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fcas_example%2Flogout
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 10ms (DB: 0) | 302 Found [http://localhost/cas_example/logout]
+
+
+Processing CasExampleController#logout (for 127.0.0.1 at 2011-01-02 18:16:30) [GET]
+  Parameters: {:action=>"logout", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/logout?url=http://localhost:3000/cas_example
+Completed in 484ms (DB: 0) | 302 Found [http://localhost/cas_example/logout?ticket=ST-440-Rl9gCul93La9oWRUCLAU-cas-t2]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 18:16:35) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fcas_example
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 10ms (DB: 0) | 302 Found [http://localhost/cas_example]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 18:16:43) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fcas_example
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 10ms (DB: 0) | 302 Found [http://localhost/cas_example]
+
+
+Processing CasExampleController#index (for 127.0.0.1 at 2011-01-02 18:16:50) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"cas_example", :_method=>nil}
+Rendering template within layouts/application
+Rendering cas_example/index
+Rendered layouts/_header (0.0ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 569ms (View: 10, DB: 0) | 200 OK [http://localhost/cas_example?ticket=ST-441-txgZCCzwWt6Oh4eYd1DT-cas-t2]
+>>>>>>> b60f13cfb939bde1f607f2676eeabce5ffa8b3bb
