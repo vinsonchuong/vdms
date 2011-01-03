@@ -1,3 +1,4 @@
+=begin
 class CasExampleController < ApplicationController
   
   def index
@@ -21,6 +22,7 @@ class CasExampleController < ApplicationController
     st = session[:cas_last_valid_ticket]
     delete_service_session_lookup(st) if st
     reset_session
+    
     
     protocol = request.ssl? ? 'https://' : 'http://'
     app_url = "localhost:3000/cas_example"
@@ -48,3 +50,4 @@ class CasExampleController < ApplicationController
   end
   
 end
+=end
