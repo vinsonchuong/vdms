@@ -4,6 +4,7 @@ class CreateMeetings < ActiveRecord::Migration
       t.time :time
       t.string :room
       t.integer :faculty_id
+      t.integer :max_admits_per_meeting
 
       t.timestamps
     end

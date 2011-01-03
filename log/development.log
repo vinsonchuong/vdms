@@ -1765,3 +1765,93 @@ Rendering faculties/index
 Rendered layouts/_header (0.2ms)
 Rendered layouts/_footer (0.1ms)
 Completed in 252ms (View: 7, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-03 00:18:14) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.6ms)
+Rendered layouts/_footer (0.3ms)
+Completed in 851ms (View: 19, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-03 00:19:00) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.3ms)
+Rendered layouts/_footer (0.1ms)
+Completed in 225ms (View: 2, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-03 00:20:20) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 247ms (View: 10, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-03 00:27:26) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.3ms)
+Rendered layouts/_footer (0.1ms)
+Completed in 335ms (View: 3, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-03 00:28:20) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 350ms (View: 12, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-03 00:28:40) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.3ms)
+Rendered layouts/_footer (0.1ms)
+Completed in 309ms (View: 3, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-03 00:29:14) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.3ms)
+Rendered layouts/_footer (0.1ms)
+Completed in 323ms (View: 3, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-03 00:29:48) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.3ms)
+Rendered layouts/_footer (0.1ms)
+Completed in 323ms (View: 3, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-03 00:30:35) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.2ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 367ms (View: 14, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-03 00:31:01) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.3ms)
+Rendered layouts/_footer (0.1ms)
+Completed in 330ms (View: 2, DB: 0) | 200 OK [http://localhost/?ticket=ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1]

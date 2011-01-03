@@ -12,7 +12,7 @@
 
 #area {
 	width: 200px;
-	height: 500px;
+	height: auto;
 	border-style: solid;
 	float: left;
 	position: relative;
@@ -22,7 +22,7 @@
 
 #admits {
 	width: 200px;
-	height: 500px;
+	height: auto;
 	border-style: solid;
 	float: left;
 	position: relative;
@@ -31,8 +31,8 @@
 }
 
 #appointments {
-	width: 200px;
-	height: 500px;
+	width: 400px;
+	height: auto;
 	border-style: solid;
 	float: left;
 	position: relative;
@@ -41,8 +41,8 @@
 }
 
 #calendar {
-	width: 200px;
-	height: 500px;
+	width: 350px;
+	height: auto;
 	border-style: solid;
 	float: left;
 	position: relative;

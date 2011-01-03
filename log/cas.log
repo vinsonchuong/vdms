@@ -1038,3 +1038,33 @@ W, [2011-01-02T22:16:01.899031 #929]  WARN -- : Re-using previously validated ti
 D, [2011-01-02T22:16:34.155808 #929] DEBUG -- : Request contains ticket "ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1".
 D, [2011-01-02T22:16:34.156137 #929] DEBUG -- : Guessed service url: "http://localhost:3000/"
 W, [2011-01-02T22:16:34.156195 #929]  WARN -- : Re-using previously validated ticket since the ticket id and service are the same.
+D, [2011-01-03T00:18:14.433663 #1089] DEBUG -- : Request contains ticket "ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1".
+D, [2011-01-03T00:18:14.434096 #1089] DEBUG -- : Guessed service url: "http://localhost:3000/"
+W, [2011-01-03T00:18:14.434160 #1089]  WARN -- : Re-using previously validated ticket since the ticket id and service are the same.
+D, [2011-01-03T00:19:00.453806 #1089] DEBUG -- : Request contains ticket "ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1".
+D, [2011-01-03T00:19:00.454144 #1089] DEBUG -- : Guessed service url: "http://localhost:3000/"
+W, [2011-01-03T00:19:00.454206 #1089]  WARN -- : Re-using previously validated ticket since the ticket id and service are the same.
+D, [2011-01-03T00:20:20.275137 #1089] DEBUG -- : Request contains ticket "ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1".
+D, [2011-01-03T00:20:20.275485 #1089] DEBUG -- : Guessed service url: "http://localhost:3000/"
+W, [2011-01-03T00:20:20.275545 #1089]  WARN -- : Re-using previously validated ticket since the ticket id and service are the same.
+D, [2011-01-03T00:27:26.097856 #1089] DEBUG -- : Request contains ticket "ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1".
+D, [2011-01-03T00:27:26.098202 #1089] DEBUG -- : Guessed service url: "http://localhost:3000/"
+W, [2011-01-03T00:27:26.098261 #1089]  WARN -- : Re-using previously validated ticket since the ticket id and service are the same.
+D, [2011-01-03T00:28:20.954587 #1089] DEBUG -- : Request contains ticket "ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1".
+D, [2011-01-03T00:28:20.954911 #1089] DEBUG -- : Guessed service url: "http://localhost:3000/"
+W, [2011-01-03T00:28:20.955002 #1089]  WARN -- : Re-using previously validated ticket since the ticket id and service are the same.
+D, [2011-01-03T00:28:40.684089 #1089] DEBUG -- : Request contains ticket "ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1".
+D, [2011-01-03T00:28:40.684442 #1089] DEBUG -- : Guessed service url: "http://localhost:3000/"
+W, [2011-01-03T00:28:40.684501 #1089]  WARN -- : Re-using previously validated ticket since the ticket id and service are the same.
+D, [2011-01-03T00:29:14.517120 #1089] DEBUG -- : Request contains ticket "ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1".
+D, [2011-01-03T00:29:14.517477 #1089] DEBUG -- : Guessed service url: "http://localhost:3000/"
+W, [2011-01-03T00:29:14.517539 #1089]  WARN -- : Re-using previously validated ticket since the ticket id and service are the same.
+D, [2011-01-03T00:29:48.238100 #1089] DEBUG -- : Request contains ticket "ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1".
+D, [2011-01-03T00:29:48.238445 #1089] DEBUG -- : Guessed service url: "http://localhost:3000/"
+W, [2011-01-03T00:29:48.238505 #1089]  WARN -- : Re-using previously validated ticket since the ticket id and service are the same.
+D, [2011-01-03T00:30:35.864971 #1089] DEBUG -- : Request contains ticket "ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1".
+D, [2011-01-03T00:30:35.865311 #1089] DEBUG -- : Guessed service url: "http://localhost:3000/"
+W, [2011-01-03T00:30:35.865372 #1089]  WARN -- : Re-using previously validated ticket since the ticket id and service are the same.
+D, [2011-01-03T00:31:01.320765 #1089] DEBUG -- : Request contains ticket "ST-18223-hrefcfVjLHxO7aQR1yIH-cas-t1".
+D, [2011-01-03T00:31:01.321092 #1089] DEBUG -- : Guessed service url: "http://localhost:3000/"
+W, [2011-01-03T00:31:01.321151 #1089]  WARN -- : Re-using previously validated ticket since the ticket id and service are the same.
