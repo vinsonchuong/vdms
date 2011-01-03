@@ -1,1 +1,49 @@
 # Logfile created on Thu Dec 30 18:42:47 -0800 2010
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 15:52:25) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+
+LoadError (Expected /Users/jackywu07/Desktop/Research/VDMS/app/controllers/faculties_controller.rb to define FacultiesController):
+  
+
+Rendered rescues/_trace (63.9ms)
+Rendered rescues/_request_and_response (0.9ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 16:06:28) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+
+LoadError (Expected /Users/jackywu07/Desktop/Research/VDMS/app/controllers/faculties_controller.rb to define FacultiesController):
+  
+
+Rendered rescues/_trace (64.5ms)
+Rendered rescues/_request_and_response (0.9ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 16:06:37) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+
+LoadError (Expected /Users/jackywu07/Desktop/Research/VDMS/app/controllers/faculties_controller.rb to define FacultiesController):
+  
+
+Rendered rescues/_trace (16.3ms)
+Rendered rescues/_request_and_response (0.2ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 16:07:00) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 45ms (DB: 0) | 302 Found [http://localhost/]
+
+
+Processing FacultiesController#index (for 127.0.0.1 at 2011-01-02 16:07:35) [GET]
+  Parameters: {:controller=>"faculties", :_method=>nil, :action=>"index", :format=>nil}
+Rendering template within layouts/application
+Rendering faculties/index
+Rendered layouts/_header (0.6ms)
+Rendered layouts/_footer (0.4ms)
+Completed in 429ms (View: 98, DB: 0) | 200 OK [http://localhost/?ticket=ST-17811-jI47mo5DskWqcNkekefp-cas-t1]

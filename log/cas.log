@@ -1,1 +1,18 @@
 # Logfile created on Thu Dec 30 18:42:48 -0800 2010 by logger.rb/22285
+D, [2011-01-02T16:07:00.418708 #397] DEBUG -- : Guessed service url: "http://localhost:3000/"
+D, [2011-01-02T16:07:00.428195 #397] DEBUG -- : Generated login url: https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+D, [2011-01-02T16:07:00.442031 #397] DEBUG -- : Redirecting to "https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F"
+D, [2011-01-02T16:07:35.536573 #397] DEBUG -- : Request contains ticket "ST-17811-jI47mo5DskWqcNkekefp-cas-t1".
+D, [2011-01-02T16:07:35.536918 #397] DEBUG -- : Guessed service url: "http://localhost:3000/"
+D, [2011-01-02T16:07:35.537143 #397] DEBUG -- : Requesting CAS response for URI https://auth-test.berkeley.edu/cas/proxyValidate?ticket=ST-17811-jI47mo5DskWqcNkekefp-cas-t1&service=http%3A%2F%2Flocalhost%3A3000%2F
+D, [2011-01-02T16:07:35.861084 #397] DEBUG -- : CAS server responded with #<Net::HTTPOK 200 OK readbody=true>:
+<cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'>
+	<cas:authenticationSuccess>
+		<cas:user>310061</cas:user>
+
+
+	</cas:authenticationSuccess>
+</cas:serviceResponse>
+
+I, [2011-01-02T16:07:35.865703 #397]  INFO -- : Ticket "ST-17811-jI47mo5DskWqcNkekefp-cas-t1" for service "http://localhost:3000/" belonging to user "310061" is VALID.
+D, [2011-01-02T16:07:35.865839 #397] DEBUG -- : Extra user attributes provided along with ticket "ST-17811-jI47mo5DskWqcNkekefp-cas-t1": {}.
