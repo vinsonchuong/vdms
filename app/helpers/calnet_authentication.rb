@@ -9,13 +9,14 @@ module CalNetAuthentication
     st = session[:cas_last_valid_ticket]
     delete_service_session_lookup(st) if st
     reset_session
-    
-    protocol = request.ssl? ? 'https://' : 'http://'
-    app_url = "localhost:3000/cas_example"
+  
+    protocol = request.ssl? ? "https://" : "http://"
+    app_url = "localhost:3000/"
     logout_url = "https://auth-test.berkeley.edu/cas/logout"
-    redirect_to("#{logout_url}?url=#{protocol}#{app_url}")    
+    redirect_to("#{logout_url}?url=#{protocol}#{app_url}")        
   end
 
+  private
 =begin
   The following 2 helper functions copied straight from
   CASClient::Frameworks::Rails::Filter, b/c they were private methods.
