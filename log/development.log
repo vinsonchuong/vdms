@@ -725,3 +725,225 @@ Rendered layouts/_header (0.0ms)
 Rendered layouts/_footer (0.0ms)
 Completed in 569ms (View: 10, DB: 0) | 200 OK [http://localhost/cas_example?ticket=ST-441-txgZCCzwWt6Oh4eYd1DT-cas-t2]
 >>>>>>> b60f13cfb939bde1f607f2676eeabce5ffa8b3bb
+
+
+Processing ActionController::Base#index (for 127.0.0.1 at 2011-01-02 19:06:18) [GET]
+  Parameters: {:action=>nil, :format=>nil, :controller=>nil, :_method=>nil}
+
+ActionController::RoutingError (No route matches "/test" with {:method=>:get}):
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendering rescues/layout (not_found)
+
+
+Processing ActionController::Base#index (for 127.0.0.1 at 2011-01-02 19:06:27) [GET]
+  Parameters: {:action=>nil, :format=>nil, :controller=>nil, :_method=>nil}
+
+ActionController::RoutingError (No route matches "/test/index" with {:method=>:get}):
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendering rescues/layout (not_found)
+
+
+Processing ActionController::Base#index (for 127.0.0.1 at 2011-01-02 19:07:07) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"test", :_method=>nil}
+
+NameError (undefined local variable or method `ldap' for LDAP:Module):
+  app/helpers/ldap.rb:8
+  app/controllers/application_controller.rb:3
+  app/controllers/test_controller.rb:1
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendered rescues/_trace (137.0ms)
+Rendered rescues/_request_and_response (1.0ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing TestController#index (for 127.0.0.1 at 2011-01-02 19:08:07) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"test", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 19ms (DB: 0) | 302 Found [http://localhost/test/]
+
+
+Processing TestController#index (for 127.0.0.1 at 2011-01-02 19:08:12) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"test", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 10ms (DB: 0) | 302 Found [http://localhost/test]
+
+
+Processing TestController#index (for 127.0.0.1 at 2011-01-02 19:08:20) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"test", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2F
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 8ms (DB: 0) | 302 Found [http://localhost/test/index]
+
+
+Processing TestController#index (for 127.0.0.1 at 2011-01-02 19:08:59) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"test", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Ftest
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 10ms (DB: 0) | 302 Found [http://localhost/test]
+
+
+Processing TestController#index (for 127.0.0.1 at 2011-01-02 19:09:00) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"test", :_method=>nil}
+Rendering template within layouts/application
+Rendering test/index
+Rendered layouts/_header (3.0ms)
+Rendered layouts/_footer (2.0ms)
+Completed in 19532ms (View: 73, DB: 0) | 200 OK [http://localhost/test?ticket=ST-451-M4ynTJhbNgeMeos5dO14-cas-t2]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 19:09:30) [GET]
+  Parameters: {:action=>"logout", :format=>nil, :controller=>"application", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Fapplication%2Flogout
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 9ms (DB: 0) | 302 Found [http://localhost/application/logout]
+
+
+Processing ApplicationController#logout (for 127.0.0.1 at 2011-01-02 19:09:30) [GET]
+  Parameters: {:action=>"logout", :format=>nil, :controller=>"application", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/logout?url=http://localhost:3000/cas_example
+Completed in 2036ms (DB: 0) | 302 Found [http://localhost/application/logout?ticket=ST-452-VyXndjyD4FGiHzpbD9F5-cas-t2]
+
+
+Processing TestController#index (for 127.0.0.1 at 2011-01-02 19:09:44) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"test", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Ftest
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 6ms (DB: 0) | 302 Found [http://localhost/test]
+
+
+Processing TestController#index (for 127.0.0.1 at 2011-01-02 19:09:48) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"test", :_method=>nil}
+Redirected to https://auth-test.berkeley.edu/cas/login?service=http%3A%2F%2Flocalhost%3A3000%2Ftest
+Filter chain halted as [CASClient::Frameworks::Rails::Filter] rendered_or_redirected.
+Completed in 7ms (DB: 0) | 302 Found [http://localhost/test]
+
+
+Processing TestController#index (for 127.0.0.1 at 2011-01-02 19:09:53) [GET]
+  Parameters: {:action=>"index", :format=>nil, :controller=>"test", :_method=>nil}
+Rendering template within layouts/application
+Rendering test/index
+Rendered layouts/_header (1.0ms)
+Rendered layouts/_footer (0.0ms)
+Completed in 707ms (View: 5, DB: 0) | 200 OK [http://localhost/test?ticket=ST-453-GlwlfTphbXxeq6N0WTd0-cas-t2]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 19:11:52) [GET]
+  Parameters: {:action=>nil, :format=>nil, :controller=>nil, :_method=>nil}
+
+ActionController::RoutingError (No route matches "/cas_example" with {:method=>:get}):
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 19:12:02) [GET]
+  Parameters: {:action=>nil, :format=>nil, :controller=>nil, :_method=>nil}
+
+ActionController::RoutingError (No route matches "/cas_example" with {:method=>:get}):
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 19:12:24) [GET]
+  Parameters: {:action=>nil, :format=>nil, :controller=>nil, :_method=>nil}
+
+ActionController::RoutingError (No route matches "/cas_example/index" with {:method=>:get}):
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 19:12:29) [GET]
+  Parameters: {:action=>nil, :format=>nil, :controller=>nil, :_method=>nil}
+
+ActionController::RoutingError (No route matches "/cas_example/index.html" with {:method=>:get}):
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2011-01-02 19:12:34) [GET]
+  Parameters: {:action=>nil, :format=>nil, :controller=>nil, :_method=>nil}
+
+ActionController::RoutingError (No route matches "/cas_example/index" with {:method=>:get}):
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  C:/Ruby187/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  C:/Ruby187/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendering rescues/layout (not_found)
