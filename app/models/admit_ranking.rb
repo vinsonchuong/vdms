@@ -1,10 +1,9 @@
 class AdmitRanking < Ranking
-=begin
-  Attributes 
-    mandatory
-    time_slots
-    one_on_one
-=end
+  ATTRIBUTES = Ranking::ATTRIBUTES.merge({
+    'Mandatory' => :mandatory,
+    'Time Slots' => :time_slots,
+    'One-On-One' => :one_on_one
+  })
 
   belongs_to :faculty
   belongs_to :admit

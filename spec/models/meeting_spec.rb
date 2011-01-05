@@ -6,15 +6,20 @@ describe Meeting do
       @meeting = Meeting.new
     end
 
-    it 'has a time (time)' do
+    it 'has a Time (time)' do
       @meeting.should respond_to(:time)
       @meeting.should respond_to(:time=)
     end
 
-    it 'has a room (room)' do
+    it 'has a Room (room)' do
       @meeting.should respond_to(:room)
       @meeting.should respond_to(:room=)
     end
+  end
+
+  it 'has an attribute name to accessor map' do
+    Meeting::ATTRIBUTES['Time'].should == :time
+    Meeting::ATTRIBUTES['Room'].should == :room
   end
 
   describe 'Associations' do

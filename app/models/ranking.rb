@@ -1,6 +1,5 @@
 class Ranking < ActiveRecord::Base
-=begin
-  Attributes 
-    rank
-=end
+  ATTRIBUTES = {
+    'Rank' => :rank
+  }
 end

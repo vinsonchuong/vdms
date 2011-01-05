@@ -6,20 +6,32 @@ describe AdmitRanking do
       @admit_ranking = AdmitRanking.new
     end
 
-    it 'has a mandatory meeting flag (mandatory)' do
+    it 'has a Rank (rank)' do
+      @admit_ranking.should respond_to(:rank)
+      @admit_ranking.should respond_to(:rank=)
+    end
+
+    it 'has a Mandatory flag (mandatory)' do
       @admit_ranking.should respond_to(:mandatory)
       @admit_ranking.should respond_to(:mandatory=)
     end
 
-    it 'has a number of desired meeting time slots (time_slots)' do
+    it 'has a number of Time Slots (time_slots)' do
       @admit_ranking.should respond_to(:time_slots)
       @admit_ranking.should respond_to(:time_slots=)
     end
 
-    it 'has a one-on-one meeting flag (one_on_one)' do
+    it 'has a One-On-One flag (one_on_one)' do
       @admit_ranking.should respond_to(:one_on_one)
       @admit_ranking.should respond_to(:one_on_one=)
     end
+  end
+
+  it 'has an attribute name to accessor map' do
+    AdmitRanking::ATTRIBUTES['Rank'].should == :rank
+    AdmitRanking::ATTRIBUTES['Mandatory'].should == :mandatory
+    AdmitRanking::ATTRIBUTES['Time Slots'].should == :time_slots
+    AdmitRanking::ATTRIBUTES['One-On-One'].should == :one_on_one
   end
 
   describe 'Associations' do

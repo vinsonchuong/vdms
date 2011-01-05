@@ -1,6 +1,21 @@
 require 'spec_helper'
 
 describe AdmitRanking do
+  describe 'Attributes' do
+    before(:each) do
+      @faculty_ranking = FacultyRanking.new
+    end
+
+    it 'has a Rank (rank)' do
+      @faculty_ranking.should respond_to(:rank)
+      @faculty_ranking.should respond_to(:rank=)
+    end
+  end
+
+  it 'has an attribute name to accessor map' do
+    FacultyRanking::ATTRIBUTES['Rank'].should == :rank
+  end
+
   describe 'Associations' do
     before(:each) do
       @faculty_ranking = FacultyRanking.new

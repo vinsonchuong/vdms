@@ -1,13 +1,12 @@
 class Faculty < Person
-=begin
-  Attributes
-    area
-    division
-    schedule
-    default_room
-    max_admits_per_meeting
-    max_additional_admits
-=end
+  ATTRIBUTES = Person::ATTRIBUTES.merge ({
+    'Area' => :area,
+    'Division' => :division,
+    'Schedule' => :schedule,
+    'Default Room' => :default_room,
+    'Max Admits Per Meeting' => :max_admits_per_meeting,
+    'Max Additional Admits' => :max_additional_admits
+  })
   serialize :schedule, Array
 
   has_many :admit_rankings

@@ -11,19 +11,26 @@ describe Staff do
       @staff.should respond_to(:calnet_id=)
     end
 
-    it 'has a first name (first_name)' do
+    it 'has a First Name (first_name)' do
       @staff.should respond_to(:first_name)
       @staff.should respond_to(:first_name=)
     end
 
-    it 'has a last name (last_name)' do
+    it 'has a Last Name (last_name)' do
       @staff.should respond_to(:last_name)
       @staff.should respond_to(:last_name=)
     end
 
-    it 'has an email (email)' do
+    it 'has an Email (email)' do
       @staff.should respond_to(:email)
       @staff.should respond_to(:email=)
     end
+  end
+
+  it 'has an attribute name to accessor map' do
+    Staff::ATTRIBUTES['CalNet ID'].should == :calnet_id
+    Staff::ATTRIBUTES['First Name'].should == :first_name
+    Staff::ATTRIBUTES['Last Name'].should == :last_name
+    Staff::ATTRIBUTES['Email'].should == :email
   end
 end

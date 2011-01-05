@@ -11,20 +11,27 @@ describe PeerAdvisor do
       @peer_advisor.should respond_to(:calnet_id=)
     end
 
-    it 'has a first name (first_name)' do
+    it 'has a First Name (first_name)' do
       @peer_advisor.should respond_to(:first_name)
       @peer_advisor.should respond_to(:first_name=)
     end
 
-    it 'has a last name (last_name)' do
+    it 'has a Last Name (last_name)' do
       @peer_advisor.should respond_to(:last_name)
       @peer_advisor.should respond_to(:last_name=)
     end
 
-    it 'has an email (email)' do
+    it 'has an Email (email)' do
       @peer_advisor.should respond_to(:email)
       @peer_advisor.should respond_to(:email=)
     end
+  end
+
+  it 'has an attribute name to accessor map' do
+    PeerAdvisor::ATTRIBUTES['CalNet ID'].should == :calnet_id
+    PeerAdvisor::ATTRIBUTES['First Name'].should == :first_name
+    PeerAdvisor::ATTRIBUTES['Last Name'].should == :last_name
+    PeerAdvisor::ATTRIBUTES['Email'].should == :email
   end
 
   describe 'Associations' do
