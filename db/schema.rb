@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20101229235652) do
     t.time     "time"
     t.string   "room"
     t.integer  "faculty_id"
+    t.integer  "max_admits_per_meeting"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
