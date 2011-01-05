@@ -1,4 +1,0 @@
-class PeerAdvisorsController < ApplicationController
-  
-  
-end
