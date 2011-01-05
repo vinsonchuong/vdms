@@ -8,12 +8,13 @@ module CalNetAuthentication
     logout
   end
 
-  # example usage in controller spec file
-  # should_require_login :edit, :new, :destroy
-  def should_require_login(*actions)
-    actions.each do |action|
+  # Example usage in controller spec file:
+  # should_require_login :new => :get, :edit => :get, :update => :put, :destroy => :delete
+  def should_require_login(*args)
+    args = Hash[*args]
+    args.each do |action, verb|
       should "Require login for '#{action}' action" do
-        get action
+        send(verb, action)
         assert_redirected_to(login_url)
       end
     end
