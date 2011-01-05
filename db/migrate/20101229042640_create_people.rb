@@ -12,8 +12,8 @@ class CreatePeople < ActiveRecord::Migration
       t.string :division
       t.string :schedule
       t.string :default_room
-      t.integer :max_students_per_meeting
-      t.integer :max_additional_students
+      t.integer :max_admits_per_meeting
+      t.integer :max_additional_admits
 
       # Admit
       t.string :phone

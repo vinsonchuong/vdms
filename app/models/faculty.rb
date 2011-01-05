@@ -5,8 +5,8 @@ class Faculty < Person
     division
     schedule
     default_room
-    max_students_per_meeting
-    max_additional_students
+    max_admits_per_meeting
+    max_additional_admits
 =end
   serialize :schedule, Array
 

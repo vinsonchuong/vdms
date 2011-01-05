@@ -46,14 +46,14 @@ describe Faculty do
       @faculty.should respond_to(:default_room=)
     end
 
-    it 'has a maximum number of students per meeting preference (max_students_per_meeting)' do
-      @faculty.should respond_to(:max_students_per_meeting)
-      @faculty.should respond_to(:max_students_per_meeting=)
+    it 'has a maximum number of admits per meeting preference (max_admits_per_meeting)' do
+      @faculty.should respond_to(:max_admits_per_meeting)
+      @faculty.should respond_to(:max_admits_per_meeting=)
     end
 
-    it 'has a maximum number of additional students to meet with preference (max_additional_students)' do
-      @faculty.should respond_to(:max_additional_students)
-      @faculty.should respond_to(:max_additional_students=)
+    it 'has a maximum number of additional admits to meet with preference (max_additional_admits)' do
+      @faculty.should respond_to(:max_additional_admits)
+      @faculty.should respond_to(:max_additional_admits=)
     end
   end
 
