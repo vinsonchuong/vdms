@@ -112,22 +112,116 @@ module MeetingsScheduler
     def initialize(data)
       @data = data
     end
-  
+    
     
     # fitness is basically a utility/heuristic value function that evaluate how good a particular solution is
     def fitness
+      return @fitness if @fitness
+      # else calculate and save to @fitness, TO BE IMPLEMENTED
+      return @fitness
     end
-  
+    
     def self.mutate(chromosome)
+      # add more stuff such as double mutation, inversion, translocation of two snippets, simulated annealing mutation rates, etc
+      if chromosome.normalized_fitness && rand < ((1 - chromosome.normalized_fitness) * 0.3)
+        which_mutation = rand(100)
+        case which_mutation
+        when 0..33
+          indexes = Chromosome.pick_two_random_indexes(chromosome)
+          Chromosome.chromosomal_inversion(chromosome, indexes[0], indexes[1])
+        when 33..66
+          index = rand(chromosome.length - 1)
+          Chromosome.reverse_two_adjacent_sequences(chromosome, index)
+        else
+          index = rand(chromosome.length)
+          Chromosome.point_mutation(chromosome, index)
+        end
+        @fitness = nil
+      end      
     end
-  
-    def self.reproduce(parent1, parent2)
+    
+    # Produces only ONE child chromosome
+    def self.reproduce(parent1, parent2, double_crossover_probability)
+      if rand < double_crossover_probability
+        indexes = Chromosome.pick_two_random_indexes(parent1)        
+        Chromosome.double_crossover(parent1, parent2, indexes[0], indexes[1])
+      else
+        splice_index = rand(parent1.length - 2) + 1
+        Chromosome.single_crossover(parent1, parent2, splice_index)
+      end
     end
     
     # seed produces an individual solution (chromosome) for the initial population
     def self.seed
+      chromosome = Array.new(Chromosome.chromosome_length)
+      number_of_spots_per_student = (chromosome_length / Admit.count).floor - 1
+      admit_ids = Admit.all.collect{ |admit| [admit.id]*number_of_spots_per_student }.flatten.shuffle
+      admit_ids.each do |id|
+        i = rand(chromosome.length)
+        while array[i]
+          i = rand(chromosome.length)
+        end
+        array[i] = id
+      end
+      return Chromosome.new(chromosome)
     end
-  
-  end
+
+    def [](index)
+      self.data[index]
+    end
+
+    def []=(index, assignment)
+      self.data[index] = assignment
+    end
+
+    def length
+      self.data.length
+    end
+
     
+    private
+
+    def self.chromosome_length
+      Faculty.all.inject { |count, f| count + (f.schedule.count * f.max_students_per_meeting) }
+    end    
+    
+    def self.single_crossover(parent1, parent2, splice_index)
+      return Chromosome.new(parent1[0...splice_index] + parent2[splice_index..-1])
+    end
+    
+    def self.double_crossover(parent1, parent2, splice_index1, splice_index2)
+      return Chromosome.new(parent1[0...splice_index1] +
+                            parent2[splice_index1...splice_index2] +
+                            parent1[splice_index2..-1])
+    end
+    
+    def self.pick_two_random_indexes(sample_chromosome)
+      index1 = index2 = rand(sample_chromosome.length - 3) + 1
+      while splice_index2 <= splice_index1
+        splice_index2 = rand(sample_chromosome.length - 2) + 1
+      end
+      return [index1, index2]
+    end
+    
+    
+    def self.reverse_two_adjacent_sequences(chromosome, index)
+      Chromosome.chromosomal_inversion(chromosome, index, index+1)
+    end
+    
+    def self.chromosomal_inversion(chromosome, index1, index2)
+      data = chromosome.data
+      inversion = data[index1..index2].reverse
+      data = data[0...index1] + inversion + data[index2+1..-1]
+      chromosome.data = data
+    end
+    
+    def self.point_mutation(chromosome, index)
+      admit = Admit.all.collect{ |admit| admit.id }.shuffle.fetch(0)
+      data = chromosome.data
+      data[index] = admit
+      chromosome.data = data
+    end
+    
+  end
+  
 end
