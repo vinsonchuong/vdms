@@ -3,7 +3,7 @@ module CalNetAuthentication
 =begin
   The logout method essentially performs the same procedures as
   CASClient::Frameworks::Rails::Filter.logout(controller),
-  with the exception that 
+  with the exception that the page after logout displays URL link to log back in
 =end
   def logout
     st = session[:cas_last_valid_ticket]
@@ -20,8 +20,7 @@ module CalNetAuthentication
 =begin
   The following 2 helper functions copied straight from
   CASClient::Frameworks::Rails::Filter, b/c they were private methods.
-  They are used here instead to accompany the logout method,
-  such that the page after logout displays URL link to log back in
+  They are used here instead to accompany the modified logout method,
 =end
   
   # Removes a stored relationship between a ServiceTicket and a local
