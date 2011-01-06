@@ -15,11 +15,11 @@ describe Meeting do
       @meeting.should respond_to(:room)
       @meeting.should respond_to(:room=)
     end
-  end
 
-  it 'has an attribute name to accessor map' do
-    Meeting::ATTRIBUTES['Time'].should == :time
-    Meeting::ATTRIBUTES['Room'].should == :room
+    it 'has an attribute name to accessor map' do
+      Meeting::ATTRIBUTES['Time'].should == :time
+      Meeting::ATTRIBUTES['Room'].should == :room
+    end
   end
 
   describe 'Associations' do

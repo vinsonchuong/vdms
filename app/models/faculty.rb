@@ -1,5 +1,5 @@
 class Faculty < Person
-  ATTRIBUTES = Person::ATTRIBUTES.merge ({
+  ATTRIBUTES = Person::ATTRIBUTES.merge({
     'Area' => :area,
     'Division' => :division,
     'Schedule' => :schedule,

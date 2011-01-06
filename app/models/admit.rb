@@ -1,5 +1,5 @@
 class Admit < Person
-  ATTRIBUTES = Person::ATTRIBUTES.merge ({
+  ATTRIBUTES = Person::ATTRIBUTES.merge({
     'Phone' => :phone,
     'Area 1' => :area1,
     'Area 2' => :area2,

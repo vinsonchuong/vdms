@@ -25,13 +25,13 @@ describe AdmitRanking do
       @admit_ranking.should respond_to(:one_on_one)
       @admit_ranking.should respond_to(:one_on_one=)
     end
-  end
 
-  it 'has an attribute name to accessor map' do
-    AdmitRanking::ATTRIBUTES['Rank'].should == :rank
-    AdmitRanking::ATTRIBUTES['Mandatory'].should == :mandatory
-    AdmitRanking::ATTRIBUTES['Time Slots'].should == :time_slots
-    AdmitRanking::ATTRIBUTES['One-On-One'].should == :one_on_one
+    it 'has an attribute name to accessor map' do
+      AdmitRanking::ATTRIBUTES['Rank'].should == :rank
+      AdmitRanking::ATTRIBUTES['Mandatory'].should == :mandatory
+      AdmitRanking::ATTRIBUTES['Time Slots'].should == :time_slots
+      AdmitRanking::ATTRIBUTES['One-On-One'].should == :one_on_one
+    end
   end
 
   describe 'Associations' do

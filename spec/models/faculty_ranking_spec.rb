@@ -10,10 +10,10 @@ describe AdmitRanking do
       @faculty_ranking.should respond_to(:rank)
       @faculty_ranking.should respond_to(:rank=)
     end
-  end
 
-  it 'has an attribute name to accessor map' do
-    FacultyRanking::ATTRIBUTES['Rank'].should == :rank
+    it 'has an attribute name to accessor map' do
+      FacultyRanking::ATTRIBUTES['Rank'].should == :rank
+    end
   end
 
   describe 'Associations' do
