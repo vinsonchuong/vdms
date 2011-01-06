@@ -15,7 +15,7 @@ describe RangeSet do
     end
   end
 
-  context 'when coercing' do
+  context 'when converting' do
     context 'to an array' do
       it 'returns [] when empty' do
         RangeSet.new.to_a.should == []
