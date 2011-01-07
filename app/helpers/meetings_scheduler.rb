@@ -16,7 +16,7 @@ module MeetingsScheduler
       @max_generation.times do
         parents = GeneticAlgorithm.selection
         offsprings = GeneticAlgorithm.reproduction(parents)
-        GeneticAlgorithm.replace_worst_ranked (offsprings)
+        GeneticAlgorithm.replace_worst_ranked(offsprings)
       end
       select_best_chromosome
     end
@@ -106,6 +106,8 @@ module MeetingsScheduler
   end
   
   class Chromosome
+    include Comparable
+    
     attr_accessor :data
     attr_accessor :normalized_fitness
     
@@ -155,7 +157,7 @@ module MeetingsScheduler
     def self.seed
       chromosome = Array.new(Chromosome.chromosome_length)
       number_of_spots_per_student = (chromosome_length / Admit.count).floor - 1
-      admit_ids = Admit.all.collect{ |admit| [admit.id]*number_of_spots_per_student }.flatten.shuffle
+      admit_ids = Chromosome.admits_attending.collect{ |admit| [admit.id]*number_of_spots_per_student }.flatten.shuffle
       admit_ids.each do |id|
         i = rand(chromosome.length)
         while array[i]
@@ -174,6 +176,11 @@ module MeetingsScheduler
       self.data[index] = assignment
     end
 
+    def <=>(other)
+      self.data <=> other.data
+    end
+
+
     def length
       self.data.length
     end
@@ -183,7 +190,10 @@ module MeetingsScheduler
 
     def self.chromosome_length
       Faculty.all.inject { |count, f| count + (f.schedule.count * f.max_students_per_meeting) }
-    end    
+    end
+
+
+    # Methods for generating children
     
     def self.single_crossover(parent1, parent2, splice_index)
       return Chromosome.new(parent1[0...splice_index] + parent2[splice_index..-1])
@@ -195,14 +205,8 @@ module MeetingsScheduler
                             parent1[splice_index2..-1])
     end
     
-    def self.pick_two_random_indexes(sample_chromosome)
-      index1 = index2 = rand(sample_chromosome.length - 3) + 1
-      while splice_index2 <= splice_index1
-        splice_index2 = rand(sample_chromosome.length - 2) + 1
-      end
-      return [index1, index2]
-    end
     
+    # Methods for generating mutations
     
     def self.reverse_two_adjacent_sequences(chromosome, index)
       Chromosome.chromosomal_inversion(chromosome, index, index+1)
@@ -216,10 +220,25 @@ module MeetingsScheduler
     end
     
     def self.point_mutation(chromosome, index)
-      admit = Admit.all.collect{ |admit| admit.id }.shuffle.fetch(0)
+      admit = Chromosome.admits_attending.collect{ |admit| admit.id }.shuffle.fetch(0)
       data = chromosome.data
       data[index] = admit
       chromosome.data = data
+    end
+
+
+    # Abstracted methods for easier stubbing in Rspec tests
+    
+    def self.pick_two_random_indexes(sample_chromosome)
+      index1 = index2 = rand(sample_chromosome.length - 3) + 1
+      while splice_index2 <= splice_index1
+        splice_index2 = rand(sample_chromosome.length - 2) + 1
+      end
+      return [index1, index2]
+    end
+
+    def self.admits_attending
+      return Admit.all.find_all{ |admit| admit.attending? }
     end
     
   end

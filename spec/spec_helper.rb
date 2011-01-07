@@ -22,7 +22,7 @@ Spec::Runner.configure do |config|
   config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
 
   # Include custom macros found in spec/support
-  config.include Authentication, :type => :controller
+  config.include CalNetAuthentication, :type => :controller
   config.include ModelFactory
 
 

@@ -11,7 +11,7 @@ module ModelFactory
         :area1 =>  "EE",
         :area2 => "CS",
         :attending => true,
-        :available_time_ranges => RangeSet.new([4.hours.ago..3.hours.ago, 1.hour.ago..20.minutes.ago])
+        :available_times => RangeSet.new([4.hours.ago..3.hours.ago, 1.hour.ago..20.minutes.ago])
       }
     when 'AdmitRanking'
       return {
