@@ -92,7 +92,7 @@ module MeetingsScheduler
       @population = @population[0..((-1*size)-1)] + offsprings
     end
     
-    private
+    private unless Rails.env == 'test'
     
     def self.select_random_inidividual(accumulated_fitness)
       select_random_target = accumulated_fitness * rand
@@ -179,7 +179,7 @@ module MeetingsScheduler
     end
 
     
-    private
+    private unless Rails.env == 'test'
 
     def self.chromosome_length
       Faculty.all.inject { |count, f| count + (f.schedule.count * f.max_students_per_meeting) }
