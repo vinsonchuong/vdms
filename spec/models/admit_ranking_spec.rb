@@ -77,6 +77,13 @@ describe AdmitRanking do
       end
     end
 
+    it 'is not valid with a non-unique Rank' do
+      faculty = Factory.create(:faculty)
+      existent_admit_ranking = Factory.create(:admit_ranking, :rank => 1, :faculty => faculty)
+      new_admit_ranking = Factory.build(:admit_ranking, :rank => 1, :faculty => faculty)
+      new_admit_ranking.should_not be_valid
+    end
+
     it 'is not valid without a Mandatory flag' do
       @admit_ranking.mandatory = nil
       @admit_ranking.should_not be_valid
@@ -102,6 +109,14 @@ describe AdmitRanking do
     it 'is not valid with an invalid Admit' do
       @admit_ranking.admit.destroy
       @admit_ranking.should_not be_valid
+    end
+
+    it 'is not valid with a non-unique Admit' do
+      faculty = Factory.create(:faculty)
+      admit = Factory.create(:admit)
+      existent_admit_ranking = Factory.create(:admit_ranking, :faculty => faculty, :admit => admit)
+      new_admit_ranking = Factory.build(:admit_ranking, :faculty => faculty, :admit => admit)
+      new_admit_ranking.should_not be_valid
     end
   end
 end
