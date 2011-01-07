@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Admit do
-  describe 'Attributes' do
-    before(:each) do
-      @admit = Admit.new
-    end
+  before(:each) do
+    @admit = Factory.build(:admit)
+  end
 
+  describe 'Attributes' do
     it 'has a First Name (first_name)' do
       @admit.should respond_to(:first_name)
       @admit.should respond_to(:first_name=)
@@ -60,20 +60,99 @@ describe Admit do
   end
 
   describe 'Associations' do
+    it 'belongs to a Peer Advisor (peer_advisor)' do
+      @admit.should belong_to(:peer_advisor)
+    end
+
+    it 'has many Faculty Rankings (faculty_rankings)' do
+      @admit.should have_many(:faculty_rankings)
+    end
+
+    it 'has and belongs to many Meetings (meetings)' do
+      @admit.should have_and_belong_to_many(:meetings)
+    end
+  end
+
+  context 'when building' do
     before(:each) do
       @admit = Admit.new
     end
 
-    it 'belongs to a peer advisor (peer_advisor)' do
-      @admit.should belong_to(:peer_advisor)
+    it 'is by default not Attending' do
+      @admit.attending.should == false
     end
 
-    it 'has many faculty rankings (faculty_rankings)' do
-      @admit.should have_many(:faculty_rankings)
+    it 'by default has no Available Times' do
+      @admit.available_times.to_a.should be_empty
+    end
+  end
+
+  context 'when validating' do
+    it 'is valid with valid attributes' do
+      @admit.should be_valid
     end
 
-    it 'has and belongs to many meetings (meetings)' do
-      @admit.should have_and_belong_to_many(:meetings)
+    it 'is not valid without a First Name' do
+      @admit.first_name = ''
+      @admit.should_not be_valid
+    end
+
+    it 'is not valid without a Last Name' do
+      @admit.last_name = ''
+      @admit.should_not be_valid
+    end
+
+    it 'is not valid without an Email' do
+      @admit.email = ''
+      @admit.should_not be_valid
+    end
+
+    it 'is not valid with an invalid Email' do
+      ['foobar', 'foo@bar', 'foo.com'].each do |invalid_email|
+        @admit.email = invalid_email
+        @admit.should_not be_valid
+      end
+    end
+
+    it 'is valid with a valid phone' do
+      ['1234567890', '(123) 456-7890', '123.456.7890', '123-456-7890'].each do |valid_phone|
+        @admit.phone = valid_phone
+        @admit.should be_valid
+      end
+    end
+
+    it 'is not valid without a Phone' do
+      @admit.phone = ''
+      @admit.should_not  be_valid
+    end
+
+    it 'is not valid with an invalid Phone' do
+      ['12345678', 'foobarbaz', '12345678900'].each do |invalid_phone|
+        @admit.phone = invalid_phone
+        @admit.should_not be_valid
+      end
+    end
+
+    it 'is not valid without an Area 1' do
+      @admit.area1 = ''
+      @admit.should_not be_valid
+    end
+
+    it 'is not valid without an Area 2' do
+      @admit.area2 = ''
+      @admit.should_not be_valid
+    end
+
+    it 'is not valid without an Attending flag' do
+      @admit.attending = nil
+      @admit.should_not be_valid
+    end
+
+    it 'is not valid with invalid Available Times'
+
+    it 'is not valid with an invalid Peer Advisor' do
+      @admit.peer_advisor = PeerAdvisor.new
+      @admit.should_not be_valid
     end
   end
 
@@ -148,6 +227,10 @@ describe Admit do
         admit.last_name.should == "Last#{i}"
         admit.email.should == "email#{i}@email.com"
       end
+    end
+
+    it 'returns the collection of created Admits' do
+      Admit.import_csv(@csv.to_s).should == @admits
     end
   end
 end

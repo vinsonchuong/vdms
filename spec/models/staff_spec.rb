@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Staff do
+  before(:each) do
+    @staff = Factory.build(:staff)
+  end
+
   describe 'Attributes' do
-    before(:each) do
-      @staff = Staff.new
-    end
-    
     it 'has a CalNet ID (calnet_id)' do
       @staff.should respond_to(:calnet_id)
       @staff.should respond_to(:calnet_id=)
@@ -31,6 +31,39 @@ describe Staff do
       Staff::ATTRIBUTES['First Name'].should == :first_name
       Staff::ATTRIBUTES['Last Name'].should == :last_name
       Staff::ATTRIBUTES['Email'].should == :email
+    end
+  end
+
+  context 'when validating' do
+    it 'is valid with valid attributes' do
+      @staff.should be_valid
+    end
+
+    it 'is not valid without a Calnet ID' do
+      @staff.calnet_id = ''
+      @staff.should_not be_valid
+    end
+
+    it 'is not valid without a First Name' do
+      @staff.first_name = ''
+      @staff.should_not be_valid
+    end
+
+    it 'is not valid without a Last Name' do
+      @staff.last_name = ''
+      @staff.should_not be_valid
+    end
+
+    it 'is not valid without an Email' do
+      @staff.email = ''
+      @staff.should_not be_valid
+    end
+
+    it 'is not valid with an invalid Email' do
+      ['foobar', 'foo@bar', 'foo.com'].each do |invalid_email|
+        @staff.email = invalid_email
+        @staff.should_not be_valid
+      end
     end
   end
 
@@ -97,6 +130,10 @@ describe Staff do
         staff.last_name.should == "Last#{i}"
         staff.email.should == "email#{i}@email.com"
       end
+    end
+
+    it 'returns the collection of created Staffs' do
+      Staff.import_csv(@csv.to_s).should == @staffs
     end
   end
 end

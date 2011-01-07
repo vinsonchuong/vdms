@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe AdmitRanking do
-  describe 'Attributes' do
-    before(:each) do
-      @admit_ranking = AdmitRanking.new
-    end
+  before(:each) do
+    @admit_ranking = Factory.build(:admit_ranking)
+  end
 
+  describe 'Attributes' do
     it 'has a Rank (rank)' do
       @admit_ranking.should respond_to(:rank)
       @admit_ranking.should respond_to(:rank=)
@@ -35,16 +35,66 @@ describe AdmitRanking do
   end
 
   describe 'Associations' do
-    before(:each) do
-      @admit_ranking = AdmitRanking.new
-    end
-
     it 'belongs to a faculty (faculty)' do
       @admit_ranking.should belong_to(:faculty)
     end
 
     it 'belongs to an admit (admit)' do
       @admit_ranking.should belong_to(:admit)
+    end
+  end
+
+  context 'when building' do
+    it 'has by default a Mandatory flag of false' do
+      @admit_ranking.mandatory.should == false
+    end
+
+    it 'has by default 1 Time Slot' do
+      @admit_ranking.time_slots.should == 1
+    end
+
+    it 'has by default a One-On-One flag of false' do
+      @admit_ranking.one_on_one.should == false
+    end
+  end
+
+  context 'when validating' do
+    it 'is valid with valid attributes' do
+      @admit_ranking.should be_valid
+    end
+
+    it 'is not valid with an invalid Rank' do
+      ['', 0, -1, 'foobar'].each do |invalid_rank|
+        @admit_ranking.rank = invalid_rank
+        @admit_ranking.should_not be_valid
+      end
+    end
+
+    it 'is not valid without a Mandatory flag' do
+      @admit_ranking.mandatory = nil
+      @admit_ranking.should_not be_valid
+    end
+
+    it 'is not valid with an invalid Time Slots' do
+      [nil, '', 'foobar', 0, -1].each do |invalid_slots|
+        @admit_ranking.time_slots = invalid_slots
+        @admit_ranking.should_not be_valid
+      end
+    end
+
+    it 'is not valid without a One-On-One flag' do
+      @admit_ranking.one_on_one = nil
+      @admit_ranking.should_not be_valid
+    end
+
+    it 'is not valid with an invalid Faculty' do
+      @admit_ranking.faculty.destroy
+      @admit_ranking.should_not be_valid
+    end
+
+    it 'is not valid with an invalid Admit' do
+      @admit_ranking.admit.destroy
+      @admit_ranking.should_not be_valid
     end
   end
 end

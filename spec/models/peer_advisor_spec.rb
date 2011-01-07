@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe PeerAdvisor do
+  before(:each) do
+    @peer_advisor = Factory.build(:peer_advisor)
+  end
+
   describe 'Attributes' do
-    before(:each) do
-      @peer_advisor = PeerAdvisor.new
-    end
-    
     it 'has a CalNet ID (calnet_id)' do
       @peer_advisor.should respond_to(:calnet_id)
       @peer_advisor.should respond_to(:calnet_id=)
@@ -35,12 +35,41 @@ describe PeerAdvisor do
   end
 
   describe 'Associations' do
-    before(:each) do
-      @peer_advisor = PeerAdvisor.new
+    it 'has many Admits (admits)' do
+      @peer_advisor.should have_many(:admits)
+    end
+  end
+
+  context 'when validating' do
+    it 'is valid with valid attributes' do
+      @peer_advisor.should be_valid
     end
 
-    it 'has many admits (admits)' do
-      @peer_advisor.should have_many(:admits)
+    it 'is not valid without a Calnet ID' do
+      @peer_advisor.calnet_id = ''
+      @peer_advisor.should_not be_valid
+    end
+
+    it 'is not valid without a First Name' do
+      @peer_advisor.first_name = ''
+      @peer_advisor.should_not be_valid
+    end
+
+    it 'is not valid without a Last Name' do
+      @peer_advisor.last_name = ''
+      @peer_advisor.should_not be_valid
+    end
+
+    it 'is not valid without an Email' do
+      @peer_advisor.email = ''
+      @peer_advisor.should_not be_valid
+    end
+
+    it 'is not valid with an invalid Email' do
+      ['foobar', 'foo@bar', 'foo.com'].each do |invalid_email|
+        @peer_advisor.email = invalid_email
+        @peer_advisor.should_not be_valid
+      end
     end
   end
 
@@ -107,6 +136,10 @@ describe PeerAdvisor do
         peer_advisor.last_name.should == "Last#{i}"
         peer_advisor.email.should == "email#{i}@email.com"
       end
+    end
+
+    it 'returns the collection of created PeerAdvisors' do
+      PeerAdvisor.import_csv(@csv.to_s).should == @peer_advisors
     end
   end
 end

@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Faculty do
-  describe 'Attributes' do
-    before(:each) do
-      @faculty = Faculty.new
-    end
+  before(:each) do
+    @faculty = Factory.create(:faculty)
+  end
 
+  describe 'Attributes' do
     it 'has a CalNet ID (calnet_id)' do
       @faculty.should respond_to(:calnet_id)
       @faculty.should respond_to(:calnet_id=)
@@ -70,18 +70,99 @@ describe Faculty do
     end
   end
 
-
   describe 'Associations' do
+    it 'has many Admit Rankings (admit_rankings)' do
+      @faculty.should have_many(:admit_rankings)
+    end
+
+    it 'has many Meetings (meetings)' do
+      @faculty.should have_many(:meetings)
+    end
+  end
+
+  context 'when building' do
     before(:each) do
       @faculty = Faculty.new
     end
 
-    it 'has many admit rankings (admit_rankings)' do
-      @faculty.should have_many(:admit_rankings)
+    it 'has an empty Schedule by default' do
+      @faculty.schedule.should be_empty
     end
 
-    it 'has many meetings (meetings)' do
-      @faculty.should have_many(:meetings)
+    it 'has no default room (None)' do
+      @faculty.default_room.should == 'None'
+    end
+
+    it 'has a default Max Admits Per Meeting preference of 1' do
+      @faculty.max_admits_per_meeting.should == 1
+    end
+
+    it 'has a Max Additional Admits to meet with preference of No Limit' do
+      @faculty.max_additional_admits.should == Float::MAX.to_i
+    end
+  end
+
+  context 'when validating' do
+    it 'is valid with valid attributes' do
+      @faculty.should be_valid
+    end
+
+    it 'is not valid without a Calnet ID' do
+      @faculty.calnet_id = ''
+      @faculty.should_not be_valid
+    end
+
+    it 'is not valid without a First Name' do
+      @faculty.first_name = ''
+      @faculty.should_not be_valid
+    end
+
+    it 'is not valid without a Last Name' do
+      @faculty.last_name = ''
+      @faculty.should_not be_valid
+    end
+
+    it 'is not valid without an Email' do
+      @faculty.email = ''
+      @faculty.should_not be_valid
+    end
+
+    it 'is not valid with an invalid Email' do
+      ['foobar', 'foo@bar', 'foo.com'].each do |invalid_email|
+        @faculty.email = invalid_email
+        @faculty.should_not be_valid
+      end
+    end
+
+    it 'is not valid without an Area' do
+      @faculty.area = ''
+      @faculty.should_not be_valid
+    end
+
+    it 'is not valid without a Division' do
+      @faculty.division = ''
+      @faculty.should_not be_valid
+    end
+
+    it 'is not valid with an invalid Schedule'
+
+    it 'is not valid without a Default Doom' do
+      @faculty.default_room = ''
+      @faculty.should_not be_valid
+    end
+
+    it 'is not valid with an invalid Max Admits Per Meeting preference' do
+      ['', 0, -1, 5.5, 'foobar'].each do |invalid_preference|
+        @faculty.max_admits_per_meeting = invalid_preference
+        @faculty.should_not be_valid
+      end
+    end
+
+    it 'is not valid with an invalid Max Additional Admits to meet with preference' do
+      ['', -1, 5.5, 'foobar'].each do |invalid_preference|
+        @faculty.max_additional_admits = invalid_preference
+        @faculty.should_not be_valid
+      end
     end
   end
 
@@ -158,6 +239,10 @@ describe Faculty do
         faculty.last_name.should == "Last#{i}"
         faculty.email.should == "email#{i}@email.com"
       end
+    end
+
+    it 'returns the collection of created Faculties' do
+      Faculty.import_csv(@csv.to_s).should == @faculties
     end
   end
 end

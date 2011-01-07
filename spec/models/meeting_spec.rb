@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Meeting do
-  describe 'Attributes' do
-    before(:each) do
-      @meeting = Meeting.new
-    end
+  before(:each) do
+    @meeting = Factory.build(:meeting)
+  end
 
+  describe 'Attributes' do
     it 'has a Time (time)' do
       @meeting.should respond_to(:time)
       @meeting.should respond_to(:time=)
@@ -23,16 +23,30 @@ describe Meeting do
   end
 
   describe 'Associations' do
-    before(:each) do
-      @meeting = Meeting.new
-    end
-
     it 'belongs to a faculty (faculty)' do
       @meeting.should belong_to(:faculty)
     end
 
     it 'has and belongs to many admits' do
       @meeting.should have_and_belong_to_many(:admits)
+    end
+  end
+
+  context 'when validating' do
+    it 'is valid with valid attributes' do
+      @meeting.should be_valid
+    end
+
+    it 'is not valid with an invalid time' do
+      ['', 'foobar'].each do |invalid_time|
+        @meeting.time = invalid_time
+        @meeting.should_not be_valid
+      end
+    end
+
+    it 'is not valid without a room' do
+      @meeting.room = ''
+      @meeting.should_not be_valid
     end
   end
 end
