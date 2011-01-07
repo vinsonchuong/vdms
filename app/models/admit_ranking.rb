@@ -4,6 +4,11 @@ class AdmitRanking < Ranking
     'Time Slots' => :time_slots,
     'One-On-One' => :one_on_one
   })
+  ATTRIBUTE_TYPES = Ranking::ATTRIBUTE_TYPES.merge({
+    :mandatory => :boolean,
+    :time_slots => :integer,
+    :one_on_one => :boolean
+  })
 
   def after_initialize
     if new_record? # work around for bug 3165

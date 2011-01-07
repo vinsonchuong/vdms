@@ -20,14 +20,19 @@ describe Meeting do
       Meeting::ATTRIBUTES['Time'].should == :time
       Meeting::ATTRIBUTES['Room'].should == :room
     end
+
+    it 'has an accessor to type map' do
+      Meeting::ATTRIBUTE_TYPES[:time].should == :time
+      Meeting::ATTRIBUTE_TYPES[:room].should == :string
+    end
   end
 
   describe 'Associations' do
-    it 'belongs to a faculty (faculty)' do
+    it 'belongs to a Faculty (faculty)' do
       @meeting.should belong_to(:faculty)
     end
 
-    it 'has and belongs to many admits' do
+    it 'has and belongs to many Admits' do
       @meeting.should have_and_belong_to_many(:admits)
     end
   end

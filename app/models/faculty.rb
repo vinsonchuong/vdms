@@ -7,6 +7,14 @@ class Faculty < Person
     'Max Admits Per Meeting' => :max_admits_per_meeting,
     'Max Additional Admits' => :max_additional_admits
   })
+  ATTRIBUTE_TYPES = Person::ATTRIBUTE_TYPES.merge({
+    :area => :string,
+    :division => :string,
+    :schedule => :array,
+    :default_room => :string,
+    :max_admits_per_meeting => :integer,
+    :max_additional_admits => :integer
+  })
   serialize :schedule, Array
 
   def after_initialize
@@ -26,8 +34,8 @@ class Faculty < Person
   validates_presence_of :max_additional_admits
   validates_numericality_of :max_additional_admits, :only_integer => true, :greater_than_or_equal_to => 0
 
-  has_many :admit_rankings
-  has_many :meetings
+  has_many :admit_rankings, :dependent => :destroy
+  has_many :meetings, :dependent => :destroy
 
 =begin
   Draft of helper method to achieve symmetry with Admits (pending RSpec tests)

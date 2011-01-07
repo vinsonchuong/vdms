@@ -6,6 +6,13 @@ class Admit < Person
     'Attending' => :attending,
     'Available Times' => :available_times
   })
+  ATTRIBUTE_TYPES = Person::ATTRIBUTE_TYPES.merge({
+    :phone => :string,
+    :area1 => :string,
+    :area2 => :string,
+    :attending => :boolean,
+    :available_times => :range_set
+  })
   serialize :available_times, RangeSet
 
   def after_initialize
@@ -25,8 +32,8 @@ class Admit < Person
   validates_existence_of :peer_advisor, :allow_nil => true
 
   belongs_to :peer_advisor
-  has_many :faculty_rankings
-  has_and_belongs_to_many :meetings
+  has_many :faculty_rankings, :dependent => :destroy
+  has_and_belongs_to_many :meetings, :uniq => true
 
   def format_phone
     unless self.phone.nil?

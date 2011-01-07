@@ -3,6 +3,10 @@ class Meeting < ActiveRecord::Base
     'Time' => :time,
     'Room' => :room
   }
+  ATTRIBUTE_TYPES = {
+    :time => :time,
+    :room => :string
+  }
 
   validates_datetime :time
   validates_presence_of :room

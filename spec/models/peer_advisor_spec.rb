@@ -32,6 +32,13 @@ describe PeerAdvisor do
       PeerAdvisor::ATTRIBUTES['Last Name'].should == :last_name
       PeerAdvisor::ATTRIBUTES['Email'].should == :email
     end
+
+    it 'has an accessor to type map' do
+      PeerAdvisor::ATTRIBUTE_TYPES[:calnet_id].should == :string
+      PeerAdvisor::ATTRIBUTE_TYPES[:first_name].should == :string
+      PeerAdvisor::ATTRIBUTE_TYPES[:last_name].should == :string
+      PeerAdvisor::ATTRIBUTE_TYPES[:email].should == :string
+    end
   end
 
   describe 'Associations' do
@@ -75,20 +82,8 @@ describe PeerAdvisor do
 
   context 'when importing a CSV' do
     before(:each) do
-      csv_text = <<-EOF.gsub(/^ {8}/, '')
-        CalNet ID,First Name,Last Name,Email
-        ID0,First0,Last0,email0@email.com
-        ID1,First1,Last1,email1@email.com
-        ID2,First2,Last2,email2@email.com
-      EOF
-      @csv = FasterCSV.parse(csv_text, :headers => :first_row)
-
-      # Stub out the database and replace it with @peer_advisor array
-      @peer_advisors = []
-      new_peer_advisors = Array.new(3) {PeerAdvisor.new}
-      new_peer_advisors.each do |peer_advisor|
-        peer_advisor.stub(:save) {@peer_advisors << peer_advisor}
-      end
+      @peer_advisors = Array.new(3) {PeerAdvisor.new}
+      new_peer_advisors = @peer_advisors.dup
       PeerAdvisor.stub(:new) do |*args|
         peer_advisor = new_peer_advisors.shift
         peer_advisor.attributes = args[0]
@@ -96,50 +91,68 @@ describe PeerAdvisor do
       end
     end
 
-    it 'creates a PeerAdvisor per row' do
-      PeerAdvisor.import_csv(@csv.to_s)
-      @peer_advisors.count.should == 3
-    end
+    context 'with valid attributes' do
+      before(:each) do
+        csv_text = <<-EOF.gsub(/^ {10}/, '')
+          CalNet ID,First Name,Last Name,Email
+          ID0,First0,Last0,email0@email.com
+          ID1,First1,Last1,email1@email.com
+          ID2,First2,Last2,email2@email.com
+        EOF
+        @csv = FasterCSV.parse(csv_text, :headers => :first_row)
+      end
 
-    it 'creates a PeerAdvisor with the attributes in each row' do
-      PeerAdvisor.import_csv(@csv.to_s)
-      @peer_advisors.each_with_index do |peer_advisor, i|
-        peer_advisor.calnet_id.should == "ID#{i}"
-        peer_advisor.first_name.should == "First#{i}"
-        peer_advisor.last_name.should == "Last#{i}"
-        peer_advisor.email.should == "email#{i}@email.com"
+      it 'creates a PeerAdvisor with the attributes in each row' do
+        PeerAdvisor.import_csv(@csv.to_s)
+        @peer_advisors.each_with_index do |peer_advisor, i|
+          peer_advisor.should_not be_a_new_record
+          peer_advisor.calnet_id.should == "ID#{i}"
+          peer_advisor.first_name.should == "First#{i}"
+          peer_advisor.last_name.should == "Last#{i}"
+          peer_advisor.email.should == "email#{i}@email.com"
+        end
+      end
+  
+      it 'ignores extraneous attributes' do
+        csv_text = <<-EOF.gsub(/^ {10}/, '')
+          CalNet ID,Baz,First Name,Last Name,Email,Foo,Bar
+          ID0,Baz0,First0,Last0,email0@email.com,Foo0,Bar0
+          ID1,Baz1,First1,Last1,email1@email.com,Foo1,Bar1
+          ID2,Baz2,First2,Last2,email2@email.com,Foo2,Bar2
+        EOF
+        PeerAdvisor.import_csv(csv_text)
+        @peer_advisors.each_with_index do |peer_advisor, i|
+          peer_advisor.should_not be_a_new_record
+          peer_advisor.calnet_id.should == "ID#{i}"
+          peer_advisor.first_name.should == "First#{i}"
+          peer_advisor.last_name.should == "Last#{i}"
+          peer_advisor.email.should == "email#{i}@email.com"
+        end
+      end
+  
+      it 'returns the collection of created PeerAdvisors' do
+        PeerAdvisor.import_csv(@csv.to_s).should == @peer_advisors
       end
     end
 
-    it 'creates a PeerAdvisor with the partial attributes in each row' do
-      @csv.delete('First Name')
-      @csv.delete('Last Name')
-      PeerAdvisor.import_csv(@csv.to_s)
-      @peer_advisors.each_with_index do |peer_advisor, i|
-        peer_advisor.calnet_id.should == "ID#{i}"
-        peer_advisor.email.should == "email#{i}@email.com"
+    context 'with invalid attributes' do
+      before(:each) do
+        csv_text = <<-EOF.gsub(/^ {10}/, '')
+          CalNet ID,First Name,Last Name,Email
+          ID0,,Last0,email0@email.com
+          ID1,First1,,email1@email.com
+          ID2,First2,Last2,email2@email.com
+        EOF
+        @csv = FasterCSV.parse(csv_text, :headers => :first_row)
       end
-    end
 
-    it 'ignores extraneous attributes' do
-      csv_text = <<-EOF.gsub(/^ {8}/, '')
-        CalNet ID,Baz,First Name,Last Name,Email,Foo,Bar
-        ID0,Baz0,First0,Last0,email0@email.com,Foo0,Bar0
-        ID1,Baz1,First1,Last1,email1@email.com,Foo1,Bar1
-        ID2,Baz2,First2,Last2,email2@email.com,Foo2,Bar2
-      EOF
-      PeerAdvisor.import_csv(csv_text)
-      @peer_advisors.count.should == 3
-      @peer_advisors.each_with_index do |peer_advisor, i|
-        peer_advisor.calnet_id.should == "ID#{i}"
-        peer_advisor.first_name.should == "First#{i}"
-        peer_advisor.last_name.should == "Last#{i}"
-        peer_advisor.email.should == "email#{i}@email.com"
+      it 'saves no PeerAdvisors to the database' do
+        @peer_advisors.all? {|p| p.new_record?}.should be_true
       end
-    end
 
-    it 'returns the collection of created PeerAdvisors' do
-      PeerAdvisor.import_csv(@csv.to_s).should == @peer_advisors
+      it 'returns the collection of unsaved PeerAdvisors' do
+        PeerAdvisor.import_csv(@csv.to_s).should == @peer_advisors
+      end
     end
   end
 end

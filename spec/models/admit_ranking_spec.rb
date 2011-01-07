@@ -32,14 +32,21 @@ describe AdmitRanking do
       AdmitRanking::ATTRIBUTES['Time Slots'].should == :time_slots
       AdmitRanking::ATTRIBUTES['One-On-One'].should == :one_on_one
     end
+
+    it 'has an accessor to type map' do
+      AdmitRanking::ATTRIBUTE_TYPES[:rank].should == :integer
+      AdmitRanking::ATTRIBUTE_TYPES[:mandatory].should == :boolean
+      AdmitRanking::ATTRIBUTE_TYPES[:time_slots].should == :integer
+      AdmitRanking::ATTRIBUTE_TYPES[:one_on_one].should == :boolean
+    end
   end
 
   describe 'Associations' do
-    it 'belongs to a faculty (faculty)' do
+    it 'belongs to a Faculty (faculty)' do
       @admit_ranking.should belong_to(:faculty)
     end
 
-    it 'belongs to an admit (admit)' do
+    it 'belongs to an Admit (admit)' do
       @admit_ranking.should belong_to(:admit)
     end
   end

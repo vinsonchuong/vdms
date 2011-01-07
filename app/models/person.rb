@@ -9,6 +9,12 @@ class Person < ActiveRecord::Base
     'Last Name' => :last_name,
     'Email' => :email
   }
+  ATTRIBUTE_TYPES = {
+    :calnet_id => :string,
+    :first_name => :string,
+    :last_name => :string,
+    :email => :string
+  }
 
   validates_presence_of :calnet_id, :unless => Proc.new {|person| person.class == Admit}
   validates_presence_of :first_name
@@ -18,13 +24,24 @@ class Person < ActiveRecord::Base
 
   def self.import_csv(csv_text)
     result = []
-    FasterCSV.parse(csv_text, :headers => :first_row) do |row|
-      attributes = row.to_hash.rekey do |column|
-        self::ATTRIBUTES[column]
-      end.reject do |accessor, value|
-        accessor.nil?
+    transaction do
+      FasterCSV.parse(csv_text, :headers => :first_row) do |row|
+        attributes = row.to_hash
+        attributes.update_keys {|column| self::ATTRIBUTES[column]}
+        attributes.delete_if {|accessor, value| accessor.nil?}
+        attributes.update_each do |accessor, value|
+          conversion = case self::ATTRIBUTE_TYPES[accessor]
+          when :integer then :to_i
+          when :boolean then :to_b
+          else :to_s
+          end
+          {accessor, value.send(conversion)}
+        end
+        new_person = self.new(attributes)
+        result << new_person
+        new_person.save
       end
-      result << self.create(attributes)
+      raise ActiveRecord::Rollback unless result.all? {|r| r.valid?} 
     end
     result
   end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Faculty do
   before(:each) do
-    @faculty = Factory.create(:faculty)
+    @faculty = Factory.build(:faculty)
   end
 
   describe 'Attributes' do
@@ -67,6 +67,19 @@ describe Faculty do
       Faculty::ATTRIBUTES['Default Room'].should == :default_room
       Faculty::ATTRIBUTES['Max Admits Per Meeting'].should == :max_admits_per_meeting
       Faculty::ATTRIBUTES['Max Additional Admits'].should == :max_additional_admits
+    end
+
+    it 'has an accessor to type map' do
+      Faculty::ATTRIBUTE_TYPES[:calnet_id].should == :string
+      Faculty::ATTRIBUTE_TYPES[:first_name].should == :string
+      Faculty::ATTRIBUTE_TYPES[:last_name].should == :string
+      Faculty::ATTRIBUTE_TYPES[:email].should == :string
+      Faculty::ATTRIBUTE_TYPES[:area].should == :string
+      Faculty::ATTRIBUTE_TYPES[:division].should == :string
+      Faculty::ATTRIBUTE_TYPES[:schedule].should == :array
+      Faculty::ATTRIBUTE_TYPES[:default_room].should == :string
+      Faculty::ATTRIBUTE_TYPES[:max_admits_per_meeting].should == :integer
+      Faculty::ATTRIBUTE_TYPES[:max_additional_admits].should == :integer
     end
   end
 
@@ -166,22 +179,36 @@ describe Faculty do
     end
   end
 
+  context 'when destroying' do
+    before(:each) do
+      @faculty.save
+    end
+
+    it 'destroys its Admit Rankings' do
+      admit_rankings = Array.new(3) do
+        admit_ranking = Factory.create(:admit_ranking, :faculty => @faculty)
+        admit_ranking.should_receive(:destroy)
+        admit_ranking
+      end
+      @faculty.stub(:admit_rankings).and_return(admit_rankings)
+      @faculty.destroy
+    end
+
+    it 'destroys its Meetings' do
+      meetings = Array.new(3) do
+        meeting = Factory.create(:meeting, :faculty => @faculty)
+        meeting.should_receive(:destroy)
+        meeting
+      end
+      @faculty.stub(:meetings).and_return(meetings)
+      @faculty.destroy
+    end
+  end
+
   context 'when importing a CSV' do
     before(:each) do
-      csv_text = <<-EOF.gsub(/^ {8}/, '')
-        CalNet ID,First Name,Last Name,Email,Area,Division,Default Room,Max Admits Per Meeting,Max Additional Admits
-        ID0,First0,Last0,email0@email.com,Area0,Division0,Room0,0,0
-        ID1,First1,Last1,email1@email.com,Area1,Division1,Room1,1,1
-        ID2,First2,Last2,email2@email.com,Area2,Division2,Room2,2,2
-      EOF
-      @csv = FasterCSV.parse(csv_text, :headers => :first_row)
-
-      # Stub out the database and replace it with @faculty array
-      @faculties = []
-      new_faculties = Array.new(3) {Faculty.new}
-      new_faculties.each do |faculty|
-        faculty.stub(:save) {@faculties << faculty}
-      end
+      @faculties = Array.new(3) {Faculty.new}
+      new_faculties = @faculties.dup
       Faculty.stub(:new) do |*args|
         faculty = new_faculties.shift
         faculty.attributes = args[0]
@@ -189,60 +216,94 @@ describe Faculty do
       end
     end
 
-    it 'creates a Faculty per row' do
-      Faculty.import_csv(@csv.to_s)
-      @faculties.count.should == 3
-    end
+    context 'with valid attributes' do
+      before(:each) do
+        csv_text = <<-EOF.gsub(/^ {10}/, '')
+          CalNet ID,First Name,Last Name,Email,Area,Division,Default Room,Max Admits Per Meeting,Max Additional Admits
+          ID0,First0,Last0,email0@email.com,Area0,Division0,Room0,1,0
+          ID1,First1,Last1,email1@email.com,Area1,Division1,Room1,2,1
+          ID2,First2,Last2,email2@email.com,Area2,Division2,Room2,3,2
+        EOF
+        @csv = FasterCSV.parse(csv_text, :headers => :first_row)
+      end
 
-    it 'creates a Faculty with the attributes in each row' do
-      Faculty.import_csv(@csv.to_s)
-      @faculties.each_with_index do |faculty, i|
-        faculty.calnet_id.should == "ID#{i}"
-        faculty.first_name.should == "First#{i}"
-        faculty.last_name.should == "Last#{i}"
-        faculty.email.should == "email#{i}@email.com"
-        faculty.area.should == "Area#{i}"
-        faculty.division.should == "Division#{i}"
-        faculty.default_room.should == "Room#{i}"
-        faculty.max_admits_per_meeting.should == i
-        faculty.max_additional_admits.should == i
+      it 'creates a Faculty with the attributes in each row' do
+        Faculty.import_csv(@csv.to_s)
+        @faculties.each_with_index do |faculty, i|
+          faculty.should_not be_a_new_record
+          faculty.calnet_id.should == "ID#{i}"
+          faculty.first_name.should == "First#{i}"
+          faculty.last_name.should == "Last#{i}"
+          faculty.email.should == "email#{i}@email.com"
+          faculty.area.should == "Area#{i}"
+          faculty.division.should == "Division#{i}"
+          faculty.default_room.should == "Room#{i}"
+          faculty.max_admits_per_meeting.should == i + 1
+          faculty.max_additional_admits.should == i
+        end
+      end
+  
+      it 'creates a Faculty with the partial attributes in each row' do
+        @csv.delete('Default Room')
+        @csv.delete('Max Admits Per Meeting')
+        @csv.delete('Max Additional Admits')
+        Faculty.import_csv(@csv.to_s)
+        @faculties.each_with_index do |faculty, i|
+          faculty.should_not be_a_new_record
+          faculty.calnet_id.should == "ID#{i}"
+          faculty.first_name.should == "First#{i}"
+          faculty.last_name.should == "Last#{i}"
+          faculty.email.should == "email#{i}@email.com"
+          faculty.area.should == "Area#{i}"
+          faculty.division.should == "Division#{i}"
+        end
+      end
+  
+      it 'ignores extraneous attributes' do
+        csv_text = <<-EOF.gsub(/^ {10}/, '')
+          CalNet ID,Baz,First Name,Last Name,Email,Area,Division,Default Room,Max Admits Per Meeting,Max Additional Admits,Foo,Bar
+          ID0,Baz0,First0,Last0,email0@email.com,Area0,Division0,Room0,1,0,Foo0,Bar0
+          ID1,Baz1,First1,Last1,email1@email.com,Area1,Division1,Room1,2,1,Foo1,Bar1
+          ID2,Baz2,First2,Last2,email2@email.com,Area2,Division2,Room2,3,2,Foo2,Bar2
+        EOF
+        Faculty.import_csv(csv_text)
+        @faculties.each_with_index do |faculty, i|
+          faculty.should_not be_a_new_record
+          faculty.calnet_id.should == "ID#{i}"
+          faculty.first_name.should == "First#{i}"
+          faculty.last_name.should == "Last#{i}"
+          faculty.email.should == "email#{i}@email.com"
+          faculty.area.should == "Area#{i}"
+          faculty.division.should == "Division#{i}"
+          faculty.default_room.should == "Room#{i}"
+          faculty.max_admits_per_meeting.should == i + 1
+          faculty.max_additional_admits.should == i
+        end
+      end
+  
+      it 'returns the collection of created Faculties' do
+        Faculty.import_csv(@csv.to_s).should == @faculties
       end
     end
 
-    it 'creates a Faculty with the partial attributes in each row' do
-      @csv.delete('First Name')
-      @csv.delete('Last Name')
-      Faculty.import_csv(@csv.to_s)
-      @faculties.each_with_index do |faculty, i|
-        faculty.calnet_id.should == "ID#{i}"
-        faculty.email.should == "email#{i}@email.com"
-        faculty.area.should == "Area#{i}"
-        faculty.division.should == "Division#{i}"
-        faculty.default_room.should == "Room#{i}"
-        faculty.max_admits_per_meeting.should == i
-        faculty.max_additional_admits.should == i
+    context 'with invalid attributes' do
+      before(:each) do
+        csv_text = <<-EOF.gsub(/^ {10}/, '')
+          CalNet ID,First Name,Last Name,Email,Area,Division,Default Room,Max Admits Per Meeting,Max Additional Admits
+          ID0,,Last0,email0@email.com,Area0,Division0,Room0,0,0
+          ID1,First1,,email1@email.com,Area1,Division1,Room1,1,1
+          ID2,First2,Last2,email2@email.com,Area2,Division2,Room2,2,2
+        EOF
+        @csv = FasterCSV.parse(csv_text, :headers => :first_row)
       end
-    end
 
-    it 'ignores extraneous attributes' do
-      csv_text = <<-EOF.gsub(/^ {8}/, '')
-        CalNet ID,Baz,First Name,Last Name,Email,Foo,Bar
-        ID0,Baz0,First0,Last0,email0@email.com,Foo0,Bar0
-        ID1,Baz1,First1,Last1,email1@email.com,Foo1,Bar1
-        ID2,Baz2,First2,Last2,email2@email.com,Foo2,Bar2
-      EOF
-      Faculty.import_csv(csv_text)
-      @faculties.count.should == 3
-      @faculties.each_with_index do |faculty, i|
-        faculty.calnet_id.should == "ID#{i}"
-        faculty.first_name.should == "First#{i}"
-        faculty.last_name.should == "Last#{i}"
-        faculty.email.should == "email#{i}@email.com"
+      it 'saves no Faculties to the database' do
+        @faculties.all? {|f| f.new_record?}.should be_true
       end
-    end
 
-    it 'returns the collection of created Faculties' do
-      Faculty.import_csv(@csv.to_s).should == @faculties
+      it 'returns the collection of unsaved Faculties' do
+        Faculty.import_csv(@csv.to_s).should == @faculties
+      end
     end
   end
 end

@@ -14,14 +14,18 @@ describe FacultyRanking do
     it 'has an attribute name to accessor map' do
       FacultyRanking::ATTRIBUTES['Rank'].should == :rank
     end
+
+    it 'has an accessor to type map' do
+      FacultyRanking::ATTRIBUTE_TYPES[:rank].should == :integer
+    end
   end
 
   describe 'Associations' do
-    it 'belongs to an admit (admit)' do
+    it 'belongs to an Admit (admit)' do
       @faculty_ranking.should belong_to(:admit)
     end
 
-    it 'belongs to a faculty (faculty)' do
+    it 'belongs to a Faculty (faculty)' do
       @faculty_ranking.should belong_to(:faculty)
     end
   end
