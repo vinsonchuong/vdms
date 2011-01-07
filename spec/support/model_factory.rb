@@ -29,7 +29,7 @@ module ModelFactory
         :area => "Database",
         
         :division => "CS",
-        :schedule => Array.new,
+        :schedule => [[5.hours.ago..3.hours.ago, "620 Soda"], [2.hours.ago..30.minutes.ago, "376 Cory"]]
         :default_room => "300 Soda",
         :max_students_per_meeting => 3,
         :max_additional_students => 10,

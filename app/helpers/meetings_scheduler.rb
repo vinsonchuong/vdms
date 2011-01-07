@@ -157,7 +157,7 @@ module MeetingsScheduler
     def self.seed
       chromosome = Array.new(Chromosome.chromosome_length)
       number_of_spots_per_student = (chromosome_length / Admit.count).floor - 1
-      admit_ids = Chromosome.admits_attending.collect{ |admit| [admit.id]*number_of_spots_per_student }.flatten.shuffle
+      admit_ids = Admit.attending_admits.collect{ |admit| [admit.id]*number_of_spots_per_student }.flatten.shuffle
       admit_ids.each do |id|
         i = rand(chromosome.length)
         while array[i]
@@ -220,7 +220,7 @@ module MeetingsScheduler
     end
     
     def self.point_mutation(chromosome, index)
-      admit = Chromosome.admits_attending.collect{ |admit| admit.id }.shuffle.fetch(0)
+      admit = Admit.attending_admits.collect{ |admit| admit.id }.shuffle.fetch(0)
       data = chromosome.data
       data[index] = admit
       chromosome.data = data
@@ -235,10 +235,6 @@ module MeetingsScheduler
         splice_index2 = rand(sample_chromosome.length - 2) + 1
       end
       return [index1, index2]
-    end
-
-    def self.admits_attending
-      return Admit.all.find_all{ |admit| admit.attending? }
     end
     
   end

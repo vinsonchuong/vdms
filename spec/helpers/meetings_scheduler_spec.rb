@@ -95,7 +95,7 @@ describe MeetingsScheduler do
       describe 'When performing a point mutation' do
         before(:each) do
           index = 4
-          MeetingsScheduler::Chromosome.stub!(:admits_attending).and_return [create_valid!(Admit, :id => 1)]
+          Admit.stub!(:attending_admits).and_return [create_valid!(Admit, :id => 1)]
           MeetingsScheduler::Chromosome.point_mutation(@chromosome, index)
         end
         
