@@ -126,7 +126,7 @@ describe Admit do
       end
     end
 
-    it 'is valid with a valid phone' do
+    it 'is valid with a valid Phone' do
       ['1234567890', '(123) 456-7890', '123.456.7890', '123-456-7890'].each do |valid_phone|
         @admit.phone = valid_phone
         @admit.should be_valid
@@ -160,7 +160,15 @@ describe Admit do
       @admit.should_not be_valid
     end
 
-    it 'is not valid with invalid Available Times'
+    it 'is not valid with invalid Available Times' do
+      [
+        RangeSet.new([(Time.parse('1/1/11'))..(Time.parse('1/1/11'))]),
+        RangeSet.new([(Time.parse('1/2/11'))..(Time.parse('1/1/11'))])
+      ].each do |invalid_time_range|
+        @admit.available_times = invalid_time_range
+        @admit.should_not be_valid
+      end
+    end
 
     it 'is not valid with an invalid Peer Advisor' do
       @admit.peer_advisor = PeerAdvisor.new

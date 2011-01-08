@@ -28,6 +28,13 @@ class Faculty < Person
 
   validates_presence_of :area
   validates_presence_of :division
+  validates_each :schedule do |record, attribute, value|
+    record.errors.add(attribute, 'is invalid') unless value.all? do |entry|
+      entry[:room].class == String &&
+      entry[:time_range].class == RangeSet &&
+      entry[:time_range].to_a.all? {|r| r.begin < r.end}
+    end
+  end
   validates_presence_of :default_room
   validates_presence_of :max_admits_per_meeting
   validates_numericality_of :max_admits_per_meeting, :only_integer => true, :greater_than => 0

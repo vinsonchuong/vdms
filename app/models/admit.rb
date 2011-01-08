@@ -29,6 +29,9 @@ class Admit < Person
   validates_presence_of :area1
   validates_presence_of :area2
   validates_inclusion_of :attending, :in => [true, false]
+  validates_each :available_times do |record, attribute, value|
+    record.errors.add(attribute, 'is invalid') unless value.to_a.all? {|r| r.begin < r.end}
+  end
   validates_existence_of :peer_advisor, :allow_nil => true
 
   belongs_to :peer_advisor

@@ -157,7 +157,17 @@ describe Faculty do
       @faculty.should_not be_valid
     end
 
-    it 'is not valid with an invalid Schedule'
+    it 'is not valid with an invalid Schedule' do
+      [
+        {:room => nil, :time_range => RangeSet.new([(Time.now)..(Time.now + 5000)])},
+        {:room => 'Room', :time_range => nil},
+        {:room => 'Room', :time_range => RangeSet.new([(Time.parse('1/1/11'))..(Time.parse('1/1/11'))])},
+        {:room => 'Room', :time_range => RangeSet.new([(Time.parse('1/2/11'))..(Time.parse('1/1/11'))])}
+      ].each do |invalid_entry|
+        @faculty.schedule = [invalid_entry]
+        @faculty.should_not be_valid
+      end
+    end
 
     it 'is not valid without a Default Doom' do
       @faculty.default_room = ''
