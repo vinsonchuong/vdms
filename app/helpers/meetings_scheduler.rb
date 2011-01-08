@@ -5,7 +5,6 @@ module MeetingsScheduler
     @population_size = 0
     @max_generation = 0
     
-    # originally the initialize function in the gem
     def self.configuration(population_size, max_generation)
       @population_size = population_size
       @max_generation = max_generation
@@ -104,6 +103,13 @@ module MeetingsScheduler
     end
     
   end
+  
+  
+  
+  
+  
+  
+  
   
   class Chromosome
     include Comparable
