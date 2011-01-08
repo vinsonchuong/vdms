@@ -3,10 +3,30 @@ require 'spec_helper'
 describe MeetingsScheduler do
 
   describe MeetingsScheduler::GeneticAlgorithm do
-    # GA specs here
+    describe "class method: run" do
+    end
+  
+    describe "class method: selection" do
+      
+    end
+  
+    describe "class method: reproduction" do
+    end
+    
+    describe "class method: mutate_all_population" do
+    end
+    
+    describe "class method: select_best_chromosome" do
+    end
+    
+    describe "class method: replace_worst_ranked" do
+    end
+    
+    describe "class method: select_random_inidividual" do
+    end
+  
   end
-  
-  
+   
   describe MeetingsScheduler::Chromosome do
     describe 'Solutions' do
       before(:each) do
