@@ -38,6 +38,10 @@ class Admit < Person
   has_many :faculty_rankings, :dependent => :destroy
   has_and_belongs_to_many :meetings, :uniq => true
 
+  def self.attending_admits
+    Admit.all.find_all{ |admit| admit.attending? }
+  end
+
   def format_phone
     unless self.phone.nil?
       self.phone.gsub!(/^\(?\b([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/, '(\1) \2-\3')

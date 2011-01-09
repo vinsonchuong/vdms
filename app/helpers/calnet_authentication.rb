@@ -16,7 +16,7 @@ module CalNetAuthentication
     redirect_to("#{logout_url}?url=#{protocol}#{app_url}")
   end
 
-  private
+  private unless Rails.env == 'test'
 =begin
   The following 2 helper functions copied straight from
   CASClient::Frameworks::Rails::Filter, b/c they were private methods.
