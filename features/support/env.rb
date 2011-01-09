@@ -16,11 +16,13 @@ require 'cucumber/web/tableish'
 require 'webrat'
 require 'webrat/core/matchers'
 
+require 'email_spec'
+require 'email_spec/cucumber'
+
 Webrat.configure do |config|
   config.mode = :rails
   config.open_error_files = false # Set to true if you want error pages to pop up in the browser
 end
-
 
 # If you set this to false, any error raised from within your app will bubble 
 # up to your step definition and out to cucumber unless you catch it somewhere
@@ -45,7 +47,7 @@ ActionController::Base.allow_rescue = false
 # after each scenario, which can lead to hard-to-debug failures in 
 # subsequent scenarios. If you do this, we recommend you create a Before
 # block that will explicitly put your database in a known state.
-Cucumber::Rails::World.use_transactional_fixtures = true
+# Cucumber::Rails::World.use_transactional_fixtures = true
 # How to clean your database when transactions are turned off. See
 # http://github.com/bmabey/database_cleaner for more info.
 if defined?(ActiveRecord::Base)
