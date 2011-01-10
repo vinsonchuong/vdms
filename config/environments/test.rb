@@ -28,5 +28,6 @@ config.action_mailer.delivery_method = :test
 # config.active_record.schema_format = :sql
 
 config.gem 'rspec-rails', :version => '>= 1.3.3', :lib => 'spec/rails' unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec-rails'))
+config.gem 'email_spec'
 config.gem 'factory_girl'
 config.gem 'shoulda', :lib => false

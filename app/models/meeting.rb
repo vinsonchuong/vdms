@@ -1,9 +1,16 @@
 class Meeting < ActiveRecord::Base
-=begin
-  Attributes
-    time
-    room
-=end
+  ATTRIBUTES = {
+    'Time' => :time,
+    'Room' => :room
+  }
+  ATTRIBUTE_TYPES = {
+    :time => :time,
+    :room => :string
+  }
+
+  validates_datetime :time
+  validates_presence_of :room
+  validates_existence_of :faculty
 
   belongs_to :faculty
   has_and_belongs_to_many :admits
