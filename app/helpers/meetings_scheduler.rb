@@ -25,6 +25,29 @@ module MeetingsScheduler
       
       def self.create_meetings!(best_chromosome)
         #to be implemented
+
+        ## @chromosome_map = { faculty_id => first_position_on_chromosome }
+        @chromosome_map.each do |faculty_id, chromosome_position|
+          
+          faculty = Faculty.find(faculty_id)
+          chunk_length = @faculty.max_students_per_meeting          
+          chromosome_segment = best_chromosome[chromosome_position...(chromosome_position + @faculty.schedule*chunk_length)]
+          counter = 0
+          
+          chromosome_segment.each_slice(chunk_length) do |chunk|
+            schedule = faculty.schedule[counter]
+
+            meeting = faculty.meetings.new
+            meeting.room = schedule[1]
+            meeting.time = schedule[0].begin
+            
+            chunk.each { |admit_id| meeting.admits << Admit.find(admit_id) }
+            meeting.save
+            
+            counter += 1
+          end
+          
+        end                
       end
       
       def self.create_population(factors_to_consider)

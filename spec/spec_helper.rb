@@ -11,9 +11,6 @@ require 'email_spec'
 require 'shoulda'
 
 Spec::Runner.configure do |config|
-  # Include custom macros
-  config.include CalNetAuthentication, :type => :controller
-
   # Include email_spec helpers
   config.include(EmailSpec::Helpers)
   config.include(EmailSpec::Matchers)
