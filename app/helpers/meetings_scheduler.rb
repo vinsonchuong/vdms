@@ -11,7 +11,7 @@ module MeetingsScheduler
       # attending_admits = factors_to_consider[:attending_admits]
       # number_of_spots_per_student = factors_to_consider[:number_of_spots_per_student]
       def initialize(factors_to_consider, population_size, total_generations)        
-        @population = Scheduler.create_population(factors_to_consider)
+        @population = Scheduler.create_population(@factors_to_consider)
         @total_generations = total_generations
         @population_size = population_size
       end
@@ -24,13 +24,14 @@ module MeetingsScheduler
       private unless Rails.env == 'test'
       
       def self.create_meetings!(best_chromosome)
-        ## to be implemented
+        #to be implemented
       end
       
       def self.create_population(factors_to_consider)
         population = []
+        Chromosome.set_factors_to_consider(factors_to_consider)
         @population_size.times do
-          population << Chromosome.seed(factors_to_consider)
+          population << Chromosome.seed()
         end
         population
       end
@@ -40,11 +41,11 @@ module MeetingsScheduler
   class GeneticAlgorithm
     # run is the main execution of the algorithm. Calling run will theoritically output the best solution available after 
     # total_generations 
-    def self.run(population, total_generations)
+    def self.run(population, total_generations, factors_to_consider)
       total_generations.times do
         parents = GeneticAlgorithm.selection(population)
         offsprings = GeneticAlgorithm.reproduction(parents)
-        population = GeneticAlgorithm.mutate_all_population(population)
+        population = GeneticAlgorithm.mutate_all_population(population, factors_to_consider)
         population = GeneticAlgorithm.replace_worst_ranked(population, offsprings)    
       end
       best_chromosome = GeneticAlgorithm.select_best_chromosome(population)
@@ -134,13 +135,19 @@ module MeetingsScheduler
   class Chromosome
     include Comparable
     
-    attr_accessor :data
+    attr_accessor :meeting_solution
     attr_accessor :normalized_fitness
+    @@factors_to_consider = nil
     
-    def initialize(data)
-      @data = data
+    def initialize(meeting_solution)
+      @meeting_solution = meeting_solution
+      @normalized_fitness = 0
     end
-      
+    
+    def self.set_factors_to_consider(factors_to_consider)
+      @@factors_to_consider = factors_to_consider
+    end
+       
     # fitness is basically a utility/heuristic value function that evaluate how good a particular solution is
     def fitness
       return @fitness if @fitness
@@ -163,7 +170,7 @@ module MeetingsScheduler
           index = rand(chromosome.length)
           Chromosome.point_mutation(chromosome, index)
         end
-        @fitness = nil
+        @fitness = nil # need to recalculate fitness value when fitness method is called
       end      
     end
     
@@ -179,64 +186,60 @@ module MeetingsScheduler
     end
     
     # seed produces an individual solution (chromosome) for the initial population
-    def self.seed#(factors_to_consider)
-      #total_admits = factors_to_consider[:total_admits]
-      #attending_admits = factors_to_consider[:attending_admits]
-      #number_of_spots_per_student = factors_to_consider[:number_of_spots_per_student]
-      
-      total_admits = Admit.count
-      chromosome = Array.new(Chromosome.chromosome_length)
-      number_of_spots_per_student = (chromosome_length / total_admits).floor - 1
-      admit_ids = Admit.attending_admits.collect{ |admit| [admit.id]*number_of_spots_per_student }.flatten.shuffle
-      
-      admit_ids.each do |id|
-        i = rand(chromosome.length)
-        while array[i]
-          i = rand(chromosome.length)
-        end
-        array[i] = id
-      end
-      return Chromosome.new(chromosome)
+    def self.seed
+      meeting_solution =  Chromosome.create_meeting_solution # original code moved to method create_meeting_solution
+      Chromosome.new(meeting_solution)
     end
     
 
     def [](index)
-      self.data[index]
+      self.meeting_solution[index]
     end
 
     def []=(index, assignment)
-      self.data[index] = assignment
+      self.meeting_solution[index] = assignment
     end
 
     def <=>(other)
-      self.data <=> other.data
+      self.meeting_solution <=> other.meeting_solution
     end
 
     def length
-      self.data.length
+      self.meeting_solution.length
     end
 
     
     private unless Rails.env == 'test'
-
-    def self.chromosome_length
-      Faculty.all.inject { |count, f| count + (f.schedule.count * f.max_students_per_meeting) }
+    
+    def self.create_meeting_solution
+      total_admits = @@factors_to_consider[:total_admits]
+      attending_admits = @@factors_to_consider[:attending_admits]
+      total_number_of_meetings = @@factors_to_consider[:total_number_of_meetings]
+      
+      meeting_solution = Array.new(total_number_of_meetings)
+      number_of_spots_per_student = (total_number_of_meetings / attending_admits).floor - 1 # should it be attending_admits?
+      admit_ids = attending_admits.collect{ |admit| [admit.id] * number_of_spots_per_student }.flatten.shuffle
+      
+      admit_ids.each do |id|
+        index = rand(total_number_of_meetings)
+        while meeting_solution(index) # if the spot is occupied, we find a new spot
+          index = rand(total_number_of_meetings)
+        end
+        meeting_solution[index] = id
+      end
+      meeting_solution
     end
-
-
+    
     # Methods for generating children
     
     def self.single_crossover(parent1, parent2, splice_index)
-      return Chromosome.new(parent1[0...splice_index] + parent2[splice_index..-1])
+      Chromosome.new(parent1[0...splice_index] + parent2[splice_index..-1])
     end
     
     def self.double_crossover(parent1, parent2, splice_index1, splice_index2)
-      return Chromosome.new(parent1[0...splice_index1] +
-                            parent2[splice_index1...splice_index2] +
-                            parent1[splice_index2..-1])
+      Chromosome.new(parent1[0...splice_index1] + parent2[splice_index1...splice_index2] + parent1[splice_index2..-1])
     end
-    
-    
+     
     # Methods for generating mutations
     
     def self.reverse_two_adjacent_sequences(chromosome, index)
@@ -244,17 +247,18 @@ module MeetingsScheduler
     end
     
     def self.chromosomal_inversion(chromosome, index1, index2)
-      data = chromosome.data
-      inversion = data[index1..index2].reverse
-      data = data[0...index1] + inversion + data[index2+1..-1]
-      chromosome.data = data
+      meeting_solution = chromosome.meeting_solution
+      partially_inverted_meeting_solution = meeting_solution[index1..index2].reverse
+      meeting_soltuon = meeting_solution[0...index1] + partially_inverted_meeting_solution + meeting_solution[index2+1..-1]
+      chromosome.meeting_solution = meeting_solution
     end
     
     def self.point_mutation(chromosome, index)
-      admit = Admit.attending_admits.collect{ |admit| admit.id }.shuffle.fetch(0)
-      data = chromosome.data
-      data[index] = admit
-      chromosome.data = data
+      attending_admits = @@factors_to_consider[:attending_admits]
+      admit_id = attending_admits.collect{ |admit| admit.id }.shuffle.fetch(0)
+      meeting_solution = chromosome.meeting_solution
+      meeting_solution[index] = admit_id
+      chromosome.meeting_solution = meeting_solution
     end
 
     # Abstracted methods for easier stubbing in Rspec tests
@@ -263,7 +267,7 @@ module MeetingsScheduler
       while splice_index2 <= splice_index1
         splice_index2 = rand(sample_chromosome.length - 2) + 1
       end
-      return [index1, index2]
+      [index1, index2]
     end
     
   end
