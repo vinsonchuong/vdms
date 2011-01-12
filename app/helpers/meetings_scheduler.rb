@@ -4,51 +4,86 @@ module MeetingsScheduler
       attr_accessor :population
       attr_accessor :population_size
       attr_accessor :total_generations
-      
-      # factors_to_consier is a hash that allows us use factors as keys to lookup its values
-      # example of usage:
-      # total_admits = factors_to_consider[:total_admits]
-      # attending_admits = factors_to_consider[:attending_admits]
-      # number_of_spots_per_student = factors_to_consider[:number_of_spots_per_student]
+    
+#Definition: initialize a new Scheduler object
+#@params:
+
+#factors_to_consider: a hash that contains all the necessary information to compute optimum meeting arrangement.
+#                    The structure of factors_to_consider looks like:
+#                    {:attending_admits => a hash of admits attending, 
+#                     :faculties => a hash of faculties holding meetings, 
+#                     :number_of_spots_per_admit => an int, 
+#                     :chromosomal_inversion_probability => a decimal range from 0 to 1, 
+#                     :point_mutation_probability => a decimal range from 0 to 1,
+#                     :double_crossover_probability => a decimal range from 0 to 1,
+#                     :lowest_rank_possible => a decimal range from 0 to 1 
+#                    }
+#                    The structure of :attending_admits looks like:
+#                    {:student1 => {:id => an int of the admit's database id,
+#                                   :name => a string of the admit's name,
+#                                   :ranking => array of hashes of the admit's preference list,
+#                                   :available_times => range_set that encodes the admit's 24 hour availability
+#                                  },
+#                     :student2 => {:id => an int of the admit's database id,
+#                                   :name => a string of the admit's name,
+#                                   :ranking => array of hashes of the admit's preference list,
+#                                   :available_times => range_set that encodes the admit's 24 hour availability
+#                                  },
+#                    .
+#                    .
+#                    etc              
+#                    }
+#                    The structure of :faculties looks like:
+#                    {:faculty1 => {:max_students_per_meeting => an int specifying the maximum number of student allowed per meeting for this faculty,
+#                                   :admit_rankings => array of hashes of the faculty's preference list,
+#                                   :schedule => [['room1', timerange], ['room2', timerange] ....etc],
+#                                  },
+#                     :faculty2 => {:max_students_per_meeting => an int specifying the maximum number of student allowed per meeting for this faculty,
+#                                   :admit_rankings => array of hashes of the faculty's preference list,
+#                                   :schedule => [['room1', timerange], ['room2', timerange] ....etc],
+#                                  },
+#                    .
+#                    .
+#                    etc                   
+#                    }
+#                                        
+#                     note: this hash could still grow as the algorithm demands more information. The API should be updated as this hash changes
+#
+#population_size: an int specifying the population size of the GA algorithm
+#
+#total_generation: an int specifying the number of generation the GA algorithm will run/iterate   
+#
+#@return: new Scheduler object
+ 
       def initialize(factors_to_consider, population_size, total_generations)        
         @population = Scheduler.create_population(@factors_to_consider)
         @total_generations = total_generations
         @population_size = population_size
       end
+
+
+# Definition: produces optimum meeting arrangement
+# @params: NA
+# @return: a list of meeting objects
       
       def make_meetings()
         best_chromosome = GeneticAlgorithm.run(@population, @total_generations)
-        Scheduler.create_meetings!(best_chromosome)
+        Scheduler.create_meetings(best_chromosome)
       end
       
       private unless Rails.env == 'test'
       
-      def self.create_meetings!(best_chromosome)
-        #to be implemented
+# Definition: convert a chromosome to a list of meeting
+# @params: a chromosome
+# @return: a list of meeting object
 
-        ## @chromosome_map = { faculty_id => first_position_on_chromosome }
-        @chromosome_map.each do |faculty_id, chromosome_position|
-          
-          faculty = Faculty.find(faculty_id)
-          chunk_length = @faculty.max_students_per_meeting          
-          chromosome_segment = best_chromosome[chromosome_position...(chromosome_position + @faculty.schedule*chunk_length)]
-          counter = 0
-          
-          chromosome_segment.each_slice(chunk_length) do |chunk|
-            schedule = faculty.schedule[counter]
-
-            meeting = faculty.meetings.new
-            meeting.room = schedule[1]
-            meeting.time = schedule[0].begin
-            
-            chunk.each { |admit_id| meeting.admits << Admit.find(admit_id) }
-            meeting.save
-            
-            counter += 1
-          end
-          
-        end                
+      def self.create_meetings(best_chromosome)
+              
       end
+      
+# Definition: create a population of chromosomes so the GA algorithm can work with
+# @params: the hash factors_to_consider, which is inputed during initialization of the Scheduler object
+# @return: population, an array of chromosomes 
       
       def self.create_population(factors_to_consider)
         population = []
@@ -62,8 +97,15 @@ module MeetingsScheduler
   end
   
   class GeneticAlgorithm
-    # run is the main execution of the algorithm. Calling run will theoritically output the best solution available after 
-    # total_generations 
+    
+# Definition: run is the main execution of the algorithm. Calling run will theoritically output the best solution available after total_generations 
+#
+# @params: 
+# population: an array of chromosomes  
+# total_generation: an int to specify how many generation to run the algorithm
+# factors_to_consider: a hash, the specific structure of this hash, please refer to Scheduler.new method
+# @returns: the best chromosome object
+#
     def self.run(population, total_generations, factors_to_consider)
       total_generations.times do
         parents = GeneticAlgorithm.selection(population)
@@ -73,18 +115,22 @@ module MeetingsScheduler
       end
       best_chromosome = GeneticAlgorithm.select_best_chromosome(population)
     end
-      
-    #selection mimic the process of natural selection to select the individuals that have better fitness values.
-    #process:
-    # 1. fitness is called to evaluate the utility value of individual
-    # 2. the population is sorted by descending order of fitness value
-    # 3. the fitness value is normalized
-    # 4. a random number R is chosen. R is between 0 and the accumulated normalized value (it is normalized value plus the normalized values of the chromosome prior it)
-    #    greater than R
-    # 5. the selected individual is the first one whose accumulated normalized value (it is normalized value plus the normalized values of the chromosome prior it)
-    #    greater than R
-    # 6. repeat 4 and 5 for 2/3 times the population size
+
+# Definition:      
+# selection mimic the process of natural selection to select the individuals that have better fitness values.
+# process:
+# 1. fitness is called to evaluate the utility value of individual
+# 2. the population is sorted by descending order of fitness value
+# 3. the fitness value is normalized
+# 4. a random number R is chosen. R is between 0 and the accumulated normalized value (it is normalized value plus the normalized values of the chromosome prior it)
+#    greater than R
+# 5. the selected individual is the first one whose accumulated normalized value (it is normalized value plus the normalized values of the chromosome prior it)
+#    greater than R
+# 6. repeat 4 and 5 for 2/3 times the population size
   
+# @params: population, an array of chromosomes
+# @return: breed_population, a new array of chromosomes
+
     def self.selection(population)
       population.sort! { |a, b| b.fitness <=> a.fitness }
       
@@ -102,22 +148,26 @@ module MeetingsScheduler
       end 
       
       breed_population = []
-      (population.size * 2/3).times do
+      ((population.size * 2)/3).times do
         breed_population << select_random_individual(population, accumulated_fitness)
       end
       breed_population
     end
      
-    # reproduction calls on Chromosome.reproduce to produce the offspring generation
+# Definition: reproduction calls on Chromosome.reproduce to produce the offspring generation
+# @params: breed_population, an array of chromosomes
+# @return: offsprings, a new array of chromosomes
     def self.reproduction(breed_population)
-      offspring = []
+      offsprings = []
       0.upto(breed_population.size/2 - 1) do |i|
-        offspring << Chromosome.reproduce(breed_population[2*i], breed_population[2*i+1])
+        offsprings << Chromosome.reproduce(breed_population[2*i], breed_population[2*i+1])
       end
-      offspring
+      offsprings
     end
       
-    # mutate_all_population will call Chromosome.mutate on each chromosome in the population  
+# Definition: mutate_all_population will call Chromosome.mutate on each chromosome in the population 
+# @params: population, an array of chromosomes
+# @return: mutated_population, an array of chromosomes 
     def self.mutate_all_population(population)
       mutated_population = []
       population.each do |chromosome|
@@ -126,7 +176,9 @@ module MeetingsScheduler
       mutated_population
     end
        
-    # select the best chromosome in the population
+# Definition: select the best chromosome in the population
+# @params: population, an array of chromosomes
+# @return: best_chromosome, a chromosome object
     def self.select_best_chromosome(population)
       best_chromosome = population[0]
       population.each do |chromosome|
@@ -135,16 +187,27 @@ module MeetingsScheduler
       best_chromosome
     end
     
-    # replace_worst_ranked replaces the worst ranked population with its offsprings
+# Definition: replace_worst_ranked replaces the worst ranked population with its offsprings
+# @params: 
+# population, an array of chromosomes
+# offsprings, an array of chromosomes
+# @return: a new population, an array of chromosomes
     def self.replace_worst_ranked(population, offsprings)
       size = offsprings.size
+      population.sort! { |a, b| b.fitness <=> a.fitness }
       population = population[0..((-1*size)-1)] + offsprings
     end
            
     private unless Rails.env == 'test'
     
-    def self.select_random_inidividual(population, accumulated_fitness)
-      select_random_target = accumulated_fitness * rand
+# Definition: given a population of chromosomes, and accumulated_normalized_fitness value of the individuals in the population, 
+#            this method will select and return a random chromosome from the population
+# @params: 
+# population, an array of chromosomes
+# accumulated_normalized_fitness, an decimal that sums normalized_fitness of individual chromosome in the population
+# @return: chromosome, a chromosome object  
+    def self.select_random_individual(population, accumulated_normalized_fitness)
+      select_random_target = accumulated_normalized_fitness * rand
       local_acum = 0
       
       population.each do |chromosome|

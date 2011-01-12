@@ -156,25 +156,25 @@
             onclick="toggleCode('M000026-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000026-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 181</span>
-181:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mutate</span>(<span class="ruby-identifier">chromosome</span>)
-182:       <span class="ruby-comment cmt"># add more stuff such as double mutation, inversion, translocation of two snippets, simulated annealing mutation rates, etc</span>
-183:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">normalized_fitness</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">rand</span> <span class="ruby-operator">&lt;</span> ((<span class="ruby-value">1</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">normalized_fitness</span>) <span class="ruby-operator">*</span> <span class="ruby-value">0</span><span class="ruby-value">.3</span>)
-184:         <span class="ruby-identifier">which_mutation</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-value">100</span>)
-185:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">which_mutation</span>
-186:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">33</span>
-187:           <span class="ruby-identifier">indexes</span> = <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">pick_two_random_indexes</span>(<span class="ruby-identifier">chromosome</span>)
-188:           <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">chromosomal_inversion</span>(<span class="ruby-identifier">chromosome</span>, <span class="ruby-identifier">indexes</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">indexes</span>[<span class="ruby-value">1</span>])
-189:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">33</span><span class="ruby-operator">..</span><span class="ruby-value">66</span>
-190:           <span class="ruby-identifier">index</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
-191:           <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">reverse_two_adjacent_sequences</span>(<span class="ruby-identifier">chromosome</span>, <span class="ruby-identifier">index</span>)
-192:         <span class="ruby-keyword kw">else</span>
-193:           <span class="ruby-identifier">index</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">length</span>)
-194:           <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">point_mutation</span>(<span class="ruby-identifier">chromosome</span>, <span class="ruby-identifier">index</span>)
-195:         <span class="ruby-keyword kw">end</span>
-196:         <span class="ruby-ivar">@fitness</span> = <span class="ruby-keyword kw">nil</span> <span class="ruby-comment cmt"># need to recalculate fitness value when fitness method is called</span>
-197:       <span class="ruby-keyword kw">end</span>      
-198:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 226</span>
+226:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mutate</span>(<span class="ruby-identifier">chromosome</span>)
+227:       <span class="ruby-comment cmt"># add more stuff such as double mutation, inversion, translocation of two snippets, simulated annealing mutation rates, etc</span>
+228:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">normalized_fitness</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">rand</span> <span class="ruby-operator">&lt;</span> ((<span class="ruby-value">1</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">normalized_fitness</span>) <span class="ruby-operator">*</span> <span class="ruby-value">0</span><span class="ruby-value">.3</span>)
+229:         <span class="ruby-identifier">which_mutation</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-value">100</span>)
+230:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">which_mutation</span>
+231:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">33</span>
+232:           <span class="ruby-identifier">indexes</span> = <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">pick_two_random_indexes</span>(<span class="ruby-identifier">chromosome</span>)
+233:           <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">chromosomal_inversion</span>(<span class="ruby-identifier">chromosome</span>, <span class="ruby-identifier">indexes</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">indexes</span>[<span class="ruby-value">1</span>])
+234:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">33</span><span class="ruby-operator">..</span><span class="ruby-value">66</span>
+235:           <span class="ruby-identifier">index</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+236:           <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">reverse_two_adjacent_sequences</span>(<span class="ruby-identifier">chromosome</span>, <span class="ruby-identifier">index</span>)
+237:         <span class="ruby-keyword kw">else</span>
+238:           <span class="ruby-identifier">index</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">length</span>)
+239:           <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">point_mutation</span>(<span class="ruby-identifier">chromosome</span>, <span class="ruby-identifier">index</span>)
+240:         <span class="ruby-keyword kw">end</span>
+241:         <span class="ruby-ivar">@fitness</span> = <span class="ruby-keyword kw">nil</span> <span class="ruby-comment cmt"># need to recalculate fitness value when fitness method is called</span>
+242:       <span class="ruby-keyword kw">end</span>      
+243:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -194,11 +194,11 @@
             onclick="toggleCode('M000023-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000023-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 165</span>
-165:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">meeting_solution</span>)
-166:       <span class="ruby-ivar">@meeting_solution</span> = <span class="ruby-identifier">meeting_solution</span>
-167:       <span class="ruby-ivar">@normalized_fitness</span> = <span class="ruby-value">0</span>
-168:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 210</span>
+210:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">meeting_solution</span>)
+211:       <span class="ruby-ivar">@meeting_solution</span> = <span class="ruby-identifier">meeting_solution</span>
+212:       <span class="ruby-ivar">@normalized_fitness</span> = <span class="ruby-value">0</span>
+213:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -221,16 +221,16 @@ Produces only ONE child chromosome
             onclick="toggleCode('M000027-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000027-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 201</span>
-201:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">reproduce</span>(<span class="ruby-identifier">parent1</span>, <span class="ruby-identifier">parent2</span>, <span class="ruby-identifier">double_crossover_probability</span>)
-202:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">rand</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">double_crossover_probability</span>
-203:         <span class="ruby-identifier">indexes</span> = <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">pick_two_random_indexes</span>(<span class="ruby-identifier">parent1</span>)        
-204:         <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">double_crossover</span>(<span class="ruby-identifier">parent1</span>, <span class="ruby-identifier">parent2</span>, <span class="ruby-identifier">indexes</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">indexes</span>[<span class="ruby-value">1</span>])
-205:       <span class="ruby-keyword kw">else</span>
-206:         <span class="ruby-identifier">splice_index</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-identifier">parent1</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">2</span>) <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
-207:         <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">single_crossover</span>(<span class="ruby-identifier">parent1</span>, <span class="ruby-identifier">parent2</span>, <span class="ruby-identifier">splice_index</span>)
-208:       <span class="ruby-keyword kw">end</span>
-209:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 246</span>
+246:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">reproduce</span>(<span class="ruby-identifier">parent1</span>, <span class="ruby-identifier">parent2</span>, <span class="ruby-identifier">double_crossover_probability</span>)
+247:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">rand</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">double_crossover_probability</span>
+248:         <span class="ruby-identifier">indexes</span> = <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">pick_two_random_indexes</span>(<span class="ruby-identifier">parent1</span>)        
+249:         <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">double_crossover</span>(<span class="ruby-identifier">parent1</span>, <span class="ruby-identifier">parent2</span>, <span class="ruby-identifier">indexes</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">indexes</span>[<span class="ruby-value">1</span>])
+250:       <span class="ruby-keyword kw">else</span>
+251:         <span class="ruby-identifier">splice_index</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-identifier">parent1</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">2</span>) <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+252:         <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">single_crossover</span>(<span class="ruby-identifier">parent1</span>, <span class="ruby-identifier">parent2</span>, <span class="ruby-identifier">splice_index</span>)
+253:       <span class="ruby-keyword kw">end</span>
+254:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -254,11 +254,11 @@ Produces only ONE child chromosome
             onclick="toggleCode('M000028-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000028-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 212</span>
-212:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">seed</span>
-213:       <span class="ruby-identifier">meeting_solution</span> =  <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">create_meeting_solution</span> <span class="ruby-comment cmt"># original code moved to method create_meeting_solution</span>
-214:       <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">meeting_solution</span>)
-215:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 257</span>
+257:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">seed</span>
+258:       <span class="ruby-identifier">meeting_solution</span> =  <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">create_meeting_solution</span> <span class="ruby-comment cmt"># original code moved to method create_meeting_solution</span>
+259:       <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">meeting_solution</span>)
+260:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -278,10 +278,10 @@ Produces only ONE child chromosome
             onclick="toggleCode('M000024-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000024-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 170</span>
-170:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">set_factors_to_consider</span>(<span class="ruby-identifier">factors_to_consider</span>)
-171:       <span class="ruby-ivar">@@factors_to_consider</span> = <span class="ruby-identifier">factors_to_consider</span>
-172:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 215</span>
+215:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">set_factors_to_consider</span>(<span class="ruby-identifier">factors_to_consider</span>)
+216:       <span class="ruby-ivar">@@factors_to_consider</span> = <span class="ruby-identifier">factors_to_consider</span>
+217:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -303,10 +303,10 @@ Produces only ONE child chromosome
             onclick="toggleCode('M000031-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000031-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 226</span>
-226:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">&lt;=&gt;</span>(<span class="ruby-identifier">other</span>)
-227:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">meeting_solution</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">meeting_solution</span>
-228:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 271</span>
+271:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">&lt;=&gt;</span>(<span class="ruby-identifier">other</span>)
+272:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">meeting_solution</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">meeting_solution</span>
+273:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -326,10 +326,10 @@ Produces only ONE child chromosome
             onclick="toggleCode('M000029-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000029-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 218</span>
-218:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-identifier">index</span>)
-219:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">meeting_solution</span>[<span class="ruby-identifier">index</span>]
-220:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 263</span>
+263:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-identifier">index</span>)
+264:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">meeting_solution</span>[<span class="ruby-identifier">index</span>]
+265:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -349,10 +349,10 @@ Produces only ONE child chromosome
             onclick="toggleCode('M000030-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000030-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 222</span>
-222:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]=</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">assignment</span>)
-223:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">meeting_solution</span>[<span class="ruby-identifier">index</span>] = <span class="ruby-identifier">assignment</span>
-224:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 267</span>
+267:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]=</span>(<span class="ruby-identifier">index</span>, <span class="ruby-identifier">assignment</span>)
+268:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">meeting_solution</span>[<span class="ruby-identifier">index</span>] = <span class="ruby-identifier">assignment</span>
+269:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -377,12 +377,12 @@ solution is
             onclick="toggleCode('M000025-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000025-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 175</span>
-175:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">fitness</span>
-176:       <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@fitness</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@fitness</span>
-177:       <span class="ruby-comment cmt"># else calculate and save to @fitness, TO BE IMPLEMENTED</span>
-178:       <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@fitness</span>
-179:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 220</span>
+220:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">fitness</span>
+221:       <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@fitness</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@fitness</span>
+222:       <span class="ruby-comment cmt"># else calculate and save to @fitness, TO BE IMPLEMENTED</span>
+223:       <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@fitness</span>
+224:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -402,10 +402,10 @@ solution is
             onclick="toggleCode('M000032-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000032-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 230</span>
-230:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">length</span>
-231:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">meeting_solution</span>.<span class="ruby-identifier">length</span>
-232:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 275</span>
+275:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">length</span>
+276:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">meeting_solution</span>.<span class="ruby-identifier">length</span>
+277:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

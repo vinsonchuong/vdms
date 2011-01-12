@@ -143,22 +143,71 @@
       
         <div class="method-description">
           <p>
-factors_to_consier is a hash that allows us use factors as keys to lookup
-its values example of usage: total_admits =
-factors_to_consider[:total_admits] attending_admits =
-factors_to_consider[:attending_admits] number_of_spots_per_student =
-factors_to_consider[:number_of_spots_per_student]
+factors_to_consider: a hash that contains all the necessary information to
+compute optimum meeting arrangement.
+</p>
+<pre>
+                    The structure of factors_to_consider looks like:
+                    {:attending_admits =&gt; a hash of admits attending,
+                     :faculties =&gt; a hash of faculties holding meetings,
+                     :number_of_spots_per_admit =&gt; an int,
+                     :chromosomal_inversion_probability =&gt; a decimal range from 0 to 1,
+                     :point_mutation_probability =&gt; a decimal range from 0 to 1,
+                     :double_crossover_probability =&gt; a decimal range from 0 to 1,
+                     :lowest_rank_possible =&gt; a decimal range from 0 to 1
+                    }
+                    The structure of :attending_admits looks like:
+                    {:student1 =&gt; {:id =&gt; an int of the admit's database id,
+                                   :name =&gt; a string of the admit's name,
+                                   :ranking =&gt; array of hashes of the admit's preference list,
+                                   :available_times =&gt; range_set that encodes the admit's 24 hour availability
+                                  },
+                     :student2 =&gt; {:id =&gt; an int of the admit's database id,
+                                   :name =&gt; a string of the admit's name,
+                                   :ranking =&gt; array of hashes of the admit's preference list,
+                                   :available_times =&gt; range_set that encodes the admit's 24 hour availability
+                                  },
+                    .
+                    .
+                    etc
+                    }
+                    The structure of :faculties looks like:
+                    {:faculty1 =&gt; {:max_students_per_meeting =&gt; an int specifying the maximum number of student allowed per meeting for this faculty,
+                                   :admit_rankings =&gt; array of hashes of the faculty's preference list,
+                                   :schedule =&gt; [['room1', timerange], ['room2', timerange] ....etc],
+                                  },
+                     :faculty2 =&gt; {:max_students_per_meeting =&gt; an int specifying the maximum number of student allowed per meeting for this faculty,
+                                   :admit_rankings =&gt; array of hashes of the faculty's preference list,
+                                   :schedule =&gt; [['room1', timerange], ['room2', timerange] ....etc],
+                                  },
+                    .
+                    .
+                    etc
+                    }
+
+                     note: this hash could still grow as the algorithm demands more information. The API should be updated as this hash changes
+</pre>
+<p>
+population_size: an int specifying the population size of the GA algorithm
+</p>
+<p>
+total_generation: an int specifying the number of generation the GA
+algorithm will run/iterate
+</p>
+<p>
+@return: <a href="Scheduler.html#M000033">new</a> <a
+href="Scheduler.html">Scheduler</a> object
 </p>
           <p><a class="source-toggle" href="#"
             onclick="toggleCode('M000033-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000033-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 13</span>
-13:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">factors_to_consider</span>, <span class="ruby-identifier">population_size</span>, <span class="ruby-identifier">total_generations</span>)        
-14:         <span class="ruby-ivar">@population</span> = <span class="ruby-constant">Scheduler</span>.<span class="ruby-identifier">create_population</span>(<span class="ruby-ivar">@factors_to_consider</span>)
-15:         <span class="ruby-ivar">@total_generations</span> = <span class="ruby-identifier">total_generations</span>
-16:         <span class="ruby-ivar">@population_size</span> = <span class="ruby-identifier">population_size</span>
-17:       <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 60</span>
+60:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">factors_to_consider</span>, <span class="ruby-identifier">population_size</span>, <span class="ruby-identifier">total_generations</span>)        
+61:         <span class="ruby-ivar">@population</span> = <span class="ruby-constant">Scheduler</span>.<span class="ruby-identifier">create_population</span>(<span class="ruby-ivar">@factors_to_consider</span>)
+62:         <span class="ruby-ivar">@total_generations</span> = <span class="ruby-identifier">total_generations</span>
+63:         <span class="ruby-ivar">@population_size</span> = <span class="ruby-identifier">population_size</span>
+64:       <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -176,15 +225,19 @@ factors_to_consider[:number_of_spots_per_student]
         </div>
       
         <div class="method-description">
+          <p>
+Definition: produces optimum meeting arrangement @params: NA @return: a
+list of meeting objects
+</p>
           <p><a class="source-toggle" href="#"
             onclick="toggleCode('M000034-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000034-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 19</span>
-19:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">make_meetings</span>()
-20:         <span class="ruby-identifier">best_chromosome</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">run</span>(<span class="ruby-ivar">@population</span>, <span class="ruby-ivar">@total_generations</span>)
-21:         <span class="ruby-constant">Scheduler</span>.<span class="ruby-identifier">create_meetings!</span>(<span class="ruby-identifier">best_chromosome</span>)
-22:       <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 71</span>
+71:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">make_meetings</span>()
+72:         <span class="ruby-identifier">best_chromosome</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">run</span>(<span class="ruby-ivar">@population</span>, <span class="ruby-ivar">@total_generations</span>)
+73:         <span class="ruby-constant">Scheduler</span>.<span class="ruby-identifier">create_meetings</span>(<span class="ruby-identifier">best_chromosome</span>)
+74:       <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
