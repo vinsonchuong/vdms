@@ -269,11 +269,12 @@ module MeetingsScheduler
       Chromosome.chromosomal_inversion(chromosome, index, index+1)
     end
     
-    def self.chromosomal_inversion(chromosome, index1, index2)
+    def self.chromosomal_inversion(chromosome, index1, index2)    
       meeting_solution = chromosome.meeting_solution
       partially_inverted_meeting_solution = meeting_solution[index1..index2].reverse
       meeting_soltuon = meeting_solution[0...index1] + partially_inverted_meeting_solution + meeting_solution[index2+1..-1]
       chromosome.meeting_solution = meeting_solution
+      return chromosome
     end
     
     def self.point_mutation(chromosome, index)

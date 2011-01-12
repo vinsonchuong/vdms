@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: MeetingsScheduler::GeneticAlgorithm</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">MeetingsScheduler::GeneticAlgorithm</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/app/helpers/meetings_scheduler_rb.html">
+                app/helpers/meetings_scheduler.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                Object
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000020">mutate_all_population</a>&nbsp;&nbsp;
+      <a href="#M000022">replace_worst_ranked</a>&nbsp;&nbsp;
+      <a href="#M000019">reproduction</a>&nbsp;&nbsp;
+      <a href="#M000017">run</a>&nbsp;&nbsp;
+      <a href="#M000021">select_best_chromosome</a>&nbsp;&nbsp;
+      <a href="#M000018">selection</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000020" class="method-detail">
+        <a name="M000020"></a>
+
+        <div class="method-heading">
+          <a href="#M000020" class="method-signature">
+          <span class="method-name">mutate_all_population</span><span class="method-args">(population)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+<a href="GeneticAlgorithm.html#M000020">mutate_all_population</a> will call
+<a href="Chromosome.html#M000026">Chromosome.mutate</a> on each chromosome
+in the population
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000020-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000020-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 121</span>
+121:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mutate_all_population</span>(<span class="ruby-identifier">population</span>)
+122:       <span class="ruby-identifier">mutated_population</span> = []
+123:       <span class="ruby-identifier">population</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chromosome</span><span class="ruby-operator">|</span>
+124:         <span class="ruby-identifier">mutated_population</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">mutate</span>(<span class="ruby-identifier">chromosome</span>)
+125:       <span class="ruby-keyword kw">end</span>
+126:       <span class="ruby-identifier">mutated_population</span>
+127:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000022" class="method-detail">
+        <a name="M000022"></a>
+
+        <div class="method-heading">
+          <a href="#M000022" class="method-signature">
+          <span class="method-name">replace_worst_ranked</span><span class="method-args">(population, offsprings)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+<a href="GeneticAlgorithm.html#M000022">replace_worst_ranked</a> replaces
+the worst ranked population with its offsprings
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000022-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000022-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 139</span>
+139:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">replace_worst_ranked</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">offsprings</span>)
+140:       <span class="ruby-identifier">size</span> = <span class="ruby-identifier">offsprings</span>.<span class="ruby-identifier">size</span>
+141:       <span class="ruby-identifier">population</span> = <span class="ruby-identifier">population</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span>((<span class="ruby-value">-1</span><span class="ruby-operator">*</span><span class="ruby-identifier">size</span>)<span class="ruby-operator">-</span><span class="ruby-value">1</span>)] <span class="ruby-operator">+</span> <span class="ruby-identifier">offsprings</span>
+142:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000019" class="method-detail">
+        <a name="M000019"></a>
+
+        <div class="method-heading">
+          <a href="#M000019" class="method-signature">
+          <span class="method-name">reproduction</span><span class="method-args">(breed_population)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+<a href="GeneticAlgorithm.html#M000019">reproduction</a> calls on <a
+href="Chromosome.html#M000027">Chromosome.reproduce</a> to produce the
+offspring generation
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000019-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000019-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 112</span>
+112:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">reproduction</span>(<span class="ruby-identifier">breed_population</span>)
+113:       <span class="ruby-identifier">offspring</span> = []
+114:       <span class="ruby-value">0</span>.<span class="ruby-identifier">upto</span>(<span class="ruby-identifier">breed_population</span>.<span class="ruby-identifier">size</span><span class="ruby-operator">/</span><span class="ruby-value">2</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+115:         <span class="ruby-identifier">offspring</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">reproduce</span>(<span class="ruby-identifier">breed_population</span>[<span class="ruby-value">2</span><span class="ruby-operator">*</span><span class="ruby-identifier">i</span>], <span class="ruby-identifier">breed_population</span>[<span class="ruby-value">2</span><span class="ruby-operator">*</span><span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>])
+116:       <span class="ruby-keyword kw">end</span>
+117:       <span class="ruby-identifier">offspring</span>
+118:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000017" class="method-detail">
+        <a name="M000017"></a>
+
+        <div class="method-heading">
+          <a href="#M000017" class="method-signature">
+          <span class="method-name">run</span><span class="method-args">(population, total_generations, factors_to_consider)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+<a href="GeneticAlgorithm.html#M000017">run</a> is the main execution of
+the algorithm. Calling <a href="GeneticAlgorithm.html#M000017">run</a> will
+theoritically output the best solution available after total_generations
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000017-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000017-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 67</span>
+67:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">run</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">total_generations</span>, <span class="ruby-identifier">factors_to_consider</span>)
+68:       <span class="ruby-identifier">total_generations</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword kw">do</span>
+69:         <span class="ruby-identifier">parents</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">selection</span>(<span class="ruby-identifier">population</span>)
+70:         <span class="ruby-identifier">offsprings</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">reproduction</span>(<span class="ruby-identifier">parents</span>)
+71:         <span class="ruby-identifier">population</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">mutate_all_population</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">factors_to_consider</span>)
+72:         <span class="ruby-identifier">population</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">replace_worst_ranked</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">offsprings</span>)    
+73:       <span class="ruby-keyword kw">end</span>
+74:       <span class="ruby-identifier">best_chromosome</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">select_best_chromosome</span>(<span class="ruby-identifier">population</span>)
+75:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000021" class="method-detail">
+        <a name="M000021"></a>
+
+        <div class="method-heading">
+          <a href="#M000021" class="method-signature">
+          <span class="method-name">select_best_chromosome</span><span class="method-args">(population)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+select the best chromosome in the population
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000021-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000021-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 130</span>
+130:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">select_best_chromosome</span>(<span class="ruby-identifier">population</span>)
+131:       <span class="ruby-identifier">best_chromosome</span> = <span class="ruby-identifier">population</span>[<span class="ruby-value">0</span>]
+132:       <span class="ruby-identifier">population</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chromosome</span><span class="ruby-operator">|</span>
+133:         <span class="ruby-identifier">best_chromosome</span> = <span class="ruby-identifier">chromosome</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">fitness</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">best_chromosome</span>.<span class="ruby-identifier">fitness</span>
+134:       <span class="ruby-keyword kw">end</span>
+135:       <span class="ruby-identifier">best_chromosome</span>
+136:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000018" class="method-detail">
+        <a name="M000018"></a>
+
+        <div class="method-heading">
+          <a href="#M000018" class="method-signature">
+          <span class="method-name">selection</span><span class="method-args">(population)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+<a href="GeneticAlgorithm.html#M000018">selection</a> mimic the process of
+natural <a href="GeneticAlgorithm.html#M000018">selection</a> to select the
+individuals that have better fitness values. process:
+</p>
+<pre>
+ 1. fitness is called to evaluate the utility value of individual
+ 2. the population is sorted by descending order of fitness value
+ 3. the fitness value is normalized
+ 4. a random number R is chosen. R is between 0 and the accumulated normalized value (it is normalized value plus the normalized values of the chromosome prior it)
+    greater than R
+ 5. the selected individual is the first one whose accumulated normalized value (it is normalized value plus the normalized values of the chromosome prior it)
+    greater than R
+ 6. repeat 4 and 5 for 2/3 times the population size
+</pre>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000018-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000018-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 88</span>
+ 88:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">selection</span>(<span class="ruby-identifier">population</span>)
+ 89:       <span class="ruby-identifier">population</span>.<span class="ruby-identifier">sort!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span><span class="ruby-operator">|</span> <span class="ruby-identifier">b</span>.<span class="ruby-identifier">fitness</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">fitness</span> }
+ 90:       
+ 91:       <span class="ruby-identifier">best_fitness</span> = <span class="ruby-identifier">population</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">fitness</span>
+ 92:       <span class="ruby-identifier">least_fitness</span> = <span class="ruby-identifier">population</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">fitness</span>
+ 93:       <span class="ruby-identifier">accumulated_fitness</span> = <span class="ruby-value">0</span>
+ 94:       
+ 95:       <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">best_fitness</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">least_fitness</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+ 96:         <span class="ruby-identifier">population</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chromosome</span><span class="ruby-operator">|</span>
+ 97:           <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">normalized_fitness</span> = (<span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">fitness</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">least_fitness</span>) <span class="ruby-operator">/</span> (<span class="ruby-identifier">best_fitness</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">least_fitness</span>)
+ 98:           <span class="ruby-identifier">accumulated_fitness</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">normalized_fitness</span>
+ 99:         <span class="ruby-keyword kw">end</span>
+100:       <span class="ruby-keyword kw">else</span>
+101:         <span class="ruby-identifier">population</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">chromosome</span><span class="ruby-operator">|</span> <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">normalized_fitness</span> = <span class="ruby-value">1</span> }
+102:       <span class="ruby-keyword kw">end</span> 
+103:       
+104:       <span class="ruby-identifier">breed_population</span> = []
+105:       (<span class="ruby-identifier">population</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">*</span> <span class="ruby-value">2</span><span class="ruby-operator">/</span><span class="ruby-value">3</span>).<span class="ruby-identifier">times</span> <span class="ruby-keyword kw">do</span>
+106:         <span class="ruby-identifier">breed_population</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">select_random_individual</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">accumulated_fitness</span>)
+107:       <span class="ruby-keyword kw">end</span>
+108:       <span class="ruby-identifier">breed_population</span>
+109:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

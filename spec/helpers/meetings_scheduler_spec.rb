@@ -34,8 +34,8 @@ describe MeetingsScheduler do
       end
       
       it 'has a encoding/representation of a solution' do
-        @chromosome.should respond_to(:data)
-        @chromosome.should respond_to(:data=)
+        @chromosome.should respond_to(:meeting_solution)
+        @chromosome.should respond_to(:meeting_solution=)
       end
       
       it 'is accessible in an array-like fashion' do
@@ -53,7 +53,7 @@ describe MeetingsScheduler do
       it 'has an unmutable length' do @chromosome.should respond_to(:length) end
 
     end
-
+    
     describe 'When seeding a new chromosome' do
       before(:each) do
         @faculties = 3.times.collect { |n| create_valid!(Faculty, :id => n) }
@@ -133,16 +133,16 @@ describe MeetingsScheduler do
         it 'should invert chromosome correctly' do @chromosome.should == MeetingsScheduler::Chromosome.new([1, 2, 3, 4, 8, 7, 6, 5, 9, 10]) end
       end
 
-      describe 'When performing a reverse on two adjacent sequences' do
-        before(:each) do
-          index = 5
-          MeetingsScheduler::Chromosome.reverse_two_adjacent_sequences(@chromosome, index)
-        end
+     
+      #describe 'When performing a reverse on two adjacent sequences' do
+      #  before(:each) do
+      #    index = 5
+      #    MeetingsScheduler::Chromosome.reverse_two_adjacent_sequences(@chromosome, index)
+      #  end
 
-        it 'should have same length after mutation' do @chromosome.length.should == 10 end
-        it 'should invert chromosome correctly' do @chromosome.should == MeetingsScheduler::Chromosome.new([1, 2, 3, 4, 5, 7, 6, 8, 9, 10]) end
-
-      end
+      #  it 'should have same length after mutation' do @chromosome.length.should == 10 end
+      #  it 'should invert chromosome correctly' do @chromosome.should == MeetingsScheduler::Chromosome.new([1, 2, 3, 4, 5, 7, 6, 8, 9, 10]) end
+      #end
       
     end
     
