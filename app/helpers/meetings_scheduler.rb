@@ -4,35 +4,87 @@ module MeetingsScheduler
       attr_accessor :population
       attr_accessor :population_size
       attr_accessor :total_generations
-      
-      # factors_to_consier is a hash that allows us use factors as keys to lookup its values
-      # example of usage:
-      # total_admits = factors_to_consider[:total_admits]
-      # attending_admits = factors_to_consider[:attending_admits]
-      # number_of_spots_per_student = factors_to_consider[:number_of_spots_per_student]
+    
+#Definition: initialize a new Scheduler object
+# @params:
+
+#factors_to_consider: a hash that contains all the necessary information to compute optimum meeting arrangement.
+#                    The structure of factors_to_consider looks like:
+#                    {:attending_admits => a hash of admits attending Visit Day, 
+#                     :faculties => a hash of faculties holding meetings, 
+#                     :number_of_spots_per_admit => an int, 
+#                     :chromosomal_inversion_probability => a decimal range from 0 to 1, 
+#                     :point_mutation_probability => a decimal range from 0 to 1,
+#                     :double_crossover_probability => a decimal range from 0 to 1,
+#                     :lowest_rank_possible => a decimal range from 0 to 1 
+#                    }
+#                    The structure of :attending_admits looks like:
+#                    { id1 => { :name => a string of the admit's name,
+#                               :ranking => array of hashes of the admit's preference list,
+#                               :available_times => range_set that encodes the admit's 24 hour availability
+#                             },
+#                      id2 => { :name => a string of the admit's name,
+#                               :ranking => array of hashes of the admit's preference list,
+#                               :available_times => range_set that encodes the admit's 24 hour availability
+#                             },
+#                    .
+#                    .
+#                    etc, where id1 and id2 are ints of the admit's database id,              
+#                    }
+#                    The structure of :faculties looks like:
+#                    {:fid1 => { :max_students_per_meeting => an int specifying the maximum number of student allowed per meeting for this faculty,
+#                                :admit_rankings => array of hashes of the faculty's preference list,
+#                                :schedule => [['room1', timerange], ['room2', timerange] ....etc],
+#                              },
+#                     :fid2 => { :max_students_per_meeting => an int specifying the maximum number of student allowed per meeting for this faculty,
+#                                :admit_rankings => array of hashes of the faculty's preference list,
+#                                :schedule => [['room1', timerange], ['room2', timerange] ....etc],
+#                              },
+#                    .
+#                    .
+#                    etc, where fid1 and fid2 are ints of the faculty's database id
+#                    }
+#                                        
+#                     note: this hash could still grow as the algorithm demands more information. The API should be updated as this hash changes
+#
+#population_size: an int specifying the population size of the GA algorithm
+#
+#total_generation: an int specifying the number of generation the GA algorithm will run/iterate   
+#
+# @return: new Scheduler object
+ 
       def initialize(factors_to_consider, population_size, total_generations)        
         @population = Scheduler.create_population(@factors_to_consider)
         @total_generations = total_generations
         @population_size = population_size
       end
+
+
+# Definition: produces optimum meeting arrangement
+# @params: NA
+# @return: a list of meeting objects
       
       def make_meetings()
         best_chromosome = GeneticAlgorithm.run(@population, @total_generations)
-        Scheduler.create_meetings!(best_chromosome)
+        Scheduler.create_meetings(best_chromosome)
       end
       
       private unless Rails.env == 'test'
       
-      def self.create_meetings!(best_chromosome)
+# Definition: convert a chromosome to a list of meeting
+# @params: a chromosome
+# @return: a list of meeting object
+
+      def self.create_meetings(best_chromosome)
         meetings = []
         best_chromosome.meeting_solution.each do |nucleotide|
           if nucleotide.admit_id
             admit = @factors_to_consider[:attending_admits][nucleotide.admit_id]
             faculty = @factors_to_consider[:faculties][nucleotide.faculty_id]
             schedule = faculty[:schedule][nucleotide.schedule_index]
-
+            
             m = meetings[-1]
-            if Scheduler.meeting_not_existent(m, faculty, schedule)
+            if Scheduler.need_a_new_meeting?(m, faculty, schedule)
               m = Scheduler.set_up_new_meeting(faculty, schedule)
             end
             
@@ -41,14 +93,24 @@ module MeetingsScheduler
             
           end
         end
-        meetings.each { |m| m.save }
+        
         return meetings
       end
       
-      def self.meeting_not_existent(current_meeting, faculty, schedule)
-        return not (current_meeting.faculty_id == faculty[:id] and current_meeting.time == schedule[:time_range].begin)
+# Definition: checks if there needs to be a new Meeting object to be instantiated
+# @params: the most recently-made meeting, faculty and schedule subhashes inside factors_to_consider hash
+# @return: true or false
+
+      def self.need_a_new_meeting?(current_meeting, faculty, schedule)
+        if current_meeting
+          current_meeting.faculty_id != faculty[:id] or current_meeting.time != schedule[:time_range].begin
+        end
       end
 
+# Definition: sets up a new Meeting object
+# @params: the faculty and schedule hashes, subhashes inside factors_to_consider hash
+# @return: meeting, a new Meeting object, without any admits attached
+      
       def self.set_up_new_meeting(faculty, schedule)
         meeting = Meeting.new
         meeting.faculty_id = faculty[:id]
@@ -58,6 +120,10 @@ module MeetingsScheduler
         return meeting
       end
       
+# Definition: create a population of chromosomes so the GA algorithm can work with
+# @params: the hash factors_to_consider, which is inputed during initialization of the Scheduler object
+# @return: population, an array of chromosomes 
+      
       def self.create_population(factors_to_consider)
         population = []
         Chromosome.set_factors_to_consider(factors_to_consider)
@@ -65,12 +131,20 @@ module MeetingsScheduler
           population << Chromosome.seed()
         end
         population
-      end               
+      end
+               
   end
   
   class GeneticAlgorithm
-    # run is the main execution of the algorithm. Calling run will theoritically output the best solution available after 
-    # total_generations 
+    
+# Definition: run is the main execution of the algorithm. Calling run will theoritically output the best solution available after total_generations 
+#
+# @params: 
+# population: an array of chromosomes  
+# total_generation: an int to specify how many generation to run the algorithm
+# factors_to_consider: a hash, the specific structure of this hash, please refer to Scheduler.new method
+# @returns: the best chromosome object
+#
     def self.run(population, total_generations, factors_to_consider)
       total_generations.times do
         parents = GeneticAlgorithm.selection(population)
@@ -80,18 +154,22 @@ module MeetingsScheduler
       end
       best_chromosome = GeneticAlgorithm.select_best_chromosome(population)
     end
-      
-    #selection mimic the process of natural selection to select the individuals that have better fitness values.
-    #process:
-    # 1. fitness is called to evaluate the utility value of individual
-    # 2. the population is sorted by descending order of fitness value
-    # 3. the fitness value is normalized
-    # 4. a random number R is chosen. R is between 0 and the accumulated normalized value (it is normalized value plus the normalized values of the chromosome prior it)
-    #    greater than R
-    # 5. the selected individual is the first one whose accumulated normalized value (it is normalized value plus the normalized values of the chromosome prior it)
-    #    greater than R
-    # 6. repeat 4 and 5 for 2/3 times the population size
+
+# Definition:      
+# selection mimic the process of natural selection to select the individuals that have better fitness values.
+# process:
+# 1. fitness is called to evaluate the utility value of individual
+# 2. the population is sorted by descending order of fitness value
+# 3. the fitness value is normalized
+# 4. a random number R is chosen. R is between 0 and the accumulated normalized value (it is normalized value plus the normalized values of the chromosome prior it)
+#    greater than R
+# 5. the selected individual is the first one whose accumulated normalized value (it is normalized value plus the normalized values of the chromosome prior it)
+#    greater than R
+# 6. repeat 4 and 5 for 2/3 times the population size
   
+# @params: population, an array of chromosomes
+# @return: breed_population, a new array of chromosomes
+
     def self.selection(population)
       population.sort! { |a, b| b.fitness <=> a.fitness }
       
@@ -109,22 +187,26 @@ module MeetingsScheduler
       end 
       
       breed_population = []
-      (population.size * 2/3).times do
+      ((population.size * 2)/3).times do
         breed_population << select_random_individual(population, accumulated_fitness)
       end
       breed_population
     end
      
-    # reproduction calls on Chromosome.reproduce to produce the offspring generation
+# Definition: reproduction calls on Chromosome.reproduce to produce the offspring generation
+# @params: breed_population, an array of chromosomes
+# @return: offsprings, a new array of chromosomes
     def self.reproduction(breed_population)
-      offspring = []
+      offsprings = []
       0.upto(breed_population.size/2 - 1) do |i|
-        offspring << Chromosome.reproduce(breed_population[2*i], breed_population[2*i+1])
+        offsprings << Chromosome.reproduce(breed_population[2*i], breed_population[2*i+1])
       end
-      offspring
+      offsprings
     end
       
-    # mutate_all_population will call Chromosome.mutate on each chromosome in the population  
+# Definition: mutate_all_population will call Chromosome.mutate on each chromosome in the population 
+# @params: population, an array of chromosomes
+# @return: mutated_population, an array of chromosomes 
     def self.mutate_all_population(population)
       mutated_population = []
       population.each do |chromosome|
@@ -133,7 +215,9 @@ module MeetingsScheduler
       mutated_population
     end
        
-    # select the best chromosome in the population
+# Definition: select the best chromosome in the population
+# @params: population, an array of chromosomes
+# @return: best_chromosome, a chromosome object
     def self.select_best_chromosome(population)
       best_chromosome = population[0]
       population.each do |chromosome|
@@ -142,16 +226,27 @@ module MeetingsScheduler
       best_chromosome
     end
     
-    # replace_worst_ranked replaces the worst ranked population with its offsprings
+# Definition: replace_worst_ranked replaces the worst ranked population with its offsprings
+# @params: 
+# population, an array of chromosomes
+# offsprings, an array of chromosomes
+# @return: a new population, an array of chromosomes
     def self.replace_worst_ranked(population, offsprings)
       size = offsprings.size
+      population.sort! { |a, b| b.fitness <=> a.fitness }
       population = population[0..((-1*size)-1)] + offsprings
     end
            
     private unless Rails.env == 'test'
     
-    def self.select_random_inidividual(population, accumulated_fitness)
-      select_random_target = accumulated_fitness * rand
+# Definition: given a population of chromosomes, and accumulated_normalized_fitness value of the individuals in the population, 
+#            this method will select and return a random chromosome from the population
+# @params: 
+# population, an array of chromosomes
+# accumulated_normalized_fitness, an decimal that sums normalized_fitness of individual chromosome in the population
+# @return: chromosome, a chromosome object  
+    def self.select_random_individual(population, accumulated_normalized_fitness)
+      select_random_target = accumulated_normalized_fitness * rand
       local_acum = 0
       
       population.each do |chromosome|
@@ -168,7 +263,7 @@ module MeetingsScheduler
     attr_accessor :meeting_solution
     attr_accessor :normalized_fitness
     @@factors_to_consider = nil
-    @@fitness_scores_table = nil    
+    @@fitness_scores_table = nil
     
     def initialize(solution_string)
       @meeting_solution = []
@@ -186,11 +281,11 @@ module MeetingsScheduler
     def self.set_factors_to_consider(factors_to_consider)
       @@factors_to_consider = factors_to_consider
     end
-
+       
     def self.set_fitness_scores_table(fitness_scores)
       @@fitness_scores_table = fitness_scores
     end
-    
+        
     # fitness is basically a utility/heuristic value function that evaluate how good a particular solution is
     def fitness
       return @fitness if @fitness
@@ -198,13 +293,12 @@ module MeetingsScheduler
       # remove duplicates in time slot for prof, get the best
       
       @fitness = 0
-
       @meeting_solution.each do |nucleotide|
         if nucleotide.admit_id
           admit = @@factors_to_consider[:attending_admits][nucleotide.admit_id]
           faculty = @@factors_to_consider[:faculties][nucleotide.faculty_id]
           meeting_possible_score = Chromosome.meeting_possible_score(admit, faculty, nucleotide.schedule_index)
-
+          
           @fitness +=  (meeting_possible_score <= 0) ? meeting_possible_score : meeting_possible_score +
             Chromosome.admit_preference_score(admit, faculty, nucleotide.schedule_index) +
             Chromosome.faculty_preference_score(admit, faculty) +
@@ -222,14 +316,14 @@ module MeetingsScheduler
         case which_mutation
         when 0...@@factors_to_consider[:chromosomal_inversion_probability]
           indexes = Chromosome.pick_two_random_indexes(chromosome)
-          Chromosome.chromosomal_inversion!(chromosome, indexes[0], indexes[1])
+          Chromosome.chromosomal_inversion(chromosome, indexes[0], indexes[1])
         when @@factors_to_consider[:chromosomal_inversion_probability]...
             @@factors_to_consider[:chromosomal_inversion_probability] + @@factors_to_consider[:point_mutation_probability]
           index = Chromosome.random(chromosome.length)
-          Chromosome.point_mutation!(chromosome, index)
+          Chromosome.point_mutation(chromosome, index)
         else
           index = Chromosome.random(chromosome.length - 1)
-          Chromosome.reverse_two_adjacent_sequences!(chromosome, index)
+          Chromosome.reverse_two_adjacent_sequences(chromosome, index)
         end
         @fitness = nil # need to recalculate fitness value when fitness method is called
       end      
@@ -259,7 +353,7 @@ module MeetingsScheduler
     def [](index)
       self.solution_string[index]
     end
-    
+
     def <=>(other)
       self.solution_string <=> other.solution_string
     end
@@ -270,7 +364,8 @@ module MeetingsScheduler
 
     
     private unless Rails.env == 'test'
-    
+
+    # Helper method to create a nucleotide sequence
     def self.create_solution_string
       attending_admits = @@factors_to_consider[:attending_admits]
       total_number_of_seats = @@factors_to_consider[:total_number_of_seats]
@@ -289,23 +384,24 @@ module MeetingsScheduler
       end
       solution_string
     end
-
-    # Fitness function related helper methods
     
-    # Methods for fitness determination, accesses the objects passed through it only, NOT the database
+    
+    # Fitness function related helper methods
+        
     def self.meeting_possible_score(admit, faculty, schedule_index)
-      if faculty[:schedule][schedule_index] is INSIDE admit[:available_times]
+      timeslot = faculty[:schedule][schedule_index]
+      if admit[:available_times].contains_set?(timeslot)
         @@fitness_scores_table[:meeting_possible_score]
       else
         @@fitness_scores_table[:meeting_possible_penalty]
       end
     end
-
+    
     # Score based on achieving the ADMIT's faculty preference
     def self.faculty_preference_score(admit, faculty)
       ranking = admit[:rankings].find{ |r| r[:faculty_id] == faculty[:id] }
       if ranking
-        @@fitness_scores_table[:faculty_ranking_weight_score] * (@@factors_to_consider[:lowest_rank_possible] - ranking[:rank])
+        @@fitness_scores_table[:faculty_ranking_weight_score] * (@@factors_to_consider[:lowest_rank_possible])
       else
         @@fitness_scores_table[:faculty_ranking_default]
       end
@@ -315,7 +411,7 @@ module MeetingsScheduler
     def self.admit_preference_score(admit, faculty, schedule_index)
       ranking = faculty[:rankings].find{ |r| r[:admit_id] == admit[:id] }
       if ranking      
-        @@fitness_scores_table[:admit_ranking_weight_score] * (@@factors_to_consider[:lowest_rank_possible] - ranking[:rank]) +
+        @@fitness_scores_table[:admit_ranking_weight_score] * (@@factors_to_consider[:lowest_rank_possible]) +
           Chromosome.one_on_one_score(admit, faculty, ranking, schedule_index) +
           Chromosome.mandatory_meeting_score(ranking)
       else
@@ -350,9 +446,9 @@ module MeetingsScheduler
 
     def self.remove_duplicates(meeting_solution)
       # to be implemented or not
-    end
-    
+    end    
 
+    
     # Methods for generating children
     
     def self.single_crossover(parent1, parent2, splice_index)
@@ -362,7 +458,8 @@ module MeetingsScheduler
     def self.double_crossover(parent1, parent2, splice_index1, splice_index2)
       Chromosome.new(parent1[0...splice_index1] + parent2[splice_index1...splice_index2] + parent1[splice_index2..-1])
     end
-     
+    
+    
     # Methods for generating mutations
     
     def self.reverse_two_adjacent_sequences(chromosome, index)
@@ -382,6 +479,7 @@ module MeetingsScheduler
       return Chromosome.new(solution_string)
     end
 
+    
     # Abstracted methods for easier stubbing in Rspec tests
 
     def self.ok_to_mutate(chromosome)
@@ -401,24 +499,23 @@ module MeetingsScheduler
     end
     
   end
-
+  
   class Nucleotide    
     def initialize(data)
       @data = data
     end
-
+    
     def faculty_id
       @data[0]
     end
-
+    
     def schedule_index
       @data[1]
     end
-
+    
     def admit_id
       @data[2]
     end    
   end
-
   
 end

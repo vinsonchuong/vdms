@@ -4014,3 +4014,107 @@ Migrating to AddSettingsTable (20101229235652)
   [4;35;1mSQL (2.2ms)[0m   [0mINSERT INTO "schema_migrations" (version) VALUES ('20101229052558')[0m
   [4;36;1mSQL (4.7ms)[0m   [0;1mINSERT INTO "schema_migrations" (version) VALUES ('20101229061331')[0m
   [4;35;1mSQL (2.4ms)[0m   [0mINSERT INTO "schema_migrations" (version) VALUES ('20101229190904')[0m
+  [4;36;1mSQL (2.0ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (1.0ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (89.0ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (1.0ms)[0m   [0mPRAGMA index_list("schema_migrations")[0m
+  [4;36;1mSQL (74.0ms)[0m   [0;1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (1.0ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+Migrating to CreatePeople (20101229042640)
+  [4;35;1mSQL (2.5ms)[0m   [0mCREATE TABLE "people" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "calnet_id" varchar(255), "first_name" varchar(255), "last_name" varchar(255), "email" varchar(255), "type" varchar(255), "area" varchar(255), "division" varchar(255), "schedule" varchar(255), "default_room" varchar(255), "max_admits_per_meeting" integer, "max_additional_admits" integer, "phone" varchar(255), "area1" varchar(255), "area2" varchar(255), "attending" boolean, "available_times" varchar(255), "peer_advisor_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20101229042640')[0m
+Migrating to CreateMeetings (20101229052558)
+  [4;35;1mSQL (1.0ms)[0m   [0mCREATE TABLE "meetings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "time" time, "room" varchar(255), "faculty_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20101229052558')[0m
+Migrating to CreateRankings (20101229061331)
+  [4;35;1mSQL (2.0ms)[0m   [0mCREATE TABLE "rankings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "rank" integer, "type" varchar(255), "faculty_id" integer, "admit_id" integer, "mandatory" boolean, "time_slots" integer, "one_on_one" boolean, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20101229061331')[0m
+Migrating to CreateAdmitsMeetings (20101229190904)
+  [4;35;1mSQL (1.0ms)[0m   [0mCREATE TABLE "admits_meetings" ("admit_id" integer NOT NULL, "meeting_id" integer NOT NULL) [0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("admits_meetings")[0m
+  [4;35;1mSQL (1.0ms)[0m   [0mCREATE UNIQUE INDEX "index_admits_meetings_on_admit_id_and_meeting_id" ON "admits_meetings" ("admit_id", "meeting_id")[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20101229190904')[0m
+Migrating to AddSettingsTable (20101229235652)
+  [4;35;1mSQL (0.0ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (2.0ms)[0m   [0;1mCREATE TABLE "settings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "var" varchar(255) NOT NULL, "value" text, "target_id" integer, "target_type" varchar(30), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.0ms)[0m   [0mPRAGMA index_list("settings")[0m
+  [4;36;1mSQL (1.0ms)[0m   [0;1mCREATE UNIQUE INDEX "index_settings_on_target_type_and_target_id_and_var" ON "settings" ("target_type", "target_id", "var")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20101229235652')[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mPRAGMA index_list("admits_meetings")[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_info('index_admits_meetings_on_admit_id_and_meeting_id')[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("meetings")[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("people")[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mPRAGMA index_list("rankings")[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mPRAGMA index_list("settings")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_info('index_settings_on_target_type_and_target_id_and_var')[0m
+  [4;36;1mSQL (2.0ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (1.0ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (127.0ms)[0m   [0;1mCREATE TABLE "admits_meetings" ("admit_id" integer NOT NULL, "meeting_id" integer NOT NULL) [0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("admits_meetings")[0m
+  [4;36;1mSQL (116.0ms)[0m   [0;1mCREATE UNIQUE INDEX "index_admits_meetings_on_admit_id_and_meeting_id" ON "admits_meetings" ("admit_id", "meeting_id")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (106.5ms)[0m   [0;1mCREATE TABLE "meetings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "time" time, "room" varchar(255), "faculty_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.0ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (84.0ms)[0m   [0;1mCREATE TABLE "people" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "calnet_id" varchar(255), "first_name" varchar(255), "last_name" varchar(255), "email" varchar(255), "type" varchar(255), "area" varchar(255), "division" varchar(255), "schedule" varchar(255), "default_room" varchar(255), "max_admits_per_meeting" integer, "max_additional_admits" integer, "phone" varchar(255), "area1" varchar(255), "area2" varchar(255), "attending" boolean, "available_times" varchar(255), "peer_advisor_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.0ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (97.0ms)[0m   [0;1mCREATE TABLE "rankings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "rank" integer, "type" varchar(255), "faculty_id" integer, "admit_id" integer, "mandatory" boolean, "time_slots" integer, "one_on_one" boolean, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.0ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (112.0ms)[0m   [0;1mCREATE TABLE "settings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "var" varchar(255) NOT NULL, "value" text, "target_id" integer, "target_type" varchar(30), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("settings")[0m
+  [4;36;1mSQL (182.5ms)[0m   [0;1mCREATE UNIQUE INDEX "index_settings_on_target_type_and_target_id_and_var" ON "settings" ("target_type", "target_id", "var")[0m
+  [4;35;1mSQL (0.5ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (117.5ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("schema_migrations")[0m
+  [4;36;1mSQL (121.5ms)[0m   [0;1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mSELECT version FROM "schema_migrations"[0m
+  [4;35;1mSQL (321.0ms)[0m   [0mINSERT INTO "schema_migrations" (version) VALUES ('20101229235652')[0m
+  [4;36;1mSQL (86.0ms)[0m   [0;1mINSERT INTO "schema_migrations" (version) VALUES ('20101229042640')[0m
+  [4;35;1mSQL (100.0ms)[0m   [0mINSERT INTO "schema_migrations" (version) VALUES ('20101229052558')[0m
+  [4;36;1mSQL (93.0ms)[0m   [0;1mINSERT INTO "schema_migrations" (version) VALUES ('20101229061331')[0m
+  [4;35;1mSQL (89.0ms)[0m   [0mINSERT INTO "schema_migrations" (version) VALUES ('20101229190904')[0m
