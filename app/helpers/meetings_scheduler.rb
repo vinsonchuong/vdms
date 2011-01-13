@@ -29,23 +29,24 @@ module MeetingsScheduler
 #                             },
 #                    .
 #                    .
-#                    etc, where id1 and id2 are ints of the admit's database id,              
+#                     etc, where id1 and id2 are ints of the admit's database id,              
 #                    }
 #                    The structure of :faculties looks like:
 #                    {:fid1 => { :max_students_per_meeting => an int specifying the maximum number of student allowed per meeting for this faculty,
 #                                :admit_rankings => array of hashes of the faculty's preference list,
-#                                :schedule => [['room1', timerange], ['room2', timerange] ....etc],
+#                                :schedule => [{ :room => 'room1', :time_slot => timerange },
+#                                              { :room => 'room2', :time_slot => timerange } ....etc],
 #                              },
 #                     :fid2 => { :max_students_per_meeting => an int specifying the maximum number of student allowed per meeting for this faculty,
 #                                :admit_rankings => array of hashes of the faculty's preference list,
-#                                :schedule => [['room1', timerange], ['room2', timerange] ....etc],
+#                                :schedule => [{ :room => 'room1', :time_slot => timerange },
+#                                              { :room => 'room2', :time_slot => timerange } ....etc],
 #                              },
 #                    .
 #                    .
-#                    etc, where fid1 and fid2 are ints of the faculty's database id
+#                     etc, where fid1 and fid2 are ints of the faculty's database id
 #                    }
-#                                        
-#                     note: this hash could still grow as the algorithm demands more information. The API should be updated as this hash changes
+#                    note: this hash could still grow as the algorithm demands more information. The API should be updated as this hash changes
 #
 #population_size: an int specifying the population size of the GA algorithm
 #
@@ -389,8 +390,8 @@ module MeetingsScheduler
     # Fitness function related helper methods
         
     def self.meeting_possible_score(admit, faculty, schedule_index)
-      timeslot = faculty[:schedule][schedule_index]
-      if admit[:available_times].contains_set?(timeslot)
+      timeslot = faculty[:schedule][schedule_index][:time_slot]
+      if admit[:available_times].contains_set?(RangeSet.new([timeslot]))
         @@fitness_scores_table[:meeting_possible_score]
       else
         @@fitness_scores_table[:meeting_possible_penalty]

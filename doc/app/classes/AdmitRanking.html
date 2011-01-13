@@ -108,12 +108,12 @@
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">ATTRIBUTES</td>
           <td>=</td>
-          <td class="context-item-value">Ranking::ATTRIBUTES.merge({     'Mandatory' =&gt; :mandatory,     'Time Slots' =&gt; :time_slots,     'One-On-One' =&gt; :one_on_one</td>
+          <td class="context-item-value">Ranking::ATTRIBUTES.merge({     'Mandatory' =&gt; :mandatory,     'Time Slots' =&gt; :time_slots,     'One-On-One' =&gt; :one_on_one</td>
         </tr>
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">ATTRIBUTE_TYPES</td>
           <td>=</td>
-          <td class="context-item-value">Ranking::ATTRIBUTE_TYPES.merge({     :mandatory =&gt; :boolean,     :time_slots =&gt; :integer,     :one_on_one =&gt; :boolean</td>
+          <td class="context-item-value">Ranking::ATTRIBUTE_TYPES.merge({     :mandatory =&gt; :boolean,     :time_slots =&gt; :integer,     :one_on_one =&gt; :boolean</td>
         </tr>
         </table>
       </div>
@@ -144,7 +144,7 @@
 <pre>
     <span class="ruby-comment cmt"># File app/models/admit_ranking.rb, line 13</span>
 13:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_initialize</span>
-14:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">new_record?</span> <span class="ruby-comment cmt"># work around for bug 3165</span>
+14:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">new_record?</span> <span class="ruby-comment cmt"># work around for bug 3165</span>
 15:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mandatory</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword kw">false</span>
 16:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">time_slots</span> <span class="ruby-operator">||=</span> <span class="ruby-value">1</span>
 17:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">one_on_one</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword kw">false</span>
