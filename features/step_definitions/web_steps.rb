@@ -140,7 +140,7 @@ When /^(?:|I )attach the file "([^"]*)" to "([^"]*)"$/ do |path, field|
   attach_file(field, path, type)
 end
 
-Then /^(?:|I )(?:|should )see "([^"]*)"$/ do |text|
+Then /^(?:|I )should see "([^"]*)"$/ do |text|
   if response.respond_to? :should
     response.should contain(text)
   else
@@ -148,7 +148,7 @@ Then /^(?:|I )(?:|should )see "([^"]*)"$/ do |text|
   end
 end
 
-Then /^(?:|I )(?:|should )see "([^"]*)" within "([^"]*)"$/ do |text, selector|
+Then /^(?:|I )should see "([^"]*)" within "([^"]*)"$/ do |text, selector|
   within(selector) do |content|
     if content.respond_to? :should
       content.should contain(text)
@@ -159,7 +159,7 @@ Then /^(?:|I )(?:|should )see "([^"]*)" within "([^"]*)"$/ do |text, selector|
   end
 end
 
-Then /^(?:|I )(?:|should )see \/([^\/]*)\/$/ do |regexp|
+Then /^(?:|I )should see \/([^\/]*)\/$/ do |regexp|
   regexp = Regexp.new(regexp)
   if response.respond_to? :should
     response.should contain(regexp)
@@ -168,7 +168,7 @@ Then /^(?:|I )(?:|should )see \/([^\/]*)\/$/ do |regexp|
   end
 end
 
-Then /^(?:|I )(?:|should )see \/([^\/]*)\/ within "([^"]*)"$/ do |regexp, selector|
+Then /^(?:|I )should see \/([^\/]*)\/ within "([^"]*)"$/ do |regexp, selector|
   within(selector) do |content|
     regexp = Regexp.new(regexp)
     if content.respond_to? :should
@@ -179,7 +179,7 @@ Then /^(?:|I )(?:|should )see \/([^\/]*)\/ within "([^"]*)"$/ do |regexp, select
   end
 end
 
-Then /^(?:|I )(?:do|should) not see "([^"]*)"$/ do |text|
+Then /^(?:|I )should not see "([^"]*)"$/ do |text|
   if response.respond_to? :should_not
     response.should_not contain(text)
   else
@@ -187,7 +187,7 @@ Then /^(?:|I )(?:do|should) not see "([^"]*)"$/ do |text|
   end
 end
 
-Then /^(?:|I )(?:do|should) not see "([^"]*)" within "([^"]*)"$/ do |text, selector|
+Then /^(?:|I )should not see "([^"]*)" within "([^"]*)"$/ do |text, selector|
   within(selector) do |content|
     if content.respond_to? :should_not
       content.should_not contain(text)
@@ -198,7 +198,7 @@ Then /^(?:|I )(?:do|should) not see "([^"]*)" within "([^"]*)"$/ do |text, selec
   end
 end
 
-Then /^(?:|I )(?:do|should) not see \/([^\/]*)\/$/ do |regexp|
+Then /^(?:|I )should not see \/([^\/]*)\/$/ do |regexp|
   regexp = Regexp.new(regexp)
   if response.respond_to? :should_not
     response.should_not contain(regexp)
@@ -207,7 +207,7 @@ Then /^(?:|I )(?:do|should) not see \/([^\/]*)\/$/ do |regexp|
   end
 end
 
-Then /^(?:|I )(?:do|should) not see \/([^\/]*)\/ within "([^"]*)"$/ do |regexp, selector|
+Then /^(?:|I )should not see \/([^\/]*)\/ within "([^"]*)"$/ do |regexp, selector|
   within(selector) do |content|
     regexp = Regexp.new(regexp)
     if content.respond_to? :should_not
@@ -218,7 +218,7 @@ Then /^(?:|I )(?:do|should) not see \/([^\/]*)\/ within "([^"]*)"$/ do |regexp, 
   end
 end
 
-Then /^the "([^"]*)" field (?:contains|should contain) "([^"]*)"$/ do |field, value|
+Then /^the "([^"]*)" field should contain "([^"]*)"$/ do |field, value|
   field_value = field_labeled(field).value
   if field_value.respond_to? :should
     field_value.should =~ /#{value}/
@@ -227,7 +227,7 @@ Then /^the "([^"]*)" field (?:contains|should contain) "([^"]*)"$/ do |field, va
   end
 end
 
-Then /^the "([^"]*)" field (?:does not contain|should not contain) "([^"]*)"$/ do |field, value|
+Then /^the "([^"]*)" field should not contain "([^"]*)"$/ do |field, value|
   field_value = field_labeled(field).value
   if field_value.respond_to? :should_not
     field_value.should_not =~ /#{value}/
@@ -236,7 +236,7 @@ Then /^the "([^"]*)" field (?:does not contain|should not contain) "([^"]*)"$/ d
   end
 end
 
-Then /^the "([^"]*)" checkbox (?:is|should be) checked$/ do |label|
+Then /^the "([^"]*)" checkbox should be checked$/ do |label|
   field = field_labeled(label)
   if field.respond_to? :should
     field.should be_checked
@@ -245,7 +245,7 @@ Then /^the "([^"]*)" checkbox (?:is|should be) checked$/ do |label|
   end
 end
 
-Then /^the "([^"]*)" checkbox (?:is not|should not be) checked$/ do |label|
+Then /^the "([^"]*)" checkbox should not be checked$/ do |label|
   field = field_labeled(label)
   if field.respond_to? :should_not
     field.should_not be_checked
@@ -254,7 +254,7 @@ Then /^the "([^"]*)" checkbox (?:is not|should not be) checked$/ do |label|
   end
 end
 
-Then /^(?:|I )(?:am|should be) on (.+)$/ do |page_name|
+Then /^(?:|I )should be on (.+)$/ do |page_name|
   current_path = URI.parse(current_url).path
   if current_path.respond_to? :should
     current_path.should == path_to(page_name)
@@ -263,7 +263,7 @@ Then /^(?:|I )(?:am|should be) on (.+)$/ do |page_name|
   end
 end
 
-Then /^(?:|I )(?:|should )have the following query string:$/ do |expected_pairs|
+Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   query = URI.parse(current_url).query
   actual_params = query ? CGI.parse(query) : {}
   expected_params = {}
