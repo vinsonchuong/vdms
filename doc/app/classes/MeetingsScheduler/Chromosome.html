@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: MeetingsScheduler::Chromosome</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">MeetingsScheduler::Chromosome</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/app/helpers/meetings_scheduler_rb.html">
+                app/helpers/meetings_scheduler.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                Object
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000032">&lt;=&gt;</a>&nbsp;&nbsp;
+      <a href="#M000031">[]</a>&nbsp;&nbsp;
+      <a href="#M000026">fitness</a>&nbsp;&nbsp;
+      <a href="#M000033">length</a>&nbsp;&nbsp;
+      <a href="#M000027">mutate</a>&nbsp;&nbsp;
+      <a href="#M000023">new</a>&nbsp;&nbsp;
+      <a href="#M000028">reproduce</a>&nbsp;&nbsp;
+      <a href="#M000029">seed</a>&nbsp;&nbsp;
+      <a href="#M000024">set_factors_to_consider</a>&nbsp;&nbsp;
+      <a href="#M000025">set_fitness_scores_table</a>&nbsp;&nbsp;
+      <a href="#M000030">solution_string</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+    <div id="includes">
+      <h3 class="section-bar">Included Modules</h3>
+
+      <div id="includes-list">
+        <span class="include-name">Comparable</span>
+      </div>
+    </div>
+
+    <div id="section">
+
+
+
+
+
+    <div id="attribute-list">
+      <h3 class="section-bar">Attributes</h3>
+
+      <div class="name-list">
+        <table>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">meeting_solution</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">normalized_fitness</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        </table>
+      </div>
+    </div>
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000027" class="method-detail">
+        <a name="M000027"></a>
+
+        <div class="method-heading">
+          <a href="#M000027" class="method-signature">
+          <span class="method-name">mutate</span><span class="method-args">(chromosome)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000027-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000027-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 313</span>
+313:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mutate</span>(<span class="ruby-identifier">chromosome</span>)
+314:       <span class="ruby-comment cmt"># add more stuff such as double mutation, inversion, translocation of two snippets, simulated annealing mutation rates, etc</span>
+315:       <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">ok_to_mutate</span>(<span class="ruby-identifier">chromosome</span>)
+316:         <span class="ruby-identifier">which_mutation</span> = <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">random</span>
+317:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">which_mutation</span>
+318:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@@factors_to_consider</span>[<span class="ruby-identifier">:chromosomal_inversion_probability</span>]
+319:           <span class="ruby-identifier">indexes</span> = <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">pick_two_random_indexes</span>(<span class="ruby-identifier">chromosome</span>)
+320:           <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">chromosomal_inversion</span>(<span class="ruby-identifier">chromosome</span>, <span class="ruby-identifier">indexes</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">indexes</span>[<span class="ruby-value">1</span>])
+321:         <span class="ruby-keyword kw">when</span> <span class="ruby-ivar">@@factors_to_consider</span>[<span class="ruby-identifier">:chromosomal_inversion_probability</span>]<span class="ruby-operator">...</span>
+322:             <span class="ruby-ivar">@@factors_to_consider</span>[<span class="ruby-identifier">:chromosomal_inversion_probability</span>] <span class="ruby-operator">+</span> <span class="ruby-ivar">@@factors_to_consider</span>[<span class="ruby-identifier">:point_mutation_probability</span>]
+323:           <span class="ruby-identifier">index</span> = <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">random</span>(<span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">length</span>)
+324:           <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">point_mutation</span>(<span class="ruby-identifier">chromosome</span>, <span class="ruby-identifier">index</span>)
+325:         <span class="ruby-keyword kw">else</span>
+326:           <span class="ruby-identifier">index</span> = <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">random</span>(<span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+327:           <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">reverse_two_adjacent_sequences</span>(<span class="ruby-identifier">chromosome</span>, <span class="ruby-identifier">index</span>)
+328:         <span class="ruby-keyword kw">end</span>
+329:         <span class="ruby-ivar">@fitness</span> = <span class="ruby-keyword kw">nil</span> <span class="ruby-comment cmt"># need to recalculate fitness value when fitness method is called</span>
+330:       <span class="ruby-keyword kw">end</span>      
+331:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000023" class="method-detail">
+        <a name="M000023"></a>
+
+        <div class="method-heading">
+          <a href="#M000023" class="method-signature">
+          <span class="method-name">new</span><span class="method-args">(solution_string)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000023-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000023-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 269</span>
+269:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">solution_string</span>)
+270:       <span class="ruby-ivar">@meeting_solution</span> = []
+271:       <span class="ruby-ivar">@@factors_to_consider</span>[<span class="ruby-identifier">:faculties</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">faculty_id</span>, <span class="ruby-identifier">faculty</span><span class="ruby-operator">|</span>
+272:         <span class="ruby-identifier">faculty</span>[<span class="ruby-identifier">:schedule</span>].<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">room_timeslot_pair</span>, <span class="ruby-identifier">schedule_index</span><span class="ruby-operator">|</span>
+273:           <span class="ruby-identifier">faculty</span>[<span class="ruby-identifier">:max_students_per_meeting</span>].<span class="ruby-identifier">times</span> <span class="ruby-keyword kw">do</span>
+274:             <span class="ruby-ivar">@meeting_solution</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Nucleotide</span>.<span class="ruby-identifier">new</span>([<span class="ruby-identifier">faculty_id</span>, <span class="ruby-identifier">schedule_index</span>, <span class="ruby-identifier">solution_string</span>.<span class="ruby-identifier">slice!</span>(<span class="ruby-value">0</span>)])
+275:           <span class="ruby-keyword kw">end</span>
+276:         <span class="ruby-keyword kw">end</span>
+277:       <span class="ruby-keyword kw">end</span>
+278:       
+279:       <span class="ruby-ivar">@normalized_fitness</span> = <span class="ruby-value">0</span>
+280:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000028" class="method-detail">
+        <a name="M000028"></a>
+
+        <div class="method-heading">
+          <a href="#M000028" class="method-signature">
+          <span class="method-name">reproduce</span><span class="method-args">(parent1, parent2)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Produces only ONE child chromosome
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000028-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000028-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 334</span>
+334:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">reproduce</span>(<span class="ruby-identifier">parent1</span>, <span class="ruby-identifier">parent2</span>)
+335:       <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">random</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@@factors_to_consider</span>[<span class="ruby-identifier">:double_crossover_probability</span>]
+336:         <span class="ruby-identifier">indexes</span> = <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">pick_two_random_indexes</span>(<span class="ruby-identifier">parent1</span>)        
+337:         <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">double_crossover</span>(<span class="ruby-identifier">parent1</span>, <span class="ruby-identifier">parent2</span>, <span class="ruby-identifier">indexes</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">indexes</span>[<span class="ruby-value">1</span>])
+338:       <span class="ruby-keyword kw">else</span>
+339:         <span class="ruby-identifier">splice_index</span> = <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">random</span>(<span class="ruby-identifier">parent1</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">2</span>) <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+340:         <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">single_crossover</span>(<span class="ruby-identifier">parent1</span>, <span class="ruby-identifier">parent2</span>, <span class="ruby-identifier">splice_index</span>)
+341:       <span class="ruby-keyword kw">end</span>
+342:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000029" class="method-detail">
+        <a name="M000029"></a>
+
+        <div class="method-heading">
+          <a href="#M000029" class="method-signature">
+          <span class="method-name">seed</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+<a href="Chromosome.html#M000029">seed</a> produces an individual solution
+(chromosome) for the initial population
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000029-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000029-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 345</span>
+345:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">seed</span>
+346:       <span class="ruby-identifier">solution_string</span> =  <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">create_solution_string</span> <span class="ruby-comment cmt"># original code moved to method create_meeting_solution</span>
+347:       <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">solution_string</span>)
+348:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000024" class="method-detail">
+        <a name="M000024"></a>
+
+        <div class="method-heading">
+          <a href="#M000024" class="method-signature">
+          <span class="method-name">set_factors_to_consider</span><span class="method-args">(factors_to_consider)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000024-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000024-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 282</span>
+282:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">set_factors_to_consider</span>(<span class="ruby-identifier">factors_to_consider</span>)
+283:       <span class="ruby-ivar">@@factors_to_consider</span> = <span class="ruby-identifier">factors_to_consider</span>
+284:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000025" class="method-detail">
+        <a name="M000025"></a>
+
+        <div class="method-heading">
+          <a href="#M000025" class="method-signature">
+          <span class="method-name">set_fitness_scores_table</span><span class="method-args">(fitness_scores)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000025-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000025-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 286</span>
+286:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">set_fitness_scores_table</span>(<span class="ruby-identifier">fitness_scores</span>)
+287:       <span class="ruby-ivar">@@fitness_scores_table</span> = <span class="ruby-identifier">fitness_scores</span>
+288:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000032" class="method-detail">
+        <a name="M000032"></a>
+
+        <div class="method-heading">
+          <a href="#M000032" class="method-signature">
+          <span class="method-name">&lt;=&gt;</span><span class="method-args">(other)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000032-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000032-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 358</span>
+358:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">&lt;=&gt;</span>(<span class="ruby-identifier">other</span>)
+359:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">solution_string</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">solution_string</span>
+360:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000031" class="method-detail">
+        <a name="M000031"></a>
+
+        <div class="method-heading">
+          <a href="#M000031" class="method-signature">
+          <span class="method-name">[]</span><span class="method-args">(index)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000031-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000031-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 354</span>
+354:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-identifier">index</span>)
+355:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">solution_string</span>[<span class="ruby-identifier">index</span>]
+356:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000026" class="method-detail">
+        <a name="M000026"></a>
+
+        <div class="method-heading">
+          <a href="#M000026" class="method-signature">
+          <span class="method-name">fitness</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+<a href="Chromosome.html#M000026">fitness</a> is basically a
+utility/heuristic value function that evaluate how good a particular
+solution is
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000026-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000026-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 291</span>
+291:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">fitness</span>
+292:       <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@fitness</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@fitness</span>
+293:       
+294:       <span class="ruby-comment cmt"># remove duplicates in time slot for prof, get the best</span>
+295:       
+296:       <span class="ruby-ivar">@fitness</span> = <span class="ruby-value">0</span>
+297:       <span class="ruby-ivar">@meeting_solution</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">nucleotide</span><span class="ruby-operator">|</span>
+298:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">nucleotide</span>.<span class="ruby-identifier">admit_id</span>
+299:           <span class="ruby-identifier">admit</span> = <span class="ruby-ivar">@@factors_to_consider</span>[<span class="ruby-identifier">:attending_admits</span>][<span class="ruby-identifier">nucleotide</span>.<span class="ruby-identifier">admit_id</span>]
+300:           <span class="ruby-identifier">faculty</span> = <span class="ruby-ivar">@@factors_to_consider</span>[<span class="ruby-identifier">:faculties</span>][<span class="ruby-identifier">nucleotide</span>.<span class="ruby-identifier">faculty_id</span>]
+301:           <span class="ruby-identifier">meeting_possible_score</span> = <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">meeting_possible_score</span>(<span class="ruby-identifier">admit</span>, <span class="ruby-identifier">faculty</span>, <span class="ruby-identifier">nucleotide</span>.<span class="ruby-identifier">schedule_index</span>)
+302:           
+303:           <span class="ruby-ivar">@fitness</span> <span class="ruby-operator">+=</span>  (<span class="ruby-identifier">meeting_possible_score</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">0</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">meeting_possible_score</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">meeting_possible_score</span> <span class="ruby-operator">+</span>
+304:             <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">admit_preference_score</span>(<span class="ruby-identifier">admit</span>, <span class="ruby-identifier">faculty</span>, <span class="ruby-identifier">nucleotide</span>.<span class="ruby-identifier">schedule_index</span>) <span class="ruby-operator">+</span>
+305:             <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">faculty_preference_score</span>(<span class="ruby-identifier">admit</span>, <span class="ruby-identifier">faculty</span>) <span class="ruby-operator">+</span>
+306:             <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">area_match_score</span>(<span class="ruby-identifier">admit</span>, <span class="ruby-identifier">faculty</span>)
+307:         <span class="ruby-keyword kw">end</span>
+308:       <span class="ruby-keyword kw">end</span>
+309:       
+310:       <span class="ruby-ivar">@fitness</span>
+311:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000033" class="method-detail">
+        <a name="M000033"></a>
+
+        <div class="method-heading">
+          <a href="#M000033" class="method-signature">
+          <span class="method-name">length</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000033-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000033-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 362</span>
+362:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">length</span>
+363:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">meeting_solution</span>.<span class="ruby-identifier">length</span>
+364:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000030" class="method-detail">
+        <a name="M000030"></a>
+
+        <div class="method-heading">
+          <a href="#M000030" class="method-signature">
+          <span class="method-name">solution_string</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000030-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000030-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 350</span>
+350:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">solution_string</span>
+351:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">meeting_solution</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> <span class="ruby-identifier">n</span>.<span class="ruby-identifier">admit_id</span> }
+352:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>
