@@ -16,14 +16,16 @@ module MeetingsScheduler
 #                     :chromosomal_inversion_probability => a decimal range from 0 to 1, 
 #                     :point_mutation_probability => a decimal range from 0 to 1,
 #                     :double_crossover_probability => a decimal range from 0 to 1,
-#                     :lowest_rank_possible => a decimal range from 0 to 1 
+#                     :lowest_rank_possible => an integer representing the number of ranks an admit can have
 #                    }
 #                    The structure of :attending_admits looks like:
-#                    { id1 => { :name => a string of the admit's name,
+#                    { id1 => { :id => integer of the admit's database id, same as id1,
+#                               :name => a string of the admit's name,
 #                               :ranking => array of hashes of the admit's preference list,
 #                               :available_times => range_set that encodes the admit's 24 hour availability
 #                             },
-#                      id2 => { :name => a string of the admit's name,
+#                      id2 => { :id => integer of the admit's database id, same as id2,
+#                               :name => a string of the admit's name,
 #                               :ranking => array of hashes of the admit's preference list,
 #                               :available_times => range_set that encodes the admit's 24 hour availability
 #                             },
@@ -32,12 +34,14 @@ module MeetingsScheduler
 #                     etc, where id1 and id2 are ints of the admit's database id,              
 #                    }
 #                    The structure of :faculties looks like:
-#                    {:fid1 => { :max_students_per_meeting => an int specifying the maximum number of student allowed per meeting for this faculty,
+#                    { fid1 => { :id => integer of the faculty's database id, same as fid1,
+#                                :max_students_per_meeting => an int specifying the maximum number of student allowed per meeting for this faculty,
 #                                :admit_rankings => array of hashes of the faculty's preference list,
 #                                :schedule => [{ :room => 'room1', :time_slot => timerange },
 #                                              { :room => 'room2', :time_slot => timerange } ....etc],
 #                              },
-#                     :fid2 => { :max_students_per_meeting => an int specifying the maximum number of student allowed per meeting for this faculty,
+#                     :fid2 => { :id => integer of the faculty's database id, same as fid2,
+#                                :max_students_per_meeting => an int specifying the maximum number of student allowed per meeting for this faculty,
 #                                :admit_rankings => array of hashes of the faculty's preference list,
 #                                :schedule => [{ :room => 'room1', :time_slot => timerange },
 #                                              { :room => 'room2', :time_slot => timerange } ....etc],
@@ -301,7 +305,7 @@ module MeetingsScheduler
           meeting_possible_score = Chromosome.meeting_possible_score(admit, faculty, nucleotide.schedule_index)
           
           @fitness +=  (meeting_possible_score <= 0) ? meeting_possible_score : meeting_possible_score +
-            Chromosome.admit_preference_score(admit, faculty, nucleotide.schedule_index) +
+            Chromosome.admit_preference_score(@meeting_solution, admit, faculty, nucleotide.schedule_index) +
             Chromosome.faculty_preference_score(admit, faculty) +
             Chromosome.area_match_score(admit, faculty)
         end
@@ -400,26 +404,34 @@ module MeetingsScheduler
     
     # Score based on achieving the ADMIT's faculty preference
     def self.faculty_preference_score(admit, faculty)
-      ranking = admit[:rankings].find{ |r| r[:faculty_id] == faculty[:id] }
+      ranking = Chromosome.find_faculty_ranking(admit, faculty)
       if ranking
-        @@fitness_scores_table[:faculty_ranking_weight_score] * (@@factors_to_consider[:lowest_rank_possible])
+        @@fitness_scores_table[:faculty_ranking_weight_score] * (@@factors_to_consider[:lowest_rank_possible]+1 - ranking[:rank])
       else
         @@fitness_scores_table[:faculty_ranking_default]
       end
     end
+
+    def self.find_faculty_ranking(admit, faculty)
+      admit[:rankings].find{ |r| r[:faculty_id] == faculty[:id] }
+    end
     
     # Score based on achieving the FACULTY's admit preference
-    def self.admit_preference_score(admit, faculty, schedule_index)
-      ranking = faculty[:rankings].find{ |r| r[:admit_id] == admit[:id] }
-      if ranking      
-        @@fitness_scores_table[:admit_ranking_weight_score] * (@@factors_to_consider[:lowest_rank_possible]) +
-          Chromosome.one_on_one_score(admit, faculty, ranking, schedule_index) +
+    def self.admit_preference_score(meeting_solution, admit, faculty, schedule_index)
+      ranking = Chromosome.find_admit_ranking(admit, faculty)
+      if ranking
+        @@fitness_scores_table[:admit_ranking_weight_score] * (@@factors_to_consider[:lowest_rank_possible]+1 - ranking[:rank]) +
+          Chromosome.one_on_one_score(meeting_solution, admit, faculty, ranking, schedule_index) +
           Chromosome.mandatory_meeting_score(ranking)
       else
         @@fitness_scores_table[:admit_ranking_default]
       end
     end
 
+    def self.find_admit_ranking(admit, faculty)
+      faculty[:rankings].find{ |r| r[:admit_id] == admit[:id] }
+    end
+    
     # Score based on whether the admit's choices of area fit the professor's area of research
     def self.area_match_score(admit, faculty)
       [admit[:area1], admit[:area2]].include? faculty[:area] ? @@fitness_scores_table[:area_match_score] :
@@ -427,10 +439,10 @@ module MeetingsScheduler
     end
     
     # Score for faculty's one-on-one meeting request met
-    def self.one_on_one_score(admit, faculty, ranking, schedule_index)
+    def self.one_on_one_score(meeting_solution, admit, faculty, ranking, schedule_index)
       if ranking[:one_on_one]
-        seats = @meeting_solution.find_all{ |n| n.faculty_id == faculty[:id] and n.schedule_index == schedule_index }.collect{ |n| n.admit_id }
-        if seats.uniq.delete_if{ |id| id == nil } == [admit[:id]]
+        people_in_meeting = Chromosome.get_people_in_meeting(meeting_solution, faculty, schedule_index)
+        if Chromosome.only_one_person_in_meeting(people_in_meeting, admit)
           @@fitness_scores_table[:one_on_one_score]
         else
           @@fitness_scores_table[:one_on_one_penalty]
@@ -438,6 +450,14 @@ module MeetingsScheduler
       else
         @@fitness_scores_table[:one_on_one_default]
       end
+    end
+
+    def self.get_people_in_meeting(meeting_solution, faculty, schedule_index)
+      meeting_solution.find_all{ |n| n.faculty_id == faculty[:id] and n.schedule_index == schedule_index }.collect{ |n| n.admit_id }
+    end
+    
+    def self.only_one_person_in_meeting(people_in_meeting, admit)
+      people_in_meeting.uniq.delete_if{ |id| id == nil } == [admit[:id]]
     end
 
     # Score for faculty's mandatory meeting request met
@@ -484,7 +504,7 @@ module MeetingsScheduler
     # Abstracted methods for easier stubbing in Rspec tests
 
     def self.ok_to_mutate(chromosome)
-      chromosome.normalized_fitness && rand < ((1 - chromosome.normalized_fitness) * 0.3)
+      chromosome.normalized_fitness && Chromosome.random < ((1 - chromosome.normalized_fitness) * 0.3)
     end
     
     def self.random(params=nil)

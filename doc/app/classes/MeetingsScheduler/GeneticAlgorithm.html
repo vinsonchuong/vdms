@@ -86,12 +86,12 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000020">mutate_all_population</a>&nbsp;&nbsp;
-      <a href="#M000022">replace_worst_ranked</a>&nbsp;&nbsp;
-      <a href="#M000019">reproduction</a>&nbsp;&nbsp;
-      <a href="#M000017">run</a>&nbsp;&nbsp;
-      <a href="#M000021">select_best_chromosome</a>&nbsp;&nbsp;
-      <a href="#M000018">selection</a>&nbsp;&nbsp;
+      <a href="#M000024">mutate_all_population</a>&nbsp;&nbsp;
+      <a href="#M000026">replace_worst_ranked</a>&nbsp;&nbsp;
+      <a href="#M000023">reproduction</a>&nbsp;&nbsp;
+      <a href="#M000021">run</a>&nbsp;&nbsp;
+      <a href="#M000025">select_best_chromosome</a>&nbsp;&nbsp;
+      <a href="#M000022">selection</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -113,11 +113,11 @@
     <div id="methods">
       <h3 class="section-bar">Public Class methods</h3>
 
-      <div id="method-M000020" class="method-detail">
-        <a name="M000020"></a>
+      <div id="method-M000024" class="method-detail">
+        <a name="M000024"></a>
 
         <div class="method-heading">
-          <a href="#M000020" class="method-signature">
+          <a href="#M000024" class="method-signature">
           <span class="method-name">mutate_all_population</span><span class="method-args">(population)</span>
           </a>
         </div>
@@ -125,33 +125,33 @@
         <div class="method-description">
           <p>
 Definition: <a
-href="GeneticAlgorithm.html#M000020">mutate_all_population</a> will call <a
-href="Chromosome.html#M000027">Chromosome.mutate</a> on each chromosome in
+href="GeneticAlgorithm.html#M000024">mutate_all_population</a> will call <a
+href="Chromosome.html#M000031">Chromosome.mutate</a> on each chromosome in
 the population @params: population, an array of chromosomes @return:
 mutated_population, an array of chromosomes
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000020-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000020-source">
+            onclick="toggleCode('M000024-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000024-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 211</span>
-211:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mutate_all_population</span>(<span class="ruby-identifier">population</span>)
-212:       <span class="ruby-identifier">mutated_population</span> = []
-213:       <span class="ruby-identifier">population</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chromosome</span><span class="ruby-operator">|</span>
-214:         <span class="ruby-identifier">mutated_population</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">mutate</span>(<span class="ruby-identifier">chromosome</span>)
-215:       <span class="ruby-keyword kw">end</span>
-216:       <span class="ruby-identifier">mutated_population</span>
-217:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 215</span>
+215:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mutate_all_population</span>(<span class="ruby-identifier">population</span>)
+216:       <span class="ruby-identifier">mutated_population</span> = []
+217:       <span class="ruby-identifier">population</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chromosome</span><span class="ruby-operator">|</span>
+218:         <span class="ruby-identifier">mutated_population</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">mutate</span>(<span class="ruby-identifier">chromosome</span>)
+219:       <span class="ruby-keyword kw">end</span>
+220:       <span class="ruby-identifier">mutated_population</span>
+221:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000022" class="method-detail">
-        <a name="M000022"></a>
+      <div id="method-M000026" class="method-detail">
+        <a name="M000026"></a>
 
         <div class="method-heading">
-          <a href="#M000022" class="method-signature">
+          <a href="#M000026" class="method-signature">
           <span class="method-name">replace_worst_ranked</span><span class="method-args">(population, offsprings)</span>
           </a>
         </div>
@@ -159,97 +159,54 @@ mutated_population, an array of chromosomes
         <div class="method-description">
           <p>
 Definition: <a
-href="GeneticAlgorithm.html#M000022">replace_worst_ranked</a> replaces the
+href="GeneticAlgorithm.html#M000026">replace_worst_ranked</a> replaces the
 worst ranked population with its offsprings @params: population, an array
 of chromosomes offsprings, an array of chromosomes @return: a new
 population, an array of chromosomes
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000022-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000022-source">
+            onclick="toggleCode('M000026-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000026-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 235</span>
-235:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">replace_worst_ranked</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">offsprings</span>)
-236:       <span class="ruby-identifier">size</span> = <span class="ruby-identifier">offsprings</span>.<span class="ruby-identifier">size</span>
-237:       <span class="ruby-identifier">population</span>.<span class="ruby-identifier">sort!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span><span class="ruby-operator">|</span> <span class="ruby-identifier">b</span>.<span class="ruby-identifier">fitness</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">fitness</span> }
-238:       <span class="ruby-identifier">population</span> = <span class="ruby-identifier">population</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span>((<span class="ruby-value">-1</span><span class="ruby-operator">*</span><span class="ruby-identifier">size</span>)<span class="ruby-operator">-</span><span class="ruby-value">1</span>)] <span class="ruby-operator">+</span> <span class="ruby-identifier">offsprings</span>
-239:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 239</span>
+239:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">replace_worst_ranked</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">offsprings</span>)
+240:       <span class="ruby-identifier">size</span> = <span class="ruby-identifier">offsprings</span>.<span class="ruby-identifier">size</span>
+241:       <span class="ruby-identifier">population</span>.<span class="ruby-identifier">sort!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span><span class="ruby-operator">|</span> <span class="ruby-identifier">b</span>.<span class="ruby-identifier">fitness</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">fitness</span> }
+242:       <span class="ruby-identifier">population</span> = <span class="ruby-identifier">population</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span>((<span class="ruby-value">-1</span><span class="ruby-operator">*</span><span class="ruby-identifier">size</span>)<span class="ruby-operator">-</span><span class="ruby-value">1</span>)] <span class="ruby-operator">+</span> <span class="ruby-identifier">offsprings</span>
+243:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000019" class="method-detail">
-        <a name="M000019"></a>
+      <div id="method-M000023" class="method-detail">
+        <a name="M000023"></a>
 
         <div class="method-heading">
-          <a href="#M000019" class="method-signature">
+          <a href="#M000023" class="method-signature">
           <span class="method-name">reproduction</span><span class="method-args">(breed_population)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p>
-Definition: <a href="GeneticAlgorithm.html#M000019">reproduction</a> calls
-on <a href="Chromosome.html#M000028">Chromosome.reproduce</a> to produce
+Definition: <a href="GeneticAlgorithm.html#M000023">reproduction</a> calls
+on <a href="Chromosome.html#M000032">Chromosome.reproduce</a> to produce
 the offspring generation @params: breed_population, an array of chromosomes
 @return: offsprings, a new array of chromosomes
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000019-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000019-source">
+            onclick="toggleCode('M000023-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000023-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 200</span>
-200:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">reproduction</span>(<span class="ruby-identifier">breed_population</span>)
-201:       <span class="ruby-identifier">offsprings</span> = []
-202:       <span class="ruby-value">0</span>.<span class="ruby-identifier">upto</span>(<span class="ruby-identifier">breed_population</span>.<span class="ruby-identifier">size</span><span class="ruby-operator">/</span><span class="ruby-value">2</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
-203:         <span class="ruby-identifier">offsprings</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">reproduce</span>(<span class="ruby-identifier">breed_population</span>[<span class="ruby-value">2</span><span class="ruby-operator">*</span><span class="ruby-identifier">i</span>], <span class="ruby-identifier">breed_population</span>[<span class="ruby-value">2</span><span class="ruby-operator">*</span><span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>])
-204:       <span class="ruby-keyword kw">end</span>
-205:       <span class="ruby-identifier">offsprings</span>
-206:     <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
-      <div id="method-M000017" class="method-detail">
-        <a name="M000017"></a>
-
-        <div class="method-heading">
-          <a href="#M000017" class="method-signature">
-          <span class="method-name">run</span><span class="method-args">(population, total_generations, factors_to_consider)</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p>
-Definition: <a href="GeneticAlgorithm.html#M000017">run</a> is the main
-execution of the algorithm. Calling <a
-href="GeneticAlgorithm.html#M000017">run</a> will theoritically output the
-best solution available after total_generations
-</p>
-<p>
-@params: population: an array of chromosomes total_generation: an int to
-specify how many generation to <a
-href="GeneticAlgorithm.html#M000017">run</a> the algorithm
-factors_to_consider: a hash, the specific structure of this hash, please
-refer to <a href="Scheduler.html#M000038">Scheduler.new</a> method
-@returns: the best chromosome object
-</p>
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000017-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000017-source">
-<pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 149</span>
-149:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">run</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">total_generations</span>, <span class="ruby-identifier">factors_to_consider</span>)
-150:       <span class="ruby-identifier">total_generations</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword kw">do</span>
-151:         <span class="ruby-identifier">parents</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">selection</span>(<span class="ruby-identifier">population</span>)
-152:         <span class="ruby-identifier">offsprings</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">reproduction</span>(<span class="ruby-identifier">parents</span>)
-153:         <span class="ruby-identifier">population</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">mutate_all_population</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">factors_to_consider</span>)
-154:         <span class="ruby-identifier">population</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">replace_worst_ranked</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">offsprings</span>)    
-155:       <span class="ruby-keyword kw">end</span>
-156:       <span class="ruby-identifier">best_chromosome</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">select_best_chromosome</span>(<span class="ruby-identifier">population</span>)
-157:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 204</span>
+204:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">reproduction</span>(<span class="ruby-identifier">breed_population</span>)
+205:       <span class="ruby-identifier">offsprings</span> = []
+206:       <span class="ruby-value">0</span>.<span class="ruby-identifier">upto</span>(<span class="ruby-identifier">breed_population</span>.<span class="ruby-identifier">size</span><span class="ruby-operator">/</span><span class="ruby-value">2</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+207:         <span class="ruby-identifier">offsprings</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Chromosome</span>.<span class="ruby-identifier">reproduce</span>(<span class="ruby-identifier">breed_population</span>[<span class="ruby-value">2</span><span class="ruby-operator">*</span><span class="ruby-identifier">i</span>], <span class="ruby-identifier">breed_population</span>[<span class="ruby-value">2</span><span class="ruby-operator">*</span><span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>])
+208:       <span class="ruby-keyword kw">end</span>
+209:       <span class="ruby-identifier">offsprings</span>
+210:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -260,6 +217,49 @@ refer to <a href="Scheduler.html#M000038">Scheduler.new</a> method
 
         <div class="method-heading">
           <a href="#M000021" class="method-signature">
+          <span class="method-name">run</span><span class="method-args">(population, total_generations, factors_to_consider)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Definition: <a href="GeneticAlgorithm.html#M000021">run</a> is the main
+execution of the algorithm. Calling <a
+href="GeneticAlgorithm.html#M000021">run</a> will theoritically output the
+best solution available after total_generations
+</p>
+<p>
+@params: population: an array of chromosomes total_generation: an int to
+specify how many generation to <a
+href="GeneticAlgorithm.html#M000021">run</a> the algorithm
+factors_to_consider: a hash, the specific structure of this hash, please
+refer to <a href="Scheduler.html#M000042">Scheduler.new</a> method
+@returns: the best chromosome object
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000021-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000021-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 153</span>
+153:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">run</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">total_generations</span>, <span class="ruby-identifier">factors_to_consider</span>)
+154:       <span class="ruby-identifier">total_generations</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword kw">do</span>
+155:         <span class="ruby-identifier">parents</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">selection</span>(<span class="ruby-identifier">population</span>)
+156:         <span class="ruby-identifier">offsprings</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">reproduction</span>(<span class="ruby-identifier">parents</span>)
+157:         <span class="ruby-identifier">population</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">mutate_all_population</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">factors_to_consider</span>)
+158:         <span class="ruby-identifier">population</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">replace_worst_ranked</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">offsprings</span>)    
+159:       <span class="ruby-keyword kw">end</span>
+160:       <span class="ruby-identifier">best_chromosome</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">select_best_chromosome</span>(<span class="ruby-identifier">population</span>)
+161:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000025" class="method-detail">
+        <a name="M000025"></a>
+
+        <div class="method-heading">
+          <a href="#M000025" class="method-signature">
           <span class="method-name">select_best_chromosome</span><span class="method-args">(population)</span>
           </a>
         </div>
@@ -271,27 +271,27 @@ population, an array of chromosomes @return: best_chromosome, a chromosome
 object
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000021-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000021-source">
+            onclick="toggleCode('M000025-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000025-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 222</span>
-222:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">select_best_chromosome</span>(<span class="ruby-identifier">population</span>)
-223:       <span class="ruby-identifier">best_chromosome</span> = <span class="ruby-identifier">population</span>[<span class="ruby-value">0</span>]
-224:       <span class="ruby-identifier">population</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chromosome</span><span class="ruby-operator">|</span>
-225:         <span class="ruby-identifier">best_chromosome</span> = <span class="ruby-identifier">chromosome</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">fitness</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">best_chromosome</span>.<span class="ruby-identifier">fitness</span>
-226:       <span class="ruby-keyword kw">end</span>
-227:       <span class="ruby-identifier">best_chromosome</span>
-228:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 226</span>
+226:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">select_best_chromosome</span>(<span class="ruby-identifier">population</span>)
+227:       <span class="ruby-identifier">best_chromosome</span> = <span class="ruby-identifier">population</span>[<span class="ruby-value">0</span>]
+228:       <span class="ruby-identifier">population</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chromosome</span><span class="ruby-operator">|</span>
+229:         <span class="ruby-identifier">best_chromosome</span> = <span class="ruby-identifier">chromosome</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">fitness</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">best_chromosome</span>.<span class="ruby-identifier">fitness</span>
+230:       <span class="ruby-keyword kw">end</span>
+231:       <span class="ruby-identifier">best_chromosome</span>
+232:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000018" class="method-detail">
-        <a name="M000018"></a>
+      <div id="method-M000022" class="method-detail">
+        <a name="M000022"></a>
 
         <div class="method-heading">
-          <a href="#M000018" class="method-signature">
+          <a href="#M000022" class="method-signature">
           <span class="method-name">selection</span><span class="method-args">(population)</span>
           </a>
         </div>
@@ -302,32 +302,32 @@ object
 new array of chromosomes
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000018-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000018-source">
+            onclick="toggleCode('M000022-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000022-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 174</span>
-174:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">selection</span>(<span class="ruby-identifier">population</span>)
-175:       <span class="ruby-identifier">population</span>.<span class="ruby-identifier">sort!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span><span class="ruby-operator">|</span> <span class="ruby-identifier">b</span>.<span class="ruby-identifier">fitness</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">fitness</span> }
-176:       
-177:       <span class="ruby-identifier">best_fitness</span> = <span class="ruby-identifier">population</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">fitness</span>
-178:       <span class="ruby-identifier">least_fitness</span> = <span class="ruby-identifier">population</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">fitness</span>
-179:       <span class="ruby-identifier">accumulated_fitness</span> = <span class="ruby-value">0</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 178</span>
+178:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">selection</span>(<span class="ruby-identifier">population</span>)
+179:       <span class="ruby-identifier">population</span>.<span class="ruby-identifier">sort!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span><span class="ruby-operator">|</span> <span class="ruby-identifier">b</span>.<span class="ruby-identifier">fitness</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">fitness</span> }
 180:       
-181:       <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">best_fitness</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">least_fitness</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-182:         <span class="ruby-identifier">population</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chromosome</span><span class="ruby-operator">|</span>
-183:           <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">normalized_fitness</span> = (<span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">fitness</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">least_fitness</span>) <span class="ruby-operator">/</span> (<span class="ruby-identifier">best_fitness</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">least_fitness</span>)
-184:           <span class="ruby-identifier">accumulated_fitness</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">normalized_fitness</span>
-185:         <span class="ruby-keyword kw">end</span>
-186:       <span class="ruby-keyword kw">else</span>
-187:         <span class="ruby-identifier">population</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">chromosome</span><span class="ruby-operator">|</span> <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">normalized_fitness</span> = <span class="ruby-value">1</span> }
-188:       <span class="ruby-keyword kw">end</span> 
-189:       
-190:       <span class="ruby-identifier">breed_population</span> = []
-191:       ((<span class="ruby-identifier">population</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">*</span> <span class="ruby-value">2</span>)<span class="ruby-operator">/</span><span class="ruby-value">3</span>).<span class="ruby-identifier">times</span> <span class="ruby-keyword kw">do</span>
-192:         <span class="ruby-identifier">breed_population</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">select_random_individual</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">accumulated_fitness</span>)
-193:       <span class="ruby-keyword kw">end</span>
-194:       <span class="ruby-identifier">breed_population</span>
-195:     <span class="ruby-keyword kw">end</span>
+181:       <span class="ruby-identifier">best_fitness</span> = <span class="ruby-identifier">population</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">fitness</span>
+182:       <span class="ruby-identifier">least_fitness</span> = <span class="ruby-identifier">population</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">fitness</span>
+183:       <span class="ruby-identifier">accumulated_fitness</span> = <span class="ruby-value">0</span>
+184:       
+185:       <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">best_fitness</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">least_fitness</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+186:         <span class="ruby-identifier">population</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chromosome</span><span class="ruby-operator">|</span>
+187:           <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">normalized_fitness</span> = (<span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">fitness</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">least_fitness</span>) <span class="ruby-operator">/</span> (<span class="ruby-identifier">best_fitness</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">least_fitness</span>)
+188:           <span class="ruby-identifier">accumulated_fitness</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">normalized_fitness</span>
+189:         <span class="ruby-keyword kw">end</span>
+190:       <span class="ruby-keyword kw">else</span>
+191:         <span class="ruby-identifier">population</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">chromosome</span><span class="ruby-operator">|</span> <span class="ruby-identifier">chromosome</span>.<span class="ruby-identifier">normalized_fitness</span> = <span class="ruby-value">1</span> }
+192:       <span class="ruby-keyword kw">end</span> 
+193:       
+194:       <span class="ruby-identifier">breed_population</span> = []
+195:       ((<span class="ruby-identifier">population</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">*</span> <span class="ruby-value">2</span>)<span class="ruby-operator">/</span><span class="ruby-value">3</span>).<span class="ruby-identifier">times</span> <span class="ruby-keyword kw">do</span>
+196:         <span class="ruby-identifier">breed_population</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">select_random_individual</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">accumulated_fitness</span>)
+197:       <span class="ruby-keyword kw">end</span>
+198:       <span class="ruby-identifier">breed_population</span>
+199:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

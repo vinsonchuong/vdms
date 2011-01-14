@@ -113,19 +113,19 @@ describe MeetingsScheduler do
   end
    
   describe MeetingsScheduler::Chromosome do
-    describe 'Solutions' do
+    describe 'Attributes' do
       before(:each) do
         @chromosome = MeetingsScheduler::Chromosome.new([1,2,3])
       end
       
-      it 'has a encoding/representation of a solution' do
+      it 'has a string of nucleotides' do
         @chromosome.should respond_to(:meeting_solution)
         @chromosome.should respond_to(:meeting_solution=)
       end
-      
-      it 'is accessible in an array-like fashion' do
-        @chromosome.should respond_to(:[])
-        @chromosome.should respond_to(:[]=)
+
+      it 'has a solution string encoding a solution' do
+        @chromosome.should respond_to(:solution_string)
+        @chromosome.should respond_to(:solution_string=)
       end
       
       it 'has a normalized fitness value for purposes of GA' do
@@ -133,10 +133,10 @@ describe MeetingsScheduler do
         @chromosome.should respond_to(:normalized_fitness=)
       end
 
+      it 'is accessible in an array-like fashion' do @chromosome.should respond_to(:[]) end
       it 'has a description of solution fitness' do @chromosome.should respond_to(:fitness) end
-
       it 'has an unmutable length' do @chromosome.should respond_to(:length) end
-
+      it 'can be compared to another chromosome' do @chromosome.should respond_to(:==) end
     end
     
     describe 'When seeding a new chromosome' do
@@ -160,76 +160,325 @@ describe MeetingsScheduler do
         @chromosome.length.should == xxx
       end
 
-      it 'should add into the solution only students that plan to attend Visit Day' do
-
-      end
     end
 
-    describe 'When reproducing to form children' do
+
+    describe 'class method: new/initialize' do
+    end
+    
+    describe 'class method: fitness' do
+    end
+    
+    describe 'class method: reproduce' do
+    end
+
+    describe 'class method: seed' do
+    end
+    
+    describe 'class method: solution_string' do
+    end
+    
+    describe 'class method: []' do
+    end
+    
+    describe 'class method: <=>' do
+    end
+      
+    describe 'class method: length' do
+    end
+    
+    describe 'class method: create_solution_string' do
+    end
+
+
+    describe 'fitness function score helper methods' do
       before(:each) do
-        @parent1 = MeetingsScheduler::Chromosome.new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-        @parent2 = MeetingsScheduler::Chromosome.new(%w[a b c d e f g h i j])
+        @factors_to_consider = create_valid_factors_hash
+        @fitness_scores_table = create_valid_fitness_scores_table
+      end
+
+      describe 'class method: meeting_possible_score' do
       end
       
-      describe 'When performing single crossover' do
+      describe 'class method: faculty_preference_score' do
         before(:each) do
-          splice_index = 3
-          @child = MeetingsScheduler::Chromosome.single_crossover(@parent1, @parent2, splice_index)
+          @admit, @faculty, @schedule_index = mock('admit'), mock('faculty'), mock('schedule_index')
         end
 
-        it 'should return a chromosome' do @child.class.should == MeetingsScheduler::Chromosome end
-        it 'should single-swap correctly' do @child.should == MeetingsScheduler::Chromosome.new([1, 2, 3] + %w[d e f g h i j]) end
+        it 'should return a rank-weighted score if a faculty is among an ADMIT\'s ranking' do
+          @ranking = { :rank => rand(@factors_to_consider[:number_of_spots_per_admit]) }
+          MeetingsScheduler::Chromosome.stub!(:find_faculty_ranking).and_return(@ranking)
+          MeetingsScheduler::Chromosome.should_receive(:find_faculty_ranking).once.with(@admit, @faculty, @schedule_index)
+          MeetingsScheduler::Chromosome.faculty_preference_score(@admit, @faculty, @schedule_index).should ==
+            @fitness_scores_table[:faculty_ranking_weight_score] * (@factors_to_consider[:lowest_rank_possible]+1 - @ranking[:rank])
+        end
+
+        it 'should return a default score if a faculty is not among an ADMIT\'s ranking' do
+          MeetingsScheduler::Chromosome.stub!(:find_faculty_ranking).and_return nil
+          MeetingsScheduler::Chromosome.should_receive(:find_faculty_ranking).once.with(@admit, @faculty, @schedule_index)          
+          MeetingsScheduler::Chromosome.faculty_preference_score(@admit, @faculty, @schedule_index).should ==
+            @fitness_scores_table[:faculty_ranking_default]
+        end        
+      end
+
+      describe 'class method: find_faculty_ranking' do
+        it 'should return the FACULTY\'s ranking that contains the admit' do
+          @faculty_id = @factors_to_consider[:faculties].keys.shuffle.shuffle.fetch(0)
+          @faculty = { :id => @faculty_id }
+          @ranking = { :faculty_id  => @faculty_id }
+          @admit = { :rankings => (rand(20).times{ |id| { :faculty_id => "not an id #{id}" }} + [@ranking]).shuffle.shuffle }
+          MeetingsScheduler::Chromosome.find_admit_ranking(@admit, @faculty).should_return(@ranking)
+        end
       end
       
-      describe 'When performing double crossover' do
+      describe 'class method: admit_preference_score' do
         before(:each) do
-          splice_index1, splice_index2 = 3, 8
-          @child = MeetingsScheduler::Chromosome.double_crossover(@parent1, @parent2, splice_index1, splice_index2)
+          MeetingsScheduler::Chromosome.should_receive(:find_admit_ranking).once.with(@admit, @faculty)
+          @meeting_solution, @admit, @faculty, @schedule_index = mock('meeting_solution'), mock('admit'), mock('faculty'), mock('schedule_index')
+          @ranking = { :rank => rand(@factors_to_consider[:number_of_spots_per_admit]) }
+        end
+        
+        it 'should return a rank-weighted score if an admit is among a FACULTY\'s ranking' do
+          MeetingsScheduler::Chromosome.stub!(:one_on_one_score).and_return(0)
+          MeetingsScheduler::Chromosome.stub!(:mandatory_meeting_score).and_return(0)          
+          MeetingsScheduler::Chromosome.stub!(:find_admit_ranking).and_return(@ranking)
+          MeetingsScheduler::Chromosome.admit_preference_score(@meeting_solution, @admit, @faculty, @schedule_index).should ==
+            @fitness_scores_table[:admit_ranking_weight_score] * (@factors_to_consider[:lowest_rank_possible]+1 - @ranking[:rank])
         end
 
-        it 'should return a chromosome' do @child.class.should == MeetingsScheduler::Chromosome end
-        it 'should double-swap correctly' do @child.should == MeetingsScheduler::Chromosome.new([1, 2, 3] + %w[d e f g h] + [9, 10]) end
+        it 'should further comput one-on-one score mandatory-meeting scores if an admit is among a FACULTY\'s ranking' do
+          @one_on_one_score, @mandatory_meeting_score = rand(20), rand(20)
+          MeetingsScheduler::Chromosome.stub!(:one_on_one_score).and_return(@one_on_one_score)
+          MeetingsScheduler::Chromosome.stub!(:mandatory_meeting_score).and_return(@mandatory_meeting_score)
+          MeetingsScheduler::Chromosome.stub!(:find_admit_ranking).and_return(@ranking)
+          MeetingsScheduler::Chromosome.should_receive(:one_on_one_score).once.with(@meeting_solution, @admit, @faculty, @ranking, @schedule_index)
+          MeetingsScheduler::Chromosome.should_receive(:mandatory_meeting_score).once.with(@ranking)
+          MeetingsScheduler::Chromosome.admit_preference_score(@meeting_solution, @admit, @faculty, @schedule_index).should ==
+            @fitness_scores_table[:admit_ranking_weight_score] * (@factors_to_consider[:lowest_rank_possible]+1 - @ranking[:rank]) +
+            @one_on_one_score + @mandatory_meeting_score
+        end
+        
+        it 'should return a default score if an admit is not among a FACULTY\'s ranking' do
+          MeetingsScheduler::Chromosome.stub!(:find_admit_ranking).and_return nil          
+          MeetingsScheduler::Chromosome.admit_preference_score(@meeting_solution, @admit, @faculty, @schedule_index).should ==
+            @fitness_scores_table[:admit_ranking_default]
+        end
+      end
+
+      describe 'class method: find_admit_ranking' do
+        it 'should return the FACULTY\'s ranking that contains the admit' do
+          @admit_id = @factors_to_consider[:attending_admits].keys.shuffle.shuffle.fetch(0)
+          @admit = { :id => @admit_id }
+          @ranking = { :admit_id  => @admit_id }
+          @faculty = { :rankings => (rand(20).times{ |id| { :admit_id => "not an id #{id}" }} + [@ranking]).shuffle.shuffle }          
+          MeetingsScheduler::Chromosome.find_admit_ranking(@admit, @faculty).should_return(@ranking)
+        end
+      end
+      
+      describe 'class method: area_match_score' do
+        it 'should return the appropriate points when a faculty\'s areas of research matches one of an admit\'s areas of interest' do
+          @faculty = { :area => 'subjectA'}
+          @admit = { :area1 => 'subjectA', :area2 => 'subjectC' }
+          MeetingsScheduler::Chromosome.area_match_score(@admit, @faculty).should == @fitness_scores_table[:area_match_score]
+        end
+
+        it 'should return the appropriate default when a faculty\'s areas of research does not match any one of an admit\'s areas of interest' do
+          @faculty = { :area => 'subjectA'}
+          @admit = { :area1 => 'subjectB', :area2 => 'subjectC' }
+          MeetingsScheduler::Chromosome.area_match_score(@admit, @faculty).should == @fitness_scores_table[:area_match_default]
+        end
+      end
+      
+      describe 'class method: one_on_one_score' do        
+        before(:each) do
+          @meeting_solution, @admit, @faculty  = mock('meeting_solution'), mock('admit'), mock('faculty')
+          @schedule_index, @people_in_meeting = mock('schedule_index'), mock('people_in_meeting')
+          MeetingsScheduler::Chromosome.stub!(:people_in_meeting).and_return(@people_in_meeting)          
+        end
+        
+        it 'should return a score when a FACULTY\'s admit ranking request for one-to-one meeting has been met' do
+          @ranking = { :one_on_one => true }
+          MeetingsScheduler::Chromosome.stub!(:only_one_person_in_meeting).and_return true
+          MeetingsScheduler::Chromosome.one_on_one_score(@meeting_solution, @admit, @faculty, @ranking, @schedule_index).should ==
+            @fitness_scores_table[:one_on_one_score]
+        end
+        
+        it 'should return a penalty when a FACULTY\'s admit ranking request for one-to-one meeting has not been met' do
+          @ranking = { :one_on_one => true}
+          MeetingsScheduler::Chromosome.stub!(:only_one_person_in_meeting).and_return false
+          MeetingsScheduler::Chromosome.one_on_one_score(@meeting_solution, @admit, @faculty, @ranking, @schedule_index).should ==
+            @fitness_scores_table[:one_on_one_penalty]
+        end
+        
+        it 'should return a default score when a FACULTY\'s admit ranking did not request for a one-to-one meeting' do
+          @ranking = { :one_on_one => false}
+          MeetingsScheduler::Chromosome.one_on_one_score(@meeting_solution, @admit, @faculty, @ranking, @schedule_index).should ==
+            @fitness_scores_table[:one_on_one_default]
+        end
+      end
+
+      describe 'class method: get_people_in_meeting' do
+        it 'should return just a subset of admit_id\'s that are in a specific timeslot for a specific faculty' do
+          @factors_to_consider = create_valid_factors_hash
+          @length = @factors_to_consider[:total_number_of_seats]
+          MeetingsScheduler::Chromosome.set_factors_to_consider(@factors_to_consider)
+          @meeting_solution = MeetingsScheduler::Chromosome.new(:solution_string => (0...@length).collect).meeting_solution
+          
+          @faculty_id = @factors_to_consider[:faculties].keys.shuffle.shuffle.fetch(0)
+          @faculty = { :id => @faculty_id }
+          @schedule_index = rand(@factors_to_consider[:faculties][:faculty_id][:schedule].count)
+          
+          MeetingsScheduler::Chromosome.get_people_in_meeting(@meeting_solution, @faculty, @schedule_index).should ==
+            @meeting_solution.find_all{ |n| n.faculty_id == faculty[:id] and n.schedule_index == schedule_index }.collect{ |n| n.admit_id }
+        end        
+      end
+
+      describe 'class method: only_one_person_in_meeting' do
+        before(:each) do
+          @admit = { :id => 1 }
+        end
+        
+        it 'should return true if the admit\'s id is the only unique one in an array of admit_id\'s, excluding nils' do        
+          @people_in_meeting = (Array.new(19) + [1]).shuffle.shuffle
+          MeetingsScheduler::Chromosome.only_one_person_in_meeting(@people_in_meeting, @admit).should == true
+        end
+        
+        it 'should return false if the admit\'s id is not the only unique id in an array of admit_id\'s' do
+          @people_in_meeting = (Array.new(18) + (1..2).collect).shuffle.shuffle
+          MeetingsScheduler::Chromosome.only_one_person_in_meeting(@people_in_meeting, @admit).should == false          
+        end
+        
+        it 'should return false if the admit\'s id is not in an array of admit_id\'s' do
+          @people_in_meeting = (Array.new(19) + [2]).shuffle.shuffle
+          MeetingsScheduler::Chromosome.only_one_person_in_meeting(@people_in_meeting, @admit).should == false
+        end
+      end
+      
+      describe 'class method: mandatory_meeting_score' do
+        [true, false].each do |val|
+          it "should return the appropriate points for whether a FACULTY\'s admit ranking is marked #{val}" do
+            @ranking = { :mandatory => val }
+            MeetingsScheduler::Chromosome.mandatory_meeting_score(@ranking).should == val ? @fitness_scores_table[:mandatory_score] :
+              @fitness_scores_table[:mandatory_default]
+          end
+        end
       end
     end
     
-    describe 'When mutating chromosomes' do
+    describe 'reproduction helper methods' do
       before(:each) do
-        @chromosome = MeetingsScheduler::Chromosome.new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        @factors_to_consider = create_valid_factors_hash
+        @length = @factors_to_consider[:total_number_of_seats]
+        MeetingsScheduler::Chromosome.set_factors_to_consider(@factors_to_consider)
+        @parent1 = MeetingsScheduler::Chromosome.new(:solution_string => (0...@length).collect)
+        @parent2 = MeetingsScheduler::Chromosome.new(:solution_string => (0...@length).collect)
+      end
+    
+      describe 'class method: single_crossover' do
+        it 'should return a new chromosome with the proper single swap' do
+          @splice_index = rand(@length)
+          @child = MeetingsScheduler::Chromosome.single_crossover(@parent1, @parent2, @splice_index)
+          @child.class.should == MeetingsScheduler::Chromosome
+          @child.should == MeetingsScheduler::Chromosome.new(@parent1[0...@splice_index] + @parent2[@splice_index..-1])
+        end   
       end
 
-      describe 'When performing a point mutation' do
-        before(:each) do
-          index = 4
-          Admit.stub!(:attending_admits).and_return [create_valid!(Admit, :id => 1)]
-          MeetingsScheduler::Chromosome.point_mutation(@chromosome, index)
+      describe 'class method: double_crossover' do
+        it 'should return a new chromosome with the proper double swap' do
+          @index1, @index2 = MeetingsScheduler::Chromosome.pick_two_random_indexes(@chromosome)
+          @child = MeetingsScheduler::Chromosome.single_crossover(@parent1, @parent2, @index1, @index2)
+          @child.class.should == MeetingsScheduler::Chromosome
+          @child.should == MeetingsScheduler::Chromosome.new(@parent1[0...@index1] + parent2[@index1...@index2] + parent1[@index2..-1])
         end
-        
-        it 'should have same length after mutation' do @chromosome.length.should == 10 end
-        it 'should mutate correctly' do @chromosome.should == MeetingsScheduler::Chromosome.new([1, 2, 3, 4, 1, 6, 7, 8, 9, 10]) end
       end
-
-      describe 'When performing a chromosomal inversion' do
-        before(:each) do
-          index1, index2 = 4, 7
-          MeetingsScheduler::Chromosome.chromosomal_inversion(@chromosome, index1, index2)
-        end
-
-        it 'should have same length after mutation' do @chromosome.length.should == 10 end
-        it 'should invert chromosome correctly' do @chromosome.should == MeetingsScheduler::Chromosome.new([1, 2, 3, 4, 8, 7, 6, 5, 9, 10]) end
-      end
-
-     
-      describe 'When performing a reverse on two adjacent sequences' do
-        before(:each) do
-          index = 5
-          MeetingsScheduler::Chromosome.reverse_two_adjacent_sequences(@chromosome, index)
-        end
-
-        it 'should have same length after mutation' do @chromosome.length.should == 10 end
-        it 'should invert chromosome correctly' do @chromosome.should == MeetingsScheduler::Chromosome.new([1, 2, 3, 4, 5, 7, 6, 8, 9, 10]) end
+    end
+    
+    describe 'mutation helper methods' do
+      before(:each) do
+        @factors_to_consider = create_valid_factors_hash
+        @length = @factors_to_consider[:total_number_of_seats]
+        MeetingsScheduler::Chromosome.set_factors_to_consider(@factors_to_consider)
+        @chromosome = MeetingsScheduler::Chromosome.new(:solution_string => (0...@length).collect)
       end
       
+      describe 'class method: reverse_two_adjacent_sequences' do                 
+        it 'should return a new chromosome with two adjacent sequences reversed, given a chromosome' do
+          @index = rand(@length)
+          @mutant = MeetingsScheduler::Chromosome.reverse_two_adjacent_sequences(@chromosome, @index)
+          @mutant.class.should == MeetingsScheduler::Chromosome
+          @mutant.should == MeetingsScheduler::Chromosome.new(@mutant[0...@index] + @mutant[@index..@index+1].reverse + @mutant[@index1+1..-1])
+        end
+      end    
+      
+      describe 'class method: chromosomal_inversion' do
+        it 'should return a new chromosome with proper inversion, given a chromosome' do
+          @index1, @index2 = MeetingsScheduler::Chromosome.pick_two_random_indexes(@chromosome)
+          @mutant = MeetingsScheduler::Chromosome.chromosomal_inversion(@chromosome, @index1, @index2)
+          @mutant.class.should == MeetingsScheduler::Chromosome
+          @mutant.should == MeetingsScheduler::Chromosome.new(@mutant[0...@index1] + @mutant[@index1..@index2].reverse + @mutant[@index1+1..-1])
+        end
+      end
+      
+      describe 'class method: point_mutation' do
+        it 'should return a new chromosome with proper mutation, given a chromosome' do
+          @index = rand(@length)
+          @mutant = MeetingsScheduler::Chromosome.point_mutation(@chromosome, @index)
+          @mutant.class.should == MeetingsScheduler::Chromosome
+          @factors_to_consider[:attending_admits].keys.include?(@mutant[@index]).should == true
+          (@mutant[0...@index]+@mutant[@index+1..-1]).should == @chromosome[0...@index]+@chromosome[@index+1..-1]
+        end
+      end
+      
+      describe 'class method: ok_to_mutate' do
+        it 'should return false if the normalized fitness is good enough' do
+          @normalized_fitness, @random = rand, rand
+          @chromosome.normalized_fitness = @normalized_fitness
+          MeetingsScheduler::Chromosome.stub!(:random).and_return @random
+          MeetingsScheduler::Chromosome.ok_to_mutate(chromosome).should == (@random < ((1 - chromosome.normalized_fitness) * 0.3)) ? true : false
+        end
+      end
+    end
+    
+    describe 'class method: random' do
+      it 'should choose random number between 0 and 1, exclusive' do  (0...1).include?(Chromosome.random).should == true end
+      it 'should take parameter and return an integer' do
+        r = MeetingsScheduler::Chromosome.random(100)
+        (0...100).include?(r).should == true
+        r.integer?.should == true
+      end    
+    end  
+
+    describe 'class method: pick_two_random_indexes' do
+      before(:each) do
+        @length = rand(100)
+        chromosome = mock('MeetingsScheduler::Chromosome', :length => @length)
+        index1, index2 = MeetingsScheduler::Chromosome.pick_two_random_indexes(sample_chromosome)
+      end
+      it 'should have the second integer be larger than the first' do index2.should > index1+1 end
+      it 'should be integers in the proper range' do
+        index1.should > 0
+        index1.should < @length-3
+        index2.should > 2
+        index2.should < @length-1
+      end      
     end
     
   end
+
+
+  describe MeetingsScheduler::Nucleotide do
+    describe 'Nucleotide attributes' do
+      before(:each) do
+        @nucleotide = MeetingsScheduler::Nucleotide.new([1,2,3])
+      end      
+      it 'has a faculty_id' do @nucleotide.should respond_to(:faculty_id) end
+      it 'has a schedule_index' do @nucleotide.should respond_to(:schedule_index) end
+      it 'has an admit_id' do @nucleotide.should respond_to(:admit_id) end
+    end
+  end
+  
+end
+
+def create_valid_factors_hash(hash=nil)
+  return { }.merge(hash)
 end
