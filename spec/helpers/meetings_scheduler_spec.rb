@@ -2,6 +2,27 @@ require 'spec_helper'
 
 describe MeetingsScheduler do
   describe MeetingsScheduler::Scheduler do
+    describe "instance method: new" do
+      it "should create an instnace object of Scheduler" do
+        #@scheduler = MeetingsScheduler::Scheduler.new()
+      
+      end 
+    end
+    
+    describe "instance method: make_meetings" do 
+    end
+    
+    describe "class method: create_meetings" do
+    end
+    
+    describe "class method: need_a_new_meeting?" do 
+    end
+    
+    describe "class method: set_up_new_meeting" do 
+    end
+      
+    describe "class method: create_population" do 
+    end    
     
   end
 
@@ -196,7 +217,7 @@ describe MeetingsScheduler do
         @factors_to_consider = create_valid_factors_hash
         @fitness_scores_table = create_valid_fitness_scores_table
       end
-
+      
       describe 'class method: meeting_possible_score' do
       end
       

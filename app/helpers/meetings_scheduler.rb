@@ -140,6 +140,9 @@ module MeetingsScheduler
                
   end
   
+  
+  
+  
   class GeneticAlgorithm
     
 # Definition: run is the main execution of the algorithm. Calling run will theoritically output the best solution available after total_generations 
