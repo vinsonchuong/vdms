@@ -86,6 +86,7 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
+      <a href="#M000042">&lt;=&gt;</a>&nbsp;&nbsp;
       <a href="#M000041">admit_id</a>&nbsp;&nbsp;
       <a href="#M000039">faculty_id</a>&nbsp;&nbsp;
       <a href="#M000038">new</a>&nbsp;&nbsp;
@@ -97,6 +98,13 @@
 
 
     <!-- if includes -->
+    <div id="includes">
+      <h3 class="section-bar">Included Modules</h3>
+
+      <div id="includes-list">
+        <span class="include-name">Comparable</span>
+      </div>
+    </div>
 
     <div id="section">
 
@@ -104,6 +112,19 @@
 
 
 
+    <div id="attribute-list">
+      <h3 class="section-bar">Attributes</h3>
+
+      <div class="name-list">
+        <table>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">data</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        </table>
+      </div>
+    </div>
       
 
 
@@ -125,16 +146,39 @@
             onclick="toggleCode('M000038-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000038-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 525</span>
-525:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">data</span>)
-526:       <span class="ruby-ivar">@data</span> = <span class="ruby-identifier">data</span>
-527:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 642</span>
+642:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">data</span>)
+643:       <span class="ruby-ivar">@data</span> = <span class="ruby-identifier">data</span>
+644:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
       <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000042" class="method-detail">
+        <a name="M000042"></a>
+
+        <div class="method-heading">
+          <a href="#M000042" class="method-signature">
+          <span class="method-name">&lt;=&gt;</span><span class="method-args">(other)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000042-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000042-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 658</span>
+658:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">&lt;=&gt;</span>(<span class="ruby-identifier">other</span>)
+659:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">data</span>.<span class="ruby-identifier">inspect</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">data</span>.<span class="ruby-identifier">inspect</span>
+660:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
 
       <div id="method-M000041" class="method-detail">
         <a name="M000041"></a>
@@ -150,10 +194,10 @@
             onclick="toggleCode('M000041-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000041-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 537</span>
-537:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">admit_id</span>
-538:       <span class="ruby-ivar">@data</span>[<span class="ruby-value">2</span>]
-539:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 654</span>
+654:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">admit_id</span>
+655:       <span class="ruby-ivar">@data</span>[<span class="ruby-value">2</span>]
+656:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -173,10 +217,10 @@
             onclick="toggleCode('M000039-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000039-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 529</span>
-529:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">faculty_id</span>
-530:       <span class="ruby-ivar">@data</span>[<span class="ruby-value">0</span>]
-531:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 646</span>
+646:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">faculty_id</span>
+647:       <span class="ruby-ivar">@data</span>[<span class="ruby-value">0</span>]
+648:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -196,10 +240,10 @@
             onclick="toggleCode('M000040-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000040-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 533</span>
-533:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">schedule_index</span>
-534:       <span class="ruby-ivar">@data</span>[<span class="ruby-value">1</span>]
-535:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 650</span>
+650:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">schedule_index</span>
+651:       <span class="ruby-ivar">@data</span>[<span class="ruby-value">1</span>]
+652:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
