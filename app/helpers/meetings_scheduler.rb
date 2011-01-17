@@ -141,8 +141,6 @@ module MeetingsScheduler
   end
   
   
-  
-  
   class GeneticAlgorithm
     
 # Definition: run is the main execution of the algorithm. Calling run will theoritically output the best solution available after total_generations 
@@ -265,6 +263,7 @@ module MeetingsScheduler
        
   end
   
+  
   class Chromosome
     include Comparable
     
@@ -273,19 +272,27 @@ module MeetingsScheduler
     @@factors_to_consider = nil
     @@fitness_scores_table = nil
     
-    def initialize(solution_string)
-      @meeting_solution = []
-      @@factors_to_consider[:faculties].each do |faculty_id, faculty|
+    def initialize   
+      @normalized_fitness = 0
+      @meeting_solution = MeetingSolution.new()
+      
+      faculties = @@factors_to_consider[:faculties]
+      attending_admits_ids = @@factors_to_consider[:attending_admits].keys
+      
+      faculties.each do |faculty_id, faculty|
         faculty[:schedule].each_with_index do |room_timeslot_pair, schedule_index|
           faculty[:max_students_per_meeting].times do
-            @meeting_solution << Nucleotide.new([faculty_id, schedule_index, solution_string.slice!(0)])
+            random_index = rand(attending_admits_ids.length)
+            admit_id = attending_admits_ids[random_index]
+            @meeting_solution.add_new_mock_meeting(MockMeeting.new(faculty_id, schedule_index, admit_id))
           end
         end
       end
-      
-      @normalized_fitness = 0
     end
-    
+
+
+
+=begin
     def self.set_factors_to_consider(factors_to_consider)
       @@factors_to_consider = factors_to_consider
     end
@@ -299,7 +306,6 @@ module MeetingsScheduler
       return @fitness if @fitness
       
       # remove duplicates in time slot for prof, get the best
-      
       @fitness = 0
       @meeting_solution.each do |nucleotide|
         if nucleotide.admit_id
@@ -348,11 +354,15 @@ module MeetingsScheduler
       end
     end
     
+=end    
+    
     # seed produces an individual solution (chromosome) for the initial population
     def self.seed
       solution_string =  Chromosome.create_solution_string # original code moved to method create_meeting_solution
       Chromosome.new(solution_string)
     end
+    
+    
     
     def solution_string
       self.meeting_solution.collect{ |n| n.admit_id }
@@ -393,7 +403,8 @@ module MeetingsScheduler
       solution_string
     end
     
-    
+
+=begin    
     # Fitness function related helper methods
         
     def self.meeting_possible_score(admit, faculty, schedule_index)
@@ -524,6 +535,9 @@ module MeetingsScheduler
     
   end
   
+  
+  
+ 
   class Nucleotide    
     def initialize(data)
       @data = data
@@ -541,5 +555,34 @@ module MeetingsScheduler
       @data[2]
     end    
   end
+=end 
+  end
+
+  class MeetingSolution
+    def initialize
+      @meeting_soluiton = Array.new()
+    end
+    
+    def length
+      @meeting_solution.length
+    end
+    
+    def add_new_mock_meeting(mock_meeting)
+      @meeting_solution << mock_meeting
+    end 
+  end
+ 
+  class MockMeeting
+    attr_accessor :faculty_id
+    attr_accessor :schedule_index
+    attr_accessor :admit_id
+     
+    def initialize(faculty_id, schedule_index, admit_id)
+      @faculty_id = faculty_id
+      @schedule_index = schedule_index
+      @admit_id = admit_id
+    end
+  end
+
   
 end
