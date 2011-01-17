@@ -307,14 +307,12 @@ module MeetingsScheduler
     def fitness
       return @fitness if @fitness
       
-      # remove duplicates in time slot for prof, get the best #
+      # remove duplicates in time slot for prof, get the best
+      reduced_meeting_solution = Chromosome.remove_duplicates(solution_string)
       
-      @fitness = 0
-      @meeting_solution.each do |nucleotide|
-        if nucleotide.admit_id
-          @fitness +=  Chromosome.fitness_of_nucleotide(nucleotide)
-        end
-      end      
+      @fitness = reduced_meeting_solution.inject(0) do |fitness, nucleotide|
+        fitness +=  Chromosome.fitness_of_nucleotide(nucleotide)
+      end
       @fitness
     end    
     
@@ -423,12 +421,16 @@ module MeetingsScheduler
 # @params: a Nucleotide object
 # @return: a Float score
     def self.fitness_of_nucleotide(nucleotide)
-      meeting_possible_score = Chromosome.meeting_possible_score(nucleotide)
+      if nucleotide.admit_id
+        meeting_possible_score = Chromosome.meeting_possible_score(nucleotide)
       
-      return (meeting_possible_score <= 0) ? meeting_possible_score : meeting_possible_score +
-        Chromosome.admit_preference_score(@meeting_solution, nucleotide) +
-        Chromosome.faculty_preference_score(nucleotide) +
-        Chromosome.area_match_score(nucleotide)
+        return (meeting_possible_score <= 0) ? meeting_possible_score : meeting_possible_score +
+          Chromosome.admit_preference_score(@meeting_solution, nucleotide) +
+          Chromosome.faculty_preference_score(nucleotide) +
+          Chromosome.area_match_score(nucleotide)
+      else
+        0
+      end
     end
     
 # Definition: Abstracts the structure of Nucleotide for Chromosome use 
@@ -554,10 +556,79 @@ module MeetingsScheduler
       ranking[:mandatory] ? @@fitness_scores_table[:mandatory_score] : @@fitness_scores_table[:mandatory_default]
     end
 
-    def self.remove_duplicates(meeting_solution)
-      # to be implemented or not
-    end    
 
+    # Methods for returning a meeting_solution with duplicates removed
+    
+# Definition: Removes all non-optimal admit_ids from all nucleotides
+# @params: a Chromosome's solution_string
+# @return: a new Chromosome meeting_solution (array of Nucleotides)
+    def self.remove_duplicates(solution_string)
+      new_meeting_solution = Chromosome.new(solution_string).meeting_solution
+      @@factors_to_consider[:faculties].each do |faculty_id, faculty|
+        Chromosome.remove_duplicate_admits_from_faculty!(new_meeting_solution, faculty)
+      end
+      new_meeting_solution
+    end
+    
+# Definition: Removes all non-optimal admit_ids from all nucleotides belonging to the same Faculty
+# @params: a meeting_solution and a Faculty hash
+# @return: NA
+    def self.remove_duplicate_admits_from_faculty!(new_meeting_solution, faculty)
+      duplicate_admit_ids = Chromosome.get_duplicate_admit_ids(new_meeting_solution, faculty)
+      duplicate_admit_ids.each do |admit_id|
+        Chromosome.remove_duplicate_spots_for_admit!(new_meeting_solution, faculty, admit_id)
+      end
+    end
+
+# Definition: Removes all non-optimal admit_ids from all nucleotides that have the same faculty_id and admit_id
+# @params: a meeting_solution, Faculty hash, and admit_id (int)
+# @return: NA
+    def self.remove_duplicate_spots_for_admit!(new_meeting_solution, faculty, admit_id)
+      duplicate_nucleotides = Chromosome.get_duplicate_nucleotides_for_admit(new_meeting_solution, faculty, admit_id)
+      best_nucleotide = Chromosome.pick_out_best_nucleotide(duplicate_nucleotides)
+      Chromosome.reset_non_optimal_nucleotides!(duplicate_nucleotides, best_nucleotide)
+    end
+    
+# Definition: Reset all non-optimal nucleotides' admit_ids to nil, given a best_nucleotide to compare
+# @params: an array of duplicate Nucleotides and a 'best' Nucleotide
+# @return: NA
+    def self.reset_non_optimal_nucleotides!(duplicate_nucleotides, best_nucleotide)
+      duplicate_nucleotides.each do |n|
+        if n.schedule_index != best_nucleotide.schedule_index
+          n.admit_id = nil
+        end
+      end
+    end
+    
+# Definition: Picks out the optimal nucleotide from an set of duplicate Nucleotides for an Admit and Faculty
+# @params: an array of duplicate Nucleotides
+# @return: a Nucleotide
+    def self.pick_out_best_nucleotide(duplicate_nucleotides)
+      duplicate_nucleotides.max_by{ |nucleotide| Chromosome.fitness_of_nucleotide(nucleotide) }
+    end
+
+# Definition: Returns an array of Nucleotide that have the same Faculty_id and Admit_id
+# @params: a meeting_solution, a Faculty hash, and an admit_id (int)
+# @return: an array of Nucleotides
+    def self.get_duplicate_nucleotides_for_admit(new_meeting_solution, faculty, admit_id)
+      new_meeting_solution.find_all{ |n| n.faculty_id == faculty[:id] and n.admit_id == admit_id }
+    end
+    
+# Definition: Finds admit_ids that appear duplicate in a set of Nucleotides with the same faculty_id
+# @params: a meeting_solution and a Faculty hash
+# @return: an array of admit_ids (int)
+    def self.get_duplicate_admit_ids(new_meeting_solution, faculty)
+      admit_ids = new_meeting_solution.find_all{ |n| n.faculty_id == faculty[:id] }.collect{ |n| n.admit_id }
+      return Chromosome.dups(admit_ids)
+    end
+
+# Definition: Returns a list of elements that appear duplicate in an Array
+# @params: an Array
+# @return: an Array
+    def self.dups(enumerable)
+      enumerable.inject({}) {|h,v| h[v]=h[v].to_i+1; h}.reject{|k,v| v==1}.keys
+    end
+    
     
     # Methods for generating children
     
@@ -653,6 +724,10 @@ module MeetingsScheduler
     
     def admit_id
       @data[2]
+    end
+
+    def admit_id=(assignment)
+      @data[2] = assignment
     end
 
     def <=>(other)

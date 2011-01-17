@@ -196,19 +196,23 @@ describe MeetingsScheduler do
           @chromosome.should respond_to(:fitness)
         end
         
-        it 'should return the sum of the fitness scores of each non-nil nucleotide' do
+        it 'should return the sum of the fitness scores of each nucleotide, nil or not' do
           @rand_fitness = rand(1000)
+          MeetingsScheduler::Chromosome.stub!(:remove_duplicates).and_return(@chromosome.meeting_solution)
           MeetingsScheduler::Chromosome.stub!(:fitness_of_nucleotide).and_return(@rand_fitness)
-          @chromosome.fitness.should == @solution_string.delete_if{ |possible_id| possible_id == nil }.count * @rand_fitness
-        end        
+          MeetingsScheduler::Chromosome.should_receive(:fitness_of_nucleotide).exactly(@solution_string.count).times
+          @chromosome.fitness.should == @solution_string.count * @rand_fitness
+        end
+
+        it 'should first remove duplicates before evaluating fitness' do
+          MeetingsScheduler::Chromosome.stub!(:remove_duplicates).and_return(@chromosome.meeting_solution)
+          MeetingsScheduler::Chromosome.should_receive(:remove_duplicates).once
+          MeetingsScheduler::Chromosome.stub!(:fitness_of_nucleotide).and_return(0)
+          @chromosome.fitness
+        end
       end
     end
-
-=begin    
-    describe 'class method: new/initialize' do
-    end
-=end
-
+    
     describe 'class method: mutate' do
       before(:each) do
         @rand = rand
@@ -304,7 +308,7 @@ describe MeetingsScheduler do
 
       describe 'class method: fitness_of_nucleotide' do
         before(:each) do
-          @nucleotide = mock('Nucleotide')
+          @nucleotide = mock('Nucleotide', :admit_id => rand(100))
         end
         it 'should return the sum of all fitness criteria subscores of a single nucleotide, if physical arrangement is possible' do
           @randA, @randB, @randC = rand(1000), rand(1000), rand(1000)
@@ -318,6 +322,11 @@ describe MeetingsScheduler do
         it 'should just return a penalty for impossible arrangement if physical arrangement described by a single nucleotide is impossible' do
           MeetingsScheduler::Chromosome.stub!(:meeting_possible_score).and_return @fitness_scores_table[:meeting_possible_penalty]
           MeetingsScheduler::Chromosome.fitness_of_nucleotide(@nucleotide).should == @fitness_scores_table[:meeting_possible_penalty]
+        end
+
+        it 'should return 0 if the nucleotide is nil (has a nil admit_id)' do
+          @nil_nucleotide = mock('Nucleotide', :admit_id => nil)
+          MeetingsScheduler::Chromosome.fitness_of_nucleotide(@nil_nucleotide).should == 0
         end
       end
 
@@ -534,6 +543,102 @@ describe MeetingsScheduler do
       end
     end
 
+    describe 'Duplicates removal and helper methods' do
+      before (:each) do
+        @length = @factors_to_consider[:total_number_of_seats]
+        @solution_string = ((@length/3).floor.times.collect*3+[nil]*2)[0...@length].shuffle.shuffle
+        @chromosome = MeetingsScheduler::Chromosome.new(@solution_string)
+        @meeting_solution = @chromosome.meeting_solution
+        @meeting_solution.length.should == @length
+      end
+      
+      describe 'remove_duplicates' do
+        it 'should return a new meeting_solution (array of Nucleotides) with duplicate admit_ids per faculty removed' do
+          MeetingsScheduler::Chromosome.stub!(:new).and_return(mock('meeting_solution', :meeting_solution => @meeting_solution))          
+          MeetingsScheduler::Chromosome.stub!(:remove_duplicate_admits_from_faculty!)
+          @factors_to_consider[:faculties].each do |faculty_id, faculty|
+            MeetingsScheduler::Chromosome.should_receive(:remove_duplicate_admits_from_faculty!).once.with(@meeting_solution, faculty)
+          end
+          MeetingsScheduler::Chromosome.remove_duplicates(@solution_string)
+        end
+      end
+      
+      describe 'class method: remove_duplicate_admits_from_faculty!' do
+        it 'should get a list of admit_ids that are duplicate throughout the chromosome' do
+          @meeting_solution, @faculty  = mock('meeting_solution'), mock('faculty')
+          @duplicate_admit_ids = rand(100).times.collect.shuffle.shuffle
+          MeetingsScheduler::Chromosome.stub!(:get_duplicate_admit_ids).and_return(@duplicate_admit_ids)
+          MeetingsScheduler::Chromosome.stub!(:remove_duplicate_spots_for_admit!)
+          @duplicate_admit_ids.each do |id|
+            MeetingsScheduler::Chromosome.should_receive(:remove_duplicate_spots_for_admit!).once.with(@meeting_solution, @faculty, id)
+          end
+          MeetingsScheduler::Chromosome.remove_duplicate_admits_from_faculty!(@meeting_solution, @faculty)
+        end
+      end
+      
+      describe 'class method: remove_duplicate_spots_for_admit!' do
+        it 'should remove duplicate spots of one admit under a faculty\'s nucleotides' do
+          @duplicate_nucleotides, @best_nucleotide =  mock('duplicate_nucleotides'), mock('best_nucleotide')
+          @meeting_solution, @faculty, @admit_id = mock('meeting_solution'), mock('faculty'), mock('admit_id')
+          MeetingsScheduler::Chromosome.stub!(:get_duplicate_nucleotides_for_admit).and_return(@duplicate_nucleotides)
+          MeetingsScheduler::Chromosome.stub!(:pick_out_best_nucleotide).and_return(@best_nucleotide)
+          MeetingsScheduler::Chromosome.stub!(:reset_non_optimal_nucleotides!)
+          MeetingsScheduler::Chromosome.should_receive(:get_duplicate_nucleotides_for_admit).once.with(@meeting_solution, @faculty, @admit_id)
+          MeetingsScheduler::Chromosome.should_receive(:pick_out_best_nucleotide).once.with(@duplicate_nucleotides)
+          MeetingsScheduler::Chromosome.should_receive(:reset_non_optimal_nucleotides!).once.with(@duplicate_nucleotides, @best_nucleotide)
+          MeetingsScheduler::Chromosome.remove_duplicate_spots_for_admit!(@meeting_solution, @faculty, @admit_id)
+        end
+      end
+      
+      describe 'class method: reset_non_optimal_nucleotides!' do
+        it 'should set the non-optimal duplicate nucleotides to nil admit_ids' do
+          @faculty_id = @factors_to_consider[:faculties].keys.shuffle.shuffle.fetch(0)
+          @admit_id = nil
+          while @admit_id.nil?
+            @admit_id = @meeting_solution[rand(@length)]
+          end          
+          @duplicate_nucleotides = @meeting_solution.find_all{ |n| n.faculty_id == @faculty_id and n.admit_id == @admit_id }
+          @best_nucleotide = @duplicate_nucleotides[rand(@duplicate_nucleotides.length)]
+          
+          MeetingsScheduler::Chromosome.reset_non_optimal_nucleotides!(@duplicate_nucleotides, @best_nucleotide)
+          @duplicate_nucleotides.each do |n|
+            if n.schedule_index != @best_nucleotide.schedule_index
+              n.admit_id.should == nil
+            end
+          end
+        end
+      end
+
+      describe 'class method: get_duplicate_nucleotides_for_admit' do
+        it 'should should return all nucleotides belonging to a Faculty with the same admit_ids' do
+          @faculty_id = @factors_to_consider[:faculties].keys.shuffle.shuffle.fetch(0)
+          @admit_id = @meeting_solution.shuffle.shuffle.fetch(0).admit_id          
+          @faculty = { :id => @faculty_id }
+          MeetingsScheduler::Chromosome.get_duplicate_nucleotides_for_admit(@meeting_solution, @faculty, @admit_id).should ==
+            @meeting_solution.find_all{ |n| n.faculty_id == @faculty_id and n.admit_id == @admit_id }
+        end
+      end
+
+      describe 'class method: get_duplicate_admits' do
+        it 'should return an array of admit_ids that appear more than once in a set of nucleotides with a given faculty_id' do
+          @faculty_id = @meeting_solution.shuffle.shuffle.fetch(0).faculty_id
+          @faculty = { :id => @faculty_id }
+          MeetingsScheduler::Chromosome.get_duplicate_admit_ids(@meeting_solution, @faculty).should ==
+            @meeting_solution.find_all{ |n| n.faculty_id == @faculty_id }.
+            collect{ |n| n.admit_id }.inject({}) {|h,v| h[v]=h[v].to_i+1; h}.reject{|k,v| v==1}.keys
+        end
+      end
+      
+      describe 'class method: dups' do
+        it 'should return an array of elements that are duplicates in an input array' do
+          @dup1, @dup2 = rand(100), rand(100)+100
+          @array = (200.upto(1000).collect + [@dup1]*(rand(20)+2) + [@dup2]*(rand(20)+2)).shuffle.shuffle
+          MeetingsScheduler::Chromosome.dups(@array).sort.should == [@dup1, @dup2]
+        end
+      end
+
+    end
+    
     describe 'Reproduction helper methods' do
       before(:each) do
         @length = @factors_to_consider[:total_number_of_seats]
