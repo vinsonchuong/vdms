@@ -13,10 +13,11 @@ Rails::Initializer.run do |config|
 
   # Add additional load paths for your own custom dirs
   # config.autoload_paths += %W( #{RAILS_ROOT}/extras )
+  config.autoload_paths += Dir["#{RAILS_ROOT}/app/models/*"].find_all { |f| File.stat(f).directory? }
 
   # Specify gems that this application depends on and have them installed with rake gems:install
   config.gem 'cancan'
-  config.gem 'facets'
+  config.gem 'facets', :lib => false
   config.gem 'fastercsv'
   config.gem 'haml'
   config.gem 'rubycas-client'
@@ -24,7 +25,15 @@ Rails::Initializer.run do |config|
   config.gem 'ucb_ldap'
   config.gem 'validates_existence'
   config.gem 'validates_timeliness', :version => '~> 2.3'
-  
+
+  # Require Ruby Facets libraries as needed
+  require 'facets/boolean'
+  require 'facets/hash/rekey'
+  require 'facets/hash/update_each'
+  require 'facets/hash/update_keys'
+  require 'facets/range/combine'
+  require 'facets/range/overlap'
+
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]

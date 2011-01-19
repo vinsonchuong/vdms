@@ -1,0 +1,9 @@
+# This file stores app-wide settings that must be specified before deployment
+# and remain unchanged thereafter
+#
+# All lengths of time are in seconds.
+divisions:
+  - Computer Science
+  - Electrical Engineering
+meeting_length: 900
+meeting_gap: 300

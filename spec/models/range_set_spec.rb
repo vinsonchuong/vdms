@@ -231,4 +231,21 @@ describe RangeSet do
       end
     end
   end
+
+  context 'when iterating' do
+    context 'over ranges' do
+      it 'yields every each range once' do
+        [
+          RangeSet.new,
+          RangeSet.new([1..2]),
+          RangeSet.new([1..2, 2..3]),
+          RangeSet.new([1..2, 3..4, 5..6])
+        ].each do |set|
+          result = []
+          set.each_range {|r| result << r}
+          result.should == set.to_a
+        end
+      end
+    end
+  end
 end

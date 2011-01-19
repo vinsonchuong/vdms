@@ -22,9 +22,11 @@ Spec::Runner.configure do |config|
   config.use_instantiated_fixtures  = false
   config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
 
-  # Include custom macros found in spec/support
-  config.include CalNetAuthentication, :type => :controller
-  
+  # Clear sign in info after each test
+  config.after(:each, :type => :controller) do
+    CASClient::Frameworks::Rails::Filter.fake(nil)
+  end
+
   # == Fixtures
   #
   # You can declare fixtures for each example_group like this:

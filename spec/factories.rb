@@ -20,7 +20,7 @@ Factory.define :faculty do |f|
   f.last_name 'Last'
   f.email {Factory.next(:email)}
   f.area 'Area'
-  f.division 'Division'
+  f.division Settings.instance.divisions.first.name
 end
 
 Factory.define :admit do |a|
@@ -31,6 +31,13 @@ Factory.define :admit do |a|
   a.phone '1234567890'
   a.area1 'Area 1'
   a.area2 'Area 2'
+end
+
+Factory.define :available_time do |t|
+  t.begin {Time.parse('1/1/2011')}
+  t.end {Time.parse('1/2/2011')}
+  t.room 'Room'
+  t.association :schedulable, :factory => :admit
 end
 
 Factory.define :admit_ranking do |r|

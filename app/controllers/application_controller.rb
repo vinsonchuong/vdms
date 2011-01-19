@@ -3,7 +3,7 @@ require 'casclient/frameworks/rails/filter'
 class ApplicationController < ActionController::Base
   helper :all
 
-  prepend_before_filter CASClient::Frameworks::Rails::Filter
+# prepend_before_filter CASClient::Frameworks::Rails::Filter
   self.allow_forgery_protection = false
 
   def current_user

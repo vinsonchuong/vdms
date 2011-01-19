@@ -17,26 +17,32 @@ describe 'Routes' do
     end
   end
 
-  context 'Staff' do
-    context 'Home' do
-      it 'routes GET /staff to Staff#home' do
-        {:get => '/staff'}.should route_to(:controller => 'staff', :action => 'home')
-      end
+  context 'Staff Dashboard' do
+    it 'routes GET /staff to Root#staff_dashboard' do
+      {:get => '/staff'}.should route_to(:controller => 'root', :action => 'staff_dashboard')
     end
   end
 
-  context 'Peer Advisor' do
-    context 'Home' do
-      it 'routes GET /peer_advisor to PeerAdvisor#home' do
-        {:get => '/peer_advisor'}.should route_to(:controller => 'peer_advisor', :action => 'home')
-      end
+  context 'Peer Advisor Dashboard' do
+    it 'routes GET /peer_advisor to Root#peer_advisor_dashboard' do
+      {:get => '/peer_advisor'}.should route_to(:controller => 'root', :action => 'peer_advisor_dashboard')
     end
   end
 
-  context 'Faculty' do
-    context 'Home' do
-      it 'routes GET /faculty to Faculty#home' do
-        {:get => '/faculty'}.should route_to(:controller => 'faculty', :action => 'home')
+  context 'Faculty Dashboard' do
+    it 'routes GET /faculty to Root#faculty_dashboard' do
+      {:get => '/faculty'}.should route_to(:controller => 'root', :action => 'faculty_dashboard')
+    end
+  end
+
+  context 'Settings' do
+    context 'Update Settings' do
+      it 'routes GET /settings/edit do Settings#edit' do
+        {:get => '/settings/edit'}.should route_to(:controller => 'settings', :action => 'edit')
+      end
+
+      it 'routes PUT /settings to Settings#update' do
+        {:put => '/settings'}.should route_to(:controller => 'settings', :action => 'update')
       end
     end
   end
