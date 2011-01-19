@@ -5,7 +5,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>Class: ApplicationController</title>
+  <title>Class: RootController</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Script-Type" content="text/javascript" />
   <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
@@ -50,13 +50,13 @@
         <table class="header-table">
         <tr class="top-aligned-row">
           <td><strong>Class</strong></td>
-          <td class="class-name-in-header">ApplicationController</td>
+          <td class="class-name-in-header">RootController</td>
         </tr>
         <tr class="top-aligned-row">
             <td><strong>In:</strong></td>
             <td>
-                <a href="../files/app/controllers/application_controller_rb.html">
-                app/controllers/application_controller.rb
+                <a href="../files/app/controllers/root_controller_rb.html">
+                app/controllers/root_controller.rb
                 </a>
         <br />
             </td>
@@ -65,7 +65,9 @@
         <tr class="top-aligned-row">
             <td><strong>Parent:</strong></td>
             <td>
-                ActionController::Base
+                <a href="ApplicationController.html">
+                ApplicationController
+               </a>
             </td>
         </tr>
         </table>
@@ -86,7 +88,8 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000016">current_user</a>&nbsp;&nbsp;
+      <a href="#M000019">home</a>&nbsp;&nbsp;
+      <a href="#M000020">sign_out</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -108,24 +111,53 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000016" class="method-detail">
-        <a name="M000016"></a>
+      <div id="method-M000019" class="method-detail">
+        <a name="M000019"></a>
 
         <div class="method-heading">
-          <a href="#M000016" class="method-signature">
-          <span class="method-name">current_user</span><span class="method-args">()</span>
+          <a href="#M000019" class="method-signature">
+          <span class="method-name">home</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
+          <p>
+GET /
+</p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000016-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000016-source">
+            onclick="toggleCode('M000019-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000019-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/application_controller.rb, line 9</span>
- 9:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_user</span>
-10:     <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_by_calnet_id</span>(<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:cas_user</span>])
-11:   <span class="ruby-keyword kw">end</span>
+   <span class="ruby-comment cmt"># File app/controllers/root_controller.rb, line 5</span>
+5:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">home</span>
+6:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000020" class="method-detail">
+        <a name="M000020"></a>
+
+        <div class="method-heading">
+          <a href="#M000020" class="method-signature">
+          <span class="method-name">sign_out</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+GET /<a href="RootController.html#M000020">sign_out</a> POST /<a
+href="RootController.html#M000020">sign_out</a>
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000020-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000020-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/root_controller.rb, line 10</span>
+10:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sign_out</span>
+11:     <span class="ruby-constant">CASClient</span><span class="ruby-operator">::</span><span class="ruby-constant">Frameworks</span><span class="ruby-operator">::</span><span class="ruby-constant">Rails</span><span class="ruby-operator">::</span><span class="ruby-constant">Filter</span>.<span class="ruby-identifier">logout</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">home_url</span>)
+12:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

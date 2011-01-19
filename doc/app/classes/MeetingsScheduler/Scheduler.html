@@ -86,8 +86,8 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000039">make_meetings</a>&nbsp;&nbsp;
-      <a href="#M000038">new</a>&nbsp;&nbsp;
+      <a href="#M000045">make_meetings</a>&nbsp;&nbsp;
+      <a href="#M000044">new</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -132,11 +132,11 @@
     <div id="methods">
       <h3 class="section-bar">Public Class methods</h3>
 
-      <div id="method-M000038" class="method-detail">
-        <a name="M000038"></a>
+      <div id="method-M000044" class="method-detail">
+        <a name="M000044"></a>
 
         <div class="method-heading">
-          <a href="#M000038" class="method-signature">
+          <a href="#M000044" class="method-signature">
           <span class="method-name">new</span><span class="method-args">(factors_to_consider, population_size, total_generations)</span>
           </a>
         </div>
@@ -151,17 +151,20 @@ compute optimum meeting arrangement.
                     {:attending_admits =&gt; a hash of admits attending Visit Day,
                      :faculties =&gt; a hash of faculties holding meetings,
                      :number_of_spots_per_admit =&gt; an int,
+                     :total_number_of_seats =&gt; an int,
                      :chromosomal_inversion_probability =&gt; a decimal range from 0 to 1,
                      :point_mutation_probability =&gt; a decimal range from 0 to 1,
                      :double_crossover_probability =&gt; a decimal range from 0 to 1,
-                     :lowest_rank_possible =&gt; a decimal range from 0 to 1
+                     :lowest_rank_possible =&gt; an integer representing the number of ranks an admit can have
                     }
                     The structure of :attending_admits looks like:
-                    { id1 =&gt; { :name =&gt; a string of the admit's name,
+                    { id1 =&gt; { :id =&gt; integer of the admit's database id, same as id1,
+                               :name =&gt; a string of the admit's name,
                                :ranking =&gt; array of hashes of the admit's preference list,
                                :available_times =&gt; range_set that encodes the admit's 24 hour availability
                              },
-                      id2 =&gt; { :name =&gt; a string of the admit's name,
+                      id2 =&gt; { :id =&gt; integer of the admit's database id, same as id2,
+                               :name =&gt; a string of the admit's name,
                                :ranking =&gt; array of hashes of the admit's preference list,
                                :available_times =&gt; range_set that encodes the admit's 24 hour availability
                              },
@@ -170,12 +173,14 @@ compute optimum meeting arrangement.
                      etc, where id1 and id2 are ints of the admit's database id,
                     }
                     The structure of :faculties looks like:
-                    {:fid1 =&gt; { :max_students_per_meeting =&gt; an int specifying the maximum number of student allowed per meeting for this faculty,
+                    { fid1 =&gt; { :id =&gt; integer of the faculty's database id, same as fid1,
+                                :max_students_per_meeting =&gt; an int specifying the maximum number of student allowed per meeting for this faculty,
                                 :admit_rankings =&gt; array of hashes of the faculty's preference list,
                                 :schedule =&gt; [{ :room =&gt; 'room1', :time_slot =&gt; timerange },
                                               { :room =&gt; 'room2', :time_slot =&gt; timerange } ....etc],
                               },
-                     :fid2 =&gt; { :max_students_per_meeting =&gt; an int specifying the maximum number of student allowed per meeting for this faculty,
+                     :fid2 =&gt; { :id =&gt; integer of the faculty's database id, same as fid2,
+                                :max_students_per_meeting =&gt; an int specifying the maximum number of student allowed per meeting for this faculty,
                                 :admit_rankings =&gt; array of hashes of the faculty's preference list,
                                 :schedule =&gt; [{ :room =&gt; 'room1', :time_slot =&gt; timerange },
                                               { :room =&gt; 'room2', :time_slot =&gt; timerange } ....etc],
@@ -197,15 +202,15 @@ algorithm will run/iterate
  @return: new Scheduler object
 </pre>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000038-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000038-source">
+            onclick="toggleCode('M000044-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000044-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 57</span>
-57:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">factors_to_consider</span>, <span class="ruby-identifier">population_size</span>, <span class="ruby-identifier">total_generations</span>)        
-58:         <span class="ruby-ivar">@population</span> = <span class="ruby-constant">Scheduler</span>.<span class="ruby-identifier">create_population</span>(<span class="ruby-ivar">@factors_to_consider</span>)
-59:         <span class="ruby-ivar">@total_generations</span> = <span class="ruby-identifier">total_generations</span>
-60:         <span class="ruby-ivar">@population_size</span> = <span class="ruby-identifier">population_size</span>
-61:       <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 62</span>
+62:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">factors_to_consider</span>, <span class="ruby-identifier">population_size</span>, <span class="ruby-identifier">total_generations</span>)        
+63:         <span class="ruby-ivar">@population</span> = <span class="ruby-constant">Scheduler</span>.<span class="ruby-identifier">create_population</span>(<span class="ruby-ivar">@factors_to_consider</span>)
+64:         <span class="ruby-ivar">@total_generations</span> = <span class="ruby-identifier">total_generations</span>
+65:         <span class="ruby-ivar">@population_size</span> = <span class="ruby-identifier">population_size</span>
+66:       <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -213,11 +218,11 @@ algorithm will run/iterate
 
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000039" class="method-detail">
-        <a name="M000039"></a>
+      <div id="method-M000045" class="method-detail">
+        <a name="M000045"></a>
 
         <div class="method-heading">
-          <a href="#M000039" class="method-signature">
+          <a href="#M000045" class="method-signature">
           <span class="method-name">make_meetings</span><span class="method-args">()</span>
           </a>
         </div>
@@ -228,14 +233,14 @@ Definition: produces optimum meeting arrangement @params: NA @return: a
 list of meeting objects
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000039-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000039-source">
+            onclick="toggleCode('M000045-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000045-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 68</span>
-68:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">make_meetings</span>()
-69:         <span class="ruby-identifier">best_chromosome</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">run</span>(<span class="ruby-ivar">@population</span>, <span class="ruby-ivar">@total_generations</span>)
-70:         <span class="ruby-constant">Scheduler</span>.<span class="ruby-identifier">create_meetings</span>(<span class="ruby-identifier">best_chromosome</span>)
-71:       <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 73</span>
+73:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">make_meetings</span>()
+74:         <span class="ruby-identifier">best_chromosome</span> = <span class="ruby-constant">GeneticAlgorithm</span>.<span class="ruby-identifier">run</span>(<span class="ruby-ivar">@population</span>, <span class="ruby-ivar">@total_generations</span>)
+75:         <span class="ruby-constant">Scheduler</span>.<span class="ruby-identifier">create_meetings</span>(<span class="ruby-identifier">best_chromosome</span>)
+76:       <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

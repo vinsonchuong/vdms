@@ -5,7 +5,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>Module: CalNetAuthentication</title>
+  <title>Class: FacultyController</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Script-Type" content="text/javascript" />
   <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
@@ -49,19 +49,27 @@
     <div id="classHeader">
         <table class="header-table">
         <tr class="top-aligned-row">
-          <td><strong>Module</strong></td>
-          <td class="class-name-in-header">CalNetAuthentication</td>
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">FacultyController</td>
         </tr>
         <tr class="top-aligned-row">
             <td><strong>In:</strong></td>
             <td>
-                <a href="../files/app/helpers/calnet_authentication_rb.html">
-                app/helpers/calnet_authentication.rb
+                <a href="../files/app/controllers/faculty_controller_rb.html">
+                app/controllers/faculty_controller.rb
                 </a>
         <br />
             </td>
         </tr>
 
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                <a href="ApplicationController.html">
+                ApplicationController
+               </a>
+            </td>
+        </tr>
         </table>
     </div>
   <!-- banner header -->
@@ -80,7 +88,7 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000041">logout</a>&nbsp;&nbsp;
+      <a href="#M000007">home</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -102,31 +110,26 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000041" class="method-detail">
-        <a name="M000041"></a>
+      <div id="method-M000007" class="method-detail">
+        <a name="M000007"></a>
 
         <div class="method-heading">
-          <a href="#M000041" class="method-signature">
-          <span class="method-name">logout</span><span class="method-args">()</span>
+          <a href="#M000007" class="method-signature">
+          <span class="method-name">home</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
+          <p>
+GET /faculty
+</p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000041-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000041-source">
+            onclick="toggleCode('M000007-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000007-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/helpers/calnet_authentication.rb, line 8</span>
- 8:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">logout</span>
- 9:     <span class="ruby-identifier">st</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:cas_last_valid_ticket</span>]
-10:     <span class="ruby-identifier">delete_service_session_lookup</span>(<span class="ruby-identifier">st</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">st</span>
-11:     <span class="ruby-identifier">reset_session</span>
-12:   
-13:     <span class="ruby-identifier">protocol</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">ssl?</span> <span class="ruby-value">? </span><span class="ruby-value str">&quot;https://&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-value str">&quot;http://&quot;</span>
-14:     <span class="ruby-identifier">app_url</span> = <span class="ruby-value str">&quot;localhost:3000/&quot;</span>
-15:     <span class="ruby-identifier">logout_url</span> = <span class="ruby-value str">&quot;https://auth-test.berkeley.edu/cas/logout&quot;</span>
-16:     <span class="ruby-identifier">redirect_to</span>(<span class="ruby-node">&quot;#{logout_url}?url=#{protocol}#{app_url}&quot;</span>)
-17:   <span class="ruby-keyword kw">end</span>
+   <span class="ruby-comment cmt"># File app/controllers/faculty_controller.rb, line 3</span>
+3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">home</span>
+4:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
