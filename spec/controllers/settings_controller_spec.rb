@@ -5,6 +5,8 @@ describe SettingsController do
     @staff = Factory.create(:staff)
     @peer_advisor = Factory.create(:peer_advisor)
     @faculty = Factory.create(:faculty)
+    @settings = Settings.instance
+    Settings.stub(:instance).and_return(@settings)
   end
 
   describe 'GET edit' do
@@ -22,7 +24,7 @@ describe SettingsController do
 
       it 'assigns to @settings the Settings singleton' do
         get :edit
-        assigns[:settings].should equal(Settings.instance)
+        assigns[:settings].should equal(@settings)
       end
 
       it 'renders the edit template' do

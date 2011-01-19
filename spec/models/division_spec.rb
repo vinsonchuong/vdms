@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Division do
   before(:each) do
-    @settings = Settings.instance
-    @division = @settings.divisions.create(:name => 'Name')
+    settings = Settings.instance
+    @division = settings.divisions.create(:name => 'Name')
   end
 
   describe 'Attributes' do

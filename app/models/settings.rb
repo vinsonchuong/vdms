@@ -14,7 +14,7 @@ class Settings < ActiveRecord::Base
   def after_initialize
     if self.new_record?
       self.unsatisfied_admit_threshold ||= 0
-      STATIC_SETTINGS['divisions'].each {|name| self.divisions.build(:name => name)}
+      STATIC_SETTINGS['divisions'].each {|name| Division.create(:name => name, :settings => self)}
     end
   end
 
@@ -24,7 +24,7 @@ class Settings < ActiveRecord::Base
   validates_numericality_of :unsatisfied_admit_threshold, :only_integer => true, :greater_than_or_equal_to => 0
 
   def self.instance
-    self.find(:all).first || self.send(:new)
+    self.find(:all).first || self.send(:create)
   end
 
   def meeting_times(division_name)

@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Settings do
   before(:each) do
     @settings = Settings.instance
+    @settings.save
   end
 
   describe 'Attributes' do
@@ -48,9 +49,10 @@ describe Settings do
       it 'builds an instance if one does not already exist' do
         Settings.destroy_all
         Settings.count.should == 0
-        Settings.instance.should be_a_new_record
+        Settings.instance
+        Settings.count.should == 1
       end
-  
+ 
       it 'returns the existent instance if one exists' do
         Settings.instance.should_not be_a_new_record
       end
