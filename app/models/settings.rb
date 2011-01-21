@@ -14,7 +14,11 @@ class Settings < ActiveRecord::Base
   def after_initialize
     if self.new_record?
       self.unsatisfied_admit_threshold ||= 0
-      STATIC_SETTINGS['divisions'].each {|name| Division.create(:name => name, :settings => self)}
+    end
+  end
+  after_save do |record|
+    if record.divisions.empty?
+      STATIC_SETTINGS['divisions'].each {|name| record.divisions.create(:name => name)}
     end
   end
 

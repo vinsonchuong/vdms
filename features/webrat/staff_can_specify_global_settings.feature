@@ -16,3 +16,8 @@ Feature: Staff can specify global settings
   Scenario: I specify the time ranges over which meetings will be held
 
   Scenario: I specify the threshold number of meetings for an admit to be unsatisfied
+    Given I am on the update global settings page
+    When I fill in "Unsatisfied Admit Threshold" with "5"
+    And I press "Save changes"
+    Then I should see "Settings were successfully updated."
+    And the "Unsatisfied Admit Threshold" field should contain "5"
