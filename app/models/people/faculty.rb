@@ -1,4 +1,6 @@
 class Faculty < Person
+  include Schedulable
+
   ATTRIBUTES = Person::ATTRIBUTES.merge({
     'Area' => :area,
     'Division' => :division,
@@ -22,7 +24,6 @@ class Faculty < Person
     end
   end
 
-  has_many :available_times, :as => :schedulable, :dependent => :destroy
   has_many :admit_rankings, :dependent => :destroy
   has_many :meetings, :dependent => :destroy
 
@@ -33,12 +34,4 @@ class Faculty < Person
   validates_numericality_of :max_admits_per_meeting, :only_integer => true, :greater_than => 0
   validates_presence_of :max_additional_admits
   validates_numericality_of :max_additional_admits, :only_integer => true, :greater_than_or_equal_to => 0
-  validate do |record| # non-overlapping Available Times
-    record.available_times.combination(2) do |times|
-      if times[0].overlap?(times[1])
-        record.errors.add_to_base('Available times must not overlap')
-        break
-      end
-    end
-  end
 end

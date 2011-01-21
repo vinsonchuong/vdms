@@ -1,4 +1,6 @@
 class Admit < Person
+  include Schedulable
+
   ATTRIBUTES = Person::ATTRIBUTES.merge({
     'Phone' => :phone,
     'Area 1' => :area1,
@@ -24,7 +26,6 @@ class Admit < Person
   end
 
   belongs_to :peer_advisor
-  has_many :available_times, :as => :schedulable, :dependent => :destroy
   has_many :faculty_rankings, :dependent => :destroy
   has_and_belongs_to_many :meetings, :uniq => true
 
@@ -35,14 +36,6 @@ class Admit < Person
   validates_presence_of :area2
   validates_inclusion_of :attending, :in => [true, false]
   validates_existence_of :peer_advisor, :allow_nil => true
-  validate do |record| # non-overlapping Available Times
-    record.available_times.combination(2) do |times|
-      if times[0].overlap?(times[1])
-        record.errors.add_to_base('Available times must not overlap')
-        break
-      end
-    end
-  end
 
   def self.attending_admits
     Admit.all.find_all{ |admit| admit.attending? }
