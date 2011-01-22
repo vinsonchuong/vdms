@@ -12,8 +12,8 @@ When /^I add "([^"]*)" to "([^"]*)" to the meeting times for "([^"]*)"$/ do |sta
   division_index = Settings.instance.divisions.index {|d| d.name == division}
   time_index = Settings.instance.divisions[division_index].available_times.count
 
-  select_datetime start, :id_prefix => "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_begin"
-  select_datetime finish, :id_prefix => "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_end"
+  fill_in "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_begin", :with => start
+  fill_in "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_end", :with => finish
 end
 
 When /^I remove the "([^"]*)" meeting time beginning with "([^"]*)"$/ do |division, start|

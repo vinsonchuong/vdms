@@ -20,14 +20,15 @@
               %h5!= division_fields.object.name
               %ul
                 - division_fields.fields_for :available_times do |available_time_fields|
+                  - @time = available_time_fields.object
                   %li
                     %ul
                       %li
                         != available_time_fields.label :begin
-                        != available_time_fields.datetime_select :begin, :include_blank => true
+                        != available_time_fields.text_field :begin, :value => (@time.begin.nil? ? '' : @time.begin.strftime('%Y-%m-%d %I:%M%p'))
                       %li
                         != available_time_fields.label :end
-                        != available_time_fields.datetime_select :end, :include_blank => true
+                        != available_time_fields.text_field :end, :value => (@time.end.nil? ? '' : @time.end.strftime('%Y-%m-%d %I:%M%p'))
                       - unless available_time_fields.object.new_record?
                         %li
                           != available_time_fields.check_box :_destroy
