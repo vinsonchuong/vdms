@@ -34,8 +34,8 @@ Factory.define :admit do |a|
 end
 
 Factory.define :available_time do |t|
-  t.begin {Time.parse('1/1/2011')}
-  t.end {Time.parse('1/2/2011')}
+  t.begin {Time.zone.parse('1/1/2011')}
+  t.end {Time.zone.parse('1/2/2011')}
   t.room 'Room'
   t.association :schedulable, :factory => :admit
 end
@@ -53,7 +53,7 @@ Factory.define :faculty_ranking do |r|
 end
 
 Factory.define :meeting do |m|
-  m.time {Time.now + 50000}
+  m.time {Time.zone.now + 50000}
   m.room 'Room'
   m.association :faculty
 end

@@ -1,7 +1,7 @@
 class Settings < ActiveRecord::Base
   include Singleton
 
-  # See config/settings.yml for more "attributes"
+  # See config/settings.yml for static attributes
   ATTRIBUTES = {
     'Meeting Times' => :meeting_times,
     'Unsatisfied Admit Threshold' => :unsatisfied_admit_threshold
@@ -23,6 +23,7 @@ class Settings < ActiveRecord::Base
   end
 
   has_many :divisions, :dependent => :destroy
+  accepts_nested_attributes_for :divisions
 
   validates_presence_of :unsatisfied_admit_threshold
   validates_numericality_of :unsatisfied_admit_threshold, :only_integer => true, :greater_than_or_equal_to => 0

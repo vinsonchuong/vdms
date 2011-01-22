@@ -2,6 +2,7 @@ class SettingsController < ApplicationController
   # GET /settings/edit
   def edit
     @settings = Settings.instance
+    @settings.divisions.each {|d| d.available_times.build}
   end
 
   # PUT /settings

@@ -27,6 +27,16 @@ describe SettingsController do
         assigns[:settings].should equal(@settings)
       end
 
+      it 'builds a new AvailableTime for each division' do
+        divisions = Array.new(3) do |i|
+          Division.new(:name => "Division #{i}") do |division|
+            division.available_times.should_receive(:build)
+          end
+        end
+        @settings.stub(:divisions).and_return(divisions)
+        get :edit
+      end
+
       it 'renders the edit template' do
         get :edit
         response.should render_template('edit')

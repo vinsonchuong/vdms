@@ -163,12 +163,12 @@ describe Admit do
     it 'is valid with valid non-overlapping Available Times' do
       [
         [
-          AvailableTime.new(:begin => Time.parse('1/5/2011'), :end => Time.parse('1/8/2011')),
-          AvailableTime.new(:begin => Time.parse('1/8/2011'), :end => Time.parse('1/9/2011'))
+          AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          AvailableTime.new(:begin => Time.zone.parse('1/8/2011'), :end => Time.zone.parse('1/9/2011'))
         ],
         [
-          AvailableTime.new(:begin => Time.parse('1/5/2011'), :end => Time.parse('1/6/2011')),
-          AvailableTime.new(:begin => Time.parse('1/6/2011'), :end => Time.parse('1/7/2011'))
+          AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/6/2011')),
+          AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
         ]
       ].each do |times|
         @admit.available_times = times
@@ -184,16 +184,16 @@ describe Admit do
     it 'is not valid with overlapping Available Times' do
       [
         [
-          AvailableTime.new(:begin => Time.parse('1/5/2011'), :end => Time.parse('1/8/2011')),
-          AvailableTime.new(:begin => Time.parse('1/6/2011'), :end => Time.parse('1/8/2011'))
+          AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
         ],
         [
-          AvailableTime.new(:begin => Time.parse('1/5/2011'), :end => Time.parse('1/8/2011')),
-          AvailableTime.new(:begin => Time.parse('1/6/2011'), :end => Time.parse('1/9/2011'))
+          AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/9/2011'))
         ],
         [
-          AvailableTime.new(:begin => Time.parse('1/5/2011'), :end => Time.parse('1/8/2011')),
-          AvailableTime.new(:begin => Time.parse('1/6/2011'), :end => Time.parse('1/7/2011'))
+          AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
         ]
       ].each do |times|
         @admit.available_times = times
@@ -221,8 +221,8 @@ describe Admit do
     it 'destroys its Available Times' do
       available_times = Array.new(3) do |i|
         available_time = AvailableTime.create(
-          :begin => Time.parse("1:00PM 1/#{i + 1}/2011"),
-          :end => Time.parse("5:00PM 1/#{i + 1}/2011")
+          :begin => Time.zone.parse("1:00PM 1/#{i + 1}/2011"),
+          :end => Time.zone.parse("5:00PM 1/#{i + 1}/2011")
         )
         available_time.should_receive(:destroy)
         available_time

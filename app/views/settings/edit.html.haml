@@ -12,6 +12,26 @@
       %li
         != settings_form.label :unsatisfied_admit_threshold, Settings::ATTRIBUTES.invert[:unsatisfied_admit_threshold]
         != settings_form.text_field :unsatisfied_admit_threshold
+      %li
+        %h4 Meeting Times
+        %ul
+          - settings_form.fields_for :divisions do |division_fields|
+            %li
+              %h5!= division_fields.object.name
+              %ul
+                - division_fields.fields_for :available_times do |available_time_fields|
+                  %li
+                    %ul
+                      %li
+                        != available_time_fields.label :begin
+                        != available_time_fields.datetime_select :begin, :include_blank => true
+                      %li
+                        != available_time_fields.label :end
+                        != available_time_fields.datetime_select :end, :include_blank => true
+                      - unless available_time_fields.object.new_record?
+                        %li
+                          != available_time_fields.check_box :_destroy
+                          != available_time_fields.label :_destroy, 'Remove'
   %fieldset
     %h3 Submit
     != settings_form.submit

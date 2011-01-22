@@ -60,8 +60,8 @@ describe AvailableTime do
     end
 
     it 'is not valid with an End that precedes the Beginning' do
-      @available_time.begin = Time.parse('1/5/2011')
-      @available_time.end = Time.parse('1/4/2011')
+      @available_time.begin = Time.zone.parse('1/5/2011')
+      @available_time.end = Time.zone.parse('1/4/2011')
       @available_time.should_not be_valid
     end
 
@@ -80,16 +80,16 @@ describe AvailableTime do
     it 'returns true when they overlap' do
       [
         [
-          Factory.build(:available_time, :begin => Time.parse('1/5/2011'), :end => Time.parse('1/8/2011')),
-          Factory.build(:available_time, :begin => Time.parse('1/6/2011'), :end => Time.parse('1/8/2011'))
+          Factory.build(:available_time, :begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          Factory.build(:available_time, :begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
         ],
         [
-          Factory.build(:available_time, :begin => Time.parse('1/5/2011'), :end => Time.parse('1/8/2011')),
-          Factory.build(:available_time, :begin => Time.parse('1/6/2011'), :end => Time.parse('1/9/2011'))
+          Factory.build(:available_time, :begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          Factory.build(:available_time, :begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/9/2011'))
         ],
         [
-          Factory.build(:available_time, :begin => Time.parse('1/5/2011'), :end => Time.parse('1/8/2011')),
-          Factory.build(:available_time, :begin => Time.parse('1/6/2011'), :end => Time.parse('1/7/2011'))
+          Factory.build(:available_time, :begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          Factory.build(:available_time, :begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
         ]
       ].each do |x, y|
         x.overlap?(y).should be_true
@@ -100,12 +100,12 @@ describe AvailableTime do
     it 'returns false when they do not overlap' do
       [
         [
-          Factory.build(:available_time, :begin => Time.parse('1/5/2011'), :end => Time.parse('1/8/2011')),
-          Factory.build(:available_time, :begin => Time.parse('1/8/2011'), :end => Time.parse('1/9/2011'))
+          Factory.build(:available_time, :begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          Factory.build(:available_time, :begin => Time.zone.parse('1/8/2011'), :end => Time.zone.parse('1/9/2011'))
         ],
         [
-          Factory.build(:available_time, :begin => Time.parse('1/5/2011'), :end => Time.parse('1/6/2011')),
-          Factory.build(:available_time, :begin => Time.parse('1/6/2011'), :end => Time.parse('1/7/2011'))
+          Factory.build(:available_time, :begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/6/2011')),
+          Factory.build(:available_time, :begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
         ]
       ].each do |x, y|
         x.overlap?(y).should be_false
