@@ -34,32 +34,6 @@ describe AvailableTime do
     end
   end
 
-  describe 'Virtual Attributes' do
-    describe 'string representation of Beginning (begin_string)' do
-      it 'has the correct string representation of the Beginning attribute' do
-        @available_time.begin = Time.parse('2011-01-21 07:00PM')
-        @available_time.begin_string.should == '2011-01-21 07:00PM'
-      end
-
-      it 'updates the Beginning attribute given a time represented as a string' do
-        @available_time.begin_string = '2011-01-21 07:00PM'
-        @available_time.begin.should = Time.parse('2011-01-21 07:00PM')
-      end
-    end
-
-    describe 'string representation of End (end_string)' do
-      it 'has the correct string representation of the End attribute' do
-        @available_time.end = Time.parse('2011-01-21 07:00PM')
-        @available_time.end_string.should == '2011-01-21 07:00PM'
-      end
-
-      it 'updates the End attribute given a time represented as a string' do
-        @available_time.end_string = '2011-01-21 07:00PM'
-        @available_time.end.should = Time.parse('2011-01-21 07:00PM')
-      end
-    end
-  end
-
   describe 'Associations' do
     it 'belongs to a Person (person)' do
       @available_time.should belong_to(:schedulable)
