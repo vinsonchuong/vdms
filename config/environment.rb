@@ -14,6 +14,7 @@ Rails::Initializer.run do |config|
   # Add additional load paths for your own custom dirs
   # config.autoload_paths += %W( #{RAILS_ROOT}/extras )
   config.autoload_paths += Dir["#{RAILS_ROOT}/app/models/*"].find_all { |f| File.stat(f).directory? }
+  config.autoload_paths += Dir["#{RAILS_ROOT}/app/controllers/*"].find_all { |f| File.stat(f).directory? }
 
   # Specify gems that this application depends on and have them installed with rake gems:install
   config.gem 'cancan'
@@ -53,3 +54,6 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 end
+
+# Add view paths
+ActionController::Base.view_paths += ["#{RAILS_ROOT}/app/views/people", "#{RAILS_ROOT}/app/views/rankings"]

@@ -1,0 +1,24 @@
+%h2 View Peer Advisor
+%h3 Navigation
+%ul
+  %li!= link_to 'Add Peer Advisor', new_peer_advisor_path
+  %li!= link_to 'Import Peer Advisors from CSV', import_peer_advisors_path
+%h3 Peer Advisors
+%table
+  %thead
+    %tr
+      %th{:scope => 'col'} CalNet Id
+      %th{:scope => 'col'} First Name
+      %th{:scope => 'col'} Last Name
+      %th{:scope => 'col'} Email
+      %th{:scope => 'col'}
+      %th{:scope => 'col'}
+  %tbody
+    - @peer_advisors.each do |peer_advisor|
+      %tr
+        %td= peer_advisor.calnet_id
+        %td= peer_advisor.first_name
+        %td= peer_advisor.last_name
+        %td= peer_advisor.email
+        %td!= link_to 'Update Peer Advisor', edit_peer_advisor_path(peer_advisor)
+        %td!= link_to 'Remove Peer Advisor', delete_peer_advisor_path(peer_advisor)

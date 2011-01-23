@@ -1,11 +1,6 @@
 %h2 Update Global Settings
 - form_for @settings, :url => settings_path do |settings_form|
-  - if @settings.errors.any?
-    #error_explanation
-      %h3 #{pluralize(@settings.errors.count, "error")} prohibited the settings from being saved:
-      %ul
-        - @settings.errors.full_messages.each do |msg|
-          %li= msg
+  != settings_form.error_messages
   %fieldset
     %h3 Global Settings
     %ul

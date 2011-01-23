@@ -1,0 +1,24 @@
+%h2 View Staff
+%h3 Navigation
+%ul
+  %li!= link_to 'Add Staff', new_staff_path
+  %li!= link_to 'Import Staff from CSV', import_staffs_path
+%h3 Staff
+%table
+  %thead
+    %tr
+      %th{:scope => 'col'} CalNet Id
+      %th{:scope => 'col'} First Name
+      %th{:scope => 'col'} Last Name
+      %th{:scope => 'col'} Email
+      %th{:scope => 'col'}
+      %th{:scope => 'col'}
+  %tbody
+    - @staffs.each do |staff|
+      %tr
+        %td= staff.calnet_id
+        %td= staff.first_name
+        %td= staff.last_name
+        %td= staff.email
+        %td!= link_to 'Update Staff', edit_staff_path(staff)
+        %td!= link_to 'Remove Staff', delete_staff_path(staff)

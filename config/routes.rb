@@ -9,4 +9,9 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resource :settings, :only => [:edit, :update]
+
+  map.resources :staffs, :except => [:show], :collection => {:import => :get}, :member => {:delete => :get}, :path_prefix => '/people'
+  map.resources :peer_advisors, :except => [:show], :collection => {:import => :get}, :member => {:delete => :get}, :path_prefix => '/people'
+  map.resources :faculties, :except => [:show], :collection => {:import => :get}, :member => {:delete => :get}, :path_prefix => '/people'
+  map.resources :admits, :except => [:show], :collection => {:import => :get}, :member => {:delete => :get}, :path_prefix => '/people'
 end

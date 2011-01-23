@@ -47,23 +47,11 @@ describe SettingsController do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake(@peer_advisor.calnet_id)
       end
-
-      it 'redirects to the CalNet sign in page' do
-        pending
-        get :edit
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(edit_settings_url)}")
-      end
     end
 
     context 'when signed in as a Faculty' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake(@faculty.calnet_id)
-      end
-
-      it 'redirects to the CalNet sign in page' do
-        pending
-        get :edit
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(edit_settings_url)}")
       end
     end
   end

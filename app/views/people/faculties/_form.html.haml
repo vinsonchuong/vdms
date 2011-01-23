@@ -1,0 +1,26 @@
+- form_for @faculty do |faculty_form|
+  != faculty_form.error_messages
+  %fieldset
+    %h3 Faculty Info
+    %ul
+      %li
+        != faculty_form.label :calnet_id, 'CalNet ID'
+        != faculty_form.text_field :calnet_id
+      %li
+        != faculty_form.label :first_name, 'First Name'
+        != faculty_form.text_field :first_name
+      %li
+        != faculty_form.label :last_name, 'Last Name'
+        != faculty_form.text_field :last_name
+      %li
+        != faculty_form.label :email, 'Email'
+        != faculty_form.text_field :email
+      %li
+        != faculty_form.label :area, 'Area'
+        != faculty_form.text_field :area
+      %li
+        != faculty_form.label :division, 'Division'
+        != faculty_form.text_field :division
+  %fieldset
+    %h3 Submit
+    != faculty_form.submit

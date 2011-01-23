@@ -1,0 +1,29 @@
+- form_for @admit do |admit_form|
+  != admit_form.error_messages
+  %fieldset
+    %h3 Admit Info
+    %ul
+      %li
+        != admit_form.label :calnet_id, 'CalNet ID'
+        != admit_form.text_field :calnet_id
+      %li
+        != admit_form.label :first_name, 'First Name'
+        != admit_form.text_field :first_name
+      %li
+        != admit_form.label :last_name, 'Last Name'
+        != admit_form.text_field :last_name
+      %li
+        != admit_form.label :email, 'Email'
+        != admit_form.text_field :email
+      %li
+        != admit_form.label :phone, 'Phone'
+        != admit_form.text_field :phone
+      %li
+        != admit_form.label :area1, 'Area 1'
+        != admit_form.text_field :area1
+      %li
+        != admit_form.label :area2, 'Area 2'
+        != admit_form.text_field :area2
+  %fieldset
+    %h3 Submit
+    != admit_form.submit

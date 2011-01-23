@@ -1,0 +1,5 @@
+%h2 Remove Staff
+- form_for @staff, :html => {:method => :delete} do |staff_form|
+  %fieldset
+    %h3 Submit
+    != staff_form.submit 'Confirm'
