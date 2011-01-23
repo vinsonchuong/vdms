@@ -22,12 +22,12 @@ class AvailableTime < ActiveRecord::Base
   validates_existence_of :schedulable
 
   def begin=(begin_time)
-    begin_time = Time.parse(begin_time) if begin_time.class == String
+    begin_time = Time.zone.parse(begin_time) if begin_time.class == String
     self.write_attribute(:begin, begin_time)
   end
 
   def end=(end_time)
-    end_time = Time.parse(end_time) if end_time.class == String
+    end_time = Time.zone.parse(end_time) if end_time.class == String
     self.write_attribute(:end, end_time)
   end
 

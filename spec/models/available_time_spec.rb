@@ -52,10 +52,6 @@ describe AvailableTime do
       end
     end
 
-    it 'is not valid after attempting to update Beginning via an invalid string' do
-      
-    end
-
     it 'is not valid with an invalid End' do
       ['', 'foobar'].each do |invalid_time|
         @available_time.end = invalid_time
