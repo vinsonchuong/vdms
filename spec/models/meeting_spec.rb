@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Meeting do
   before(:each) do
-    @meeting = Factory.build(:meeting)
+    @meeting = Factory.create(:meeting)
   end
 
   describe 'Attributes' do
@@ -51,6 +51,16 @@ describe Meeting do
 
     it 'is not valid without a room' do
       @meeting.room = ''
+      @meeting.should_not be_valid
+    end
+
+    it 'is not valid without a Faculty' do
+      @meeting.faculty = nil
+      @meeting.should_not be_valid
+    end
+
+    it 'is not valid with an invalid Faculty' do
+      @meeting.faculty.destroy
       @meeting.should_not be_valid
     end
   end

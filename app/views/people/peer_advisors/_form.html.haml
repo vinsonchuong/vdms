@@ -1,0 +1,20 @@
+- form_for @peer_advisor do |peer_advisor_form|
+  != peer_advisor_form.error_messages
+  %fieldset
+    %h3 Peer Advisor Info
+    %ul
+      %li
+        != peer_advisor_form.label :calnet_id, 'CalNet ID'
+        != peer_advisor_form.text_field :calnet_id
+      %li
+        != peer_advisor_form.label :first_name, 'First Name'
+        != peer_advisor_form.text_field :first_name
+      %li
+        != peer_advisor_form.label :last_name, 'Last Name'
+        != peer_advisor_form.text_field :last_name
+      %li
+        != peer_advisor_form.label :email, 'Email'
+        != peer_advisor_form.text_field :email
+  %fieldset
+    %h3 Submit
+    != peer_advisor_form.submit

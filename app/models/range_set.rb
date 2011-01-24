@@ -1,6 +1,14 @@
 =begin
-RangeSets represent a collection of sorted disjoint ranges (a closed set in mathematics). 
+A RangeSet represents a collection of sorted disjoint ranges (a closed set in mathematics). 
 All given ranges are treated as including both of their end points.
+
+Terminology:
+  A set refers to a RangeSet (a closed set)
+  A range refers to an element of @ranges (a maximal closed interval contained in the RangeSet)
+  An element refers to an element of a contained range (a point in the set)
+
+Note that a RangeSet containing a single range is not equivalent to that range.
+Unless otherwise stated (in the method name for instance), methods take other RangeSets.
 =end
 class RangeSet
   attr_reader :ranges
@@ -49,6 +57,10 @@ class RangeSet
 
   def contain_set?(other)
     other.ranges.all? {|r| contain_element?(r)}
+  end
+
+  def each_range
+    @ranges.each {|r| yield r}
   end
 
   def inspect

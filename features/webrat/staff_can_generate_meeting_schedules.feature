@@ -4,9 +4,7 @@ Feature: Staff can generate meeting schedules
   As a staff
   I want to generate a meeting schedule
 
-  Scenario Outline: I generate meeting schedules
-
-    Scenarios:
+  Scenario: I generate meeting schedules
 
   Scenario: I view the meeting schedules given schedules have been generated
 

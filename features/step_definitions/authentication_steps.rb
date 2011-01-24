@@ -4,10 +4,14 @@ end
 
 Given /^(?:I am|"([^"]*?)" "([^"]*?)" is) registered as a "([^"]*?)"$/ do |first_name, last_name, role|
   @user = Factory.create(role.downcase.gsub(' ', '_').to_sym,
-    :calnet_id => '',
+    :calnet_id => 'test_id',
     :first_name => first_name || 'My',
     :last_name => last_name || 'Name'
   )
+end
+
+Given /^(?:I am|.*? is) signed in$/ do
+  CASClient::Frameworks::Rails::Filter.fake(@user.calnet_id)
 end
 
 When /^I fill in (my|invalid) CalNet account information$/ do |type|
@@ -28,5 +32,5 @@ Then /^I should be (?:unable to access ([^"]*?)|asked to sign in)$/ do |page_nam
   unless page_name.nil?
     visit path_to(page_name)
   end
-  URI.parse(current_url).host.should == URI.parse(CASClient::Frameworks::Rails::Filter.config[:cas_base_url]).host
+  URI.parse(current_url).host.should == URI.parse(CASClient::Frameworks::Rails::Filter.config[:login_url]).host
 end
