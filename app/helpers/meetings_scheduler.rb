@@ -719,8 +719,7 @@ module MeetingsScheduler
     end
   end
   
-  
-  
+
   class Nucleotide
     include Comparable
     
