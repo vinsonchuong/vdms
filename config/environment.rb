@@ -16,17 +16,6 @@ Rails::Initializer.run do |config|
   config.autoload_paths += Dir["#{RAILS_ROOT}/app/models/*"].find_all { |f| File.stat(f).directory? }
   config.autoload_paths += Dir["#{RAILS_ROOT}/app/controllers/*"].find_all { |f| File.stat(f).directory? }
 
-  # Specify gems that this application depends on and have them installed with rake gems:install
-  config.gem 'cancan'
-  config.gem 'facets', :lib => false
-  config.gem 'fastercsv'
-  config.gem 'haml'
-  config.gem 'rubycas-client'
-  config.gem 'ruby-net-ldap', :lib => 'net/ldap'
-  config.gem 'ucb_ldap'
-  config.gem 'validates_existence'
-  config.gem 'validates_timeliness', :version => '~> 2.3'
-
   # Require Ruby Facets libraries as needed
   require 'facets/boolean'
   require 'facets/hash/rekey'
