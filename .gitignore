@@ -4,7 +4,6 @@
 /log/
 /tmp/
 /.bundle
-/.DS_Store
-/.project
-/Gemfile.lock
 /webrat.log
+.DS_Store
+.project

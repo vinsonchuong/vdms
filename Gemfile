@@ -4,7 +4,7 @@ gem 'rails', '2.3.10'
 gem 'sqlite3-ruby', :require => 'sqlite3'
 
 gem 'cancan', '1.3.4'
-gem 'facets'
+gem 'facets', :require => false
 gem 'fastercsv'
 gem 'haml'
 gem 'rubycas-client'
