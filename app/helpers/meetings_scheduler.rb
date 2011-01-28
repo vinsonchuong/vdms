@@ -276,15 +276,18 @@ module MeetingsScheduler
 # @return: new Chromosome Object    
     def initialize(solution_string)
       @meeting_solution = []
+      @normalized_fitness = 0
+      
       @@factors_to_consider[:faculties].each do |faculty_id, faculty|
-        faculty[:schedule].each_with_index do |room_timeslot_pair, schedule_index|
+        faculty[:schedule].each_with_index do |room_timeslot_pair, schedule_index| 
           faculty[:max_students_per_meeting].times do
-            @meeting_solution << Nucleotide.new([faculty_id, schedule_index, solution_string.slice!(0)])
+            admit_id = solution_string[0]
+            admit = @@factors_to_consider[:attending_admits][admit_id]                        
+            @meeting_solution << Nucleotide.new(faculty, schedule_index, admit)
+            solution_string = solution_string[1..-1]
           end
         end
-      end
-      
-      @normalized_fitness = 0
+      end        
     end
 
 # Definition: Sets the factors_to_consider class hash for all chromosomes to use
@@ -301,92 +304,96 @@ module MeetingsScheduler
       @@fitness_scores_table = fitness_scores
     end
 
+# Definition: Creates a solution_string, and uses it to create a new Chromosome object
+# @params: NA
+# @return: an individual new solution (chromosome) for the initial population
+  def self.seed
+    solution_string =  Chromosome.create_solution_string
+    Chromosome.new(solution_string)
+  end
+
+# Definition: Extracts the admit_id's from @meeting_solution
+# @params: NA
+# @return: an array of admit_id's that corresponds to the Chromosome object's @meeting_solution
+  def solution_string
+    @meeting_solution.collect{ |nucleotide| nucleotide.admit_id }
+  end
+
+# Definition: Accesses solution_string as an array
+# @params: index or range
+# @return: an element or subarray of solution_string
+  def [](index)
+    self.solution_string[index]
+  end
+
+# Definition: Allows comparison between two Chromosome objects
+# @params: a second chromosome
+# @return: -1, 0, or 1 (see documentation found in Comparable module)
+  def <=>(other)
+    self.solution_string.inspect <=> other.solution_string.inspect
+  end
+
+# Definition: The 'length,' or number of Nucleotides, in a Chromosome object
+# @params: a second chromosome
+# @return: -1, 0, or 1 (see documentation found in Comparable module)
+  def length
+    @meeting_solution.length
+  end
+
 # Definition: A utility/heuristic value function that evaluates how good a particular solution is
 # @params: NA
 # @return: a fitness value as a Float
-    def fitness
-      return @fitness if @fitness
-      
-      # remove duplicates in time slot for prof, get the best
-      reduced_meeting_solution = Chromosome.remove_duplicates(solution_string)
-      
-      @fitness = reduced_meeting_solution.inject(0) do |fitness, nucleotide|
-        fitness +=  Chromosome.fitness_of_nucleotide(nucleotide)
-      end
-      @fitness
-    end    
+  def fitness
+    return @fitness if @fitness
+    # remove duplicates in time slot for prof, get the best
+    reduced_meeting_solution = Chromosome.remove_duplicates(self.solution_string)
     
+    @fitness = reduced_meeting_solution.inject(0) do |fitness, nucleotide|
+      fitness +=  Chromosome.fitness_of_nucleotide(nucleotide)
+    end
+    
+    # have not considered cases where one candidate is assigned to two different professor at the same time spot?
+    # still need to handle invalidation?
+    
+    @fitness
+  end
+  
 # Definition: Decides with probabilities defined in factors_to_consider HOW to mutate a chromosome, and calls the appropriate mutation method
 # @params: chromosome
 # @return: a new Chromosome object with the appropriate mutation
-    def self.mutate(chromosome)
+    def self.mutate(chromosome)     
       # add more stuff such as double mutation, inversion, translocation of two snippets, simulated annealing mutation rates, etc
       if Chromosome.ok_to_mutate(chromosome)
-        which_mutation = Chromosome.random
+        which_mutation = rand
+    
         case which_mutation
-        when 0...@@factors_to_consider[:chromosomal_inversion_probability]
-          indexes = Chromosome.pick_two_random_indexes(chromosome)
-          Chromosome.chromosomal_inversion(chromosome, indexes[0], indexes[1])
-        when @@factors_to_consider[:chromosomal_inversion_probability]...
-            @@factors_to_consider[:chromosomal_inversion_probability] + @@factors_to_consider[:point_mutation_probability]
-          index = Chromosome.random(chromosome.length)
-          Chromosome.point_mutation(chromosome, index)
-        else
-          index = Chromosome.random(chromosome.length - 1)
-          Chromosome.reverse_two_adjacent_sequences(chromosome, index)
+          when 0...@@factors_to_consider[:chromosomal_inversion_probability]            
+            index1, index2 = Chromosome.pick_two_random_indexes(chromosome)
+            Chromosome.chromosomal_inversion(chromosome, index1, index2)        
+          when @@factors_to_consider[:chromosomal_inversion_probability]...@@factors_to_consider[:chromosomal_inversion_probability] + @@factors_to_consider[:point_mutation_probability]
+            index = rand(chromosome.length)
+            Chromosome.point_mutation(chromosome, index)
+          else
+            index = rand(chromosome.length - 1)
+            Chromosome.reverse_two_adjacent_sequences(chromosome, index)
         end        
       end    
     end
-    
+
 # Definition: Decides with probabilities defined in factors_to_consider HOW to reproduce,
 #             and calls the appropriate reproduction method
 # @params: Two parent chromosomes
 # @return: only ONE new Chromosome object with the appropriate reproduction operation performed
     def self.reproduce(parent1, parent2)
-      if Chromosome.random < @@factors_to_consider[:double_crossover_probability]
-        indexes = Chromosome.pick_two_random_indexes(parent1)        
-        Chromosome.double_crossover(parent1, parent2, indexes[0], indexes[1])
+      if rand < @@factors_to_consider[:double_crossover_probability]
+        splice_index1, splice_index2 = Chromosome.pick_two_random_indexes(parent1)        
+        Chromosome.double_crossover(parent1, parent2, splice_index1, splice_index2)
       else
-        splice_index = Chromosome.random(parent1.length - 2) + 1
+        splice_index = rand(parent1.length - 2)+1
         Chromosome.single_crossover(parent1, parent2, splice_index)
       end
     end
 
-# Definition: Creates a solution_string, and uses it to create a new Chromosome object
-# @params: NA
-# @return: an individual new solution (chromosome) for the initial population
-    def self.seed
-      solution_string =  Chromosome.create_solution_string # original code moved to method create_meeting_solution
-      Chromosome.new(solution_string)
-    end
-
-# Definition: Extracts the admit_id's from @meeting_solution
-# @params: NA
-# @return: an array of admit_id's that corresponds to the Chromosome object's @meeting_solution
-    def solution_string
-      self.meeting_solution.collect{ |n| n.admit_id }
-    end
-
-# Definition: Accesses solution_string as an array
-# @params: index or range
-# @return: an element or subarray of solution_string
-    def [](index)
-      self.solution_string[index]
-    end
-
-# Definition: Allows comparison between two Chromosome objects
-# @params: a second chromosome
-# @return: -1, 0, or 1 (see documentation found in Comparable module)
-    def <=>(other)
-      self.solution_string.inspect <=> other.solution_string.inspect
-    end
-
-# Definition: The 'length,' or number of Nucleotides, in a Chromosome object
-# @params: a second chromosome
-# @return: -1, 0, or 1 (see documentation found in Comparable module)
-    def length
-      self.meeting_solution.length
-    end
 
     
     private unless Rails.env == 'test'
@@ -394,26 +401,33 @@ module MeetingsScheduler
 # Definition: Helper method to create a nucleotide sequence 
 # @params: NA
 # @return: a shuffled array of admit_id's and nils
+    
     def self.create_solution_string
       attending_admits = @@factors_to_consider[:attending_admits]
       total_number_of_seats = @@factors_to_consider[:total_number_of_seats]
-      #total_number_of_meetings = @@factors_to_consider[:total_number_of_meetings]
       number_of_spots_per_admit = @@factors_to_consider[:number_of_spots_per_admit]
-      
       solution_string = Array.new(total_number_of_seats)
-      #number_of_spots_per_student = (total_number_of_meetings / attending_admits.count).floor - 1
-      admit_ids = (attending_admits.keys * number_of_spots_per_admit).shuffle.shuffle
       
+      admit_ids = (attending_admits.keys * number_of_spots_per_admit).shuffle.shuffle
       admit_ids.each do |id|
-        index = Chromosome.random(total_number_of_seats)
+        index = rand(total_number_of_seats)
         while solution_string[index] # if the spot is occupied, we find a new spot
-          index = Chromosome.random(total_number_of_seats)
+          index = rand(total_number_of_seats)
         end
         solution_string[index] = id
       end
+      
+      solution_string.each_with_index do |admit_id, index|
+        if admit_id == nil
+          solution_string[index] = attending_admits.keys[rand(attending_admits.length)]
+        end
+      end
+      
       solution_string
     end
     
+
+
     
     # Fitness function related helper methods
 
@@ -422,9 +436,9 @@ module MeetingsScheduler
 # @return: a Float score
     def self.fitness_of_nucleotide(nucleotide)
       if nucleotide.admit_id
-        meeting_possible_score = Chromosome.meeting_possible_score(nucleotide)
+        is_meeting_possible_score = Chromosome.is_meeting_possible_score(nucleotide)
       
-        return (meeting_possible_score <= 0) ? meeting_possible_score : meeting_possible_score +
+        return (is_meeting_possible_score <= 0) ? is_meeting_possible_score : is_meeting_possible_score +
           Chromosome.admit_preference_score(@meeting_solution, nucleotide) +
           Chromosome.faculty_preference_score(nucleotide) +
           Chromosome.area_match_score(nucleotide)
@@ -432,37 +446,44 @@ module MeetingsScheduler
         0
       end
     end
-    
-# Definition: Abstracts the structure of Nucleotide for Chromosome use 
-# @params: a Nucleotide object
-# @return: an array of the admit hash, faculty hash, and schedule_index,
-#          three objects that each Nucleotide encodes for
-    def self.extract_admit_faculty_and_schedule_index(nucleotide)
-      admit = @@factors_to_consider[:attending_admits][nucleotide.admit_id]
-      faculty = @@factors_to_consider[:faculties][nucleotide.faculty_id]      
-      [admit, faculty, nucleotide.schedule_index]
-    end
         
 # Definition: Determines whether an admit-faculty arrangement encoded by a Nucleotide
 #             is physically possible given the faculty's and admit's time constraints, and
 #             returns the appropriate score
 # @params: a Nucleotide object
 # @return: a Float score
-    def self.meeting_possible_score(nucleotide)
-      admit, faculty, schedule_index = Chromosome.extract_admit_faculty_and_schedule_index(nucleotide)
-      timeslot = faculty[:schedule][schedule_index][:time_slot]
-      if admit[:available_times].contain_set?(RangeSet.new([timeslot]))
-        @@fitness_scores_table[:meeting_possible_score]
-      else
-        @@fitness_scores_table[:meeting_possible_penalty]
-      end
+    def self.is_meeting_possible_score(nucleotide)
+      admit = nucleotide.admit
+      faculty = nucleotide.faculty
+      schedule_index = nucleotide.schedule_index
+      faculty_time_slot = faculty[:schedule][schedule_index][:time_slot]
+            
+      return admit[:available_times].contain_set?(RangeSet.new([faculty_time_slot])) ? @@fitness_scores_table[:is_meeting_possible_score] : @@fitness_scores_table[:is_meeting_possible_penalty] 
+
     end
-    
+
+# Definition: Finds an ADMIT's faculty ranking if it exists
+# @params: an Admit and Faculty hash
+# @return: a Ranking hash or nil
+    def self.find_faculty_ranking(admit, faculty)
+      admit[:rankings].find{ |ranking| ranking[:faculty_id] == faculty[:id] }
+    end
+
+# Definition: Finds a FACULTY's admit ranking if it exists
+# @params: an Admit and Faculty hash
+# @return: a Ranking hash or nil
+    def self.find_admit_ranking(admit, faculty)
+      faculty[:rankings].find{ |ranking| ranking[:admit_id] == admit[:id] }
+    end
+
 # Definition: Determines whether an ADMIT's faculty preference is met, and returns the appropriate score
 # @params: a Nucleotide object
 # @return: a Float score
     def self.faculty_preference_score(nucleotide)
-      admit, faculty, schedule_index = Chromosome.extract_admit_faculty_and_schedule_index(nucleotide)
+      admit = nucleotide.admit
+      faculty = nucleotide.faculty
+      schedule_index = nucleotide.schedule_index
+      
       ranking = Chromosome.find_faculty_ranking(admit, faculty)
       
       if ranking
@@ -472,20 +493,15 @@ module MeetingsScheduler
       end
     end
 
-# Definition: Finds an ADMIT's faculty ranking if it exists
-# @params: an Admit and Faculty hash
-# @return: a Ranking hash or nil
-    def self.find_faculty_ranking(admit, faculty)
-      admit[:rankings].find{ |r| r[:faculty_id] == faculty[:id] }
-    end
-    
 # Definition: Determines whether a FACULTY's admit preference is met,
 #             computes the appropriate sub-criterions, and
 #             returns the appropriate score
 # @params: a Nucleotide object
 # @return: a Float score
     def self.admit_preference_score(meeting_solution, nucleotide)
-      admit, faculty, schedule_index = Chromosome.extract_admit_faculty_and_schedule_index(nucleotide)
+      admit = nucleotide.admit
+      faculty = nucleotide.faculty
+      schedule_index = nucleotide.schedule_index
       ranking = Chromosome.find_admit_ranking(admit, faculty)
       
       if ranking
@@ -497,55 +513,48 @@ module MeetingsScheduler
       end
     end
 
-# Definition: Finds a FACULTY's admit ranking if it exists
-# @params: an Admit and Faculty hash
-# @return: a Ranking hash or nil
-    def self.find_admit_ranking(admit, faculty)
-      faculty[:rankings].find{ |r| r[:admit_id] == admit[:id] }
-    end
-    
-# Definition: Determines whether a Faculty's area of research and Admit's
-#             areas of interest match, and returns the appropriate score
-# @params: an Admit and Faculty hash
-# @return: a Float score
-    def self.area_match_score(nucleotide)
-      admit, faculty, schedule_index = Chromosome.extract_admit_faculty_and_schedule_index(nucleotide)
-      
-      [admit[:area1], admit[:area2]].include?(faculty[:area]) ? @@fitness_scores_table[:area_match_score] :
-        @@fitness_scores_table[:area_match_default]
-    end
-    
 # Definition: Determines whether a FACULTY's admit ranking also requests a one-to-one meeting,
 #             checks if that criterion is met, and assigns the appropriate score
 # @params: a Chromosome's meeting solution (array of Nucleotides), a Nucleotide, and a Ranking hash
 # @return: a Float score
     def self.one_on_one_score(meeting_solution, nucleotide, ranking)
       if ranking[:one_on_one]
-        admit, faculty, schedule_index = Chromosome.extract_admit_faculty_and_schedule_index(nucleotide)
-        people_in_meeting = Chromosome.get_people_in_meeting(meeting_solution, faculty, schedule_index)
-        
-        if Chromosome.only_one_person_in_meeting(people_in_meeting, admit)
-          @@fitness_scores_table[:one_on_one_score]
-        else
-          @@fitness_scores_table[:one_on_one_penalty]
-        end
+        admit = nucleotide.admit
+        faculty = nucleotide.faculty
+        schedule_index = nucleotide.schedule_index
+
+        admits_in_meeting = Chromosome.find_admits_in_meeting(meeting_solution, faculty, schedule_index)
+
+        Chromosome.only_one_admit_in_meeting(admits_in_meeting, admit) ? @@fitness_scores_table[:one_on_one_score] : @@fitness_scores_table[:one_on_one_penalty]
       else
         @@fitness_scores_table[:one_on_one_default]
       end
     end
 
+# Definition: Determines whether a Faculty's area of research and Admit's
+#             areas of interest match, and returns the appropriate score
+# @params: an Admit and Faculty hash
+# @return: a Float score
+    def self.area_match_score(nucleotide)
+      admit = nucleotide.admit
+      faculty = nucleotide.faculty
+      schedule_index = nucleotide.schedule_index
+      
+      [admit[:area1], admit[:area2]].include?(faculty[:area]) ? @@fitness_scores_table[:area_match_score] : @@fitness_scores_table[:area_match_default]
+    end
+    
 # Definition: Finds the admits that are assigned to a specific schedule slot for a specific faculty
 # @params: a Chromosome's meeting solution (array of Nucleotides), a Faculty hash, and a schedule_index (int)
 # @return: an array of admit_id's
-    def self.get_people_in_meeting(meeting_solution, faculty, schedule_index)
-      meeting_solution.find_all{ |n| n.faculty_id == faculty[:id] and n.schedule_index == schedule_index }.collect{ |n| n.admit_id }
+    def self.find_admits_in_meeting(meeting_solution, faculty, schedule_index)
+      meeting_solution.find_all{ |nucleotide| nucleotide.faculty_id == faculty[:id] and nucleotide.schedule_index == schedule_index }.collect{ |nucleotide| nucleotide.admit_id }
     end
     
 # Definition: Determines whether an array of admit_id's contains only one unique admit_id
 # @params: an array of admit_id's (people_in_meeting) and an Admit hash
 # @return: true or false
-    def self.only_one_person_in_meeting(people_in_meeting, admit)
-      people_in_meeting.uniq.delete_if{ |id| id == nil } == [admit[:id]]
+    def self.only_one_admit_in_meeting(admits_in_meeting, admit)
+      admits_in_meeting.uniq.delete_if{ |id| id == nil } == [admit[:id]]
     end
 
 # Definition: Determines whether a FACULTY's admit ranking is a mandatory request,
@@ -555,6 +564,9 @@ module MeetingsScheduler
     def self.mandatory_meeting_score(ranking)
       ranking[:mandatory] ? @@fitness_scores_table[:mandatory_score] : @@fitness_scores_table[:mandatory_default]
     end
+
+
+
 
 
     # Methods for returning a meeting_solution with duplicates removed
@@ -593,9 +605,9 @@ module MeetingsScheduler
 # @params: an array of duplicate Nucleotides and a 'best' Nucleotide
 # @return: NA
     def self.reset_non_optimal_nucleotides!(duplicate_nucleotides, best_nucleotide)
-      duplicate_nucleotides.each do |n|
-        if n.schedule_index != best_nucleotide.schedule_index
-          n.admit_id = nil
+      duplicate_nucleotides.each do |nucleotide|
+        if nucleotide.schedule_index != best_nucleotide.schedule_index
+          nucleotide.admit_id = nil
         end
       end
     end
@@ -611,14 +623,14 @@ module MeetingsScheduler
 # @params: a meeting_solution, a Faculty hash, and an admit_id (int)
 # @return: an array of Nucleotides
     def self.get_duplicate_nucleotides_for_admit(new_meeting_solution, faculty, admit_id)
-      new_meeting_solution.find_all{ |n| n.faculty_id == faculty[:id] and n.admit_id == admit_id }
+      new_meeting_solution.find_all{ |nucleotide| nucleotide.faculty_id == faculty[:id] and nucleotide.admit_id == admit_id }
     end
     
 # Definition: Finds admit_ids that appear duplicate in a set of Nucleotides with the same faculty_id
 # @params: a meeting_solution and a Faculty hash
 # @return: an array of admit_ids (int)
     def self.get_duplicate_admit_ids(new_meeting_solution, faculty)
-      admit_ids = new_meeting_solution.find_all{ |n| n.faculty_id == faculty[:id] }.collect{ |n| n.admit_id }
+      admit_ids = new_meeting_solution.find_all{ |nucleotide| nucleotide.faculty_id == faculty[:id] }.collect{ |nucleotide| nucleotide.admit_id }
       return Chromosome.dups(admit_ids)
     end
 
@@ -629,8 +641,13 @@ module MeetingsScheduler
       enumerable.inject({}) {|h,v| h[v]=h[v].to_i+1; h}.reject{|k,v| v==1}.keys
     end
     
+
+
+
+
+
     
-    # Methods for generating children
+    # Methods for generating children/reproduction
     
 # Definition: Performs a single crossover
 # @params: 2 parent Chromosomes and a splice index (int)
@@ -659,10 +676,10 @@ module MeetingsScheduler
 # Definition: Performs an inversion on a stretch of sequences along a Chromosome
 # @params: a Chromosome
 # @return: a new Chromosome
-    def self.chromosomal_inversion(chromosome, index1, index2)    
+    def self.chromosomal_inversion(chromosome, index1, index2)        
       partially_inverted_solution_string = chromosome[index1..index2].reverse
-      solution_string = chromosome[0...index1] + partially_inverted_solution_string + chromosome[index2+1..-1]
-      return Chromosome.new(solution_string)
+      mutated_solution_string = chromosome[0...index1] + partially_inverted_solution_string + chromosome[index2+1..-1]
+      Chromosome.new(mutated_solution_string)
     end
     
 # Definition: Performs a point mutation on one sequence in a Chromosome
@@ -672,10 +689,15 @@ module MeetingsScheduler
       admit_id = @@factors_to_consider[:attending_admits].keys.shuffle.shuffle.fetch(0)
       solution_string = chromosome.solution_string
       solution_string[index] = admit_id
-      return Chromosome.new(solution_string)
+      Chromosome.new(solution_string)
     end
 
-    
+
+
+
+
+
+  
     # Abstracted methods for easier stubbing in Rspec tests
 
 # Definition: Determines whether a chromosome is 'unfit enough' for a mutation
@@ -683,13 +705,6 @@ module MeetingsScheduler
 # @return: true or false
     def self.ok_to_mutate(chromosome)
       chromosome.normalized_fitness && Chromosome.random < ((1 - chromosome.normalized_fitness) * 0.3)
-    end
-    
-# Definition: Abstraction for the rand method
-# @params: an integer (optional)
-# @return: a random number from 0 to 1, or a random integer from 0 to integer, exclusive
-    def self.random(params=nil)
-      rand(params)
     end
     
 # Definition: Picks two random indexes that allow for LEGAL double crossovers and chromosomal inversions
@@ -702,36 +717,33 @@ module MeetingsScheduler
       end
       [index1, index2]
     end
-    
   end
+  
+  
   
   class Nucleotide
     include Comparable
     
-    attr_accessor :data
+    attr_accessor :faculty
+    attr_accessor :admit
+    attr_accessor :schedule_index
 
-    def initialize(data)
-      @data = data
+    def initialize(faculty, schedule_index, admit)
+      @faculty = faculty
+      @schedule_index = schedule_index
+      @admit = admit
     end
     
     def faculty_id
-      @data[0]
-    end
-    
-    def schedule_index
-      @data[1]
+      @faculty[:id]
     end
     
     def admit_id
-      @data[2]
+      @admit[:id]
     end
-
-    def admit_id=(assignment)
-      @data[2] = assignment
-    end
-
+         
     def <=>(other)
-      self.data.inspect <=> other.data.inspect
+      [@faculty[:id], @schedule_index, @admit[:id]].inspect <=> [other.faculty[:id], other.schedule_index, other.admit[:id]].inspect
     end
   end
   
