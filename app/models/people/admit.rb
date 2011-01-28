@@ -5,13 +5,11 @@ class Admit < Person
     'Phone' => :phone,
     'Area 1' => :area1,
     'Area 2' => :area2,
-    'Attending' => :attending,
   })
   ATTRIBUTE_TYPES = Person::ATTRIBUTE_TYPES.merge({
     :phone => :string,
     :area1 => :string,
     :area2 => :string,
-    :attending => :boolean,
   })
 
   def after_initialize
@@ -34,10 +32,5 @@ class Admit < Person
     :message => 'must be a valid numeric US phone number'
   validates_presence_of :area1
   validates_presence_of :area2
-  validates_inclusion_of :attending, :in => [true, false]
   validates_existence_of :peer_advisor, :allow_nil => true
-
-  def self.attending_admits
-    Admit.all.find_all{ |admit| admit.attending? }
-  end
 end

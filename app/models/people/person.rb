@@ -1,7 +1,3 @@
-=begin
-Person is an "abstract class" whose purpose is to capture the commonality
-between Staff, PeerAdvisor, Faculty, and Admit.  
-=end
 class Person < ActiveRecord::Base
   ATTRIBUTES = {
     'CalNet ID' => :calnet_id,
