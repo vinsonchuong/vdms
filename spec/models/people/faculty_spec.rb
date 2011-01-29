@@ -103,8 +103,8 @@ describe Faculty do
       @faculty.max_admits_per_meeting.should == 1
     end
 
-    it 'has a Max Additional Admits to meet with preference of No Limit' do
-      @faculty.max_additional_admits.should == Float::MAX.to_i
+    it 'has a Max Additional Admits to meet with preference of 100' do
+      @faculty.max_additional_admits.should == 100 
     end
   end
 
