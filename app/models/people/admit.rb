@@ -12,11 +12,6 @@ class Admit < Person
     :area2 => :string,
   })
 
-  def after_initialize
-    if self.new_record?
-      self.attending ||= false
-    end
-  end
   after_validation do |record| # format Phone
     unless record.phone.nil?
       record.phone.gsub!(/^\(?\b([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/, '(\1) \2-\3')

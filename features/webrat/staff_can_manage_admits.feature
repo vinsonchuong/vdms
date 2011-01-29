@@ -14,11 +14,26 @@ Feature: Staff can manage admits
     Then I should be on the view admits page
 
   Scenario: I view a list of all admits
+    Given the following "Admits" have been added:
+      | first_name  | last_name  | email            | phone      | area1   | area2   |
+      | First1      | Last1      | email1@email.com | 1234567891 | Area 11 | Area 21 |
+      | First2      | Last2      | email2@email.com | 1234567892 | Area 12 | Area 22 |
+      | First3      | Last3      | email3@email.com | 1234567893 | Area 13 | Area 23 |
+    When I go to the view admits page
+    And I should see "First1"
+    And I should see "Last1"
+    And I should see "Area 11"
+    And I should see "First2"
+    And I should see "Last2"
+    And I should see "Area 12"
+    And I should see "First3"
+    And I should see "Last3"
+    And I should see "Area 13"
+
 
   Scenario Outline: I add an admit
     Given I am on the view admits page
     When I follow "Add Admit"
-    And I fill in "CalNet ID" with "<calnet_id>"
     And I fill in "First Name" with "<first_name>"
     And I fill in "Last Name" with "<last_name>"
     And I fill in "Email" with "<email>"
@@ -29,22 +44,37 @@ Feature: Staff can manage admits
     And I should see "<result>" 
 
     Scenarios: with valid information
-      | calnet_id   | first_name | last_name | email           | phone          | area1  | area2  | result                        |
-      | test-212387 | First      | Last      | email@email.com | 123-456-7890   | Area 1 | Area 2 | Admit was successfully added. |
-      | test-212387 | First      | Last      | email@email.com | 123.456.7890   | Area 1 | Area 2 | Admit was successfully added. |
-      | test-212387 | First      | Last      | email@email.com | (123) 456-7890 | Area 1 | Area 2 | Admit was successfully added. |
-      | test-212387 | First      | Last      | email@email.com | 1234567890     | Area 1 | Area 2 | Admit was successfully added. |
+      | first_name | last_name | email           | phone          | area1  | area2  | result                        |
+      | First      | Last      | email@email.com | 123-456-7890   | Area 1 | Area 2 | Admit was successfully added. |
+      | First      | Last      | email@email.com | 123.456.7890   | Area 1 | Area 2 | Admit was successfully added. |
+      | First      | Last      | email@email.com | (123) 456-7890 | Area 1 | Area 2 | Admit was successfully added. |
+      | First      | Last      | email@email.com | 1234567890     | Area 1 | Area 2 | Admit was successfully added. |
 
     Scenarios: with invalid information
-      | calnet_id   | first_name | last_name | email           | result                                                           |
-      | test-212387 | First      | Last      | invalid_email   | Email is invalid                                                 |
-      | test-212387 | First      | Last      | invalid_phone   | Phone must be a valid numeric US phone number                    |
-      | test-212387 | First      | Last      | 123-4567        | Phone must be a valid numeric US phone number                    |
-      | test-212387 | First      | Last      | 1-123-456-7890  | Phone must be a valid numeric US phone number                    |
+      | first_name | last_name | email           | result                                                           |
+      | First      | Last      | invalid_email   | Email is invalid                                                 |
+      | First      | Last      | invalid_phone   | Phone must be a valid numeric US phone number                    |
+      | First      | Last      | 123-4567        | Phone must be a valid numeric US phone number                    |
+      | First      | Last      | 1-123-456-7890  | Phone must be a valid numeric US phone number                    |
 
-  Scenario: I add admits via CSV import
+  Scenario: I add admits by importing a CSV with valid data
+    Given I am on the view admits page
+    When I follow "Import Admits"
+    And I attach the file "features/assets/valid_admits.csv" to "CSV File"
+    And I press "Import"
+    Then I should see "Admits were successfully imported."
+    And I should see "First1"
+    And I should see "First2"
+    And I should see "First3"
 
-  Scenario: I view a list of admits
+  Scenario: I try to add admits by importing a CSV with some invalid data
+    Given I am on the view admits page
+    When I follow "Import Admits"
+    And I attach the file "features/assets/invalid_admits.csv" to "CSV File"
+    And I press "Import"
+    Then I should see "Email can't be blank"
+    And I should see "Phone can't be blank"
+    And I should see "Area1 can't be blank"
 
   Scenario: I update an admit's information
 

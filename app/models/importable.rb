@@ -1,14 +1,9 @@
 module Importable
   module ClassMethods
-    def import_csv(csv_text)
+    def new_from_csv(csv_text)
       result = []
-      transaction do
-        FasterCSV.parse(csv_text, :headers => :first_row) do |row|
-          new_person = self.new(self.convert_attributes(row))
-          result << new_person
-          new_person.save
-        end
-        raise ActiveRecord::Rollback unless result.all? {|r| r.valid?} 
+      FasterCSV.parse(csv_text, :headers => :first_row) do |row|
+        result << self.new(self.convert_attributes(row))
       end
       result
     end

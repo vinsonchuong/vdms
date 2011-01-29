@@ -66,8 +66,12 @@ describe 'Routes' do
       end
 
       context 'Import Staff' do
-        it 'routes GET /people/staffs/import to Staffs#import' do
-          {:get => '/people/staffs/import'}.should route_to(:controller => 'staffs', :action => 'import')
+        it 'routes GET /people/staffs/upload to Staffs#upload' do
+          {:get => '/people/staffs/upload'}.should route_to(:controller => 'staffs', :action => 'upload')
+        end
+
+        it 'routes POST /people/staffs/import to Staffs#import' do
+          {:post => '/people/staffs/import'}.should route_to(:controller => 'staffs', :action => 'import')
         end
       end
 
@@ -110,8 +114,12 @@ describe 'Routes' do
       end
 
       context 'Import Peer Advisors' do
-        it 'routes GET /people/peer_advisors/import to PeerAdvisors#import' do
-          {:get => '/people/peer_advisors/import'}.should route_to(:controller => 'peer_advisors', :action => 'import')
+        it 'routes GET /people/peer_advisors/upload to PeerAdvisors#upload' do
+          {:get => '/people/peer_advisors/upload'}.should route_to(:controller => 'peer_advisors', :action => 'upload')
+        end
+
+        it 'routes POST /people/peer_advisors/import to PeerAdvisors#import' do
+          {:post => '/people/peer_advisors/import'}.should route_to(:controller => 'peer_advisors', :action => 'import')
         end
       end
 
@@ -154,8 +162,12 @@ describe 'Routes' do
       end
 
       context 'Import Faculty' do
-        it 'routes GET /people/faculties/import to Faculties#import' do
-          {:get => '/people/faculties/import'}.should route_to(:controller => 'faculties', :action => 'import')
+        it 'routes GET /people/faculties/upload to Faculties#upload' do
+          {:get => '/people/faculties/upload'}.should route_to(:controller => 'faculties', :action => 'upload')
+        end
+
+        it 'routes POST /people/faculties/import to Faculties#import' do
+          {:post => '/people/faculties/import'}.should route_to(:controller => 'faculties', :action => 'import')
         end
       end
 
@@ -198,8 +210,12 @@ describe 'Routes' do
       end
 
       context 'Import Admits' do
-        it 'routes GET /people/admits/import to Admits#import' do
-          {:get => '/people/admits/import'}.should route_to(:controller => 'admits', :action => 'import')
+        it 'routes GET /people/admits/upload to Admits#upload' do
+          {:get => '/people/admits/upload'}.should route_to(:controller => 'admits', :action => 'upload')
+        end
+
+        it 'routes POST /people/admits/import to Admits#import' do
+          {:post => '/people/admits/import'}.should route_to(:controller => 'admits', :action => 'import')
         end
       end
 

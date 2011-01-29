@@ -66,11 +66,11 @@ describe PeerAdvisorsController do
     context 'when signed in as a Faculty'
   end
 
-  describe 'GET import' do
+  describe 'GET upload' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
-        get :import
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(import_peer_advisors_url)}")
+        get :upload
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(upload_peer_advisors_url)}")
       end
     end
 
@@ -190,6 +190,61 @@ describe PeerAdvisorsController do
         it 'renders the new template' do
           post :create
           response.should render_template('new')
+        end
+      end
+    end
+
+    context 'when signed in as a Peer Advisor'
+
+    context 'when signed in as a Faculty'
+  end
+
+  describe 'POST import' do
+    context 'when not signed in' do
+      it 'redirects to the CalNet sign in page' do
+        post :import
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(import_peer_advisors_url)}")
+      end
+    end
+
+    context 'when signed in as a Staff' do
+      before(:each) do
+        @csv_text = 'text'
+        @peer_advisors = [PeerAdvisor.new, PeerAdvisor.new, PeerAdvisor.new]
+        PeerAdvisor.stub(:new_from_csv).and_return(@peer_advisors)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+      end
+
+      it 'assigns to @peer_advisors a collection of PeerAdvisors built from the attributes in each row' do
+        PeerAdvisor.should_receive(:new_from_csv).with(@csv_text).and_return(@peer_advisors)
+        post :import, :csv_file => @csv_text
+        assigns[:peer_advisors].should equal(@peer_advisors)
+      end
+
+      context 'when the PeerAdvisor are all valid' do
+        before(:each) do
+          @peer_advisors.each {|s| s.stub(:valid?).and_return(true)}
+        end
+
+        it 'sets a flash[:notice] message' do
+          post :import, :csv_file => @csv_text
+          flash[:notice].should == 'Peer Advisors were successfully imported.'
+        end
+
+        it 'redirects to the View Peer Advisors page' do
+          post :import, :csv_file => @csv_text
+          response.should redirect_to(:action => 'index')
+        end
+      end
+
+      context 'when not all of the PeerAdvisors are valid' do
+        before(:each) do
+          @peer_advisors.first.stub(:valid?).and_return(false)
+        end
+
+        it 'renders the upload template' do
+          post :import, :csv_file => @csv_text
+          response.should render_template('upload')
         end
       end
     end

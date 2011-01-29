@@ -1,0 +1,31 @@
+%h2 Import Staff
+- form_tag import_staffs_path, :method => :post, :multipart => true do
+  - if !@staffs.nil? && @staffs.any?(&:invalid?)
+    %table
+      %thead
+        %tr
+          %th{:scope => 'col'} CalNet ID
+          %th{:scope => 'col'} First Name
+          %th{:scope => 'col'} Last Name
+          %th{:scope => 'col'} Email
+          %th{:scope => 'col'} Errors
+      %tbody
+        - @staffs.each do |staff|
+          %tr
+            %td= staff.calnet_id
+            %td= staff.first_name
+            %td= staff.last_name
+            %td= staff.email
+            %td
+              %ul
+                - staff.errors.full_messages.each do |error|
+                  %li= error
+  %fieldset
+    %h3 Data
+    %ul
+      %li
+        != label_tag :csv_file, 'CSV File'
+        != file_field_tag :csv_file
+  %fieldset
+    %h3 Submit
+    != submit_tag 'Import Staff'

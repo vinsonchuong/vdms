@@ -1,0 +1,35 @@
+%h2 Import Faculty
+- form_tag import_faculties_path, :method => :post, :multipart => true do
+  - if !@faculties.nil? && @faculties.any?(&:invalid?)
+    %table
+      %thead
+        %tr
+          %th{:scope => 'col'} CalNet ID
+          %th{:scope => 'col'} First Name
+          %th{:scope => 'col'} Last Name
+          %th{:scope => 'col'} Email
+          %th{:scope => 'col'} Area
+          %th{:scope => 'col'} Division
+          %th{:scope => 'col'} Errors
+      %tbody
+        - @faculties.each do |faculty|
+          %tr
+            %td= faculty.calnet_id
+            %td= faculty.first_name
+            %td= faculty.last_name
+            %td= faculty.email
+            %td= faculty.area
+            %td= faculty.division
+            %td
+              %ul
+                - faculty.errors.full_messages.each do |error|
+                  %li= error
+  %fieldset
+    %h3 Data
+    %ul
+      %li
+        != label_tag :csv_file, 'CSV File'
+        != file_field_tag :csv_file
+  %fieldset
+    %h3 Submit
+    != submit_tag 'Import Faculty'

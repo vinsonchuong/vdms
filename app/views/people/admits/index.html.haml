@@ -2,12 +2,11 @@
 %h3 Navigation
 %ul
   %li!= link_to 'Add Admit', new_admit_path
-  %li!= link_to 'Import Admits from CSV', import_admits_path
+  %li!= link_to 'Import Admits', upload_admits_path
 %h3 Admits
 %table
   %thead
     %tr
-      %th{:scope => 'col'} CalNet Id
       %th{:scope => 'col'} First Name
       %th{:scope => 'col'} Last Name
       %th{:scope => 'col'} Email
@@ -19,7 +18,6 @@
   %tbody
     - @admits.each do |admit|
       %tr
-        %td= admit.calnet_id
         %td= admit.first_name
         %td= admit.last_name
         %td= admit.email

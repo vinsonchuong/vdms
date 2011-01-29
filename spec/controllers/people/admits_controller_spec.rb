@@ -66,11 +66,11 @@ describe AdmitsController do
     context 'when signed in as a Faculty'
   end
 
-  describe 'GET import' do
+  describe 'GET upload' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
-        get :import
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(import_admits_url)}")
+        get :upload
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(upload_admits_url)}")
       end
     end
 
@@ -190,6 +190,61 @@ describe AdmitsController do
         it 'renders the new template' do
           post :create
           response.should render_template('new')
+        end
+      end
+    end
+
+    context 'when signed in as a Peer Advisor'
+
+    context 'when signed in as a Faculty'
+  end
+
+  describe 'POST import' do
+    context 'when not signed in' do
+      it 'redirects to the CalNet sign in page' do
+        post :import
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(import_admits_url)}")
+      end
+    end
+
+    context 'when signed in as a Staff' do
+      before(:each) do
+        @csv_text = 'text'
+        @admits = [Admit.new, Admit.new, Admit.new]
+        Admit.stub(:new_from_csv).and_return(@admits)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+      end
+
+      it 'assigns to @admits a collection of Admits built from the attributes in each row' do
+        Admit.should_receive(:new_from_csv).with(@csv_text).and_return(@admits)
+        post :import, :csv_file => @csv_text
+        assigns[:admits].should equal(@admits)
+      end
+
+      context 'when the Staffs are all valid' do
+        before(:each) do
+          @admits.each {|s| s.stub(:valid?).and_return(true)}
+        end
+
+        it 'sets a flash[:notice] message' do
+          post :import, :csv_file => @csv_text
+          flash[:notice].should == 'Admits were successfully imported.'
+        end
+
+        it 'redirects to the View Admit page' do
+          post :import, :csv_file => @csv_text
+          response.should redirect_to(:action => 'index')
+        end
+      end
+
+      context 'when not all of the Admits are valid' do
+        before(:each) do
+          @admits.first.stub(:valid?).and_return(false)
+        end
+
+        it 'renders the upload template' do
+          post :import, :csv_file => @csv_text
+          response.should render_template('upload')
         end
       end
     end

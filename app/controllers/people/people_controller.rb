@@ -11,8 +11,8 @@ class PeopleController < ApplicationController
     self.instance_variable_set("@#{@model.name.underscore}", @model.new)
   end
 
-  # GET /people/PEOPLE/import
-  def import
+  # GET /people/PEOPLE/upload
+  def upload
   end
 
   # GET /people/PEOPLE/1/edit
@@ -33,6 +33,18 @@ class PeopleController < ApplicationController
       redirect_to(self.send("#{@model.name.tableize}_url".to_sym), :notice => "#{@model.name.titleize} was successfully added.")
     else
       render :action => 'new'
+    end
+  end
+
+  # POST /people/PEOPLE/import
+  def import
+    self.instance_variable_set("@#{@model.name.tableize}", @model.new_from_csv(params[:csv_file]))
+
+    if instance_variable_get("@#{@model.name.tableize}").map(&:valid?).all?
+      instance_variable_get("@#{@model.name.tableize}").each(&:save)
+      redirect_to(self.send("#{@model.name.tableize}_url".to_sym), :notice => "#{@model.name.titleize.pluralize} were successfully imported.")
+    else
+      render :action => 'upload'
     end
   end
 
