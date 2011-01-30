@@ -1,0 +1,35 @@
+%h2 Import Admits
+- form_tag import_admits_path, :method => :post, :multipart => true do
+  - if !@admits.nil? && @admits.any?(&:invalid?)
+    %table
+      %thead
+        %tr
+          %th{:scope => 'col'} First Name
+          %th{:scope => 'col'} Last Name
+          %th{:scope => 'col'} Email
+          %th{:scope => 'col'} Phone
+          %th{:scope => 'col'} Area 1
+          %th{:scope => 'col'} Area 2
+          %th{:scope => 'col'} Errors
+      %tbody
+        - @admits.each do |admit|
+          %tr
+            %td= admit.first_name
+            %td= admit.last_name
+            %td= admit.email
+            %td= admit.phone
+            %td= admit.area1
+            %td= admit.area2
+            %td
+              %ul
+                - admit.errors.full_messages.each do |error|
+                  %li= error
+  %fieldset
+    %h3 Data
+    %ul
+      %li
+        != label_tag :csv_file, 'CSV File'
+        != file_field_tag :csv_file
+  %fieldset
+    %h3 Submit
+    != submit_tag 'Import Admits'

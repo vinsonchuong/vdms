@@ -36,11 +36,6 @@ describe Admit do
       @admit.should respond_to(:area2=)
     end
 
-    it 'has an Attending flag (attending)' do
-      @admit.should respond_to(:attending)
-      @admit.should respond_to(:attending=)
-    end
-
     it 'has an attribute name to accessor map' do
       Admit::ATTRIBUTES['CalNet ID'].should == :calnet_id
       Admit::ATTRIBUTES['First Name'].should == :first_name
@@ -49,7 +44,6 @@ describe Admit do
       Admit::ATTRIBUTES['Phone'].should == :phone
       Admit::ATTRIBUTES['Area 1'].should == :area1
       Admit::ATTRIBUTES['Area 2'].should == :area2
-      Admit::ATTRIBUTES['Attending'].should == :attending
     end
 
     it 'has an accessor to type map' do
@@ -60,7 +54,6 @@ describe Admit do
       Admit::ATTRIBUTE_TYPES[:phone].should == :string
       Admit::ATTRIBUTE_TYPES[:area1].should == :string
       Admit::ATTRIBUTE_TYPES[:area2].should == :string
-      Admit::ATTRIBUTE_TYPES[:attending].should == :boolean
     end
   end
 
@@ -79,16 +72,6 @@ describe Admit do
 
     it 'has and belongs to many Meetings (meetings)' do
       @admit.should have_and_belong_to_many(:meetings)
-    end
-  end
-
-  context 'when building' do
-    before(:each) do
-      @admit = Admit.new
-    end
-
-    it 'is by default not Attending' do
-      @admit.attending.should == false
     end
   end
 
@@ -145,18 +128,6 @@ describe Admit do
 
     it 'is not valid without an Area 2' do
       @admit.area2 = ''
-      @admit.should_not be_valid
-    end
-
-    it 'is valid with a valid Attending flag' do
-      [true, false].each do |flag|
-        @admit.attending = flag
-        @admit.should be_valid
-      end
-    end
-
-    it 'is not valid without an Attending flag' do
-      @admit.attending = nil
       @admit.should_not be_valid
     end
 
@@ -253,91 +224,43 @@ describe Admit do
       end
     end
 
-    context 'with valid attributes' do
-      before(:each) do
-        csv_text = <<-EOF.gsub(/^ {10}/, '')
-          CalNet ID,First Name,Last Name,Email,Phone,Area 1,Area 2,Attending
-          ID0,First0,Last0,email0@email.com,1234567890,Area 10,Area 20,false
-          ID1,First1,Last1,email1@email.com,1234567891,Area 11,Area 21,false
-          ID2,First2,Last2,email2@email.com,1234567892,Area 12,Area 22,false
-        EOF
-        @csv = FasterCSV.parse(csv_text, :headers => :first_row)
-      end
-
-      it 'creates an Admit with the attributes in each row' do
-        Admit.import_csv(@csv.to_s)
-        @admits.each_with_index do |admit, i|
-          admit.should_not be_a_new_record
-          admit.calnet_id.should == "ID#{i}"
-          admit.first_name.should == "First#{i}"
-          admit.last_name.should == "Last#{i}"
-          admit.email.should == "email#{i}@email.com"
-          admit.phone.should == "(123) 456-789#{i}"
-          admit.area1.should == "Area 1#{i}"
-          admit.area2.should == "Area 2#{i}"
-          admit.attending.should == false
-        end
-      end
-  
-      it 'creates an Admit with the partial attributes in each row' do
-        @csv.delete('Attending')
-        Admit.import_csv(@csv.to_s)
-        @admits.each_with_index do |admit, i|
-          admit.should_not be_a_new_record
-          admit.calnet_id.should == "ID#{i}"
-          admit.first_name.should == "First#{i}"
-          admit.last_name.should == "Last#{i}"
-          admit.email.should == "email#{i}@email.com"
-          admit.phone.should == "(123) 456-789#{i}"
-          admit.area1.should == "Area 1#{i}"
-          admit.area2.should == "Area 2#{i}"
-        end
-      end
-  
-      it 'ignores extraneous attributes' do
-        csv_text = <<-EOF.gsub(/^ {10}/, '')
-          CalNet ID,Baz,First Name,Last Name,Email,Phone,Area 1,Area 2,Attending,Foo,Bar
-          ID0,Baz0,First0,Last0,email0@email.com,1234567890,Area 10,Area 20,false,Foo0,Bar0
-          ID1,Baz1,First1,Last1,email1@email.com,1234567891,Area 11,Area 21,false,Foo1,Bar1
-          ID2,Baz2,First2,Last2,email2@email.com,1234567892,Area 12,Area 22,false,Foo2,Bar2
-        EOF
-        Admit.import_csv(csv_text)
-        @admits.each_with_index do |admit, i|
-          admit.should_not be_a_new_record
-          admit.calnet_id.should == "ID#{i}"
-          admit.first_name.should == "First#{i}"
-          admit.last_name.should == "Last#{i}"
-          admit.email.should == "email#{i}@email.com"
-          admit.phone.should == "(123) 456-789#{i}"
-          admit.area1.should == "Area 1#{i}"
-          admit.area2.should == "Area 2#{i}"
-          admit.attending.should == false
-        end
-      end
-  
-      it 'returns the collection of created Admits' do
-        Admit.import_csv(@csv.to_s).should == @admits
+    it 'builds a collection of Admits with the attributes in each row' do
+      csv_text = <<-EOF.gsub(/^ {8}/, '')
+        CalNet ID,First Name,Last Name,Email,Phone,Area 1,Area 2
+        ID0,First0,Last0,email0@email.com,1234567890,Area 10,Area 20
+        ID1,First1,Last1,email1@email.com,1234567891,Area 11,Area 21
+        ID2,First2,Last2,email2@email.com,1234567892,Area 12,Area 22
+      EOF
+      Admit.new_from_csv(csv_text).should == @admits
+      @admits.each_with_index do |admit, i|
+        admit.calnet_id.should == "ID#{i}"
+        admit.first_name.should == "First#{i}"
+        admit.last_name.should == "Last#{i}"
+        admit.email.should == "email#{i}@email.com"
+        admit.phone.should == "123456789#{i}"
+        admit.area1.should == "Area 1#{i}"
+        admit.area2.should == "Area 2#{i}"
       end
     end
 
-    context 'with invalid attributes' do
-      before(:each) do
-        csv_text = <<-EOF.gsub(/^ {10}/, '')
-          CalNet ID,First Name,Last Name,Email,Phone,Area 1,Area 2,Attending
-          ID0,,Last0,email0@email.com,1234567890,Area 10,Area 20,false
-          ID1,First1,,email1@email.com,1234567891,Area 11,Area 21,false
-          ID2,First2,Last2,email2@email.com,1234567892,Area 12,Area 22,false
-        EOF
-        @csv = FasterCSV.parse(csv_text, :headers => :first_row)
-      end
-
-      it 'saves no Admits to the database' do
-        @admits.all? {|a| a.new_record?}.should be_true
-      end
-
-      it 'returns the collection of unsaved Admits' do
-        Admit.import_csv(@csv.to_s).should == @admits
+    it 'ignores extraneous attributes' do
+      csv_text = <<-EOF.gsub(/^ {8}/, '')
+        CalNet ID,Baz,First Name,Last Name,Email,Phone,Area 1,Area 2,Foo,Bar
+        ID0,Baz0,First0,Last0,email0@email.com,1234567890,Area 10,Area 20,Foo0,Bar0
+        ID1,Baz1,First1,Last1,email1@email.com,1234567891,Area 11,Area 21,Foo1,Bar1
+        ID2,Baz2,First2,Last2,email2@email.com,1234567892,Area 12,Area 22,Foo2,Bar2
+      EOF
+      Admit.new_from_csv(csv_text).should == @admits
+      @admits.each_with_index do |admit, i|
+        admit.calnet_id.should == "ID#{i}"
+        admit.first_name.should == "First#{i}"
+        admit.last_name.should == "Last#{i}"
+        admit.email.should == "email#{i}@email.com"
+        admit.phone.should == "123456789#{i}"
+        admit.area1.should == "Area 1#{i}"
+        admit.area2.should == "Area 2#{i}"
       end
     end
+
   end
 end

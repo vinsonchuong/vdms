@@ -103,8 +103,8 @@ describe Faculty do
       @faculty.max_admits_per_meeting.should == 1
     end
 
-    it 'has a Max Additional Admits to meet with preference of No Limit' do
-      @faculty.max_additional_admits.should == Float::MAX.to_i
+    it 'has a Max Additional Admits to meet with preference of 100' do
+      @faculty.max_additional_admits.should == 100 
     end
   end
 
@@ -255,93 +255,45 @@ describe Faculty do
       end
     end
 
-    context 'with valid attributes' do
-      before(:each) do
-        csv_text = <<-EOF.gsub(/^ {10}/, '')
-          CalNet ID,First Name,Last Name,Email,Area,Division,Default Room,Max Admits Per Meeting,Max Additional Admits
-          ID0,First0,Last0,email0@email.com,Area0,#{Settings.instance.divisions.first.name},Room0,1,0
-          ID1,First1,Last1,email1@email.com,Area1,#{Settings.instance.divisions.first.name},Room1,2,1
-          ID2,First2,Last2,email2@email.com,Area2,#{Settings.instance.divisions.first.name},Room2,3,2
-        EOF
-        @csv = FasterCSV.parse(csv_text, :headers => :first_row)
-      end
-
-      it 'creates a Faculty with the attributes in each row' do
-        Faculty.import_csv(@csv.to_s)
-        @faculties.each_with_index do |faculty, i|
-          faculty.should_not be_a_new_record
-          faculty.calnet_id.should == "ID#{i}"
-          faculty.first_name.should == "First#{i}"
-          faculty.last_name.should == "Last#{i}"
-          faculty.email.should == "email#{i}@email.com"
-          faculty.area.should == "Area#{i}"
-          faculty.division.should == Settings.instance.divisions.first.name
-          faculty.default_room.should == "Room#{i}"
-          faculty.max_admits_per_meeting.should == i + 1
-          faculty.max_additional_admits.should == i
-        end
-      end
-  
-      it 'creates a Faculty with the partial attributes in each row' do
-        @csv.delete('Default Room')
-        @csv.delete('Max Admits Per Meeting')
-        @csv.delete('Max Additional Admits')
-        Faculty.import_csv(@csv.to_s)
-        @faculties.each_with_index do |faculty, i|
-          faculty.should_not be_a_new_record
-          faculty.calnet_id.should == "ID#{i}"
-          faculty.first_name.should == "First#{i}"
-          faculty.last_name.should == "Last#{i}"
-          faculty.email.should == "email#{i}@email.com"
-          faculty.area.should == "Area#{i}"
-          faculty.division.should == Settings.instance.divisions.first.name
-        end
-      end
-  
-      it 'ignores extraneous attributes' do
-        csv_text = <<-EOF.gsub(/^ {10}/, '')
-          CalNet ID,Baz,First Name,Last Name,Email,Area,Division,Default Room,Max Admits Per Meeting,Max Additional Admits,Foo,Bar
-          ID0,Baz0,First0,Last0,email0@email.com,Area0,#{Settings.instance.divisions.first.name},Room0,1,0,Foo0,Bar0
-          ID1,Baz1,First1,Last1,email1@email.com,Area1,#{Settings.instance.divisions.first.name},Room1,2,1,Foo1,Bar1
-          ID2,Baz2,First2,Last2,email2@email.com,Area2,#{Settings.instance.divisions.first.name},Room2,3,2,Foo2,Bar2
-        EOF
-        Faculty.import_csv(csv_text)
-        @faculties.each_with_index do |faculty, i|
-          faculty.should_not be_a_new_record
-          faculty.calnet_id.should == "ID#{i}"
-          faculty.first_name.should == "First#{i}"
-          faculty.last_name.should == "Last#{i}"
-          faculty.email.should == "email#{i}@email.com"
-          faculty.area.should == "Area#{i}"
-          faculty.division.should == Settings.instance.divisions.first.name
-          faculty.default_room.should == "Room#{i}"
-          faculty.max_admits_per_meeting.should == i + 1
-          faculty.max_additional_admits.should == i
-        end
-      end
-  
-      it 'returns the collection of created Faculties' do
-        Faculty.import_csv(@csv.to_s).should == @faculties
+    it 'builds a collection of Faculty with the attributes in each row' do
+      csv_text = <<-EOF.gsub(/^ {8}/, '')
+        CalNet ID,First Name,Last Name,Email,Area,Division,Default Room,Max Admits Per Meeting,Max Additional Admits
+        ID0,First0,Last0,email0@email.com,Area0,#{Settings.instance.divisions.first.name},Room0,1,0
+        ID1,First1,Last1,email1@email.com,Area1,#{Settings.instance.divisions.first.name},Room1,2,1
+        ID2,First2,Last2,email2@email.com,Area2,#{Settings.instance.divisions.first.name},Room2,3,2
+      EOF
+      Faculty.new_from_csv(csv_text).should == @faculties
+      @faculties.each_with_index do |faculty, i|
+        faculty.calnet_id.should == "ID#{i}"
+        faculty.first_name.should == "First#{i}"
+        faculty.last_name.should == "Last#{i}"
+        faculty.email.should == "email#{i}@email.com"
+        faculty.area.should == "Area#{i}"
+        faculty.division.should == Settings.instance.divisions.first.name
+        faculty.default_room.should == "Room#{i}"
+        faculty.max_admits_per_meeting.should == i + 1
+        faculty.max_additional_admits.should == i
       end
     end
 
-    context 'with invalid attributes' do
-      before(:each) do
-        csv_text = <<-EOF.gsub(/^ {10}/, '')
-          CalNet ID,First Name,Last Name,Email,Area,Division,Default Room,Max Admits Per Meeting,Max Additional Admits
-          ID0,,Last0,email0@email.com,Area0,#{Settings.instance.divisions.first.name},Room0,0,0
-          ID1,First1,,email1@email.com,Area1,#{Settings.instance.divisions.first.name},Room1,1,1
-          ID2,First2,Last2,email2@email.com,Area2,#{Settings.instance.divisions.first.name},Room2,2,2
-        EOF
-        @csv = FasterCSV.parse(csv_text, :headers => :first_row)
-      end
-
-      it 'saves no Faculties to the database' do
-        @faculties.all? {|f| f.new_record?}.should be_true
-      end
-
-      it 'returns the collection of unsaved Faculties' do
-        Faculty.import_csv(@csv.to_s).should == @faculties
+    it 'ignores extraneous attributes' do
+      csv_text = <<-EOF.gsub(/^ {8}/, '')
+        CalNet ID,Baz,First Name,Last Name,Email,Area,Division,Default Room,Max Admits Per Meeting,Max Additional Admits,Foo,Bar
+        ID0,Baz0,First0,Last0,email0@email.com,Area0,#{Settings.instance.divisions.first.name},Room0,1,0,Foo0,Bar0
+        ID1,Baz1,First1,Last1,email1@email.com,Area1,#{Settings.instance.divisions.first.name},Room1,2,1,Foo1,Bar1
+        ID2,Baz2,First2,Last2,email2@email.com,Area2,#{Settings.instance.divisions.first.name},Room2,3,2,Foo2,Bar2
+      EOF
+      Faculty.new_from_csv(csv_text).should == @faculties
+      @faculties.each_with_index do |faculty, i|
+        faculty.calnet_id.should == "ID#{i}"
+        faculty.first_name.should == "First#{i}"
+        faculty.last_name.should == "Last#{i}"
+        faculty.email.should == "email#{i}@email.com"
+        faculty.area.should == "Area#{i}"
+        faculty.division.should == Settings.instance.divisions.first.name
+        faculty.default_room.should == "Room#{i}"
+        faculty.max_admits_per_meeting.should == i + 1
+        faculty.max_additional_admits.should == i
       end
     end
   end

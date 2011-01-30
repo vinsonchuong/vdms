@@ -20,7 +20,7 @@ class Faculty < Person
     if self.new_record?
       self.default_room ||= 'None'
       self.max_admits_per_meeting ||= 1
-      self.max_additional_admits ||= Float::MAX.to_i
+      self.max_additional_admits ||= 100
     end
   end
 

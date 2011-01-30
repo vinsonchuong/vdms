@@ -91,67 +91,35 @@ describe PeerAdvisor do
       end
     end
 
-    context 'with valid attributes' do
-      before(:each) do
-        csv_text = <<-EOF.gsub(/^ {10}/, '')
-          CalNet ID,First Name,Last Name,Email
-          ID0,First0,Last0,email0@email.com
-          ID1,First1,Last1,email1@email.com
-          ID2,First2,Last2,email2@email.com
-        EOF
-        @csv = FasterCSV.parse(csv_text, :headers => :first_row)
-      end
-
-      it 'creates a PeerAdvisor with the attributes in each row' do
-        PeerAdvisor.import_csv(@csv.to_s)
-        @peer_advisors.each_with_index do |peer_advisor, i|
-          peer_advisor.should_not be_a_new_record
-          peer_advisor.calnet_id.should == "ID#{i}"
-          peer_advisor.first_name.should == "First#{i}"
-          peer_advisor.last_name.should == "Last#{i}"
-          peer_advisor.email.should == "email#{i}@email.com"
-        end
-      end
-  
-      it 'ignores extraneous attributes' do
-        csv_text = <<-EOF.gsub(/^ {10}/, '')
-          CalNet ID,Baz,First Name,Last Name,Email,Foo,Bar
-          ID0,Baz0,First0,Last0,email0@email.com,Foo0,Bar0
-          ID1,Baz1,First1,Last1,email1@email.com,Foo1,Bar1
-          ID2,Baz2,First2,Last2,email2@email.com,Foo2,Bar2
-        EOF
-        PeerAdvisor.import_csv(csv_text)
-        @peer_advisors.each_with_index do |peer_advisor, i|
-          peer_advisor.should_not be_a_new_record
-          peer_advisor.calnet_id.should == "ID#{i}"
-          peer_advisor.first_name.should == "First#{i}"
-          peer_advisor.last_name.should == "Last#{i}"
-          peer_advisor.email.should == "email#{i}@email.com"
-        end
-      end
-  
-      it 'returns the collection of created PeerAdvisors' do
-        PeerAdvisor.import_csv(@csv.to_s).should == @peer_advisors
+    it 'builds a collection of PeerAdvisors with the attributes in each row' do
+      csv_text = <<-EOF.gsub(/^ {8}/, '')
+        CalNet ID,First Name,Last Name,Email
+        ID0,First0,Last0,email0@email.com
+        ID1,First1,Last1,email1@email.com
+        ID2,First2,Last2,email2@email.com
+      EOF
+      PeerAdvisor.new_from_csv(csv_text).should == @peer_advisors
+      @peer_advisors.each_with_index do |peer_advisor, i|
+        peer_advisor.calnet_id.should == "ID#{i}"
+        peer_advisor.first_name.should == "First#{i}"
+        peer_advisor.last_name.should == "Last#{i}"
+        peer_advisor.email.should == "email#{i}@email.com"
       end
     end
 
-    context 'with invalid attributes' do
-      before(:each) do
-        csv_text = <<-EOF.gsub(/^ {10}/, '')
-          CalNet ID,First Name,Last Name,Email
-          ID0,,Last0,email0@email.com
-          ID1,First1,,email1@email.com
-          ID2,First2,Last2,email2@email.com
-        EOF
-        @csv = FasterCSV.parse(csv_text, :headers => :first_row)
-      end
-
-      it 'saves no PeerAdvisors to the database' do
-        @peer_advisors.all? {|p| p.new_record?}.should be_true
-      end
-
-      it 'returns the collection of unsaved PeerAdvisors' do
-        PeerAdvisor.import_csv(@csv.to_s).should == @peer_advisors
+    it 'ignores extraneous attributes' do
+      csv_text = <<-EOF.gsub(/^ {8}/, '')
+        CalNet ID,Baz,First Name,Last Name,Email,Foo,Bar
+        ID0,Baz0,First0,Last0,email0@email.com,Foo0,Bar0
+        ID1,Baz1,First1,Last1,email1@email.com,Foo1,Bar1
+        ID2,Baz2,First2,Last2,email2@email.com,Foo2,Bar2
+      EOF
+      PeerAdvisor.new_from_csv(csv_text) == @peer_advisors
+      @peer_advisors.each_with_index do |peer_advisor, i|
+        peer_advisor.calnet_id.should == "ID#{i}"
+        peer_advisor.first_name.should == "First#{i}"
+        peer_advisor.last_name.should == "Last#{i}"
+        peer_advisor.email.should == "email#{i}@email.com"
       end
     end
   end

@@ -85,67 +85,35 @@ describe Staff do
       end
     end
 
-    context 'with valid attributes' do
-      before(:each) do
-        csv_text = <<-EOF.gsub(/^ {10}/, '')
-          CalNet ID,First Name,Last Name,Email
-          ID0,First0,Last0,email0@email.com
-          ID1,First1,Last1,email1@email.com
-          ID2,First2,Last2,email2@email.com
-        EOF
-        @csv = FasterCSV.parse(csv_text, :headers => :first_row)
+    it 'builds a collection of Staff with the attributes in each row' do
+      csv_text = <<-EOF.gsub(/^ {8}/, '')
+        CalNet ID,First Name,Last Name,Email
+        ID0,First0,Last0,email0@email.com
+        ID1,First1,Last1,email1@email.com
+        ID2,First2,Last2,email2@email.com
+      EOF
+      Staff.new_from_csv(csv_text).should == @staffs
+      @staffs.each_with_index do |staff, i|
+        staff.calnet_id.should == "ID#{i}"
+        staff.first_name.should == "First#{i}"
+        staff.last_name.should == "Last#{i}"
+        staff.email.should == "email#{i}@email.com"
       end
-
-      it 'creates a Staff with the attributes in each row' do
-        Staff.import_csv(@csv.to_s)
-        @staffs.each_with_index do |staff, i|
-          staff.should_not be_a_new_record
-          staff.calnet_id.should == "ID#{i}"
-          staff.first_name.should == "First#{i}"
-          staff.last_name.should == "Last#{i}"
-          staff.email.should == "email#{i}@email.com"
-        end
-      end
-  
-      it 'ignores extraneous attributes' do
-        csv_text = <<-EOF.gsub(/^ {10}/, '')
-          CalNet ID,Baz,First Name,Last Name,Email,Foo,Bar
-          ID0,Baz0,First0,Last0,email0@email.com,Foo0,Bar0
-          ID1,Baz1,First1,Last1,email1@email.com,Foo1,Bar1
-          ID2,Baz2,First2,Last2,email2@email.com,Foo2,Bar2
-        EOF
-        Staff.import_csv(csv_text)
-        @staffs.each_with_index do |staff, i|
-          staff.should_not be_a_new_record
-          staff.calnet_id.should == "ID#{i}"
-          staff.first_name.should == "First#{i}"
-          staff.last_name.should == "Last#{i}"
-          staff.email.should == "email#{i}@email.com"
-        end
-      end
-  
-      it 'returns the collection of created Staffs' do
-        Staff.import_csv(@csv.to_s).should == @staffs
-      end      
     end
 
-    context 'with invalid attributes' do
-      before(:each) do
-        csv_text = <<-EOF.gsub(/^ {10}/, '')
-          CalNet ID,First Name,Last Name,Email
-          ID0,,Last0,email0@email.com
-          ID1,First1,,email1@email.com
-          ID2,First2,Last2,email2@email.com
-        EOF
-        @csv = FasterCSV.parse(csv_text, :headers => :first_row)
-      end
-
-      it 'saves no Staff to the database' do
-        @staffs.all? {|s| s.new_record?}.should be_true
-      end
-
-      it 'returns the collection of unsaved Staffs' do
-        Staff.import_csv(@csv.to_s).should == @staffs
+    it 'ignores extraneous attributes' do
+      csv_text = <<-EOF.gsub(/^ {8}/, '')
+        CalNet ID,Baz,First Name,Last Name,Email,Foo,Bar
+        ID0,Baz0,First0,Last0,email0@email.com,Foo0,Bar0
+        ID1,Baz1,First1,Last1,email1@email.com,Foo1,Bar1
+        ID2,Baz2,First2,Last2,email2@email.com,Foo2,Bar2
+      EOF
+      Staff.new_from_csv(csv_text).should == @staffs
+      @staffs.each_with_index do |staff, i|
+        staff.calnet_id.should == "ID#{i}"
+        staff.first_name.should == "First#{i}"
+        staff.last_name.should == "Last#{i}"
+        staff.email.should == "email#{i}@email.com"
       end
     end
   end
