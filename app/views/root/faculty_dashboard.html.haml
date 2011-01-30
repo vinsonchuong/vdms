@@ -1,1 +1,96 @@
 %h2 Faculty Dashboard
+#admit_areas
+  %h3 Area of Interests
+  %p Please select your area of interests. A list of admits in the area of interests will appear in the List of Admits
+  %form{:id => "area_of_interests"}
+    %br
+      != check_box_tag "Artificial Intelligence", "Artificial Intelligence" 
+      Artificial Intelligence (AI)
+    %br
+      != check_box_tag "Biosystems & Computational Biology", "Biosystems & Computational Biology"
+      Biosystems & Computational Biology (BIO) 
+    %br
+      != check_box_tag "Communications & Networking", "Communications & Networking"  
+      Communications & Networking (COMNET)
+    %br
+      != check_box_tag "Computer Architecture & Engineering", "Computer Architecture & Engineering"
+      Computer Architecture & Engineering (ARC)
+    %br
+      != check_box_tag "Control, Intelligent Systems, and Robotics", "Control, Intelligent Systems, and Robotics"
+      Control, Intelligent Systems, and Robotics (CIR)  
+    %br
+      != check_box_tag "Database Management Systems", "Database Management Systems"
+      Database Management Systems (DBMS)    
+    %br
+      != check_box_tag "Design of Electronic Systems", "Design of Electronic Systems"
+      Design of Electronic Systems (DES)      
+    %br
+      != check_box_tag "Education", "Education"
+      Education (EDUC)        
+    %br
+      != check_box_tag "Energy", "Energy"
+      Energy (ENE)          
+    %br
+      != check_box_tag "Graphics", "Graphics"
+      Graphics (GR)            
+    %br
+      != check_box_tag "Human-Computer Interaction", "Human-Computer Interaction"
+      Human-Computer Interaction (HCI)              
+    %br
+      != check_box_tag "Integrated Circuits", "Integrated Circuits"
+      Integrated Circuits (INC)                
+    %br
+      != check_box_tag "Micro/Nano Electro Mechanical Systems", "Micro/Nano Electro Mechanical Systems"
+      Micro/Nano Electro Mechanical Systems (MEMS)
+    %br
+      != check_box_tag "Operating Systems & Networking", "Operating Systems & Networking"    
+      Operating Systems & Networking (OSNT)
+    %br
+      != check_box_tag "Physical Electronics", "Physical Electronics" 
+      Physical Electronics (PHY)
+    %br
+      != check_box_tag "Programming Systems", "Programming Systems"
+      Programming Systems (PS)
+    %br
+      != check_box_tag "Scientific Computing", "Scientific Computing"           
+      Scientific Computing (SCI)
+    %br
+      != check_box_tag "Security", "Security"
+      Security (SEC) 
+    %br
+      != check_box_tag "Signal Processing", "Signal Processing"       
+      Signal Processing (SP)
+    %br
+      != check_box_tag "Theory", "Theory"
+      Theory (THY)
+   
+#admit_list
+  %h3 List of Admits
+  
+  != observe_form "area_of_interests",
+      :update => "list_of_students",
+      :url => {:action => "find_admits_in_area_of_interests"},
+      :with => "Form.serialize('area_of_interests')"
+  
+  %table{:border => "1"}
+    %thead
+      %tr
+        %th Name
+    %tbody
+      %tr#list_of_students
+
+  
+
+
+
+#admit_ranking
+  %h3 Admit Ranking
+  
+  
+  
+  
+#faculty_availability
+  %h3 Faculty Availability
+
+
+
