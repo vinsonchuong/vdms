@@ -26,7 +26,7 @@ class RootController < ApplicationController
   def find_admits_in_area_of_interests
     @admits = []
     params.each do |area_key, area_value|
-      @admits = @admits + Admit.find(:all, :conditions => ["area1 == ? OR area2 == ? AND ( ('people'.'type' = 'Admit' ) )", area_value, area_value])
+      @admits = @admits + Admit.find(:all, :conditions => ["area1 == ? OR area2 == ?", area_value, area_value])
     end
     @admits.uniq!
     render :partial => "admits_in_area_of_interests"
