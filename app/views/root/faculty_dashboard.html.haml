@@ -77,7 +77,7 @@
           
   %span Drag and drop students between admit list and appointment list
   %p
-  #list_of_admit_names{:style => "width:100px;height:100px;border-style:solid"}
+  #list_of_admit_names{:style => "height:100px;border-style:solid"}
   
   
       
@@ -85,7 +85,21 @@
   %h3 My Desired Appointments
   %span Drag to reorder list. Roll over column names for explanation of each column
   %p
-  #admit_ranking_table{:style => "width:100px;height:100px;border-style:solid"}
+  #admit_ranking_table{:style => "height:100px;border-style:solid"}
+    %table{:border => "1"}
+      %tr
+        %th 
+        %th !!!
+        %th #Slots
+        %th 1:1?
+        %th Name
+      %tr
+        %td 1
+        %td!= check_box_tag "", ""
+        %td 
+        %td!= check_box_tag "", ""
+        %td
+    
     != drop_receiving_element :admit_ranking_table, :hoverclass => 'hover', 
       :onDrop => "function(drag, drop){ if (!drop.cleared) {drop.innerHTML = ''; drop.cleared = true} drag.parentNode.removeChild(drag); drop.appendChild(drag);}"
   
