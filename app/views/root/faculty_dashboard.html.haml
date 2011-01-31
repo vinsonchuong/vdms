@@ -66,31 +66,28 @@
    
 #admit_list
   %h3 List of Admits
-  
   != observe_form "area_of_interests",
       :update => "list_of_students",
       :url => {:action => "find_admits_in_area_of_interests"},
       :with => "Form.serialize('area_of_interests')"
-  
+      
   %table{:border => "1"}
     %thead
       %tr
         %th Name
-    %tbody
-      %tr#list_of_students
-
-  
-
-
-
+        %th Area1
+        %th Area2
+    %tbody#list_of_students
+      
 #admit_ranking
   %h3 Admit Ranking
+  #admit_ranking_table{:style => "width:100px;height:100px;border-style:solid"}
+    != drop_receiving_element :admit_ranking_table, :hoverclass => 'hover', 
+      :onDrop => "function(drag, drop){ if (!drop.cleared) {drop.innerHTML = ''; drop.cleared = true} drag.parentNode.removeChild(drag); drop.appendChild(drag);}"
   
-  
-  
-  
+
 #faculty_availability
   %h3 Faculty Availability
 
 
-
+   

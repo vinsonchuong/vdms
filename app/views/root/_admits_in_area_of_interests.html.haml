@@ -1,3 +1,9 @@
-- @admits.each do |admit|
+%tbody
+- @admits.each_with_index do |admit, index|
   %tr
-    %td= admit.first_name+" "+admit.last_name
+    %div{:id => "admit#{index}", :style => "cursor:move"}= admit.full_name
+    %td#admit_area1= admit.area1
+    %td#admit_area2= admit.area2
+    != draggable_element "admit#{index}".to_sym, :revert => true, :ghosting => true
+
+    

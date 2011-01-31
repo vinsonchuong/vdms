@@ -28,4 +28,8 @@ class Admit < Person
   validates_presence_of :area1
   validates_presence_of :area2
   validates_existence_of :peer_advisor, :allow_nil => true
+  
+  def full_name
+    self.first_name+" "+self.last_name
+  end
 end
