@@ -30,6 +30,7 @@ module NavigationHelpers
     when /the new faculty page/ then new_faculty_path
     when /the import faculty page/ then upload_faculties_path
     when /the edit faculty page/ then edit_faculty_path(@faculty)
+    when /the schedule faculty page/ then schedule_faculty_path(@faculty)
     when /the delete faculty page/ then delete_faculty_path(@faculty)
 
     when /the view admits page/ then admits_path

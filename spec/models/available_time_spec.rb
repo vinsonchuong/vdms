@@ -21,16 +21,23 @@ describe AvailableTime do
       @available_time.should respond_to(:room=)
     end
 
+    it 'has an Available flag (available)' do
+      @available_time.should respond_to(:available)
+      @available_time.should respond_to(:available=)
+    end
+
     it 'has an attribute name to accessor map' do
       AvailableTime::ATTRIBUTES['Beginning'].should == :begin
       AvailableTime::ATTRIBUTES['End'].should == :end
       AvailableTime::ATTRIBUTES['Room'].should == :room
+      AvailableTime::ATTRIBUTES['Available'].should == :available
     end
 
     it 'has an accessor to type map' do
       AvailableTime::ATTRIBUTE_TYPES[:begin].should == :time
       AvailableTime::ATTRIBUTE_TYPES[:end].should == :time
       AvailableTime::ATTRIBUTE_TYPES[:room].should == :string
+      AvailableTime::ATTRIBUTE_TYPES[:available].should == :boolean
     end
   end
 

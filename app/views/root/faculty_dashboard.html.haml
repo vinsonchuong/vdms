@@ -1,4 +1,7 @@
 %h2 Faculty Dashboard
+%h3 Navigation
+%ul
+  %li!= link_to 'Update Meeting Availability', schedule_faculty_path(@current_user)
 #admit_areas
   %h3 Area of Interests
   %p Please select your area of interests. A list of admits in the area of interests will appear in the List of Admits
@@ -89,5 +92,3 @@
 #faculty_availability
   %h3 Faculty Availability
 
-
-   

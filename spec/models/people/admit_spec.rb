@@ -75,6 +75,31 @@ describe Admit do
     end
   end
 
+  describe 'Nested Attributes' do
+    describe 'Available Times (available_times)' do
+      it 'allows nested attributes for Available Times (available_times)' do
+        attributes = {:available_times_attributes => [
+          {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
+          {:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011')}
+        ]}
+        @admit.attributes = attributes
+        @admit.available_times.each_with_index do |time, i|
+          time.begin.should == attributes[:available_times_attributes][i][:begin]
+          time.end.should == attributes[:available_times_attributes][i][:end]
+        end
+      end
+  
+      it 'ignores completely blank entries' do
+        attributes = {:available_times_attributes => [
+          {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
+          {:begin => '', :end => ''}
+        ]}
+        @admit.attributes = attributes
+        @admit.available_times.length.should == 1
+      end
+    end
+  end
+
   context 'when validating' do
     it 'is valid with valid attributes' do
       @admit.should be_valid

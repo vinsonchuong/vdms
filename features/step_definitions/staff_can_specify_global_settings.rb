@@ -1,13 +1,3 @@
-Given /^"([^"]*)" has the following meeting times:$/ do |division, time_ranges|
-  division = Settings.instance.divisions.find_by_name(division)
-  time_ranges.hashes.each do |time_range|
-    division.available_times.create(
-      :begin => Time.zone.parse(time_range['begin']),
-      :end => Time.zone.parse(time_range['end'])
-    )
-  end
-end
-
 When /^I add "([^"]*)" to "([^"]*)" to the meeting times for "([^"]*)"$/ do |start, finish, division|
   division_index = Settings.instance.divisions.index {|d| d.name == division}
   time_index = Settings.instance.divisions[division_index].available_times.count

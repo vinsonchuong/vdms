@@ -90,6 +90,22 @@ describe Faculty do
     end
   end
 
+  describe 'Nested Attributes' do
+    describe 'Available Times (available_times)' do
+      it 'allows nested attributes for Available Times (available_times)' do
+        attributes = {:available_times_attributes => [
+          {:available => true, :begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
+          {:available => true, :begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011')}
+        ]}
+        @faculty.attributes = attributes
+        @faculty.available_times.each_with_index do |time, i|
+          time.begin.should == attributes[:available_times_attributes][i][:begin]
+          time.end.should == attributes[:available_times_attributes][i][:end]
+        end
+      end
+    end
+  end
+
   context 'when building' do
     before(:each) do
       @faculty = Faculty.new
@@ -209,6 +225,19 @@ describe Faculty do
     end
   end
 
+  context 'after validating' do
+    it 'destroys all AvailableTimes which are not flagged as available' do
+      time1 = @faculty.available_times.create(:available => true, :begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011'))
+      time2 = @faculty.available_times.create(:available => false, :begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011'))
+      time3 = @faculty.available_times.create(:available => false, :begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/6/2011'))
+      @faculty.available_times = [time1, time2, time3]
+      time1.should_not_receive(:destroy)
+      time2.should_receive(:destroy)
+      time3.should_receive(:destroy)
+      @faculty.save
+    end
+  end
+
   context 'when destroying' do
     it 'destroys its Available Times' do
       available_times = Array.new(3) do |i|
@@ -294,6 +323,55 @@ describe Faculty do
         faculty.default_room.should == "Room#{i}"
         faculty.max_admits_per_meeting.should == i + 1
         faculty.max_additional_admits.should == i
+      end
+    end
+  end
+
+  context 'when building a list of time slots' do
+    before(:each) do
+      @settings = Settings.instance
+      Settings.stub(:instance).and_return(@settings)
+      @settings.stub(:meeting_times).and_return([
+        AvailableTime.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 9AM')),
+        AvailableTime.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')),
+        AvailableTime.new(:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 11AM'))
+      ])
+      @settings.stub(:meeting_length).and_return(15 * 60)
+      @settings.stub(:meeting_gap).and_return(5 * 60)
+    end
+
+    context 'when no available meeting slots have been specified' do
+      it 'partitions the meeting times via global settings and produces an AvailableTime for each slot' do
+        @faculty.build_available_times
+        @faculty.available_times.map {|t| {:begin => t.begin, :end => t.end}}.should == [
+          {:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')},
+          {:begin => Time.zone.parse('1/1/2011 8:20AM'), :end => Time.zone.parse('1/1/2011 8:35AM')},
+          {:begin => Time.zone.parse('1/1/2011 8:40AM'), :end => Time.zone.parse('1/1/2011 8:55AM')},
+          {:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')},
+          {:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 10:45AM')}
+        ]
+      end
+    end
+
+    context 'when some available meeting times have been specified' do
+      it 'partitions the meeting times - already specified times and produces an AvailableTime for each slot' do
+        specified_times = [
+          AvailableTime.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')),
+          AvailableTime.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM'))
+        ]
+        @faculty.available_times += specified_times
+        @faculty.save
+        @faculty.available_times.none?(&:new_record?).should be_true
+        @faculty.build_available_times
+        @faculty.available_times.map {|t| {:begin => t.begin, :end => t.end}}.should == [
+          {:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')},
+          {:begin => Time.zone.parse('1/1/2011 8:20AM'), :end => Time.zone.parse('1/1/2011 8:35AM')},
+          {:begin => Time.zone.parse('1/1/2011 8:40AM'), :end => Time.zone.parse('1/1/2011 8:55AM')},
+          {:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')},
+          {:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 10:45AM')}
+        ]
+        [0, 3].each {|i| @faculty.available_times[i].should_not be_a_new_record}
+        [1, 2, 4].each {|i| @faculty.available_times[i].should be_a_new_record}
       end
     end
   end

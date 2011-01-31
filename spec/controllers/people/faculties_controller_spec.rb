@@ -111,6 +111,43 @@ describe FacultiesController do
     context 'when signed in as a Faculty'
   end
 
+  describe 'GET schedule' do
+    context 'when not signed in' do
+      it 'redirects to the CalNet sign in page' do
+        get :schedule, :id => @faculty.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(schedule_faculty_url(@faculty.id))}")
+      end
+    end
+
+    context 'when signed in as a Staff'
+
+    context 'when signed in as a Peer Advisor'
+
+    context 'when signed in as as the given Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@faculty.calnet_id)
+      end
+
+      it 'assigns to @faculty the given Faculty' do
+        get :schedule, :id => @faculty.id
+        assigns[:faculty].should == @faculty
+      end
+
+      it 'builds a list of possible meeting slots' do
+        Faculty.stub(:find).and_return(@faculty)
+        @faculty.should_receive(:build_available_times)
+        get :schedule, :id => @faculty.id
+      end
+
+      it 'renders the schedule template' do
+        get :schedule, :id => @faculty.id
+        response.should render_template('schedule')
+      end
+    end
+
+    context 'when signed in as some other faculty'
+  end
+
   describe 'GET delete' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
