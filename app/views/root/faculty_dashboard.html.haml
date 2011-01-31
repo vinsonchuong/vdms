@@ -1,11 +1,12 @@
 %h2 Faculty Dashboard
 %h3 Navigation
-%ul
-  %li!= link_to 'Update Meeting Availability', schedule_faculty_path(@current_user)
-#admit_areas
+-#%ul
+  -#%li!= link_to 'Update Meeting Availability', schedule_faculty_path(@current_user)
+
+#area_of_interests
   %h3 Area of Interests
-  %p Please select your area of interests. A list of admits in the area of interests will appear in the List of Admits
-  %form{:id => "area_of_interests"}
+  %span Please select your area of interests. A list of admits in the area of interests will appear in the List of Admits
+  %form{:id => "research_categories"}
     %br
       != check_box_tag "Artificial Intelligence", "Artificial Intelligence" 
       Artificial Intelligence (AI)
@@ -66,29 +67,29 @@
     %br
       != check_box_tag "Theory", "Theory"
       Theory (THY)
-   
-#admit_list
+
+#list_of_admits
   %h3 List of Admits
-  != observe_form "area_of_interests",
-      :update => "list_of_students",
+  != observe_form "research_categories",
+      :update => "list_of_admit_names",
       :url => {:action => "find_admits_in_area_of_interests"},
       :with => "Form.serialize('area_of_interests')"
-      
-  %table{:border => "1"}
-    %thead
-      %tr
-        %th Name
-        %th Area1
-        %th Area2
-    %tbody#list_of_students
+          
+  %span Drag and drop students between admit list and appointment list
+  %p
+  #list_of_admit_names{:style => "width:100px;height:100px;border-style:solid"}
+  
+  
       
 #admit_ranking
-  %h3 Admit Ranking
+  %h3 My Desired Appointments
+  %span Drag to reorder list. Roll over column names for explanation of each column
+  %p
   #admit_ranking_table{:style => "width:100px;height:100px;border-style:solid"}
     != drop_receiving_element :admit_ranking_table, :hoverclass => 'hover', 
       :onDrop => "function(drag, drop){ if (!drop.cleared) {drop.innerHTML = ''; drop.cleared = true} drag.parentNode.removeChild(drag); drop.appendChild(drag);}"
   
 
 #faculty_availability
-  %h3 Faculty Availability
+  %h3 My Availability
 

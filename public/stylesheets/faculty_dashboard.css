@@ -1,0 +1,31 @@
+#area_of_interests {
+  float:left;
+  border-style:solid;
+  width:350px;
+  padding:5px;
+  margin:5px;
+}
+
+#list_of_admits {
+  float:left;
+  border-style:solid;
+  width:150px;
+  padding:5px;
+  margin:5px;
+}
+
+#admit_ranking {
+  float:left;
+  border-style:solid;
+  width:250px;
+  padding:5px;
+  margin:5px;
+}
+
+#faculty_availability {
+  float:left;
+  border-style:solid;
+  width:350px;
+  padding:5px;
+  margin:5px;  
+}
