@@ -10,8 +10,20 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resource :settings, :only => [:edit, :update]
 
-  map.resources :staffs, :except => [:show], :collection => {:upload => :get, :import => :post}, :member => {:delete => :get}, :path_prefix => '/people'
-  map.resources :peer_advisors, :except => [:show], :collection => {:upload => :get, :import => :post}, :member => {:delete => :get}, :path_prefix => '/people'
-  map.resources :faculties, :except => [:show], :collection => {:upload => :get, :import => :post}, :member => {:delete => :get}, :path_prefix => '/people'
-  map.resources :admits, :except => [:show], :collection => {:upload => :get, :import => :post}, :member => {:delete => :get}, :path_prefix => '/people'
+  map.resources :staffs, :path_prefix => '/people',
+    :except => [:show],
+    :collection => {:upload => :get, :import => :post},
+    :member => {:delete => :get}
+  map.resources :peer_advisors, :path_prefix => '/people',
+    :except => [:show],
+    :collection => {:upload => :get, :import => :post},
+    :member => {:delete => :get}
+  map.resources :faculties, :path_prefix => '/people',
+    :except => [:show],
+    :collection => {:upload => :get, :import => :post},
+    :member => {:schedule => :get, :delete => :get}
+  map.resources :admits, :path_prefix => '/people',
+    :except => [:show],
+    :collection => {:upload => :get, :import => :post},
+    :member => {:delete => :get}
 end

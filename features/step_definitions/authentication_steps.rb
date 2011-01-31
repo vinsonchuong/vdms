@@ -2,12 +2,14 @@ Given /^(?:I am|.*? is) not signed in$/ do
   visit CASClient::Frameworks::Rails::Filter.config[:logout_url]
 end
 
-Given /^(?:I am|"([^"]*?)" "([^"]*?)" is) registered as a "([^"]*?)"$/ do |first_name, last_name, role|
+Given /^(?:I am|"([^"]*?)" "([^"]*?)" is) registered as a "([^"]*?)"(?: in "([^"]*?)"|)$/ do |first_name, last_name, role, division|
   @user = Factory.create(role.downcase.gsub(' ', '_').to_sym,
     :calnet_id => 'test_id',
     :first_name => first_name || 'My',
-    :last_name => last_name || 'Name'
+    :last_name => last_name || 'Name',
+    :division => division
   )
+  instance_variable_set("@#{role.downcase.gsub(' ', '_')}", @user)
 end
 
 Given /^(?:I am|.*? is) signed in$/ do

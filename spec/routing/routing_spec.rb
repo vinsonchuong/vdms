@@ -181,6 +181,12 @@ describe 'Routes' do
         end
       end
 
+      context 'Update Faculty Schedule' do
+        it 'routes GET /people/faculties/1/schedule to Faculties#schedule' do
+          {:get => '/people/faculties/1/schedule'}.should route_to(:controller => 'faculties', :action => 'schedule', :id => '1')
+        end
+      end
+
       context 'Remove Faculty' do
         it 'routes GET /people/faculties/1/delete to Faculties#delete' do
           {:get => '/people/faculties/1/delete'}.should route_to(:controller => 'faculties', :action => 'delete', :id => '1')

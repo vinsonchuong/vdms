@@ -31,6 +31,45 @@ describe Division do
     end
   end
 
+  describe 'Nested Attributes' do
+    describe 'Available Times (available_times)' do
+      it 'allows nested attributes for Available Times (available_times)' do
+        attributes = {:available_times_attributes => [
+          {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
+          {:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011')}
+        ]}
+        @division.attributes = attributes
+        @division.available_times.each_with_index do |time, i|
+          time.begin.should == attributes[:available_times_attributes][i][:begin]
+          time.end.should == attributes[:available_times_attributes][i][:end]
+        end
+      end
+  
+      it 'ignores completely blank entries' do
+        attributes = {:available_times_attributes => [
+          {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
+          {:begin => '', :end => ''}
+        ]}
+        @division.attributes = attributes
+        @division.available_times.length.should == 1
+      end
+
+      it 'allows deletion' do
+        attributes = {:available_times_attributes => [
+          {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
+        ]}
+        @division.attributes = attributes
+        @division.save
+
+        new_attributes = {:available_times_attributes => [
+          {:id => @division.available_times.first.id, :_destroy => true},
+        ]}
+        @division.attributes = new_attributes
+        @division.available_times.first.should be_marked_for_destruction
+      end
+    end
+  end
+
   context 'when validating' do
     it 'is valid with valid attributes' do
       @division.should be_valid

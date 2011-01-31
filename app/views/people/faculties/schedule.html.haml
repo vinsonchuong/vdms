@@ -1,0 +1,32 @@
+%h2 Update Schedule
+- form_for @faculty do |faculty_form|
+  != faculty_form.error_messages
+  %fieldset
+    %h3 Preferences
+    %ul
+      %li
+        != faculty_form.label :default_room
+        != faculty_form.text_field :default_room
+      %li
+        != faculty_form.label :max_admits_per_meeting
+        != faculty_form.text_field :max_admits_per_meeting
+  %fieldset
+    %h3 Time Availability
+    %table
+      %thead
+        %tr
+          %th{:scope => 'col'} Time
+          %th{:scope => 'col'} Available?
+          %th{:scope => 'col'} Different Room?
+      %tbody
+        - faculty_form.fields_for :available_times do |available_time_fields|
+          - @available_time = available_time_fields.object
+          != available_time_fields.hidden_field :begin
+          != available_time_fields.hidden_field :end
+          %tr
+            %td!= "#{@available_time.begin.strftime('%m/%d/%y - %I:%M%p')} to #{@available_time.end.strftime('%I:%M%p')}"
+            %td!= available_time_fields.check_box :available
+            %td!= available_time_fields.text_field :room
+  %fieldset
+    %h3 Submit
+    != faculty_form.submit
