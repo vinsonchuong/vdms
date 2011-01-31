@@ -55,8 +55,8 @@
         <tr class="top-aligned-row">
             <td><strong>In:</strong></td>
             <td>
-                <a href="../files/app/models/admit_ranking_rb.html">
-                app/models/admit_ranking.rb
+                <a href="../files/app/models/rankings/admit_ranking_rb.html">
+                app/models/rankings/admit_ranking.rb
                 </a>
         <br />
             </td>
@@ -88,7 +88,7 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000003">after_initialize</a>&nbsp;&nbsp;
+      <a href="#M000010">after_initialize</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -128,23 +128,23 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000003" class="method-detail">
-        <a name="M000003"></a>
+      <div id="method-M000010" class="method-detail">
+        <a name="M000010"></a>
 
         <div class="method-heading">
-          <a href="#M000003" class="method-signature">
+          <a href="#M000010" class="method-signature">
           <span class="method-name">after_initialize</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000003-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000003-source">
+            onclick="toggleCode('M000010-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000010-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/admit_ranking.rb, line 13</span>
+    <span class="ruby-comment cmt"># File app/models/rankings/admit_ranking.rb, line 13</span>
 13:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_initialize</span>
-14:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">new_record?</span> <span class="ruby-comment cmt"># work around for bug 3165</span>
+14:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">new_record?</span>
 15:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mandatory</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword kw">false</span>
 16:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">time_slots</span> <span class="ruby-operator">||=</span> <span class="ruby-value">1</span>
 17:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">one_on_one</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword kw">false</span>

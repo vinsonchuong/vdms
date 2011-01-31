@@ -86,12 +86,12 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000024">mutate_all_population</a>&nbsp;&nbsp;
-      <a href="#M000026">replace_worst_ranked</a>&nbsp;&nbsp;
-      <a href="#M000023">reproduction</a>&nbsp;&nbsp;
-      <a href="#M000021">run</a>&nbsp;&nbsp;
-      <a href="#M000025">select_best_chromosome</a>&nbsp;&nbsp;
-      <a href="#M000022">selection</a>&nbsp;&nbsp;
+      <a href="#M000063">mutate_all_population</a>&nbsp;&nbsp;
+      <a href="#M000065">replace_worst_ranked</a>&nbsp;&nbsp;
+      <a href="#M000062">reproduction</a>&nbsp;&nbsp;
+      <a href="#M000060">run</a>&nbsp;&nbsp;
+      <a href="#M000064">select_best_chromosome</a>&nbsp;&nbsp;
+      <a href="#M000061">selection</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -113,11 +113,11 @@
     <div id="methods">
       <h3 class="section-bar">Public Class methods</h3>
 
-      <div id="method-M000024" class="method-detail">
-        <a name="M000024"></a>
+      <div id="method-M000063" class="method-detail">
+        <a name="M000063"></a>
 
         <div class="method-heading">
-          <a href="#M000024" class="method-signature">
+          <a href="#M000063" class="method-signature">
           <span class="method-name">mutate_all_population</span><span class="method-args">(population)</span>
           </a>
         </div>
@@ -125,14 +125,14 @@
         <div class="method-description">
           <p>
 Definition: <a
-href="GeneticAlgorithm.html#M000024">mutate_all_population</a> will call <a
-href="Chromosome.html#M000031">Chromosome.mutate</a> on each chromosome in
+href="GeneticAlgorithm.html#M000063">mutate_all_population</a> will call <a
+href="Chromosome.html#M000075">Chromosome.mutate</a> on each chromosome in
 the population @params: population, an array of chromosomes @return:
 mutated_population, an array of chromosomes
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000024-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000024-source">
+            onclick="toggleCode('M000063-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000063-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 216</span>
 216:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mutate_all_population</span>(<span class="ruby-identifier">population</span>)
@@ -147,11 +147,11 @@ mutated_population, an array of chromosomes
         </div>
       </div>
 
-      <div id="method-M000026" class="method-detail">
-        <a name="M000026"></a>
+      <div id="method-M000065" class="method-detail">
+        <a name="M000065"></a>
 
         <div class="method-heading">
-          <a href="#M000026" class="method-signature">
+          <a href="#M000065" class="method-signature">
           <span class="method-name">replace_worst_ranked</span><span class="method-args">(population, offsprings)</span>
           </a>
         </div>
@@ -159,14 +159,14 @@ mutated_population, an array of chromosomes
         <div class="method-description">
           <p>
 Definition: <a
-href="GeneticAlgorithm.html#M000026">replace_worst_ranked</a> replaces the
+href="GeneticAlgorithm.html#M000065">replace_worst_ranked</a> replaces the
 worst ranked population with its offsprings @params: population, an array
 of chromosomes offsprings, an array of chromosomes @return: a new
 population, an array of chromosomes
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000026-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000026-source">
+            onclick="toggleCode('M000065-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000065-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 240</span>
 240:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">replace_worst_ranked</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">offsprings</span>)
@@ -179,25 +179,25 @@ population, an array of chromosomes
         </div>
       </div>
 
-      <div id="method-M000023" class="method-detail">
-        <a name="M000023"></a>
+      <div id="method-M000062" class="method-detail">
+        <a name="M000062"></a>
 
         <div class="method-heading">
-          <a href="#M000023" class="method-signature">
+          <a href="#M000062" class="method-signature">
           <span class="method-name">reproduction</span><span class="method-args">(breed_population)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p>
-Definition: <a href="GeneticAlgorithm.html#M000023">reproduction</a> calls
-on <a href="Chromosome.html#M000032">Chromosome.reproduce</a> to produce
+Definition: <a href="GeneticAlgorithm.html#M000062">reproduction</a> calls
+on <a href="Chromosome.html#M000076">Chromosome.reproduce</a> to produce
 the offspring generation @params: breed_population, an array of chromosomes
 @return: offsprings, a new array of chromosomes
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000023-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000023-source">
+            onclick="toggleCode('M000062-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000062-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 205</span>
 205:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">reproduction</span>(<span class="ruby-identifier">breed_population</span>)
@@ -212,33 +212,33 @@ the offspring generation @params: breed_population, an array of chromosomes
         </div>
       </div>
 
-      <div id="method-M000021" class="method-detail">
-        <a name="M000021"></a>
+      <div id="method-M000060" class="method-detail">
+        <a name="M000060"></a>
 
         <div class="method-heading">
-          <a href="#M000021" class="method-signature">
+          <a href="#M000060" class="method-signature">
           <span class="method-name">run</span><span class="method-args">(population, total_generations, factors_to_consider)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p>
-Definition: <a href="GeneticAlgorithm.html#M000021">run</a> is the main
+Definition: <a href="GeneticAlgorithm.html#M000060">run</a> is the main
 execution of the algorithm. Calling <a
-href="GeneticAlgorithm.html#M000021">run</a> will theoritically output the
+href="GeneticAlgorithm.html#M000060">run</a> will theoritically output the
 best solution available after total_generations
 </p>
 <p>
 @params: population: an array of chromosomes total_generation: an int to
 specify how many generation to <a
-href="GeneticAlgorithm.html#M000021">run</a> the algorithm
+href="GeneticAlgorithm.html#M000060">run</a> the algorithm
 factors_to_consider: a hash, the specific structure of this hash, please
-refer to <a href="Scheduler.html#M000044">Scheduler.new</a> method
+refer to <a href="Scheduler.html#M000081">Scheduler.new</a> method
 @returns: the best chromosome object
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000021-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000021-source">
+            onclick="toggleCode('M000060-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000060-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 154</span>
 154:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">run</span>(<span class="ruby-identifier">population</span>, <span class="ruby-identifier">total_generations</span>, <span class="ruby-identifier">factors_to_consider</span>)
@@ -255,11 +255,11 @@ refer to <a href="Scheduler.html#M000044">Scheduler.new</a> method
         </div>
       </div>
 
-      <div id="method-M000025" class="method-detail">
-        <a name="M000025"></a>
+      <div id="method-M000064" class="method-detail">
+        <a name="M000064"></a>
 
         <div class="method-heading">
-          <a href="#M000025" class="method-signature">
+          <a href="#M000064" class="method-signature">
           <span class="method-name">select_best_chromosome</span><span class="method-args">(population)</span>
           </a>
         </div>
@@ -271,8 +271,8 @@ population, an array of chromosomes @return: best_chromosome, a chromosome
 object
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000025-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000025-source">
+            onclick="toggleCode('M000064-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000064-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 227</span>
 227:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">select_best_chromosome</span>(<span class="ruby-identifier">population</span>)
@@ -287,11 +287,11 @@ object
         </div>
       </div>
 
-      <div id="method-M000022" class="method-detail">
-        <a name="M000022"></a>
+      <div id="method-M000061" class="method-detail">
+        <a name="M000061"></a>
 
         <div class="method-heading">
-          <a href="#M000022" class="method-signature">
+          <a href="#M000061" class="method-signature">
           <span class="method-name">selection</span><span class="method-args">(population)</span>
           </a>
         </div>
@@ -302,8 +302,8 @@ object
 new array of chromosomes
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000022-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000022-source">
+            onclick="toggleCode('M000061-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000061-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/meetings_scheduler.rb, line 179</span>
 179:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">selection</span>(<span class="ruby-identifier">population</span>)

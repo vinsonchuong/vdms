@@ -88,8 +88,12 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000019">home</a>&nbsp;&nbsp;
-      <a href="#M000020">sign_out</a>&nbsp;&nbsp;
+      <a href="#M000037">faculty_dashboard</a>&nbsp;&nbsp;
+      <a href="#M000038">find_admits_in_area_of_interests</a>&nbsp;&nbsp;
+      <a href="#M000033">home</a>&nbsp;&nbsp;
+      <a href="#M000036">peer_advisor_dashboard</a>&nbsp;&nbsp;
+      <a href="#M000034">sign_out</a>&nbsp;&nbsp;
+      <a href="#M000035">staff_dashboard</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -111,11 +115,64 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000019" class="method-detail">
-        <a name="M000019"></a>
+      <div id="method-M000037" class="method-detail">
+        <a name="M000037"></a>
 
         <div class="method-heading">
-          <a href="#M000019" class="method-signature">
+          <a href="#M000037" class="method-signature">
+          <span class="method-name">faculty_dashboard</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+GET /faculty
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000037-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000037-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/root_controller.rb, line 23</span>
+23:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">faculty_dashboard</span>
+24:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000038" class="method-detail">
+        <a name="M000038"></a>
+
+        <div class="method-heading">
+          <a href="#M000038" class="method-signature">
+          <span class="method-name">find_admits_in_area_of_interests</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000038-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000038-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/root_controller.rb, line 26</span>
+26:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_admits_in_area_of_interests</span>
+27:     <span class="ruby-ivar">@admits</span> = []
+28:     <span class="ruby-identifier">params</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">area_key</span>, <span class="ruby-identifier">area_value</span><span class="ruby-operator">|</span>
+29:       <span class="ruby-ivar">@admits</span> = <span class="ruby-ivar">@admits</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Admit</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;area1 == ? OR area2 == ?&quot;</span>, <span class="ruby-identifier">area_value</span>, <span class="ruby-identifier">area_value</span>])
+30:     <span class="ruby-keyword kw">end</span>
+31:     <span class="ruby-ivar">@admits</span>.<span class="ruby-identifier">uniq!</span>
+32:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;admits_in_area_of_interests&quot;</span>
+33:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000033" class="method-detail">
+        <a name="M000033"></a>
+
+        <div class="method-heading">
+          <a href="#M000033" class="method-signature">
           <span class="method-name">home</span><span class="method-args">()</span>
           </a>
         </div>
@@ -125,8 +182,8 @@
 GET /
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000019-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000019-source">
+            onclick="toggleCode('M000033-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000033-source">
 <pre>
    <span class="ruby-comment cmt"># File app/controllers/root_controller.rb, line 5</span>
 5:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">home</span>
@@ -136,28 +193,78 @@ GET /
         </div>
       </div>
 
-      <div id="method-M000020" class="method-detail">
-        <a name="M000020"></a>
+      <div id="method-M000036" class="method-detail">
+        <a name="M000036"></a>
 
         <div class="method-heading">
-          <a href="#M000020" class="method-signature">
+          <a href="#M000036" class="method-signature">
+          <span class="method-name">peer_advisor_dashboard</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+GET /peer_advisor
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000036-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000036-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/root_controller.rb, line 19</span>
+19:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">peer_advisor_dashboard</span>
+20:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000034" class="method-detail">
+        <a name="M000034"></a>
+
+        <div class="method-heading">
+          <a href="#M000034" class="method-signature">
           <span class="method-name">sign_out</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p>
-GET /<a href="RootController.html#M000020">sign_out</a> POST /<a
-href="RootController.html#M000020">sign_out</a>
+GET /<a href="RootController.html#M000034">sign_out</a> POST /<a
+href="RootController.html#M000034">sign_out</a>
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000020-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000020-source">
+            onclick="toggleCode('M000034-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000034-source">
 <pre>
     <span class="ruby-comment cmt"># File app/controllers/root_controller.rb, line 10</span>
 10:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sign_out</span>
 11:     <span class="ruby-constant">CASClient</span><span class="ruby-operator">::</span><span class="ruby-constant">Frameworks</span><span class="ruby-operator">::</span><span class="ruby-constant">Rails</span><span class="ruby-operator">::</span><span class="ruby-constant">Filter</span>.<span class="ruby-identifier">logout</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">home_url</span>)
 12:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000035" class="method-detail">
+        <a name="M000035"></a>
+
+        <div class="method-heading">
+          <a href="#M000035" class="method-signature">
+          <span class="method-name">staff_dashboard</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+GET /staff
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000035-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000035-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/root_controller.rb, line 15</span>
+15:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">staff_dashboard</span>
+16:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
