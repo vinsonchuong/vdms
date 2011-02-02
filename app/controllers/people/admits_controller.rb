@@ -6,7 +6,9 @@ class AdmitsController < PeopleController
     faculty = Faculty.find(params[:faculty_id])
     params.each do |area_key, area_value|
       @admit = Admit.find(:all, :conditions => ["area1 = ? OR area2 = ?", area_value, area_value])
-      @admits << @admit #if faculty.admit_rankings.find(:all, :conditions => ["admit_id != ?", @admit.id])
+      @admits = @admits + @admit #if faculty.admit_rankings.find(:all, :conditions => ["admit_id != ?", @admit.id])
+      #Admit.find(:all, :conditions => ["area1 = ? OR area2 = ?", area_value, area_value])
+      # @admit #if faculty.admit_rankings.find(:all, :conditions => ["admit_id != ?", @admit.id])
     end
     @admits.uniq!
   end
