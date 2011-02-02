@@ -21,7 +21,7 @@ class AdmitRanking < Ranking
   belongs_to :faculty
   belongs_to :admit
 
-  validates_uniqueness_of :rank, :scope => :faculty_id
+  #validates_uniqueness_of :rank, :scope => :faculty_id
   validates_inclusion_of :mandatory, :in => [true, false]
   validates_numericality_of :time_slots, :only_integer => true, :greater_than => 0
   validates_inclusion_of :one_on_one, :in => [true, false]
