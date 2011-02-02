@@ -1,7 +1,0 @@
-- @admits.each_with_index do |admit, index|
-  %div{:id => "admit#{index}", :style => "cursor:move"}= admit.full_name
-  != draggable_element "admit#{index}".to_sym, :revert => true, :ghosting => true
-  != drop_receiving_element :list_of_admit_names, :hoverclass => 'hover', 
-    :onDrop => "function(drag, drop){ if (!drop.cleared) {drop.innerHTML = ''; drop.cleared = true} drag.parentNode.removeChild(drag); drop.appendChild(drag);}"
-
-    

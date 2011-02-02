@@ -1,0 +1,21 @@
+%h2 View My Desired Appointments
+%h3 Navigation
+%ul
+  %li!= link_to 'Plan My Desired Appointments', area_of_interests_faculty_path(:id=>6)
+
+%table{:border => "1"}
+  %thead
+    %tr
+      %th Rank
+      %th Admit Name
+      %th Mandatory Meeting?
+      %th Number of Slots
+      %th One on One Meeting?
+  %tbody
+    - @admit_rankings.each do |admit_ranking|
+      %tr
+        %td!= admit_ranking.rank
+        %td!= admit_ranking.admit_full_name
+        %td!= admit_ranking.mandatory
+        %td!= admit_ranking.time_slots
+        %td!= admit_ranking.one_on_one

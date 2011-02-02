@@ -6,7 +6,6 @@ ActionController::Routing::Routes.draw do |map|
     root.staff_dashboard 'staff', :action => 'staff_dashboard', :conditions => {:method => :get}
     root.peer_advisor_dashboard 'peer_advisor', :action => 'peer_advisor_dashboard', :conditions => {:method => :get}
     root.faculty_dashboard 'faculty', :action => 'faculty_dashboard', :conditions => {:method => :get}
-    root.find_admits_in_area_of_interests 'find_admits_in_area_of_interests', :action => 'find_admits_in_area_of_interests'
   end
 
   map.resource :settings, :only => [:edit, :update]
@@ -22,9 +21,12 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :faculties, :path_prefix => '/people',
     :except => [:show],
     :collection => {:upload => :get, :import => :post},
-    :member => {:schedule => :get, :delete => :get}
+    :member => {:schedule => :get, :delete => :get, :area_of_interests => :get},
+    :has_many => :admit_rankings
   map.resources :admits, :path_prefix => '/people',
     :except => [:show],
-    :collection => {:upload => :get, :import => :post},
+    :collection => {:upload => :get, :import => :post, :filter_by_area_of_interests => :get},
     :member => {:delete => :get}
+
+    
 end

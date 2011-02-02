@@ -1,0 +1,18 @@
+#list_of_admits
+  %h3 List of Admits              
+  %span Please check admits whom you desire to schedule a meeting with
+  %p
+  #fieldset
+  - form_tag new_faculty_admit_ranking_path(:faculty_id=>6), :method => :get do
+    %table{:border => "1"}
+      %thead
+        %tr
+          %th 
+          %th Name
+      %tbody
+        - if !@admit.empty?
+          - @admits.each_with_index do |admit, index|
+            %tr
+              %td!= check_box_tag "admit_ids[]", admit.id
+              %td{:width => "180"}= admit.full_name   
+    %br!= submit_tag "Rank Admits"

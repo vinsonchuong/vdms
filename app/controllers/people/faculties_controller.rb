@@ -1,11 +1,17 @@
 class FacultiesController < PeopleController
-  # GET /people/staff/1/schedule
+  
+  # GET /people/faculty/1/area_of_interests
+  def area_of_interests
+    @faculty = Faculty.find(params[:id])
+  end
+  
+  # GET /people/faculty/1/schedule
   def schedule
     @faculty = Faculty.find(params[:id])
     @faculty.build_available_times
   end
 
-  # PUT /people/staff/1
+  # PUT /people/faculty/1
   def update
     @faculty = Faculty.find(params[:id])
 

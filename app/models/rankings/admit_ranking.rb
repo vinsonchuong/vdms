@@ -28,4 +28,9 @@ class AdmitRanking < Ranking
   validates_existence_of :faculty
   validates_existence_of :admit
   validates_uniqueness_of :admit_id, :scope => :faculty_id
+  
+  def admit_full_name
+    Admit.find(self.admit_id).full_name
+  end
+  
 end
