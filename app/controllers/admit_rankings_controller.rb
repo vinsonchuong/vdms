@@ -9,11 +9,7 @@ class AdmitRankingsController < ApplicationController
   # GET /people/faculties/:faculty_id/admit_rankings/new
   def new
     @faculty = Faculty.find(params[:faculty_id])
-    if params[:admit_ids]
-      params[:admit_ids].each do |admit_id|  
-        @admit_ranking = @faculty.admit_rankings.build(:admit_id => admit_id)
-      end
-    end
+    params[:admit_ids].each {|admit_id| @faculty.admit_rankings.build(:admit_id => admit_id)} if params[:admit_ids]
   end
  
   def update
