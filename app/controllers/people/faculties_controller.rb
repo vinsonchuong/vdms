@@ -13,7 +13,9 @@ class FacultiesController < PeopleController
   # GET /people/faculty/1/schedule
   def schedule
     @faculty = Faculty.find(params[:id])
-    @faculty.build_available_times
+
+    settings = Settings.instance
+    @faculty.build_available_times(settings.meeting_times(@faculty.division), settings.meeting_length, settings.meeting_gap)
   end
 
   # PUT /people/faculty/1

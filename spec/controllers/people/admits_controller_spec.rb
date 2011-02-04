@@ -111,6 +111,43 @@ describe AdmitsController do
     context 'when signed in as a Faculty'
   end
 
+  describe 'GET schedule' do
+    context 'when not signed in' do
+      it 'redirects to the CalNet sign in page' do
+        get :schedule, :id => @admit.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(schedule_admit_url(@admit.id))}")
+      end
+    end
+
+    context 'when signed in as a Staff'
+
+    context 'when signed in as a Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@admit.calnet_id)
+      end
+
+      it 'assigns to @admit the given Admit' do
+        get :schedule, :id => @admit.id
+        assigns[:admit].should == @admit
+      end
+
+      it 'builds a list of possible meeting slots' do
+        Admit.stub(:find).and_return(@admit)
+        @admit.should_receive(:build_available_times)
+        get :schedule, :id => @admit.id
+      end
+
+      it 'renders the schedule template' do
+        get :schedule, :id => @admit.id
+        response.should render_template('schedule')
+      end
+    end
+
+    context 'when signed in as a Faculty'
+
+    context 'when signed in as some other faculty'
+  end
+
   describe 'GET delete' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do

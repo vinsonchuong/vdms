@@ -1,0 +1,21 @@
+%h2 Update Meeting Availability
+- form_for @admit do |admit_form|
+  != admit_form.error_messages
+  %fieldset
+    %h3 Meeting Slots
+    %table
+      %thead
+        %tr
+          %th{:scope => 'col'} Time
+          %th{:scope => 'col'} Available?
+      %tbody
+        - admit_form.fields_for :available_times do |available_time_fields|
+          - @available_time = available_time_fields.object
+          != available_time_fields.hidden_field :begin
+          != available_time_fields.hidden_field :end
+          %tr
+            %td!= "#{@available_time.begin.strftime('%m/%d/%y - %I:%M%p')} to #{@available_time.end.strftime('%I:%M%p')}"
+            %td!= available_time_fields.check_box :available
+  %fieldset
+    %h3 Submit
+    != admit_form.submit

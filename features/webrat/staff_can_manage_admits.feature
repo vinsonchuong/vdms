@@ -30,7 +30,6 @@ Feature: Staff can manage admits
     And I should see "Last3"
     And I should see "Area 13"
 
-
   Scenario Outline: I add an admit
     Given I am on the view admits page
     When I follow "Add Admit"

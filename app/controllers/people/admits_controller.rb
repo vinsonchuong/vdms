@@ -1,6 +1,5 @@
 class AdmitsController < PeopleController
-  
-  # # GET /people/PEOPLE/admits_filter_by_area_of_interests
+  # GET /people/PEOPLE/admits_filter_by_area_of_interests
   def filter_by_area_of_interests
     @admits = []
     list_of_admit_ids_from_rankings = Faculty.find(params[:faculty_id]).admit_rankings.collect {|admit_ranking| admit_ranking.admit_id}
@@ -12,7 +11,15 @@ class AdmitsController < PeopleController
       @admits.uniq!
     end
   end
-    
+
+  # GET /people/admits/1/schedule
+  def schedule
+    @admit = Admit.find(params[:id])
+
+    settings = Settings.instance
+    @admit.build_available_times(settings.divisions.map(&:available_times).flatten, settings.meeting_length, settings.meeting_gap)
+  end
+
   private
   def set_model
     @model = Admit
