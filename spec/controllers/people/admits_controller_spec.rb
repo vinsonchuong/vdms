@@ -148,6 +148,52 @@ describe AdmitsController do
     context 'when signed in as some other faculty'
   end
 
+  describe 'GET rank_faculty' do
+    context 'when not signed in' do
+      it 'redirects to the CalNet sign in page' do
+        get :rank_faculty, :id => @admit.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(rank_faculty_admit_url(@admit.id))}")
+      end
+    end
+
+    context 'when signed in as a Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@admit.calnet_id)
+      end
+
+      it 'assigns to @admit the given Admit' do
+        get :rank_faculty, :id => @admit.id
+        assigns[:admit].should == @admit
+      end
+
+      it 'builds a new FacultyRanking for the admit' do
+        Admit.stub(:find).and_return(@admit)
+        @admit.faculty_rankings.should_receive(:build)
+        get :rank_faculty, :id => @admit.id
+      end
+
+      it 'assigns to @faculty a list of all the Faculty sorted by last name' do
+        faculty = [
+          Faculty.new(:first_name => 'First', :last_name => 'Bbb'),
+          Faculty.new(:first_name => 'First', :last_name => 'Ccc'),
+          Faculty.new(:first_name => 'First', :last_name => 'Aaa'),
+        ] 
+        Faculty.stub(:find).and_return(faculty)
+        get :rank_faculty, :id => @admit.id
+        assigns[:faculty].map(&:last_name).should == ['Aaa', 'Bbb', 'Ccc']
+      end
+
+      it 'renders the rank_faculty template' do
+        get :rank_faculty, :id => @admit.id
+        response.should render_template('rank_faculty')
+      end
+    end
+
+    context 'when signed in as a Faculty'
+
+    context 'when signed in as some other faculty'
+  end
+
   describe 'GET delete' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do

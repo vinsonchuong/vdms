@@ -98,6 +98,47 @@ describe Admit do
         @admit.available_times.length.should == 1
       end
     end
+
+    describe 'Faculty Rankings (faculty_rankings)' do
+      before(:each) do
+        @faculty1 = Factory.create(:faculty)
+        @faculty2 = Factory.create(:faculty)
+      end
+      
+      it 'allows nested attributes for Faculty Rankings (faculty_rankings)' do
+        attributes = {:faculty_rankings_attributes => [
+          {:rank => 1, :faculty => @faculty1},
+          {:rank => 2, :faculty => @faculty2}
+        ]}
+        @admit.attributes = attributes
+        @admit.faculty_rankings.map {|r| r.faculty.id}.should == [@faculty1.id, @faculty2.id]
+      end
+
+      it 'ignores completely blank entries' do
+        attributes = {:faculty_rankings_attributes => [
+          {:rank => 1, :faculty => @faculty1},
+          {:rank => '', :faculty => ''}
+        ]}
+        @admit.attributes = attributes
+        @admit.faculty_rankings.length.should == 1
+      end
+
+      it 'allows deletion' do
+        attributes = {:faculty_rankings_attributes => [
+          {:rank => 1, :faculty => @faculty1},
+          {:rank => 2, :faculty => @faculty2}
+        ]}
+        @admit.attributes = attributes
+        @admit.save
+
+        delete_id = @admit.faculty_rankings.first.id
+        new_attributes = {:faculty_rankings_attributes => [
+          {:id => delete_id, :_destroy => true}
+        ]}
+        @admit.attributes = new_attributes
+        @admit.faculty_rankings.detect {|r| r.id == delete_id}.should be_marked_for_destruction
+      end
+    end
   end
 
   context 'when validating' do
@@ -195,6 +236,15 @@ describe Admit do
         @admit.available_times = times
         @admit.should_not be_valid
       end
+    end
+
+    it 'is not valid with non-unique Faculty Ranking ranks' do
+      faculty_rankings = [
+        FacultyRanking.new(:rank => 1, :faculty => Factory.create(:faculty)),
+        FacultyRanking.new(:rank => 1, :faculty => Factory.create(:faculty))
+      ]
+      @admit.faculty_rankings = faculty_rankings
+      @admit.should_not be_valid
     end
 
     it 'is not valid with an invalid Peer Advisor' do

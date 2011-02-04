@@ -16,6 +16,7 @@
       %th{:scope => 'col'}
       %th{:scope => 'col'}
       %th{:scope => 'col'}
+      %th{:scope => 'col'}
   %tbody
     - @admits.each do |admit|
       %tr
@@ -27,4 +28,5 @@
         %td= admit.area2
         %td!= link_to 'Update Admit', edit_admit_path(admit)
         %td!= link_to 'Update Admit Availability', schedule_admit_path(admit)
+        %td!= link_to 'Update Faculty Rankings', rank_faculty_admit_path(admit)
         %td!= link_to 'Remove Admit', delete_admit_path(admit)

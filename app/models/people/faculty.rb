@@ -31,7 +31,6 @@ class Faculty < Person
   has_many :meetings, :dependent => :destroy
   accepts_nested_attributes_for :admit_rankings, :allow_destroy => true, :reject_if => :all_blank
   
-  
   validates_presence_of :area
   validates_inclusion_of :division, :in => Settings.instance.divisions.map(&:name)
   validates_presence_of :default_room

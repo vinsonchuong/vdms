@@ -42,14 +42,7 @@ describe FacultyRanking do
       end
     end
 
-    it 'is not valid with a non-unique Rank' do
-      admit = Factory.create(:admit)
-      existent_faculty_ranking = Factory.create(:faculty_ranking, :rank => 1, :admit=> admit)
-      new_faculty_ranking = Factory.build(:faculty_ranking, :rank => 1, :admit => admit)
-      new_faculty_ranking.should_not be_valid
-    end
-
-    it 'is not valid with an invalid Admit' do
+   it 'is not valid with an invalid Admit' do
       @faculty_ranking.admit.destroy
       @faculty_ranking.should_not be_valid
     end

@@ -20,6 +20,25 @@ class AdmitsController < PeopleController
     @admit.build_available_times(settings.divisions.map(&:available_times).flatten, settings.meeting_length, settings.meeting_gap)
   end
 
+  # GET /people/admits/1/rank_faculty
+  def rank_faculty
+    @admit = Admit.find(params[:id])
+    @admit.faculty_rankings.build
+    @faculty = Faculty.all.sort! {|x, y| x.last_name <=> y.last_name}
+  end
+
+  # PUT /people/admits/1
+  def update
+    @admit = Admit.find(params[:id])
+    @faculty = Faculty.all.sort! {|x, y| x.last_name <=> y.last_name}
+
+    if @admit.update_attributes(params[:admit])
+      redirect_to(:back, :notice => "Admit was successfully updated")
+    else
+      render :action => get_referrer_action
+    end
+  end
+
   private
   def set_model
     @model = Admit

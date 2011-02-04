@@ -1,0 +1,21 @@
+%h2 Rank Faculty
+- form_for @admit do |admit_form|
+  != admit_form.error_messages
+  %fieldset
+    %h3 Faculty Rankings
+    %ol
+      - admit_form.fields_for :faculty_rankings do |faculty_ranking_fields|
+        %li
+          %ul
+            %li
+              != faculty_ranking_fields.label :rank
+              != faculty_ranking_fields.text_field :rank
+            %li
+              != faculty_ranking_fields.label :faculty_id
+              != faculty_ranking_fields.select :faculty_id, [''] + @faculty.map {|f| ["#{f.first_name} #{f.last_name}", f.id]}
+            %li
+              != faculty_ranking_fields.check_box :_destroy
+              != faculty_ranking_fields.label :_destroy, 'Remove'
+  %fieldset
+    %h3 Submit
+    != admit_form.submit

@@ -13,14 +13,14 @@ Feature: Peer advisor can update admit availability
       | First2      | Last2      | email2@email.com | 1234567892 | Area 12 | Area 22 |
       | First3      | Last3      | email3@email.com | 1234567893 | Area 13 | Area 23 |
     And "Computer Science" has the following meeting times:
-      | begin           | end              |
-      | 1/1/2011 9:00AM | 1/1/2011 11:00AM |
-      | 1/1/2011 2:00PM | 1/1/2011 02:45PM |
+      | begin            | end              |
+      | 1/1/2011 9:00AM  | 1/1/2011 11:00AM |
+      | 1/1/2011 2:00PM  | 1/1/2011 02:45PM |
     And "Electrical Engineering" has the following meeting times:
-      | begin           | end              |
+      | begin            | end              |
       | 1/1/2011 12:00PM | 1/1/2011 03:00PM |
 
-  Scenario: I can update an admit's availability
+  Scenario: I update an admit's availability
     Given I am on the view admits page
     When I follow "Update Admit Availability" for the first admit
     When I flag the "1/1/2011 9:00AM" to "1/1/2011 9:15AM" slot as available

@@ -235,9 +235,15 @@ describe 'Routes' do
         end
       end
 
-      context 'Update Admit Schedule' do
+      context 'Update Admit Availability' do
         it 'routes GET /people/admits/1/schedule to Admits#schedule' do
           {:get => '/people/admits/1/schedule'}.should route_to(:controller => 'admits', :action => 'schedule', :id => '1')
+        end
+      end
+
+      context 'Update Admit Faculty Rankings' do
+        it 'routes GET /people/admits/1/rank_faculty to Admits#rank_faculty' do
+          {:get => '/people/admits/1/rank_faculty'}.should route_to(:controller => 'admits', :action => 'rank_faculty', :id => '1')
         end
       end
 
