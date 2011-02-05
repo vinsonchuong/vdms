@@ -3,6 +3,7 @@ class RootController < ApplicationController
 
   # GET /
   def home
+    render :layout => 'home'
   end
 
   # GET /sign_out

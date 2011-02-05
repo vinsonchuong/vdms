@@ -1,5 +1,6 @@
-%h2 Sign In
-%ul
-  %li!= link_to 'Staff', staff_dashboard_path
-  %li!= link_to 'Peer Advisors', peer_advisor_dashboard_path
-  %li!= link_to 'Faculty', faculty_dashboard_path
+#home-container
+    #logo
+    %ul#signin-options
+        %li!= link_to 'For Staff', staff_dashboard_path
+        %li!= link_to 'For Peer Advisors', peer_advisor_dashboard_path
+        %li!= link_to 'For Faculty', faculty_dashboard_path
