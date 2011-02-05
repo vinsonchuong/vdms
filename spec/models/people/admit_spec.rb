@@ -11,6 +11,11 @@ describe Admit do
       @admit.should respond_to(:first_name=)
     end
 
+    it 'has an LDAP ID (ldap_id)' do
+      @admit.should respond_to(:ldap_id)
+      @admit.should respond_to(:ldap_id=)
+    end
+
     it 'has a Last Name (last_name)' do
       @admit.should respond_to(:last_name)
       @admit.should respond_to(:last_name=)

@@ -11,6 +11,11 @@ describe Faculty do
       @faculty.should respond_to(:calnet_id=)
     end
 
+    it 'has an LDAP ID (ldap_id)' do 
+      @faculty.should respond_to(:ldap_id)
+      @faculty.should respond_to(:ldap_id=)
+    end
+
     it 'has a First Name (first_name)' do
       @faculty.should respond_to(:first_name)
       @faculty.should respond_to(:first_name=)
@@ -129,8 +134,8 @@ describe Faculty do
       @faculty.should be_valid
     end
 
-    it 'is not valid without a Calnet ID' do
-      @faculty.calnet_id = ''
+    it 'is not valid without an LDAP ID' do
+      @faculty.ldap_id = ''
       @faculty.should_not be_valid
     end
 

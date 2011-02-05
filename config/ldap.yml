@@ -11,7 +11,7 @@ test:
 
 cucumber:
   username: uid=eecs_vdms,ou=applications,dc=berkeley,dc=edu
-  password:
+  password: 
 
 production:
   username: uid=eecs_vdms,ou=applications,dc=berkeley,dc=edu

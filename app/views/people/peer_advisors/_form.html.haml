@@ -6,6 +6,8 @@
       %li
         != peer_advisor_form.label :calnet_id, 'CalNet ID'
         != peer_advisor_form.text_field :calnet_id
+
+        != peer_advisor_form.hidden_field :ldap_id
       %li
         != peer_advisor_form.label :first_name, 'First Name'
         != peer_advisor_form.text_field :first_name

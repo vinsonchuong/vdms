@@ -6,6 +6,8 @@
       %li
         != staff_form.label :calnet_id, 'CalNet ID'
         != staff_form.text_field :calnet_id
+
+        != staff_form.hidden_field :ldap_id
       %li
         != staff_form.label :first_name, 'First Name'
         != staff_form.text_field :first_name

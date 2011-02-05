@@ -6,6 +6,8 @@
       %li
         != faculty_form.label :calnet_id, 'CalNet ID'
         != faculty_form.text_field :calnet_id
+
+        != faculty_form.hidden_field :ldap_id
       %li
         != faculty_form.label :first_name, 'First Name'
         != faculty_form.text_field :first_name
