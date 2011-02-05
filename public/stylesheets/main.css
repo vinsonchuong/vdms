@@ -1,5 +1,9 @@
 /*Global*/
-body { background-color: #fff; color: #333; }
+body { 
+    background-color: white; 
+    color: #333; 
+    padding-top: 5%;
+}
 
 body, p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
@@ -53,41 +57,28 @@ a:hover { text-decoration: underline; }
   list-style: square;
 }
 
-/*Home*/
-#home-container{
-    width: 420px;
-    margin: auto;
-    margin-top: 10%;
-}
-
+/*General*/
 #logo{
-    width: 420px;
-    height: 118px;
-    background: url("../images/visitday_logo_large.png");
+    width: 272px;
+    height: 57px;
+    background: url("../images/visitday_logo_sm.png");
+    z-index: 100;
 }
 
-ul#signin-options{
-    list-style: none;
-    list-indent: 0px;
-    -webkit-padding-start: 0px;
-}
-
-ul#signin-options li a{
-    display: block;
-    background: #70a8e1;
+#container{
     width: 80%;
-    opacity: 0.7;
-    
-    padding: 0.5em;
-    border-radius: 3px;
-    margin: 5px auto;
-    
-    color: white;
-    font-size: 1.2em;
-    text-align: center;
-    text-decoration: none;
+    height: 100%;
+    margin: auto;
 }
 
-ul#signin-options li a:hover{
-    opacity: 1;
+#inner-container{
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    background: -webkit-gradient(linear, 0% 3%, 0% 100%, from(#FCFCFC), to(#F7F7F7));
+    background: -moz-linear-gradient(19% 75% 90deg,#F7F7F7, #FCFCFC 100%);
+    border: #eee 1px solid;
+    padding: 1em;
+    z-index: 10;
 }
+

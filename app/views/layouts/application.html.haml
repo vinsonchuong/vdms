@@ -1,12 +1,14 @@
 !!! Strict
 %html
-  %head
+    %head
     %title Visit Day Meeting Scheduler
     != javascript_include_tag :defaults
-    != stylesheet_link_tag "faculty_dashboard"
-  %body
-    %h1 Visit Day Meeting Scheduler
-    %p{:style => 'color: green'}= flash[:notice]
-    %p{:style => 'color: red'}= flash[:error]
-    %p{:style => 'color: red'}= flash[:alert]
-    != yield
+    != stylesheet_link_tag "main", "faculty_dashboard"
+    %body
+        #container
+            #logo
+            #inner-container
+                %p{:style => 'color: green'}= flash[:notice]
+                %p{:style => 'color: red'}= flash[:error]
+                %p{:style => 'color: red'}= flash[:alert]
+                != yield
