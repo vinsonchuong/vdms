@@ -6,9 +6,13 @@ body {
 }
 
 body, p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
+  font-family: "Droid Sans", helvetica, verdana, arial sans-serif;
   font-size:   13px;
   line-height: 18px;
+}
+
+h1, h2, h3, h4, h5, h6{
+    color: #4c8bd3;
 }
 
 pre {
@@ -73,6 +77,7 @@ label {
 
 /*General*/
 #logo{
+    display: block;
     width: 272px;
     height: 57px;
     background: url("../images/visitday_logo_sm.png");
