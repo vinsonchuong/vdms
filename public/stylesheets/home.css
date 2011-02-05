@@ -15,12 +15,6 @@ body{
     background: url("../images/visitday_logo_large.png");
 }
 
-ul#signin-options{
-    list-style: none;
-    list-indent: 0px;
-    -webkit-padding-start: 0px;
-}
-
 ul#signin-options li a{
     display: block;
     background: #70a8e1;

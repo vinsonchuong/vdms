@@ -1,8 +1,7 @@
 - form_for @admit do |admit_form|
   != admit_form.error_messages
   %fieldset
-    %h3 Admit Info
-    %ul
+    %ul.plain
       %li
         != admit_form.label :first_name, 'First Name'
         != admit_form.text_field :first_name
@@ -21,6 +20,5 @@
       %li
         != admit_form.label :area2, 'Area 2'
         != admit_form.text_field :area2
-  %fieldset
-    %h3 Submit
+
     != admit_form.submit

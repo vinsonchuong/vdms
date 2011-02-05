@@ -6,7 +6,7 @@
     %ol
       - admit_form.fields_for :faculty_rankings do |faculty_ranking_fields|
         %li
-          %ul
+          %ul.plain
             %li
               != faculty_ranking_fields.label :rank
               != faculty_ranking_fields.text_field :rank
@@ -16,6 +16,5 @@
             %li
               != faculty_ranking_fields.check_box :_destroy
               != faculty_ranking_fields.label :_destroy, 'Remove'
-  %fieldset
-    %h3 Submit
+
     != admit_form.submit

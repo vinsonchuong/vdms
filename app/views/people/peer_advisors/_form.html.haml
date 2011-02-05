@@ -2,7 +2,7 @@
   != peer_advisor_form.error_messages
   %fieldset
     %h3 Peer Advisor Info
-    %ul
+    %ul.plain
       %li
         != peer_advisor_form.label :calnet_id, 'CalNet ID'
         != peer_advisor_form.text_field :calnet_id
@@ -15,6 +15,5 @@
       %li
         != peer_advisor_form.label :email, 'Email'
         != peer_advisor_form.text_field :email
-  %fieldset
-    %h3 Submit
+
     != peer_advisor_form.submit

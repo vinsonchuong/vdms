@@ -21,6 +21,9 @@ a { color: #000; text-decoration: none }
 a:visited { color: #666; }
 a:hover { text-decoration: underline; }
 
+fieldset{
+    border: 0px;
+}
 .fieldWithErrors {
   padding: 2px;
   background-color: red;
@@ -55,6 +58,17 @@ a:hover { text-decoration: underline; }
 #errorExplanation ul li {
   font-size: 12px;
   list-style: square;
+}
+
+ul.plain{
+    list-style: none;
+    list-indent: 0px;
+    -webkit-padding-start: 0px;
+}
+
+label {
+    display: inline-block;
+    width: 12em;
 }
 
 /*General*/

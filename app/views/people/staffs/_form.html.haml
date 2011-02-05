@@ -2,7 +2,7 @@
   != staff_form.error_messages
   %fieldset
     %h3 Staff Info
-    %ul
+    %ul.plain
       %li
         != staff_form.label :calnet_id, 'CalNet ID'
         != staff_form.text_field :calnet_id
@@ -15,6 +15,4 @@
       %li
         != staff_form.label :email, 'Email'
         != staff_form.text_field :email
-  %fieldset
-    %h3 Submit
     != staff_form.submit

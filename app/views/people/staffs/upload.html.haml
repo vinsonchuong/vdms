@@ -22,10 +22,9 @@
                   %li= error
   %fieldset
     %h3 Data
-    %ul
+    %ul.plain
       %li
         != label_tag :csv_file, 'CSV File'
         != file_field_tag :csv_file
-  %fieldset
-    %h3 Submit
+
     != submit_tag 'Import Staff'

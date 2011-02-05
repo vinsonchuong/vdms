@@ -16,6 +16,5 @@
           %tr
             %td!= "#{@available_time.begin.strftime('%m/%d/%y - %I:%M%p')} to #{@available_time.end.strftime('%I:%M%p')}"
             %td!= available_time_fields.check_box :available
-  %fieldset
-    %h3 Submit
+
     != admit_form.submit

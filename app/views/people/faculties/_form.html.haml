@@ -2,7 +2,7 @@
   != faculty_form.error_messages
   %fieldset
     %h3 Faculty Info
-    %ul
+    %ul.plain
       %li
         != faculty_form.label :calnet_id, 'CalNet ID'
         != faculty_form.text_field :calnet_id
@@ -21,6 +21,5 @@
       %li
         != faculty_form.label :division, 'Division'
         != faculty_form.text_field :division
-  %fieldset
-    %h3 Submit
+
     != faculty_form.submit

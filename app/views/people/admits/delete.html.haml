@@ -1,5 +1,3 @@
 %h2 Remove Admit
 - form_for @admit, :html => {:method => :delete} do |admit_form|
-  %fieldset
-    %h3 Submit
-    != admit_form.submit 'Confirm'
+  != admit_form.submit 'Confirm'
