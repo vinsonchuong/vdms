@@ -349,6 +349,7 @@ describe AdmitsController do
       before(:each) do
         Admit.stub(:find).and_return(@admit)
         CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        request.env['HTTP_REFERER'] = "/people/admits/#{@admit.id}/edit"
       end
 
       it 'assigns to @admit the given Admit' do
@@ -372,9 +373,10 @@ describe AdmitsController do
           flash[:notice].should == 'Admit was successfully updated.'
         end
 
-        it 'redirects to the View Admit page' do
+        it 'redirects to the referring action' do
+          request.env['HTTP_REFERER'] = "/people/admits/#{@admit.id}/edit"
           put :update, :id => @admit.id
-          response.should redirect_to(:action => 'index')
+          response.should redirect_to(:action => 'edit')
         end
       end
 
@@ -383,7 +385,8 @@ describe AdmitsController do
           @admit.stub(:update_attributes).and_return(false)
         end
 
-        it 'renders the edit template' do
+        it 'renders the template for the referring action' do
+          request.env['HTTP_REFERER'] = "/people/admits/#{@admit.id}/edit"
           put :update, :id => @admit.id
           response.should render_template('edit')
         end
