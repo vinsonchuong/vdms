@@ -5,8 +5,6 @@ Feature: Faculty can rank admits
   I want to rank the admits
   
   Background: I am signed in as a faculty
-    Given I am registered as a "Faculty" in "Computer Science"
-    And I am signed in
   
   Scenario: I can see a list of different areas of interests in the EECS department
   

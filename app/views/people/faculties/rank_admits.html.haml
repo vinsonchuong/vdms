@@ -5,14 +5,15 @@
   - form_for @faculty do |faculty_form|
     != faculty_form.error_messages
     %fieldset
-      %table{:border => "1"}
+      %table
         %thead
           %tr
-            %th rank
-            %th !!!
+            %th Rank
+            %th Mandatory Meeting?
             %th #Slots
-            %th 1:1?
+            %th One on One Meeting?
             %th Name
+            %th Remove
         %tbody
           - faculty_form.fields_for :admit_rankings do |admit_ranking_fields|
             - @admit_ranking = admit_ranking_fields.object
@@ -22,8 +23,6 @@
               %td
               %td!= admit_ranking_fields.check_box :one_on_one, {}, "true", "false"
               %td!= admit_ranking_fields.label @admit_ranking.admit_full_name
+              %td!= admit_ranking_fields.check_box :_destroy
               != admit_ranking_fields.hidden_field :admit_id             
     != faculty_form.submit
-    
-    
-    

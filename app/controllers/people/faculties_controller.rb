@@ -10,6 +10,18 @@ class FacultiesController < PeopleController
       "Scientific Computing", "Security", "Signal Processing", "Theory"]
   end
   
+  # GET /people/admits/1/view_admit_rankings
+  def view_admit_rankings
+    faculty = Faculty.find(params[:id])
+    @admit_rankings = faculty.admit_rankings
+  end
+  
+  # GET /people/admits/1/rank_admits
+  def rank_admits
+    @faculty = Faculty.find(params[:id])
+    params[:admit_ids].each {|admit_id| @faculty.admit_rankings.build(:admit_id => admit_id)} if params[:admit_ids]
+  end
+
   # GET /people/faculty/1/schedule
   def schedule
     @faculty = Faculty.find(params[:id])

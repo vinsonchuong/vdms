@@ -3,8 +3,8 @@
   %span Please check admits whom you desire to schedule a meeting with
   %p
   #fieldset
-  - form_tag new_faculty_admit_ranking_path(:faculty_id=>6), :method => :get do
-    %table{:border => "1"}
+  - form_tag rank_admits_faculty_path(:id=>6), :method => :get do
+    %table
       %thead
         %tr
           %th 
