@@ -37,6 +37,8 @@ module NavigationHelpers
     when /the new admit page/ then new_admit_path
     when /the import admits page/ then upload_admits_path
     when /the edit admit page/ then edit_admit_path(@admit)
+    when /the schedule admit page/ then schedule_admit_path(@admit)
+    when /the rank faculty page/ then rank_faculty_admit_path(@admit)
     when /the delete admit page/ then delete_admit_path(@admit)
 
     # Add more mappings here.

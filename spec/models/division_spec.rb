@@ -56,7 +56,7 @@ describe Division do
 
       it 'allows deletion' do
         attributes = {:available_times_attributes => [
-          {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
+          {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')}
         ]}
         @division.attributes = attributes
         @division.save

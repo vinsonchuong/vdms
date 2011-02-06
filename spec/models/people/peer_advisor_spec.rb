@@ -11,6 +11,11 @@ describe PeerAdvisor do
       @peer_advisor.should respond_to(:calnet_id=)
     end
 
+    it 'has an LDAP ID (ldap_id)' do
+      @peer_advisor.should respond_to(:ldap_id)
+      @peer_advisor.should respond_to(:ldap_id=)
+    end
+
     it 'has a First Name (first_name)' do
       @peer_advisor.should respond_to(:first_name)
       @peer_advisor.should respond_to(:first_name=)
@@ -52,8 +57,8 @@ describe PeerAdvisor do
       @peer_advisor.should be_valid
     end
 
-    it 'is not valid without a Calnet ID' do
-      @peer_advisor.calnet_id = ''
+    it 'is not valid without an LDAP ID' do
+      @peer_advisor.ldap_id = ''
       @peer_advisor.should_not be_valid
     end
 

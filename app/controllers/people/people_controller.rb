@@ -1,6 +1,9 @@
 class PeopleController < ApplicationController
   before_filter :set_model
-
+  skip_before_filter :create_new_user_if_no_current_user
+  skip_before_filter :get_current_user, :only => :new
+  
+  
   # GET /people/PEOPLE
   def index
     self.instance_variable_set("@#{@model.name.tableize}", @model.all)
@@ -8,7 +11,9 @@ class PeopleController < ApplicationController
 
   # GET /people/PEOPLE/new
   def new
-    self.instance_variable_set("@#{@model.name.underscore}", @model.new)
+    @ldap_person = get_current_ldap_entry
+    self.instance_variable_set("@#{@model.name.underscore}",
+                               @model.new(@ldap_person.attributes))
   end
 
   # GET /people/PEOPLE/upload

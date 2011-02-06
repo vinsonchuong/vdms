@@ -111,6 +111,89 @@ describe AdmitsController do
     context 'when signed in as a Faculty'
   end
 
+  describe 'GET schedule' do
+    context 'when not signed in' do
+      it 'redirects to the CalNet sign in page' do
+        get :schedule, :id => @admit.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(schedule_admit_url(@admit.id))}")
+      end
+    end
+
+    context 'when signed in as a Staff'
+
+    context 'when signed in as a Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@admit.calnet_id)
+      end
+
+      it 'assigns to @admit the given Admit' do
+        get :schedule, :id => @admit.id
+        assigns[:admit].should == @admit
+      end
+
+      it 'builds a list of possible meeting slots' do
+        Admit.stub(:find).and_return(@admit)
+        @admit.should_receive(:build_available_times)
+        get :schedule, :id => @admit.id
+      end
+
+      it 'renders the schedule template' do
+        get :schedule, :id => @admit.id
+        response.should render_template('schedule')
+      end
+    end
+
+    context 'when signed in as a Faculty'
+
+    context 'when signed in as some other faculty'
+  end
+
+  describe 'GET rank_faculty' do
+    context 'when not signed in' do
+      it 'redirects to the CalNet sign in page' do
+        get :rank_faculty, :id => @admit.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(rank_faculty_admit_url(@admit.id))}")
+      end
+    end
+
+    context 'when signed in as a Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@admit.calnet_id)
+      end
+
+      it 'assigns to @admit the given Admit' do
+        get :rank_faculty, :id => @admit.id
+        assigns[:admit].should == @admit
+      end
+
+      it 'builds a new FacultyRanking for the admit' do
+        Admit.stub(:find).and_return(@admit)
+        @admit.faculty_rankings.should_receive(:build)
+        get :rank_faculty, :id => @admit.id
+      end
+
+      it 'assigns to @faculty a list of all the Faculty sorted by last name' do
+        faculty = [
+          Faculty.new(:first_name => 'First', :last_name => 'Bbb'),
+          Faculty.new(:first_name => 'First', :last_name => 'Ccc'),
+          Faculty.new(:first_name => 'First', :last_name => 'Aaa'),
+        ] 
+        Faculty.stub(:find).and_return(faculty)
+        get :rank_faculty, :id => @admit.id
+        assigns[:faculty].map(&:last_name).should == ['Aaa', 'Bbb', 'Ccc']
+      end
+
+      it 'renders the rank_faculty template' do
+        get :rank_faculty, :id => @admit.id
+        response.should render_template('rank_faculty')
+      end
+    end
+
+    context 'when signed in as a Faculty'
+
+    context 'when signed in as some other faculty'
+  end
+
   describe 'GET delete' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
@@ -266,6 +349,7 @@ describe AdmitsController do
       before(:each) do
         Admit.stub(:find).and_return(@admit)
         CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        request.env['HTTP_REFERER'] = "/people/admits/#{@admit.id}/edit"
       end
 
       it 'assigns to @admit the given Admit' do
@@ -289,9 +373,10 @@ describe AdmitsController do
           flash[:notice].should == 'Admit was successfully updated.'
         end
 
-        it 'redirects to the View Admit page' do
+        it 'redirects to the referring action' do
+          request.env['HTTP_REFERER'] = "/people/admits/#{@admit.id}/edit"
           put :update, :id => @admit.id
-          response.should redirect_to(:action => 'index')
+          response.should redirect_to(:action => 'edit')
         end
       end
 
@@ -300,7 +385,8 @@ describe AdmitsController do
           @admit.stub(:update_attributes).and_return(false)
         end
 
-        it 'renders the edit template' do
+        it 'renders the template for the referring action' do
+          request.env['HTTP_REFERER'] = "/people/admits/#{@admit.id}/edit"
           put :update, :id => @admit.id
           response.should render_template('edit')
         end

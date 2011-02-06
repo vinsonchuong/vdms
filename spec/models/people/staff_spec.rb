@@ -11,6 +11,11 @@ describe Staff do
       @staff.should respond_to(:calnet_id=)
     end
 
+    it 'has an LDAP ID (ldap_id)' do
+      @staff.should respond_to(:ldap_id)
+      @staff.should respond_to(:ldap_id=)
+    end
+
     it 'has a First Name (first_name)' do
       @staff.should respond_to(:first_name)
       @staff.should respond_to(:first_name=)
@@ -46,8 +51,8 @@ describe Staff do
       @staff.should be_valid
     end
 
-    it 'is not valid without a Calnet ID' do
-      @staff.calnet_id = ''
+    it 'is not valid without an LDAP ID' do
+      @staff.ldap_id = ''
       @staff.should_not be_valid
     end
 

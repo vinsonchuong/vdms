@@ -12,4 +12,17 @@ module Schedulable
       end
     end
   end
+
+  def build_available_times(times, length, gap)
+    times = RangeSet.new(times.map {|t| (t.begin)..(t.end)}) -
+            RangeSet.new(self.available_times.map {|t| (t.begin)..(t.end + gap)})
+    times.each_range do |range|
+      range.step(length + gap) do |start|
+        if start + length <= range.end
+          self.available_times.build(:begin => start, :end => start + length)
+        end
+      end
+    end
+    self.available_times.sort! {|x, y| x.begin <=> y.begin}
+  end
 end

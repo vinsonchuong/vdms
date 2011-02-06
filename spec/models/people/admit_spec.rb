@@ -11,6 +11,11 @@ describe Admit do
       @admit.should respond_to(:first_name=)
     end
 
+    it 'has an LDAP ID (ldap_id)' do
+      @admit.should respond_to(:ldap_id)
+      @admit.should respond_to(:ldap_id=)
+    end
+
     it 'has a Last Name (last_name)' do
       @admit.should respond_to(:last_name)
       @admit.should respond_to(:last_name=)
@@ -96,6 +101,47 @@ describe Admit do
         ]}
         @admit.attributes = attributes
         @admit.available_times.length.should == 1
+      end
+    end
+
+    describe 'Faculty Rankings (faculty_rankings)' do
+      before(:each) do
+        @faculty1 = Factory.create(:faculty)
+        @faculty2 = Factory.create(:faculty)
+      end
+      
+      it 'allows nested attributes for Faculty Rankings (faculty_rankings)' do
+        attributes = {:faculty_rankings_attributes => [
+          {:rank => 1, :faculty => @faculty1},
+          {:rank => 2, :faculty => @faculty2}
+        ]}
+        @admit.attributes = attributes
+        @admit.faculty_rankings.map {|r| r.faculty.id}.should == [@faculty1.id, @faculty2.id]
+      end
+
+      it 'ignores completely blank entries' do
+        attributes = {:faculty_rankings_attributes => [
+          {:rank => 1, :faculty => @faculty1},
+          {:rank => '', :faculty => ''}
+        ]}
+        @admit.attributes = attributes
+        @admit.faculty_rankings.length.should == 1
+      end
+
+      it 'allows deletion' do
+        attributes = {:faculty_rankings_attributes => [
+          {:rank => 1, :faculty => @faculty1},
+          {:rank => 2, :faculty => @faculty2}
+        ]}
+        @admit.attributes = attributes
+        @admit.save
+
+        delete_id = @admit.faculty_rankings.first.id
+        new_attributes = {:faculty_rankings_attributes => [
+          {:id => delete_id, :_destroy => true}
+        ]}
+        @admit.attributes = new_attributes
+        @admit.faculty_rankings.detect {|r| r.id == delete_id}.should be_marked_for_destruction
       end
     end
   end
@@ -197,6 +243,15 @@ describe Admit do
       end
     end
 
+    it 'is not valid with non-unique Faculty Ranking ranks' do
+      faculty_rankings = [
+        FacultyRanking.new(:rank => 1, :faculty => Factory.create(:faculty)),
+        FacultyRanking.new(:rank => 1, :faculty => Factory.create(:faculty))
+      ]
+      @admit.faculty_rankings = faculty_rankings
+      @admit.should_not be_valid
+    end
+
     it 'is not valid with an invalid Peer Advisor' do
       @admit.peer_advisor = PeerAdvisor.new
       @admit.should_not be_valid
@@ -286,6 +341,51 @@ describe Admit do
         admit.area2.should == "Area 2#{i}"
       end
     end
+  end
 
+  context 'when building a list of time slots' do
+    before(:each) do
+      @meeting_times = [
+        AvailableTime.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 9AM')),
+        AvailableTime.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')),
+        AvailableTime.new(:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 11AM'))
+      ]
+      @meeting_length = 15 * 60
+      @meeting_gap = 5 * 60
+    end
+
+    context 'when no available meeting slots have been specified' do
+      it 'partitions the given times and produces an AvailableTime for each resulting slot' do
+        @admit.build_available_times(@meeting_times, @meeting_length, @meeting_gap)
+        @admit.available_times.map {|t| {:begin => t.begin, :end => t.end}}.should == [
+          {:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')},
+          {:begin => Time.zone.parse('1/1/2011 8:20AM'), :end => Time.zone.parse('1/1/2011 8:35AM')},
+          {:begin => Time.zone.parse('1/1/2011 8:40AM'), :end => Time.zone.parse('1/1/2011 8:55AM')},
+          {:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')},
+          {:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 10:45AM')}
+        ]
+      end
+    end
+
+    context 'when some available meeting times have been specified' do
+      it 'partitions the given times - already specified times and produces an AvailableTime for each resulting slot' do
+        specified_times = [
+          AvailableTime.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')),
+          AvailableTime.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM'))
+        ]
+        @admit.available_times += specified_times
+        @admit.save
+        @admit.build_available_times(@meeting_times, @meeting_length, @meeting_gap)
+        @admit.available_times.map {|t| {:begin => t.begin, :end => t.end}}.should == [
+          {:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')},
+          {:begin => Time.zone.parse('1/1/2011 8:20AM'), :end => Time.zone.parse('1/1/2011 8:35AM')},
+          {:begin => Time.zone.parse('1/1/2011 8:40AM'), :end => Time.zone.parse('1/1/2011 8:55AM')},
+          {:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')},
+          {:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 10:45AM')}
+        ]
+        [0, 3].each {|i| @admit.available_times[i].should_not be_a_new_record}
+        [1, 2, 4].each {|i| @admit.available_times[i].should be_a_new_record}
+      end
+    end
   end
 end

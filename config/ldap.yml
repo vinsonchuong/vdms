@@ -9,6 +9,10 @@ test:
   username: uid=eecs_vdms,ou=applications,dc=berkeley,dc=edu
   password: 
 
+cucumber:
+  username: uid=eecs_vdms,ou=applications,dc=berkeley,dc=edu
+  password: 
+
 production:
   username: uid=eecs_vdms,ou=applications,dc=berkeley,dc=edu
   password: 

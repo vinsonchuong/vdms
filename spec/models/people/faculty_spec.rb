@@ -11,6 +11,11 @@ describe Faculty do
       @faculty.should respond_to(:calnet_id=)
     end
 
+    it 'has an LDAP ID (ldap_id)' do 
+      @faculty.should respond_to(:ldap_id)
+      @faculty.should respond_to(:ldap_id=)
+    end
+
     it 'has a First Name (first_name)' do
       @faculty.should respond_to(:first_name)
       @faculty.should respond_to(:first_name=)
@@ -129,8 +134,8 @@ describe Faculty do
       @faculty.should be_valid
     end
 
-    it 'is not valid without a Calnet ID' do
-      @faculty.calnet_id = ''
+    it 'is not valid without an LDAP ID' do
+      @faculty.ldap_id = ''
       @faculty.should_not be_valid
     end
 
@@ -329,20 +334,18 @@ describe Faculty do
 
   context 'when building a list of time slots' do
     before(:each) do
-      @settings = Settings.instance
-      Settings.stub(:instance).and_return(@settings)
-      @settings.stub(:meeting_times).and_return([
+      @meeting_times = [
         AvailableTime.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 9AM')),
         AvailableTime.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')),
         AvailableTime.new(:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 11AM'))
-      ])
-      @settings.stub(:meeting_length).and_return(15 * 60)
-      @settings.stub(:meeting_gap).and_return(5 * 60)
+      ]
+      @meeting_length = 15 * 60
+      @meeting_gap = 5 * 60
     end
 
     context 'when no available meeting slots have been specified' do
-      it 'partitions the meeting times via global settings and produces an AvailableTime for each slot' do
-        @faculty.build_available_times
+      it 'partitions the given times and produces an AvailableTime for each resulting slot' do
+        @faculty.build_available_times(@meeting_times, @meeting_length, @meeting_gap)
         @faculty.available_times.map {|t| {:begin => t.begin, :end => t.end}}.should == [
           {:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')},
           {:begin => Time.zone.parse('1/1/2011 8:20AM'), :end => Time.zone.parse('1/1/2011 8:35AM')},
@@ -354,15 +357,14 @@ describe Faculty do
     end
 
     context 'when some available meeting times have been specified' do
-      it 'partitions the meeting times - already specified times and produces an AvailableTime for each slot' do
+      it 'partitions the given times - already specified times and produces an AvailableTime for each resulting slot' do
         specified_times = [
           AvailableTime.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')),
           AvailableTime.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM'))
         ]
         @faculty.available_times += specified_times
         @faculty.save
-        @faculty.available_times.none?(&:new_record?).should be_true
-        @faculty.build_available_times
+        @faculty.build_available_times(@meeting_times, @meeting_length, @meeting_gap)
         @faculty.available_times.map {|t| {:begin => t.begin, :end => t.end}}.should == [
           {:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')},
           {:begin => Time.zone.parse('1/1/2011 8:20AM'), :end => Time.zone.parse('1/1/2011 8:35AM')},

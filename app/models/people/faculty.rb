@@ -31,7 +31,6 @@ class Faculty < Person
   has_many :meetings, :dependent => :destroy
   accepts_nested_attributes_for :admit_rankings, :allow_destroy => true, :reject_if => :all_blank
   
-  
   validates_presence_of :area
   validates_inclusion_of :division, :in => Settings.instance.divisions.map(&:name)
   validates_presence_of :default_room
@@ -39,18 +38,4 @@ class Faculty < Person
   validates_numericality_of :max_admits_per_meeting, :only_integer => true, :greater_than => 0
   validates_presence_of :max_additional_admits
   validates_numericality_of :max_additional_admits, :only_integer => true, :greater_than_or_equal_to => 0
-
-  def build_available_times
-    settings = Settings.instance
-    times = RangeSet.new(settings.meeting_times(self.division).map {|t| (t.begin)..(t.end)}) -
-            RangeSet.new(self.available_times.map {|t| (t.begin)..(t.end + settings.meeting_gap)})
-    times.each_range do |range|
-      range.step(settings.meeting_length + settings.meeting_gap) do |start|
-        if start + settings.meeting_length <= range.end
-          self.available_times.build(:begin => start, :end => start + settings.meeting_length)
-        end
-      end
-    end
-    self.available_times.sort! {|x, y| x.begin <=> y.begin}
-  end
 end
