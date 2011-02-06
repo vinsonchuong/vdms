@@ -1,3 +1,4 @@
+@staff_can_manage_peer_advisors
 Feature: Staff can manage peer advisors
 
   So that peer advisors can manage meeting scheduling on behalf of their admits

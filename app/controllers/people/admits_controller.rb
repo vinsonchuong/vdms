@@ -1,6 +1,7 @@
 class AdmitsController < PeopleController
   # GET /people/PEOPLE/admits_filter_by_area_of_interests
   def filter_by_area_of_interests
+    puts params
     @admits = []
     list_of_admit_ids_from_rankings = Faculty.find(params[:faculty_id]).admit_rankings.collect {|admit_ranking| admit_ranking.admit_id}
     if params[:area_of_interests]

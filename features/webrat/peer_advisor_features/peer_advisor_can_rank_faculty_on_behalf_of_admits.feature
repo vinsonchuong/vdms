@@ -1,3 +1,4 @@
+@peer_advisor_can_rank_faculty_on_behalf_of_admits
 Feature: Peer advisor can rank faculty on behalf of admits
 
   So that I can specify the meeting preferences of my admits

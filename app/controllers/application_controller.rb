@@ -2,7 +2,6 @@ require 'casclient/frameworks/rails/filter'
 
 class ApplicationController < ActionController::Base
   helper :all
-
   prepend_before_filter CASClient::Frameworks::Rails::Filter
 
   # Order of these two before_filters is important

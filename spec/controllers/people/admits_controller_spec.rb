@@ -438,4 +438,11 @@ describe AdmitsController do
 
     context 'when signed in as a Faculty'
   end
+  
+  describe 'GET filter_by_area_of_interests' do
+    it 'filters @admits by areas' do
+      
+    end
+  end
+  
 end
