@@ -9,10 +9,6 @@ Feature: Faculty can rank admits
     And I am signed in
   
   Scenario: I can see a list of different areas of interests in the EECS department
-    Given I am on the faculty dashboard page
-    When I follow "My Desired Appointments"
-    And I follow
-  
   
   Scenario: I filter the admits by research area
   
