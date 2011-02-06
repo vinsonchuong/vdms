@@ -23,6 +23,7 @@ class Faculty < Person
       self.max_additional_admits ||= 100
     end
   end
+  
   after_validation do |record| # destroy available_times not flagged as available
     record.available_times.each {|t| t.destroy unless t.available}
   end
