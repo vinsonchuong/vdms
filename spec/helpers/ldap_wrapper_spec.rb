@@ -306,7 +306,39 @@ describe LDAPWrapper do
       end
     end
     
-    describe 'instance method: extract_dept_name_from_dept_code' do
+    describe 'instance method: model_name' do
+      before(:each) do
+        @ldap_entry = mock("LDAP Entry")
+        @ldap_person = LDAPWrapper::Person.new(@ldap_entry)        
+      end
+      
+      it "should return \'faculty\' if the LDAP entry is that of a faculty" do
+        @ldap_person.stub!(:faculty?).and_return(true)
+        @ldap_person.stub!(:grad_student?).and_return(false)
+        @ldap_person.stub!(:staff?).and_return(false)
+        @ldap_person.model_name.should == "faculty"
+      end
+
+      it "should return \'peer_advisor\' if the LDAP entry is that of a grad student" do
+        @ldap_person.stub!(:faculty?).and_return(false)
+        @ldap_person.stub!(:grad_student?).and_return(true)
+        @ldap_person.stub!(:staff?).and_return(false)
+        @ldap_person.model_name.should == "peer_advisor"
+      end
+
+      it "should return \'staff\' if the LDAP entry is that of a staff" do
+        @ldap_person.stub!(:faculty?).and_return(false)
+        @ldap_person.stub!(:grad_student?).and_return(false)
+        @ldap_person.stub!(:staff?).and_return(true)
+        @ldap_person.model_name.should == "staff"
+      end
+
+      it "should return nil if the LDAP entry is that of an undergrad or some other Berkeley affiliate" do
+        @ldap_person.stub!(:faculty?).and_return(false)
+        @ldap_person.stub!(:grad_student?).and_return(false)
+        @ldap_person.stub!(:staff?).and_return(false)
+        @ldap_person.model_name.should == nil
+      end
     end
 
   end
