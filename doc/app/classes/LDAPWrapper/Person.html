@@ -86,20 +86,21 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000047">attributes</a>&nbsp;&nbsp;
-      <a href="#M000048">calnet_id</a>&nbsp;&nbsp;
-      <a href="#M000053">default_room</a>&nbsp;&nbsp;
-      <a href="#M000055">division</a>&nbsp;&nbsp;
-      <a href="#M000052">email</a>&nbsp;&nbsp;
-      <a href="#M000058">faculty?</a>&nbsp;&nbsp;
-      <a href="#M000051">first_name</a>&nbsp;&nbsp;
-      <a href="#M000057">grad_student?</a>&nbsp;&nbsp;
-      <a href="#M000050">last_name</a>&nbsp;&nbsp;
-      <a href="#M000049">ldap_id</a>&nbsp;&nbsp;
-      <a href="#M000046">new</a>&nbsp;&nbsp;
-      <a href="#M000054">phone</a>&nbsp;&nbsp;
-      <a href="#M000059">staff?</a>&nbsp;&nbsp;
-      <a href="#M000056">undergrad_student?</a>&nbsp;&nbsp;
+      <a href="#M000059">attributes</a>&nbsp;&nbsp;
+      <a href="#M000060">calnet_id</a>&nbsp;&nbsp;
+      <a href="#M000065">default_room</a>&nbsp;&nbsp;
+      <a href="#M000067">division</a>&nbsp;&nbsp;
+      <a href="#M000064">email</a>&nbsp;&nbsp;
+      <a href="#M000070">faculty?</a>&nbsp;&nbsp;
+      <a href="#M000063">first_name</a>&nbsp;&nbsp;
+      <a href="#M000069">grad_student?</a>&nbsp;&nbsp;
+      <a href="#M000062">last_name</a>&nbsp;&nbsp;
+      <a href="#M000061">ldap_id</a>&nbsp;&nbsp;
+      <a href="#M000072">model_name</a>&nbsp;&nbsp;
+      <a href="#M000058">new</a>&nbsp;&nbsp;
+      <a href="#M000066">phone</a>&nbsp;&nbsp;
+      <a href="#M000071">staff?</a>&nbsp;&nbsp;
+      <a href="#M000068">undergrad_student?</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -134,19 +135,19 @@
     <div id="methods">
       <h3 class="section-bar">Public Class methods</h3>
 
-      <div id="method-M000046" class="method-detail">
-        <a name="M000046"></a>
+      <div id="method-M000058" class="method-detail">
+        <a name="M000058"></a>
 
         <div class="method-heading">
-          <a href="#M000046" class="method-signature">
+          <a href="#M000058" class="method-signature">
           <span class="method-name">new</span><span class="method-args">(ldap_entry)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000046-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000046-source">
+            onclick="toggleCode('M000058-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000058-source">
 <pre>
     <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 96</span>
 96:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">ldap_entry</span>)
@@ -159,24 +160,24 @@
 
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000047" class="method-detail">
-        <a name="M000047"></a>
+      <div id="method-M000059" class="method-detail">
+        <a name="M000059"></a>
 
         <div class="method-heading">
-          <a href="#M000047" class="method-signature">
+          <a href="#M000059" class="method-signature">
           <span class="method-name">attributes</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p>
-Definition: provides <a href="Person.html#M000047">attributes</a> for
+Definition: provides <a href="Person.html#M000059">attributes</a> for
 direct import to the <a href="Person.html">Person</a> models @params: N/A
 @return: a hash
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000047-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000047-source">
+            onclick="toggleCode('M000059-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000059-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 103</span>
 103:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">attributes</span>
@@ -196,11 +197,11 @@ direct import to the <a href="Person.html">Person</a> models @params: N/A
         </div>
       </div>
 
-      <div id="method-M000048" class="method-detail">
-        <a name="M000048"></a>
+      <div id="method-M000060" class="method-detail">
+        <a name="M000060"></a>
 
         <div class="method-heading">
-          <a href="#M000048" class="method-signature">
+          <a href="#M000060" class="method-signature">
           <span class="method-name">calnet_id</span><span class="method-args">()</span>
           </a>
         </div>
@@ -211,8 +212,8 @@ Definition: returns the LDAP entry&#8216;s CalNet ID @params: N/A @return:
 a string or nil
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000048-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000048-source">
+            onclick="toggleCode('M000060-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000060-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 119</span>
 119:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">calnet_id</span>
@@ -224,11 +225,11 @@ a string or nil
         </div>
       </div>
 
-      <div id="method-M000053" class="method-detail">
-        <a name="M000053"></a>
+      <div id="method-M000065" class="method-detail">
+        <a name="M000065"></a>
 
         <div class="method-heading">
-          <a href="#M000053" class="method-signature">
+          <a href="#M000065" class="method-signature">
           <span class="method-name">default_room</span><span class="method-args">()</span>
           </a>
         </div>
@@ -239,8 +240,8 @@ Definition: returns the LDAP entry&#8216;s default room @params: N/A
 @return: a string or nil
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000053-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000053-source">
+            onclick="toggleCode('M000065-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000065-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 156</span>
 156:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">default_room</span>
@@ -251,11 +252,11 @@ Definition: returns the LDAP entry&#8216;s default room @params: N/A
         </div>
       </div>
 
-      <div id="method-M000055" class="method-detail">
-        <a name="M000055"></a>
+      <div id="method-M000067" class="method-detail">
+        <a name="M000067"></a>
 
         <div class="method-heading">
-          <a href="#M000055" class="method-signature">
+          <a href="#M000067" class="method-signature">
           <span class="method-name">division</span><span class="method-args">()</span>
           </a>
         </div>
@@ -263,11 +264,11 @@ Definition: returns the LDAP entry&#8216;s default room @params: N/A
         <div class="method-description">
           <p>
 Definition: returns the LDAP entry&#8216;s EECS <a
-href="Person.html#M000055">division</a> @params: N/A @return: a string
+href="Person.html#M000067">division</a> @params: N/A @return: a string
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000055-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000055-source">
+            onclick="toggleCode('M000067-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000067-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 170</span>
 170:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">division</span>
@@ -298,11 +299,11 @@ href="Person.html#M000055">division</a> @params: N/A @return: a string
         </div>
       </div>
 
-      <div id="method-M000052" class="method-detail">
-        <a name="M000052"></a>
+      <div id="method-M000064" class="method-detail">
+        <a name="M000064"></a>
 
         <div class="method-heading">
-          <a href="#M000052" class="method-signature">
+          <a href="#M000064" class="method-signature">
           <span class="method-name">email</span><span class="method-args">()</span>
           </a>
         </div>
@@ -310,11 +311,11 @@ href="Person.html#M000055">division</a> @params: N/A @return: a string
         <div class="method-description">
           <p>
 Definition: returns the LDAP entry&#8216;s <a
-href="Person.html#M000052">email</a> @params: N/A @return: a string
+href="Person.html#M000064">email</a> @params: N/A @return: a string
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000052-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000052-source">
+            onclick="toggleCode('M000064-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000064-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 148</span>
 148:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">email</span>
@@ -326,11 +327,11 @@ href="Person.html#M000052">email</a> @params: N/A @return: a string
         </div>
       </div>
 
-      <div id="method-M000058" class="method-detail">
-        <a name="M000058"></a>
+      <div id="method-M000070" class="method-detail">
+        <a name="M000070"></a>
 
         <div class="method-heading">
-          <a href="#M000058" class="method-signature">
+          <a href="#M000070" class="method-signature">
           <span class="method-name">faculty?</span><span class="method-args">()</span>
           </a>
         </div>
@@ -341,8 +342,8 @@ Definition: determines whether an LDAP entry belongs to that of a UCB
 faculty @params: N/A @return: a boolean
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000058-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000058-source">
+            onclick="toggleCode('M000070-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000070-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 211</span>
 211:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">faculty?</span>
@@ -353,11 +354,11 @@ faculty @params: N/A @return: a boolean
         </div>
       </div>
 
-      <div id="method-M000051" class="method-detail">
-        <a name="M000051"></a>
+      <div id="method-M000063" class="method-detail">
+        <a name="M000063"></a>
 
         <div class="method-heading">
-          <a href="#M000051" class="method-signature">
+          <a href="#M000063" class="method-signature">
           <span class="method-name">first_name</span><span class="method-args">()</span>
           </a>
         </div>
@@ -368,8 +369,8 @@ Definition: returns the LDAP entry&#8216;s first name @params: N/A @return:
 a string
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000051-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000051-source">
+            onclick="toggleCode('M000063-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000063-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 141</span>
 141:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">first_name</span>
@@ -380,11 +381,11 @@ a string
         </div>
       </div>
 
-      <div id="method-M000057" class="method-detail">
-        <a name="M000057"></a>
+      <div id="method-M000069" class="method-detail">
+        <a name="M000069"></a>
 
         <div class="method-heading">
-          <a href="#M000057" class="method-signature">
+          <a href="#M000069" class="method-signature">
           <span class="method-name">grad_student?</span><span class="method-args">()</span>
           </a>
         </div>
@@ -395,8 +396,8 @@ Definition: determines whether an LDAP entry belongs to that of an grad
 student @params: N/A @return: a boolean
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000057-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000057-source">
+            onclick="toggleCode('M000069-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000069-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 204</span>
 204:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">grad_student?</span>
@@ -407,11 +408,11 @@ student @params: N/A @return: a boolean
         </div>
       </div>
 
-      <div id="method-M000050" class="method-detail">
-        <a name="M000050"></a>
+      <div id="method-M000062" class="method-detail">
+        <a name="M000062"></a>
 
         <div class="method-heading">
-          <a href="#M000050" class="method-signature">
+          <a href="#M000062" class="method-signature">
           <span class="method-name">last_name</span><span class="method-args">()</span>
           </a>
         </div>
@@ -422,8 +423,8 @@ Definition: returns the LDAP entry&#8216;s last name @params: N/A @return:
 a string
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000050-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000050-source">
+            onclick="toggleCode('M000062-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000062-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 134</span>
 134:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">last_name</span>
@@ -434,11 +435,11 @@ a string
         </div>
       </div>
 
-      <div id="method-M000049" class="method-detail">
-        <a name="M000049"></a>
+      <div id="method-M000061" class="method-detail">
+        <a name="M000061"></a>
 
         <div class="method-heading">
-          <a href="#M000049" class="method-signature">
+          <a href="#M000061" class="method-signature">
           <span class="method-name">ldap_id</span><span class="method-args">()</span>
           </a>
         </div>
@@ -449,8 +450,8 @@ Definition: returns the LDAP entry&#8216;s LDAP ID @params: N/A @return: a
 string
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000049-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000049-source">
+            onclick="toggleCode('M000061-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000061-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 127</span>
 127:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ldap_id</span>
@@ -461,11 +462,46 @@ string
         </div>
       </div>
 
-      <div id="method-M000054" class="method-detail">
-        <a name="M000054"></a>
+      <div id="method-M000072" class="method-detail">
+        <a name="M000072"></a>
 
         <div class="method-heading">
-          <a href="#M000054" class="method-signature">
+          <a href="#M000072" class="method-signature">
+          <span class="method-name">model_name</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Definition: returns the LDAP entry&#8216;s corresponding VDMS model name
+@params: N/A @return: a string
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000072-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000072-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 225</span>
+225:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">model_name</span>
+226:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">faculty?</span>
+227:         <span class="ruby-value str">&quot;faculty&quot;</span>
+228:       <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">grad_student?</span>
+229:         <span class="ruby-value str">&quot;peer_advisor&quot;</span>
+230:       <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">staff?</span>
+231:         <span class="ruby-value str">&quot;staff&quot;</span>
+232:       <span class="ruby-keyword kw">else</span>
+233:         <span class="ruby-keyword kw">nil</span>
+234:       <span class="ruby-keyword kw">end</span>
+235:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000066" class="method-detail">
+        <a name="M000066"></a>
+
+        <div class="method-heading">
+          <a href="#M000066" class="method-signature">
           <span class="method-name">phone</span><span class="method-args">()</span>
           </a>
         </div>
@@ -473,12 +509,12 @@ string
         <div class="method-description">
           <p>
 Definition: returns the LDAP entry&#8216;s <a
-href="Person.html#M000054">phone</a> number @params: N/A @return: a string
+href="Person.html#M000066">phone</a> number @params: N/A @return: a string
 or nil
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000054-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000054-source">
+            onclick="toggleCode('M000066-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000066-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 163</span>
 163:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">phone</span>
@@ -489,11 +525,11 @@ or nil
         </div>
       </div>
 
-      <div id="method-M000059" class="method-detail">
-        <a name="M000059"></a>
+      <div id="method-M000071" class="method-detail">
+        <a name="M000071"></a>
 
         <div class="method-heading">
-          <a href="#M000059" class="method-signature">
+          <a href="#M000071" class="method-signature">
           <span class="method-name">staff?</span><span class="method-args">()</span>
           </a>
         </div>
@@ -504,8 +540,8 @@ Definition: determines whether an LDAP entry belongs to that of a UCB staff
 @params: N/A @return: a boolean
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000059-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000059-source">
+            onclick="toggleCode('M000071-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000071-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 218</span>
 218:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">staff?</span>
@@ -516,11 +552,11 @@ Definition: determines whether an LDAP entry belongs to that of a UCB staff
         </div>
       </div>
 
-      <div id="method-M000056" class="method-detail">
-        <a name="M000056"></a>
+      <div id="method-M000068" class="method-detail">
+        <a name="M000068"></a>
 
         <div class="method-heading">
-          <a href="#M000056" class="method-signature">
+          <a href="#M000068" class="method-signature">
           <span class="method-name">undergrad_student?</span><span class="method-args">()</span>
           </a>
         </div>
@@ -531,8 +567,8 @@ Definition: determines whether an LDAP entry belongs to that of an
 undergrad student @params: N/A @return: a boolean
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000056-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000056-source">
+            onclick="toggleCode('M000068-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000068-source">
 <pre>
      <span class="ruby-comment cmt"># File app/helpers/ldap_wrapper.rb, line 197</span>
 197:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">undergrad_student?</span>
