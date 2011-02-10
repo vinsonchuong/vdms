@@ -6,7 +6,7 @@ class AdmitsController < PeopleController
       @admits = []
       
       if params[:commit] == "Filter Admits"
-        params[:filter][:divisions].collect {|division, checked| Admit.find(:all, :conditions => ["division = ?", division]) if checked == "1" }
+        params[:filter][:divisions].collect {|division, checked| Admit.find_by_division(division) if checked == "1" }
         params[:filter][:areas].collect {|area, checked| Admit.find(:all, :conditions => ["area1 = ? OR area2 = ?", area, area]) if checked == "1"}
         @admits.uniq!
       end   

@@ -5,8 +5,8 @@ class ApplicationController < ActionController::Base
   prepend_before_filter CASClient::Frameworks::Rails::Filter
   
   # Order of these two before_filters is important
-  #before_filter :get_current_user
-  #before_filter :create_new_user_if_no_current_user
+  before_filter :get_current_user
+  before_filter :create_new_user_if_no_current_user
   
   self.allow_forgery_protection = false
 
