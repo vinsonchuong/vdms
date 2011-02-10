@@ -1,21 +1,5 @@
 class FacultiesController < PeopleController
-  
-  # GET /people/faculty/1/area_of_interests
-  def area_of_interests
-    @faculty = Faculty.find(params[:id])
-    @list_of_area_of_interests = ["Artificial Intelligence", "Biosystems & Computational Biology", "Communications & Networking",
-      "Computer Architecture & Engineering", "Control, Intelligent Systems, and Robotics", "Database Management Systems",
-      "Design of Electronic Systems", "Education", "Energy", "Graphics", "Human-Computer Interaction", "Integrated Circuits", 
-      "Micro/Nano Electro Mechanical Systems", "Operating Systems & Networking", "Physical Electronics", "Programming Systems", 
-      "Scientific Computing", "Security", "Signal Processing", "Theory"]
-  end
-  
-  # GET /people/admits/1/view_admit_rankings
-  def view_admit_rankings
-    faculty = Faculty.find(params[:id])
-    @admit_rankings = faculty.admit_rankings
-  end
-  
+    
   # GET /people/admits/1/rank_admits
   def rank_admits
     @faculty = Faculty.find(params[:id])

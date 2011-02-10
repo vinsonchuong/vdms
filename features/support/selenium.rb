@@ -1,5 +1,5 @@
 Webrat.configure do |config|
-  config.application_framework = :rails_thin
+  config.application_framework = :rails
   config.mode = :selenium
   config.selenium_browser_startup_timeout = 30
   # Selenium defaults to using the selenium environment. Use the following to override this.

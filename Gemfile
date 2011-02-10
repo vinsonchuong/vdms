@@ -12,6 +12,7 @@ gem 'ucb_ldap'
 gem 'validates_existence'
 gem 'validates_timeliness', '2.3.2'
 
+
 group :cucumber, :development, :test do
   gem 'sqlite3-ruby', :require => 'sqlite3'  
 end
@@ -21,6 +22,7 @@ group :cucumber, :test do
   gem 'factory_girl'
   gem 'launchy'
   gem 'shoulda', :require => false
+  gem 'mongrel', '1.2.0.pre2'
 end
 
 group :cucumber do
@@ -30,6 +32,8 @@ group :cucumber do
   gem 'webrat', '>=0.7.0', :require => false
   gem 'rspec', '1.3.1', :require => 'spec'
   gem 'rspec-rails', '1.3.3', :require => false
+  gem 'selenium-client'
+  gem 'thin'
 end
 
 group :test do

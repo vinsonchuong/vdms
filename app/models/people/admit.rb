@@ -3,6 +3,7 @@ class Admit < Person
 
   ATTRIBUTES = Person::ATTRIBUTES.merge({
     'Phone' => :phone,
+    'Division' => :division,
     'Area 1' => :area1,
     'Area 2' => :area2,
   })
@@ -26,6 +27,7 @@ class Admit < Person
   validates_presence_of :phone
   validates_format_of :phone, :with => /^\(?\b([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
     :message => 'must be a valid numeric US phone number'
+  validates_inclusion_of :division, :in => Settings.instance.divisions.map(&:name)
   validates_presence_of :area1
   validates_presence_of :area2
   validates_existence_of :peer_advisor, :allow_nil => true
