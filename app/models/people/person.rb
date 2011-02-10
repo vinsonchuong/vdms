@@ -2,12 +2,14 @@ class Person < ActiveRecord::Base
   include Importable
 
   ATTRIBUTES = {
+    'LDAP ID' => :ldap_id,
     'CalNet ID' => :calnet_id,
     'First Name' => :first_name,
     'Last Name' => :last_name,
     'Email' => :email
   }
   ATTRIBUTE_TYPES = {
+    :ldap_id => :string,
     :calnet_id => :string,
     :first_name => :string,
     :last_name => :string,
