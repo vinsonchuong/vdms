@@ -213,11 +213,26 @@ module LDAPWrapper
     end
 
 # Definition: determines whether an LDAP entry belongs to that of a UCB staff
-# @params: N/A
+    # @params: N/A
 # @return: a boolean
     def staff?
       @ldap_entry.employee_staff?
     end    
-  end  
 
+# Definition: returns the LDAP entry's corresponding VDMS model name
+# @params: N/A
+# @return: a string
+    def model_name
+      if faculty?
+        "faculty"
+      elsif grad_student?
+        "peer_advisor"
+      elsif staff?
+        "staff"
+      else
+        nil
+      end
+    end    
+  end  
+  
 end
