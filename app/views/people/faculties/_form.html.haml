@@ -4,6 +4,9 @@
     %h3 Faculty Info
     %ul.plain
       %li
+        != faculty_form.label :ldap_id, 'LDAP ID'
+        != faculty_form.text_field :ldap_id
+      %li
         != faculty_form.label :calnet_id, 'CalNet ID'
         != faculty_form.text_field :calnet_id
 

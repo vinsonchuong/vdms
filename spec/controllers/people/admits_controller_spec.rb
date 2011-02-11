@@ -439,10 +439,23 @@ describe AdmitsController do
     context 'when signed in as a Faculty'
   end
   
-  describe 'GET filter_by_area_of_interests' do
-    it 'filters @admits by areas' do
-      
+  describe 'GET filter' do
+    context 'when not signed in' do
+      it 'redirects to the CalNet sign in page' do
+        get :filter
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(filter_admits_url)}")
+      end
     end
+    
+    context 'when signed in as a staff' do
+      it 'filters @admits by areas' do
+        
+      end
+    end
+    
+    context 'when signed in as a Peer Advisor'
+
+    context 'when signed in as a Faculty'   
   end
   
 end

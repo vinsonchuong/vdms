@@ -37,6 +37,7 @@ Factory.define :admit do |a|
   a.phone '1234567890'
   a.area1 'Area 1'
   a.area2 'Area 2'
+  a.division 'Computer Science'
 end
 
 Factory.define :available_time do |t|

@@ -41,8 +41,7 @@ module NavigationHelpers
     when /the rank faculty page/ then rank_faculty_admit_path(@admit)
     when /the delete admit page/ then delete_admit_path(@admit)
 
-    when /the area of interests page/ then area_of_interests_faculty_path(@faculty)
-    when /the list of admits filtered by area of interests/ then filter_by_area_of_interests_admits_path(@faculty)
+    when /the Add Admits to My Desired Appointments/ then filter_admits_path
     when /the admit_ranking page/ then rank_admits_faculty_path(@faculty)  
     
     # Add more mappings here.

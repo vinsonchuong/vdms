@@ -9,16 +9,19 @@ Feature: Faculty can rank admits
     Given "Jacky" "Wu" is registered as a "Faculty" in "Computer Science"
     And I am signed in
     And the following "Admits" have been added:
-      | first_name  | last_name  | email            | phone      | area1                      | area2                |
-      | Andy        | Foo        | email1@email.com | 1234567891 | Artificial Intelligence    | Physical Electronics |
-      | Ben         | Bar        | email2@email.com | 1234567892 | Graphics                   | Programming Systems  |
-      | Charlie     | Goo        | email3@email.com | 1234567893 | Human-Computer Interaction | Education            |
-  
-  
-  Scenario: I can see a list of different areas of interests in the EECS department
+      | first_name  | last_name  | email            | phone      | area1                      | area2                | division              |
+      | Andy        | Foo        | email1@email.com | 1234567891 | Artificial Intelligence    | Physical Electronics | Electrical Engineering|
+      | Ben         | Bar        | email2@email.com | 1234567892 | Graphics                   | Programming Systems  | Computer Science      |
+      | Charlie     | Goo        | email3@email.com | 1234567893 | Human-Computer Interaction | Education            | Computer Science      |
+
+  Scenario: I can add admits to my desired appointments
     Given I am on the faculty dashboard page
     When I follow "My Desired Appointments"
-    And I follow "Update My Desired Appointments"
+    And I follow "Add Admits to My Desired Appointments"
+    Then I should be on the Add Admits to My Desired Appointments page
+
+  Scenario: I can see a list of different areas of interests in the EECS department
+    Given I am on the Add Admits to My Desired Appointments page
     Then I should see "Artificial Intelligence"
     And I should see "Biosystems & Computational Biology"
     And I should see "Communications & Networking"
@@ -39,19 +42,45 @@ Feature: Faculty can rank admits
     And I should see "Security"
     And I should see "Signal Processing"
     And I should see "Theory"
-      
-  Scenario: I select nothing on the area of interests page
-    Given I am on the area of interests page
-    When I press "find"
-    Then I should see "Name"
   
-  Scenario: I filter the admits by the area of interests
-    Given I am on the area of interests page
-    When I check "Artificial Intelligence"
-    And I check "Graphics"
-    And I check "Physical Electronics"
+  Scenario: I can see a list of EECS divisions
+    Given I am on the Add Admits to My Desired Appointments page
+    Then I should see "Computer Science"
+    Then I should see "Electrical Engineering"
+
+  Scenario: I can see a list of admits section
+    Given I am on the Add Admits to My Desired Appointments page
+    Then I should see "List of Admits"
+    Then I should see "Select Admits"
+            
+  Scenario: I select nothing on the area of interests page
+    Given I am on the Add Admits to My Desired Appointments page
+    When I press "Filter Admits"
+    Then I should see "List of Admits"
+    Then I should see "Select Admits"
+  
+  Scenario: I filter the admits by their area of interests
+    Given I am on the Add Admits to My Desired Appointments page
+    When I check "filter[areas][Artificial Intelligence]"
+    And I check "filter[areas][Graphics]"
+    And I check "filter[areas][Physical Electronics]"
+    When I press "Filter Admits"
     Then I should see "Andy Foo"
     Then I should see "Ben Bar"
+  
+  Scenario: I filter the admits by their divisions
+    Given I am on the Add Admits to My Desired Appointments page
+    When I check "filter[divisions][Computer Science]"
+    When I press "Filter Admits"
+    Then I should see "Ben Bar"
+    Then I should see "Charlie Goo"
+  
+  Scenario: I can add admits to my desired appointment
+    Given I am on the Add Admits to My Desired Appointments page
+    When I check "filter[divisions][Computer Science]"
+    And I press "Filter Admits"
+    And I check "admits_3" #Ben Bar
+    And I press "Add to My Desired Appointment List"
     
   Scenario: I rank a subset of the admits
 

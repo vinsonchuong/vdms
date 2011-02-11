@@ -8,6 +8,7 @@
   %thead
     %tr
       %th{:scope => 'col'} Id
+      %th{:scope => 'col'} LDAP Id
       %th{:scope => 'col'} CalNet Id
       %th{:scope => 'col'} First Name
       %th{:scope => 'col'} Last Name
@@ -20,6 +21,7 @@
     - @faculties.each do |faculty|
       %tr
         %td= faculty.id
+        %td= faculty.ldap_id
         %td= faculty.calnet_id
         %td= faculty.first_name
         %td= faculty.last_name

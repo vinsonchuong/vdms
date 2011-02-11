@@ -1,6 +1,4 @@
 # need a + and reduce duplicates method for grabbing out all CS and EE people
-
-
 module LDAPWrapper
 
   class << self

@@ -2,8 +2,9 @@ class FacultiesController < PeopleController
     
   # GET /people/admits/1/rank_admits
   def rank_admits
+    puts params
     @faculty = Faculty.find(params[:id])
-    params[:admit_ids].each {|admit_id| @faculty.admit_rankings.build(:admit_id => admit_id)} if params[:admit_ids]
+    params[:admits].each {|admit_id, checked| @faculty.admit_rankings.build(:admit_id => admit_id) if checked == "1" && !@faculty.admit_rankings.find_by_admit_id(admit_id)} if params[:admits]
   end
 
   # GET /people/faculty/1/schedule

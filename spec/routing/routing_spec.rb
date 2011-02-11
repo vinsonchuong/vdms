@@ -196,6 +196,12 @@ describe 'Routes' do
           {:delete => '/people/faculties/1'}.should route_to(:controller => 'faculties', :action => 'destroy', :id => '1')
         end
       end
+      
+      context 'Update Faculty Admit Rankings' do
+        it 'routes GET /people/faculties/1/rank_admits to Faculties#rank_admits' do
+          {:get => '/people/faculties/1/rank_admits'}.should route_to(:controller => 'faculties', :action => 'rank_admits', :id => '1')
+        end
+      end
     end
 
     context 'Admits' do
@@ -254,6 +260,12 @@ describe 'Routes' do
 
         it 'routes DELETE /people/admits/1 to Admits#destroy' do
           {:delete => '/people/admits/1'}.should route_to(:controller => 'admits', :action => 'destroy', :id => '1')
+        end
+      end
+      
+      context 'Filter Admits' do
+        it 'routes GET /people/PEOPLE/admits/filter to Admits#filter' do
+          {:get => '/people/admits/filter'}.should route_to(:controller => 'admits', :action => 'filter')
         end
       end
     end

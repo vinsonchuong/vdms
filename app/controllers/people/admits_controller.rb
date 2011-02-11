@@ -1,13 +1,13 @@
 class AdmitsController < PeopleController
-  # GET /people/PEOPLE/admits_filter_by_area_of_interests
+  # GET /people/PEOPLE/admits/filter
   def filter
       @areas =  Settings.instance.areas
       @divisions = Settings.instance.divisions.map(&:name)
       @admits = []
       
       if params[:commit] == "Filter Admits"
-        params[:filter][:divisions].collect {|division, checked| Admit.find_by_division(division) if checked == "1" }
-        params[:filter][:areas].collect {|area, checked| Admit.find(:all, :conditions => ["area1 = ? OR area2 = ?", area, area]) if checked == "1"}
+        params[:filter][:divisions].collect {|division, checked| @admits += Admit.find_all_by_division(division) if checked == "1" }
+        params[:filter][:areas].collect {|area, checked| @admits += Admit.find(:all, :conditions => ["area1 = ? OR area2 = ?", area, area]) if checked == "1"}
         @admits.uniq!
       end   
   end
@@ -33,7 +33,7 @@ class AdmitsController < PeopleController
     @faculty = Faculty.all.sort! {|x, y| x.last_name <=> y.last_name}
 
     if @admit.update_attributes(params[:admit])
-      redirect_to(:back, :notice => "Admit was successfully updated")
+      redirect_to(:back, :notice => "Admit was successfully updated.")
     else
       render :action => get_referrer_action
     end

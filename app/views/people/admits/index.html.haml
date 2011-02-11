@@ -13,6 +13,7 @@
       %th{:scope => 'col'} Phone
       %th{:scope => 'col'} Area 1
       %th{:scope => 'col'} Area 2
+      %th{:scope => 'col'} Division
       %th{:scope => 'col'}
       %th{:scope => 'col'}
       %th{:scope => 'col'}
@@ -26,6 +27,7 @@
         %td= admit.phone
         %td= admit.area1
         %td= admit.area2
+        %td= admit.division
         %td!= link_to 'Update Admit', edit_admit_path(admit)
         %td!= link_to 'Update Admit Availability', schedule_admit_path(admit)
         %td!= link_to 'Update Faculty Rankings', rank_faculty_admit_path(admit)

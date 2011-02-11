@@ -25,15 +25,19 @@
   %h3 List of Admits              
   %span Please check admits whom you desire to schedule a meeting with
   #fieldset
-  - form_tag rank_admits_faculty_path(:id => 6), :method => :get do
+  - form_for :admits, :url => rank_admits_faculty_path(:id => 6), :html => {:method => :get}  do |select_admit_form|
     %fieldset
       %h3 Select Admits
       %ul
         - if !@admits.empty?
-          - @admits.each_with_index do |admit, index|
+          - @admits.each do |admit, checked|
             %li
-              != check_box_tag "admit_ids[]", admit.id
-              != admit.full_name
+              != select_admit_form.check_box admit.id, :checked => checked
+              != select_admit_form.label admit.full_name, admit.full_name
     %fieldset
       %h3 Submit
-      != submit_tag "Rank Admits"
+      != select_admit_form.submit 'Add to My Desired Appointment List'
+  
+  
+  
+  

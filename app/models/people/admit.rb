@@ -9,6 +9,7 @@ class Admit < Person
   })
   ATTRIBUTE_TYPES = Person::ATTRIBUTE_TYPES.merge({
     :phone => :string,
+    :division => :string,
     :area1 => :string,
     :area2 => :string,
   })

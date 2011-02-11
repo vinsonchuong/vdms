@@ -40,6 +40,11 @@ describe Admit do
       @admit.should respond_to(:area2)
       @admit.should respond_to(:area2=)
     end
+    
+    it 'has a Division (division)' do
+      @admit.should respond_to(:division)
+      @admit.should respond_to(:division=)
+    end
 
     it 'has an attribute name to accessor map' do
       Admit::ATTRIBUTES['CalNet ID'].should == :calnet_id
