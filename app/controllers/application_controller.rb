@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
     
     #@current_user = Person.find_by_ldap_id(session[:cas_user])
     @current_user = Person.find(:first)
-    puts @current_user.ldap_id
+    puts @current_user.first_name
     ldap_entry.model.new(ldap_entry.attributes).save(false) if (!@current_user and ldap_entry)
     #@current_user = Person.find_by_ldap_id(session[:cas_user])
     @current_user = Person.find(:first)
