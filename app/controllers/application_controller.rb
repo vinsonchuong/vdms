@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   self.allow_forgery_protection = false
 
   def get_current_user
-    ldap_entry = LDAPWrapper.find_by_ldap_id_A(session[:cas_user])
+    ldap_entry = LDAPWrapper.find_by_ldap_id(session[:cas_user])
     render :controller => "root", :action => "access_denied" if !ldap_entry
     
     @current_user = Person.find_by_ldap_id(session[:cas_user])
@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   end
   
   def verify_current_user
-    ldap_entry = LDAPWrapper.find_by_ldap_id_A(session[:cas_user])
+    ldap_entry = LDAPWrapper.find_by_ldap_id(session[:cas_user])
     redirect_to :controller => ldap_entry.model.name.downcase.pluralize, :action => 'edit', :id => @current_user.id if !@current_user.valid?
   end
    

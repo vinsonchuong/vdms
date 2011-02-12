@@ -24,7 +24,4 @@ class Person < ActiveRecord::Base
     "#{self.first_name} #{self.last_name}"
   end
   
-  #def self.find_by_ldap_id(ldap_id)
-  #  self.find(:first, :conditions => ["ldap_id == ?", ldap_id])
-  #end
 end
