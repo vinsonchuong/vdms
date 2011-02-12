@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   helper :all
   prepend_before_filter CASClient::Frameworks::Rails::Filter
   before_filter :get_current_user
-  before_filter :verify_current_user
+  #before_filter :verify_current_user
   
   
   self.allow_forgery_protection = false
@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
     
     #@current_user = Person.find_by_ldap_id(session[:cas_user])
     @current_user = Person.find(:first)
+    puts @current_user.ldap_id
     ldap_entry.model.new(ldap_entry.attributes).save(false) if (!@current_user and ldap_entry)
     #@current_user = Person.find_by_ldap_id(session[:cas_user])
     @current_user = Person.find(:first)
