@@ -163,12 +163,7 @@ describe Faculty do
     end
 
     it 'is not valid with an invalid Division' do
-      settings = Settings.instance
-      Settings.stub(:instance).and_return(settings)
-      settings.stub(:divisions).and_return([
-        Division.new(:name => 'Division 1'),
-        Division.new(:name => 'Division 2')
-      ])
+      stub_divisions(['Division 1', 'Division 2'])
       ['', 'Division 3', 123].each do |invalid_division|
         @faculty.division = invalid_division
         @faculty.should_not be_valid
@@ -176,12 +171,7 @@ describe Faculty do
     end
 
     it 'is not valid with an invalid Area' do
-      settings = Settings.instance
-      Settings.stub(:instance).and_return(settings)
-      settings.stub(:areas).and_return([
-        'Area 1',
-        'Area 2'
-      ])
+      stub_areas(['Area 1', 'Area 2'])
       ['', 'Area 3', 123].each do |invalid_area|
         @faculty.area = invalid_area
         @faculty.should_not be_valid

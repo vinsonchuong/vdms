@@ -66,8 +66,6 @@ describe SettingsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        @settings = Settings.instance
-        Settings.stub(:instance).and_return(@settings)
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 

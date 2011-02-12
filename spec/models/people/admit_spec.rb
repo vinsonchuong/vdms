@@ -206,12 +206,7 @@ describe Admit do
     end
 
     it 'is not valid with an invalid Division' do
-      settings = Settings.instance
-      Settings.stub(:instance).and_return(settings)
-      settings.stub(:divisions).and_return([
-        Division.new(:name => 'Division 1'),
-        Division.new(:name => 'Division 2')
-      ])
+      stub_divisions(['Division 1', 'Division 2'])
       ['', 'Division 3', 123].each do |invalid_division|
         @admit.division = invalid_division
         @admit.should_not be_valid
@@ -219,12 +214,7 @@ describe Admit do
     end
 
     it 'is not valid with an invalid Area 1' do
-      settings = Settings.instance
-      Settings.stub(:instance).and_return(settings)
-      settings.stub(:areas).and_return([
-        'Area 1',
-        'Area 2'
-      ])
+      stub_areas(['Area 1', 'Area 2'])
       ['', 'Area 3', 123].each do |invalid_area|
         @admit.area1 = invalid_area
         @admit.should_not be_valid
@@ -232,12 +222,7 @@ describe Admit do
     end
 
     it 'is not valid with an invalid Area 2' do
-      settings = Settings.instance
-      Settings.stub(:instance).and_return(settings)
-      settings.stub(:areas).and_return([
-        'Area 1',
-        'Area 2'
-      ])
+      stub_areas(['Area 1', 'Area 2'])
       ['', 'Area 3', 123].each do |invalid_area|
         @admit.area2 = invalid_area
         @admit.should_not be_valid

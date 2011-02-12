@@ -22,6 +22,9 @@ Spec::Runner.configure do |config|
   config.use_instantiated_fixtures  = false
   config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
 
+  # Include custom macros (see spec/support)
+  config.include SettingsStubs
+
   # Clear sign in info after each test
   config.after(:each, :type => :controller) do
     CASClient::Frameworks::Rails::Filter.fake(nil)
