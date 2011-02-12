@@ -23,4 +23,8 @@ class Person < ActiveRecord::Base
   def full_name
     "#{self.first_name} #{self.last_name}"
   end
+  
+  def find_by_ldap_id(ldap_id)
+    self.find_by_ldap_id(ldap_id)
+  end
 end
