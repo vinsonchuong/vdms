@@ -38,5 +38,5 @@ group :cucumber, :test do
   gem 'email_spec', '0.6.5'
   gem 'factory_girl'
   gem 'launchy'
-  gem 'shoulda', :require => false
+  gem 'shoulda'
 end
