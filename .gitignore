@@ -6,4 +6,5 @@
 /.bundle
 /webrat.log
 .DS_Store
+Gemfile.lock
 .project
