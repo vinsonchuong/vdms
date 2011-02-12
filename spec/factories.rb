@@ -20,7 +20,7 @@ Factory.define :faculty do |f|
   f.first_name 'First'
   f.last_name 'Last'
   f.email {Factory.next(:email)}
-  f.area 'Area'
+  f.area Settings.instance.areas.first
   f.division Settings.instance.divisions.first.name
 end
 
@@ -30,8 +30,8 @@ Factory.define :admit do |a|
   a.last_name 'Last'
   a.email {Factory.next(:email)}
   a.phone '1234567890'
-  a.area1 'Area 1'
-  a.area2 'Area 2'
+  a.area1 Settings.instance.areas.first
+  a.area2 Settings.instance.areas.last
   a.division 'Computer Science'
 end
 

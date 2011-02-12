@@ -8,10 +8,10 @@ Feature: Peer advisor can manage admits
     Given I am registered as a "Peer Advisor"
     And I am signed in
     And the following "Admits" have been added:
-      | first_name  | last_name  | email            | phone      | area1   | area2   |
-      | First1      | Last1      | email1@email.com | 1234567891 | Area 11 | Area 21 |
-      | First2      | Last2      | email2@email.com | 1234567892 | Area 12 | Area 22 |
-      | First3      | Last3      | email3@email.com | 1234567893 | Area 13 | Area 23 |
+      | first_name  | last_name  | email            | phone      | division               | area1                      | area2    |
+      | First1      | Last1      | email1@email.com | 1234567891 | Computer Science       | Artificial Intelligence    | Theory   |
+      | First2      | Last2      | email2@email.com | 1234567892 | Computer Science       | Human-Computer Interaction | Graphics |
+      | First3      | Last3      | email3@email.com | 1234567893 | Electrical Engineering | Physical Electronics       | Energy   |
 
   Scenario: I can manage admits
     Given I am on the peer advisor dashboard page
@@ -22,10 +22,10 @@ Feature: Peer advisor can manage admits
     When I go to the view admits page
     And I should see "First1"
     And I should see "Last1"
-    And I should see "Area 11"
+    And I should see "Artificial Intelligence"
     And I should see "First2"
     And I should see "Last2"
-    And I should see "Area 12"
+    And I should see "Human-Computer Interaction"
     And I should see "First3"
     And I should see "Last3"
-    And I should see "Area 13"
+    And I should see "Physical Electronics"

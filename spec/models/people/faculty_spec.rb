@@ -162,9 +162,30 @@ describe Faculty do
       end
     end
 
-    it 'is not valid without an Area' do
-      @faculty.area = ''
-      @faculty.should_not be_valid
+    it 'is not valid with an invalid Division' do
+      settings = Settings.instance
+      Settings.stub(:instance).and_return(settings)
+      settings.stub(:divisions).and_return([
+        Division.new(:name => 'Division 1'),
+        Division.new(:name => 'Division 2')
+      ])
+      ['', 'Division 3', 123].each do |invalid_division|
+        @faculty.division = invalid_division
+        @faculty.should_not be_valid
+      end
+    end
+
+    it 'is not valid with an invalid Area' do
+      settings = Settings.instance
+      Settings.stub(:instance).and_return(settings)
+      settings.stub(:areas).and_return([
+        'Area 1',
+        'Area 2'
+      ])
+      ['', 'Area 3', 123].each do |invalid_area|
+        @faculty.area = invalid_area
+        @faculty.should_not be_valid
+      end
     end
 
     it 'is valid with a valid division' do
@@ -294,8 +315,8 @@ describe Faculty do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
         First Name,Last Name,Email,Division,Area,Default Room,Max Admits Per Meeting,Max Additional Admits
         First0,Last0,email0@email.com,Division0,Area0,Room0,1,0
-        First1,Last1,email1@email.com,Division0,Area1,Room1,2,1
-        First2,Last2,email2@email.com,Division0,Area2,Room2,3,2
+        First1,Last1,email1@email.com,Division1,Area1,Room1,2,1
+        First2,Last2,email2@email.com,Division2,Area2,Room2,3,2
       EOF
       Faculty.new_from_csv(csv_text).should == @faculties
       @faculties.each_with_index do |faculty, i|

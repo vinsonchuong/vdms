@@ -205,19 +205,43 @@ describe Admit do
       end
     end
 
-    it 'is not valid without a Division' do
-      @admit.division = ''
-      @admit.should_not be_valid
+    it 'is not valid with an invalid Division' do
+      settings = Settings.instance
+      Settings.stub(:instance).and_return(settings)
+      settings.stub(:divisions).and_return([
+        Division.new(:name => 'Division 1'),
+        Division.new(:name => 'Division 2')
+      ])
+      ['', 'Division 3', 123].each do |invalid_division|
+        @admit.division = invalid_division
+        @admit.should_not be_valid
+      end
     end
 
-    it 'is not valid without an Area 1' do
-      @admit.area1 = ''
-      @admit.should_not be_valid
+    it 'is not valid with an invalid Area 1' do
+      settings = Settings.instance
+      Settings.stub(:instance).and_return(settings)
+      settings.stub(:areas).and_return([
+        'Area 1',
+        'Area 2'
+      ])
+      ['', 'Area 3', 123].each do |invalid_area|
+        @admit.area1 = invalid_area
+        @admit.should_not be_valid
+      end
     end
 
-    it 'is not valid without an Area 2' do
-      @admit.area2 = ''
-      @admit.should_not be_valid
+    it 'is not valid with an invalid Area 2' do
+      settings = Settings.instance
+      Settings.stub(:instance).and_return(settings)
+      settings.stub(:areas).and_return([
+        'Area 1',
+        'Area 2'
+      ])
+      ['', 'Area 3', 123].each do |invalid_area|
+        @admit.area2 = invalid_area
+        @admit.should_not be_valid
+      end
     end
 
     it 'is valid with valid non-overlapping Available Times' do

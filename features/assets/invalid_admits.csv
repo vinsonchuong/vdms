@@ -1,4 +1,5 @@
-First Name,Last Name,Email,Phone,Area 1,Area 2
-First1,Last1,,1234567891,Area 11,Area 21
-First2,Last2,email2@email.com,,Area 12,Area 22
-First3,Last3,email3@email.com,1234567893,,Area 23
+First Name,Last Name,Email,Phone,Division,Area 1,Area 2
+First1,Last1,,1234567891,Computer Science,Artificial Intelligence,Theory
+First2,Last2,email2@email.com,,Computer Science,Human-Computer Interaction,Graphics
+First3,Last3,email3@email.com,1234567893,Electrical Engineering,,Integrated Circuits
+
