@@ -3,8 +3,8 @@ require 'casclient/frameworks/rails/filter'
 class ApplicationController < ActionController::Base
   helper :all
   prepend_before_filter CASClient::Frameworks::Rails::Filter
-  before_filter :get_current_user
-  before_filter :verify_current_user
+  #before_filter :get_current_user
+  #before_filter :verify_current_user
   
   
   self.allow_forgery_protection = false
@@ -19,6 +19,10 @@ class ApplicationController < ActionController::Base
   
   def verify_current_user
     redirect_to :controller => @ldap_entry.model.name.downcase.pluralize, :action => 'edit', :id => @current_user.id if !@current_user.valid?
+  end
+  
+  def get_referrer_action	 	
+    request.env['HTTP_REFERER'].gsub(/.*?\/([\w]*?)$/, '\1')
   end
    
 end
