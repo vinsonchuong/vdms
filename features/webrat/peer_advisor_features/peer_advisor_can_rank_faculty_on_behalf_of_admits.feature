@@ -14,10 +14,10 @@ Feature: Peer advisor can rank faculty on behalf of admits
       | First2      | Last2      | email2@email.com | 1234567892 | Area 12 | Area 22 |
       | First3      | Last3      | email3@email.com | 1234567893 | Area 13 | Area 23 |
     And the following "Faculty" have been added:
-      | calnet_id | first_name  | last_name | email            | area  | division               |
-      | ID1       | Faculty     | Aaaa      | email1@email.com | Area1 | Computer Science       |
-      | ID2       | Faculty     | Cccc      | email2@email.com | Area2 | Electrical Engineering |
-      | ID3       | Faculty     | Bbbb      | email3@email.com | Area3 | Computer Science       |
+      | first_name  | last_name | email            | area  | division               |
+      | Faculty     | Aaaa      | email1@email.com | Area1 | Computer Science       |
+      | Faculty     | Cccc      | email2@email.com | Area2 | Electrical Engineering |
+      | Faculty     | Bbbb      | email3@email.com | Area3 | Computer Science       |
 
   Scenario: I specify an admit's faculty rankings
     Given I am on the view admits page

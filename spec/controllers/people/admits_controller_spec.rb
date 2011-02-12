@@ -16,7 +16,7 @@ describe AdmitsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @admits a list of all the Admits' do
@@ -47,7 +47,7 @@ describe AdmitsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @admit a new Admit' do
@@ -91,7 +91,7 @@ describe AdmitsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
   
       it 'assigns to @admit the given Admit' do
@@ -123,7 +123,7 @@ describe AdmitsController do
 
     context 'when signed in as a Peer Advisor' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@admit.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@admit.ldap_id)
       end
 
       it 'assigns to @admit the given Admit' do
@@ -158,7 +158,7 @@ describe AdmitsController do
 
     context 'when signed in as a Peer Advisor' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@admit.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@admit.ldap_id)
       end
 
       it 'assigns to @admit the given Admit' do
@@ -204,7 +204,7 @@ describe AdmitsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @admit the given Admit' do
@@ -235,7 +235,7 @@ describe AdmitsController do
     context 'when signed in as a Staff' do
       before(:each) do
         Admit.stub(:new).and_return(@admit)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @admit a new Admit with the given parameters' do
@@ -295,7 +295,7 @@ describe AdmitsController do
         @csv_text = 'text'
         @admits = [Admit.new, Admit.new, Admit.new]
         Admit.stub(:new_from_csv).and_return(@admits)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @admits a collection of Admits built from the attributes in each row' do
@@ -348,7 +348,7 @@ describe AdmitsController do
     context 'when signed in as a Staff' do
       before(:each) do
         Admit.stub(:find).and_return(@admit)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
         request.env['HTTP_REFERER'] = "/people/admits/#{@admit.id}/edit"
       end
 
@@ -409,7 +409,7 @@ describe AdmitsController do
     context 'when signed in as a Staff' do
       before(:each) do
         Admit.stub(:find).and_return(@admit)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @admit the given Admit' do
@@ -457,5 +457,4 @@ describe AdmitsController do
 
     context 'when signed in as a Faculty'   
   end
-  
 end

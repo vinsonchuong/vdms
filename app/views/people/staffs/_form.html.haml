@@ -4,10 +4,8 @@
     %h3 Staff Info
     %ul.plain
       %li
-        != staff_form.label :calnet_id, 'CalNet ID'
-        != staff_form.text_field :calnet_id
-
-        != staff_form.hidden_field :ldap_id
+        != staff_form.label :ldap_id, 'LDAP ID'
+        != staff_form.text_field :ldap_id
       %li
         != staff_form.label :first_name, 'First Name'
         != staff_form.text_field :first_name

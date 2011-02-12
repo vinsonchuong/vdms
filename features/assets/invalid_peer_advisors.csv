@@ -1,4 +1,4 @@
-CalNet ID,First Name,Last Name,Email
-,First1,Last1,email1@email.com
+LDAP ID,First Name,Last Name,Email
+ID1,First1,,email1@email.com
 ID2,,Last2,email2@email.com
 ID3,First3,Last3,

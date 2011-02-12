@@ -4,7 +4,6 @@
     %table
       %thead
         %tr
-          %th{:scope => 'col'} CalNet ID
           %th{:scope => 'col'} First Name
           %th{:scope => 'col'} Last Name
           %th{:scope => 'col'} Email
@@ -12,7 +11,6 @@
       %tbody
         - @staffs.each do |staff|
           %tr
-            %td= staff.calnet_id
             %td= staff.first_name
             %td= staff.last_name
             %td= staff.email
@@ -26,5 +24,4 @@
       %li
         != label_tag :csv_file, 'CSV File'
         != file_field_tag :csv_file
-
     != submit_tag 'Import Staff'

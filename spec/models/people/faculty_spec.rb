@@ -6,12 +6,7 @@ describe Faculty do
   end
 
   describe 'Attributes' do
-    it 'has a CalNet ID (calnet_id)' do 
-      @faculty.should respond_to(:calnet_id)
-      @faculty.should respond_to(:calnet_id=)
-    end
-
-    it 'has an LDAP ID (ldap_id)' do 
+    it 'has an LDAP ID (ldap_id)' do
       @faculty.should respond_to(:ldap_id)
       @faculty.should respond_to(:ldap_id=)
     end
@@ -57,7 +52,7 @@ describe Faculty do
     end
 
     it 'has an attribute name to accessor map' do
-      Faculty::ATTRIBUTES['CalNet ID'].should == :calnet_id
+      Faculty::ATTRIBUTES['LDAP ID'].should == :ldap_id
       Faculty::ATTRIBUTES['First Name'].should == :first_name
       Faculty::ATTRIBUTES['Last Name'].should == :last_name
       Faculty::ATTRIBUTES['Email'].should == :email
@@ -69,7 +64,7 @@ describe Faculty do
     end
 
     it 'has an accessor to type map' do
-      Faculty::ATTRIBUTE_TYPES[:calnet_id].should == :string
+      Faculty::ATTRIBUTE_TYPES[:ldap_id].should == :string
       Faculty::ATTRIBUTE_TYPES[:first_name].should == :string
       Faculty::ATTRIBUTE_TYPES[:last_name].should == :string
       Faculty::ATTRIBUTE_TYPES[:email].should == :string
@@ -291,19 +286,18 @@ describe Faculty do
 
     it 'builds a collection of Faculty with the attributes in each row' do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
-        CalNet ID,First Name,Last Name,Email,Area,Division,Default Room,Max Admits Per Meeting,Max Additional Admits
-        ID0,First0,Last0,email0@email.com,Area0,#{Settings.instance.divisions.first.name},Room0,1,0
-        ID1,First1,Last1,email1@email.com,Area1,#{Settings.instance.divisions.first.name},Room1,2,1
-        ID2,First2,Last2,email2@email.com,Area2,#{Settings.instance.divisions.first.name},Room2,3,2
+        First Name,Last Name,Email,Division,Area,Default Room,Max Admits Per Meeting,Max Additional Admits
+        First0,Last0,email0@email.com,Division0,Area,Room0,1,0
+        First1,Last1,email1@email.com,Division0,Area,Room1,2,1
+        First2,Last2,email2@email.com,Division0,Area,Room2,3,2
       EOF
       Faculty.new_from_csv(csv_text).should == @faculties
       @faculties.each_with_index do |faculty, i|
-        faculty.calnet_id.should == "ID#{i}"
         faculty.first_name.should == "First#{i}"
         faculty.last_name.should == "Last#{i}"
         faculty.email.should == "email#{i}@email.com"
+        faculty.division.should == "Division#{i}"
         faculty.area.should == "Area#{i}"
-        faculty.division.should == Settings.instance.divisions.first.name
         faculty.default_room.should == "Room#{i}"
         faculty.max_admits_per_meeting.should == i + 1
         faculty.max_additional_admits.should == i
@@ -312,19 +306,18 @@ describe Faculty do
 
     it 'ignores extraneous attributes' do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
-        CalNet ID,Baz,First Name,Last Name,Email,Area,Division,Default Room,Max Admits Per Meeting,Max Additional Admits,Foo,Bar
-        ID0,Baz0,First0,Last0,email0@email.com,Area0,#{Settings.instance.divisions.first.name},Room0,1,0,Foo0,Bar0
-        ID1,Baz1,First1,Last1,email1@email.com,Area1,#{Settings.instance.divisions.first.name},Room1,2,1,Foo1,Bar1
-        ID2,Baz2,First2,Last2,email2@email.com,Area2,#{Settings.instance.divisions.first.name},Room2,3,2,Foo2,Bar2
+        Baz,First Name,Last Name,Email,Division,Area,Default Room,Max Admits Per Meeting,Max Additional Admits,Foo,Bar
+        Baz0,First0,Last0,email0@email.com,Division0,Area0,Room0,1,0,Foo0,Bar0
+        Baz1,First1,Last1,email1@email.com,Division1,Area1,Room1,2,1,Foo1,Bar1
+        Baz2,First2,Last2,email2@email.com,Division2,Area2,Room2,3,2,Foo2,Bar2
       EOF
       Faculty.new_from_csv(csv_text).should == @faculties
       @faculties.each_with_index do |faculty, i|
-        faculty.calnet_id.should == "ID#{i}"
         faculty.first_name.should == "First#{i}"
         faculty.last_name.should == "Last#{i}"
         faculty.email.should == "email#{i}@email.com"
+        faculty.division.should == "Division#{i}"
         faculty.area.should == "Area#{i}"
-        faculty.division.should == Settings.instance.divisions.first.name
         faculty.default_room.should == "Room#{i}"
         faculty.max_admits_per_meeting.should == i + 1
         faculty.max_additional_admits.should == i

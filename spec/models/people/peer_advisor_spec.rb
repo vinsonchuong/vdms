@@ -6,11 +6,6 @@ describe PeerAdvisor do
   end
 
   describe 'Attributes' do
-    it 'has a CalNet ID (calnet_id)' do
-      @peer_advisor.should respond_to(:calnet_id)
-      @peer_advisor.should respond_to(:calnet_id=)
-    end
-
     it 'has an LDAP ID (ldap_id)' do
       @peer_advisor.should respond_to(:ldap_id)
       @peer_advisor.should respond_to(:ldap_id=)
@@ -32,14 +27,14 @@ describe PeerAdvisor do
     end
 
     it 'has an attribute name to accessor map' do
-      PeerAdvisor::ATTRIBUTES['CalNet ID'].should == :calnet_id
+      PeerAdvisor::ATTRIBUTES['LDAP ID'].should == :ldap_id
       PeerAdvisor::ATTRIBUTES['First Name'].should == :first_name
       PeerAdvisor::ATTRIBUTES['Last Name'].should == :last_name
       PeerAdvisor::ATTRIBUTES['Email'].should == :email
     end
 
     it 'has an accessor to type map' do
-      PeerAdvisor::ATTRIBUTE_TYPES[:calnet_id].should == :string
+      PeerAdvisor::ATTRIBUTE_TYPES[:ldap_id].should == :string
       PeerAdvisor::ATTRIBUTE_TYPES[:first_name].should == :string
       PeerAdvisor::ATTRIBUTE_TYPES[:last_name].should == :string
       PeerAdvisor::ATTRIBUTE_TYPES[:email].should == :string
@@ -98,14 +93,13 @@ describe PeerAdvisor do
 
     it 'builds a collection of PeerAdvisors with the attributes in each row' do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
-        CalNet ID,First Name,Last Name,Email
-        ID0,First0,Last0,email0@email.com
-        ID1,First1,Last1,email1@email.com
-        ID2,First2,Last2,email2@email.com
+        First Name,Last Name,Email
+        First0,Last0,email0@email.com
+        First1,Last1,email1@email.com
+        First2,Last2,email2@email.com
       EOF
       PeerAdvisor.new_from_csv(csv_text).should == @peer_advisors
       @peer_advisors.each_with_index do |peer_advisor, i|
-        peer_advisor.calnet_id.should == "ID#{i}"
         peer_advisor.first_name.should == "First#{i}"
         peer_advisor.last_name.should == "Last#{i}"
         peer_advisor.email.should == "email#{i}@email.com"
@@ -114,14 +108,13 @@ describe PeerAdvisor do
 
     it 'ignores extraneous attributes' do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
-        CalNet ID,Baz,First Name,Last Name,Email,Foo,Bar
-        ID0,Baz0,First0,Last0,email0@email.com,Foo0,Bar0
-        ID1,Baz1,First1,Last1,email1@email.com,Foo1,Bar1
-        ID2,Baz2,First2,Last2,email2@email.com,Foo2,Bar2
+        Baz,First Name,Last Name,Email,Foo,Bar
+        Baz0,First0,Last0,email0@email.com,Foo0,Bar0
+        Baz1,First1,Last1,email1@email.com,Foo1,Bar1
+        Baz2,First2,Last2,email2@email.com,Foo2,Bar2
       EOF
       PeerAdvisor.new_from_csv(csv_text) == @peer_advisors
       @peer_advisors.each_with_index do |peer_advisor, i|
-        peer_advisor.calnet_id.should == "ID#{i}"
         peer_advisor.first_name.should == "First#{i}"
         peer_advisor.last_name.should == "Last#{i}"
         peer_advisor.email.should == "email#{i}@email.com"

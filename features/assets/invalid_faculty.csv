@@ -1,4 +1,4 @@
-CalNet ID,First Name,Last Name,Email,Area,Division
-,First1,Last1,email1@email.com,Area 1,Computer Science
-ID2,First2,Last2,email2@email.com,,Electrical Engineering
-ID3,First3,Last3,email3@email.com,Area 3,
+LDAP ID,First Name,Last Name,Email,Area,Division
+LDAP ID,First1,Last1,,Area 1,Computer Science
+LDAP ID,First2,Last2,email2@email.com,,Electrical Engineering
+LDAP ID,First3,Last3,email3@email.com,Area 3,

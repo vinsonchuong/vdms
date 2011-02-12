@@ -6,11 +6,6 @@ describe Staff do
   end
 
   describe 'Attributes' do
-    it 'has a CalNet ID (calnet_id)' do
-      @staff.should respond_to(:calnet_id)
-      @staff.should respond_to(:calnet_id=)
-    end
-
     it 'has an LDAP ID (ldap_id)' do
       @staff.should respond_to(:ldap_id)
       @staff.should respond_to(:ldap_id=)
@@ -32,14 +27,14 @@ describe Staff do
     end
 
     it 'has an attribute name to accessor map' do
-      Staff::ATTRIBUTES['CalNet ID'].should == :calnet_id
+      Staff::ATTRIBUTES['LDAP ID'].should == :ldap_id
       Staff::ATTRIBUTES['First Name'].should == :first_name
       Staff::ATTRIBUTES['Last Name'].should == :last_name
       Staff::ATTRIBUTES['Email'].should == :email
     end
 
     it 'has an accessor to type map' do
-      Staff::ATTRIBUTE_TYPES[:calnet_id].should == :string
+      Staff::ATTRIBUTE_TYPES[:ldap_id].should == :string
       Staff::ATTRIBUTE_TYPES[:first_name].should == :string
       Staff::ATTRIBUTE_TYPES[:last_name].should == :string
       Staff::ATTRIBUTE_TYPES[:email].should == :string
@@ -92,14 +87,13 @@ describe Staff do
 
     it 'builds a collection of Staff with the attributes in each row' do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
-        CalNet ID,First Name,Last Name,Email
-        ID0,First0,Last0,email0@email.com
-        ID1,First1,Last1,email1@email.com
-        ID2,First2,Last2,email2@email.com
+        First Name,Last Name,Email
+        First0,Last0,email0@email.com
+        First1,Last1,email1@email.com
+        First2,Last2,email2@email.com
       EOF
       Staff.new_from_csv(csv_text).should == @staffs
       @staffs.each_with_index do |staff, i|
-        staff.calnet_id.should == "ID#{i}"
         staff.first_name.should == "First#{i}"
         staff.last_name.should == "Last#{i}"
         staff.email.should == "email#{i}@email.com"
@@ -108,14 +102,13 @@ describe Staff do
 
     it 'ignores extraneous attributes' do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
-        CalNet ID,Baz,First Name,Last Name,Email,Foo,Bar
-        ID0,Baz0,First0,Last0,email0@email.com,Foo0,Bar0
-        ID1,Baz1,First1,Last1,email1@email.com,Foo1,Bar1
-        ID2,Baz2,First2,Last2,email2@email.com,Foo2,Bar2
+        Baz,First Name,Last Name,Email,Foo,Bar
+        Baz0,First0,Last0,email0@email.com,Foo0,Bar0
+        Baz1,First1,Last1,email1@email.com,Foo1,Bar1
+        Baz2,First2,Last2,email2@email.com,Foo2,Bar2
       EOF
       Staff.new_from_csv(csv_text).should == @staffs
       @staffs.each_with_index do |staff, i|
-        staff.calnet_id.should == "ID#{i}"
         staff.first_name.should == "First#{i}"
         staff.last_name.should == "Last#{i}"
         staff.email.should == "email#{i}@email.com"
@@ -123,3 +116,4 @@ describe Staff do
     end
   end
 end
+

@@ -1,9 +1,7 @@
-Factory.sequence(:calnet_id) {|n| "CalNet.ID#{n}"}
 Factory.sequence(:ldap_id) {|n| "LDAP.ID#{n}"}
 Factory.sequence(:email) {|n| "email#{n}@email.com"}
 
 Factory.define :staff do |s|
-  s.calnet_id {Factory.next(:calnet_id)}
   s.ldap_id {Factory.next(:ldap_id)}
   s.first_name 'First'
   s.last_name 'Last'
@@ -11,7 +9,6 @@ Factory.define :staff do |s|
 end
 
 Factory.define :peer_advisor do |p|
-  p.calnet_id {Factory.next(:calnet_id)}
   p.ldap_id {Factory.next(:ldap_id)}
   p.first_name 'First'
   p.last_name 'Last'
@@ -19,7 +16,6 @@ Factory.define :peer_advisor do |p|
 end
 
 Factory.define :faculty do |f|
-  f.calnet_id {Factory.next(:calnet_id)}
   f.ldap_id {Factory.next(:ldap_id)}
   f.first_name 'First'
   f.last_name 'Last'
@@ -29,7 +25,6 @@ Factory.define :faculty do |f|
 end
 
 Factory.define :admit do |a|
-  a.calnet_id {Factory.next(:calnet_id)}
   a.ldap_id {Factory.next(:ldap_id)}
   a.first_name 'First'
   a.last_name 'Last'

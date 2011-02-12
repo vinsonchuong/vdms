@@ -15,7 +15,7 @@ describe StaffsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @staffs a list of all the Staff' do
@@ -46,7 +46,7 @@ describe StaffsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @staff a new Staff' do
@@ -75,7 +75,7 @@ describe StaffsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
     end
 
@@ -94,7 +94,7 @@ describe StaffsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
   
       it 'assigns to @staff the given Staff' do
@@ -124,7 +124,7 @@ describe StaffsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @staff the given Staff' do
@@ -155,7 +155,7 @@ describe StaffsController do
     context 'when signed in as a Staff' do
       before(:each) do
         Staff.stub(:new).and_return(@staff)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @staff a new Staff with the given parameters' do
@@ -215,7 +215,7 @@ describe StaffsController do
         @csv_text = 'text'
         @staffs = [Staff.new, Staff.new, Staff.new]
         Staff.stub(:new_from_csv).and_return(@staffs)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @staff a collection of Staffs built from the attributes in each row' do
@@ -268,7 +268,7 @@ describe StaffsController do
     context 'when signed in as a Staff' do
       before(:each) do
         Staff.stub(:find).and_return(@staff)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @staff the given Staff' do
@@ -326,7 +326,7 @@ describe StaffsController do
     context 'when signed in as a Staff' do
       before(:each) do
         Staff.stub(:find).and_return(@staff)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @staff the given Staff' do

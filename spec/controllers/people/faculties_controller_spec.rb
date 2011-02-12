@@ -16,7 +16,7 @@ describe FacultiesController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @faculties a list of all the Faculty' do
@@ -47,7 +47,7 @@ describe FacultiesController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @faculty a new Faculty' do
@@ -91,7 +91,7 @@ describe FacultiesController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
   
       it 'assigns to @faculty the given Faculty' do
@@ -125,7 +125,7 @@ describe FacultiesController do
 
     context 'when signed in as as the given Faculty' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@faculty.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@faculty.ldap_id)
       end
 
       it 'assigns to @faculty the given Faculty' do
@@ -158,7 +158,7 @@ describe FacultiesController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @faculty the given Faculty' do
@@ -189,7 +189,7 @@ describe FacultiesController do
     context 'when signed in as a Staff' do
       before(:each) do
         Faculty.stub(:new).and_return(@faculty)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @faculty a new Faculty with the given parameters' do
@@ -249,7 +249,7 @@ describe FacultiesController do
         @csv_text = 'text'
         @faculties = [Faculty.new, Faculty.new, Faculty.new]
         Faculty.stub(:new_from_csv).and_return(@faculties)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @staff a collection of Faculties built from the attributes in each row' do
@@ -302,7 +302,7 @@ describe FacultiesController do
     context 'when signed in as a Staff' do
       before(:each) do
         Faculty.stub(:find).and_return(@faculty)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @faculty the given Faculty' do
@@ -360,7 +360,7 @@ describe FacultiesController do
     context 'when signed in as a Staff' do
       before(:each) do
         Faculty.stub(:find).and_return(@faculty)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @faculty the given Faculty' do

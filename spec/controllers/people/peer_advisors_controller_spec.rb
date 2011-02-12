@@ -16,7 +16,7 @@ describe PeerAdvisorsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @peer_advisors a list of all the Peer Advisors' do
@@ -47,7 +47,7 @@ describe PeerAdvisorsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @peer_advisor a new Peer Advisor' do
@@ -91,7 +91,7 @@ describe PeerAdvisorsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
   
       it 'assigns to @peer_advisor the given Peer Advisor' do
@@ -121,7 +121,7 @@ describe PeerAdvisorsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @peer_advisor the given Peer Advisor' do
@@ -152,7 +152,7 @@ describe PeerAdvisorsController do
     context 'when signed in as a Staff' do
       before(:each) do
         PeerAdvisor.stub(:new).and_return(@peer_advisor)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @peer_advisor a new Peer Advisor with the given parameters' do
@@ -212,7 +212,7 @@ describe PeerAdvisorsController do
         @csv_text = 'text'
         @peer_advisors = [PeerAdvisor.new, PeerAdvisor.new, PeerAdvisor.new]
         PeerAdvisor.stub(:new_from_csv).and_return(@peer_advisors)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @peer_advisors a collection of PeerAdvisors built from the attributes in each row' do
@@ -265,7 +265,7 @@ describe PeerAdvisorsController do
     context 'when signed in as a Staff' do
       before(:each) do
         PeerAdvisor.stub(:find).and_return(@peer_advisor)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @peer_advisor the given Peer Advisor' do
@@ -323,7 +323,7 @@ describe PeerAdvisorsController do
     context 'when signed in as a Staff' do
       before(:each) do
         PeerAdvisor.stub(:find).and_return(@peer_advisor)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @peer_advisor the given Peer Advisor' do

@@ -5,13 +5,13 @@ class Admit < Person
     'Phone' => :phone,
     'Division' => :division,
     'Area 1' => :area1,
-    'Area 2' => :area2,
+    'Area 2' => :area2
   })
   ATTRIBUTE_TYPES = Person::ATTRIBUTE_TYPES.merge({
     :phone => :string,
     :division => :string,
     :area1 => :string,
-    :area2 => :string,
+    :area2 => :string
   })
 
   after_validation do |record| # format Phone
@@ -37,9 +37,5 @@ class Admit < Person
     if ranks.count != ranks.uniq.count
       record.errors.add_to_base('Ranks must be unique')
     end
-  end  
-
-  def full_name
-    self.first_name+" "+self.last_name
   end
 end

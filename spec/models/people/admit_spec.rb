@@ -31,6 +31,11 @@ describe Admit do
       @admit.should respond_to(:phone=)
     end
 
+    it 'has a Division (division)' do
+      @admit.should respond_to(:division)
+      @admit.should respond_to(:division=)
+    end
+
     it 'has an Area 1 (area1)' do
       @admit.should respond_to(:area1)
       @admit.should respond_to(:area1=)
@@ -41,27 +46,24 @@ describe Admit do
       @admit.should respond_to(:area2=)
     end
     
-    it 'has a Division (division)' do
-      @admit.should respond_to(:division)
-      @admit.should respond_to(:division=)
-    end
-
     it 'has an attribute name to accessor map' do
-      Admit::ATTRIBUTES['CalNet ID'].should == :calnet_id
+      Admit::ATTRIBUTE['LDAP ID'].should == :ldap_id
       Admit::ATTRIBUTES['First Name'].should == :first_name
       Admit::ATTRIBUTES['Last Name'].should == :last_name
       Admit::ATTRIBUTES['Email'].should == :email
       Admit::ATTRIBUTES['Phone'].should == :phone
+      Admit::ATTRIBUTES['Division'].should == :division
       Admit::ATTRIBUTES['Area 1'].should == :area1
       Admit::ATTRIBUTES['Area 2'].should == :area2
     end
 
     it 'has an accessor to type map' do
-      Admit::ATTRIBUTE_TYPES[:calnet_id].should == :string
+      Admit::ATTRIBUTE_TYPES[:ldap_id].should == :string
       Admit::ATTRIBUTE_TYPES[:first_name].should == :string
       Admit::ATTRIBUTE_TYPES[:last_name].should == :string
       Admit::ATTRIBUTE_TYPES[:email].should == :string
       Admit::ATTRIBUTE_TYPES[:phone].should == :string
+      Admit::ATTRIBUTE_TYPES[:division].should == :string
       Admit::ATTRIBUTE_TYPES[:area1].should == :string
       Admit::ATTRIBUTE_TYPES[:area2].should == :string
     end
@@ -124,10 +126,10 @@ describe Admit do
         @admit.faculty_rankings.map {|r| r.faculty.id}.should == [@faculty1.id, @faculty2.id]
       end
 
-      it 'ignores completely blank entries' do
+      it 'ignores entries with blank ranks' do
         attributes = {:faculty_rankings_attributes => [
           {:rank => 1, :faculty => @faculty1},
-          {:rank => '', :faculty => ''}
+          {:rank => '', :faculty => @faculty2}
         ]}
         @admit.attributes = attributes
         @admit.faculty_rankings.length.should == 1
@@ -187,7 +189,7 @@ describe Admit do
 
     it 'is not valid without a Phone' do
       @admit.phone = ''
-      @admit.should_not  be_valid
+      @admit.should_not be_valid
     end
 
     it 'is not valid with an invalid Phone' do
@@ -195,6 +197,11 @@ describe Admit do
         @admit.phone = invalid_phone
         @admit.should_not be_valid
       end
+    end
+
+    it 'is not valid without a Division' do
+      @admit.division = ''
+      @admit.should_not be_valid
     end
 
     it 'is not valid without an Area 1' do
@@ -311,18 +318,18 @@ describe Admit do
 
     it 'builds a collection of Admits with the attributes in each row' do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
-        CalNet ID,First Name,Last Name,Email,Phone,Area 1,Area 2
-        ID0,First0,Last0,email0@email.com,1234567890,Area 10,Area 20
-        ID1,First1,Last1,email1@email.com,1234567891,Area 11,Area 21
-        ID2,First2,Last2,email2@email.com,1234567892,Area 12,Area 22
+        First Name,Last Name,Email,Phone,Division,Area 1,Area 2
+        First0,Last0,email0@email.com,1234567890,Division 0,Area 10,Area 20
+        First1,Last1,email1@email.com,1234567891,Division 1,Area 11,Area 21
+        First2,Last2,email2@email.com,1234567892,Division 2,Area 12,Area 22
       EOF
       Admit.new_from_csv(csv_text).should == @admits
       @admits.each_with_index do |admit, i|
-        admit.calnet_id.should == "ID#{i}"
         admit.first_name.should == "First#{i}"
         admit.last_name.should == "Last#{i}"
         admit.email.should == "email#{i}@email.com"
         admit.phone.should == "123456789#{i}"
+        admit.division.should == "Division #{i}"
         admit.area1.should == "Area 1#{i}"
         admit.area2.should == "Area 2#{i}"
       end
@@ -330,18 +337,18 @@ describe Admit do
 
     it 'ignores extraneous attributes' do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
-        CalNet ID,Baz,First Name,Last Name,Email,Phone,Area 1,Area 2,Foo,Bar
-        ID0,Baz0,First0,Last0,email0@email.com,1234567890,Area 10,Area 20,Foo0,Bar0
-        ID1,Baz1,First1,Last1,email1@email.com,1234567891,Area 11,Area 21,Foo1,Bar1
-        ID2,Baz2,First2,Last2,email2@email.com,1234567892,Area 12,Area 22,Foo2,Bar2
+        Baz,First Name,Last Name,Email,Phone,Division,Area 1,Area 2,Foo,Bar
+        Baz0,First0,Last0,email0@email.com,1234567890,Division 0,Area 10,Area 20,Foo0,Bar0
+        Baz1,First1,Last1,email1@email.com,1234567891,Division 1,Area 11,Area 21,Foo1,Bar1
+        Baz2,First2,Last2,email2@email.com,1234567892,Division 2,Area 12,Area 22,Foo2,Bar2
       EOF
       Admit.new_from_csv(csv_text).should == @admits
       @admits.each_with_index do |admit, i|
-        admit.calnet_id.should == "ID#{i}"
         admit.first_name.should == "First#{i}"
         admit.last_name.should == "Last#{i}"
         admit.email.should == "email#{i}@email.com"
         admit.phone.should == "123456789#{i}"
+        admit.division.should == "Division #{i}"
         admit.area1.should == "Area 1#{i}"
         admit.area2.should == "Area 2#{i}"
       end

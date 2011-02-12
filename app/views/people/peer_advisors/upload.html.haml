@@ -4,7 +4,6 @@
     %table
       %thead
         %tr
-          %th{:scope => 'col'} CalNet ID
           %th{:scope => 'col'} First Name
           %th{:scope => 'col'} Last Name
           %th{:scope => 'col'} Email
@@ -12,7 +11,6 @@
       %tbody
         - @peer_advisors.each do |peer_advisor|
           %tr
-            %td= peer_advisor.calnet_id
             %td= peer_advisor.first_name
             %td= peer_advisor.last_name
             %td= peer_advisor.email

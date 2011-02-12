@@ -19,7 +19,7 @@ describe SettingsController do
 
     context 'when signed in as a Staff' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @settings the Settings singleton' do
@@ -45,13 +45,13 @@ describe SettingsController do
 
     context 'when signed in as a Peer Advisor' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@peer_advisor.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@peer_advisor.ldap_id)
       end
     end
 
     context 'when signed in as a Faculty' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@faculty.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@faculty.ldap_id)
       end
     end
   end
@@ -68,7 +68,7 @@ describe SettingsController do
       before(:each) do
         @settings = Settings.instance
         Settings.stub(:instance).and_return(@settings)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
       it 'assigns to @settings the Settings singleton' do
@@ -111,7 +111,7 @@ describe SettingsController do
 
     context 'when signed in as a Peer Advisor' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@peer_advisor.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@peer_advisor.ldap_id)
       end
 
       it 'redirects to the CalNet sign in page' do
@@ -123,7 +123,7 @@ describe SettingsController do
 
     context 'when signed in as a Faculty' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@faculty.calnet_id)
+        CASClient::Frameworks::Rails::Filter.fake(@faculty.ldap_id)
       end
 
       it 'redirects to the CalNet sign in page' do
