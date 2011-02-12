@@ -1,8 +1,8 @@
 class CreateAvailableTimes < ActiveRecord::Migration
   def self.up
     create_table :available_times do |t|
-      t.time :begin
-      t.time :end
+      t.datetime :begin
+      t.datetime :end
       t.string :room
       t.integer :person_id
 
