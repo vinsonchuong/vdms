@@ -47,12 +47,6 @@ describe PeerAdvisor do
     end
   end
 
-  describe 'Associations' do
-    it 'has many Admits (admits)' do
-      @peer_advisor.should have_many(:admits)
-    end
-  end
-
   context 'when validating' do
     it 'is valid with valid attributes' do
       @peer_advisor.should be_valid

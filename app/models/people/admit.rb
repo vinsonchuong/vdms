@@ -20,7 +20,6 @@ class Admit < Person
     end
   end
 
-  belongs_to :peer_advisor
   has_many :faculty_rankings, :order => 'rank ASC', :dependent => :destroy
   accepts_nested_attributes_for :faculty_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
   has_and_belongs_to_many :meetings, :uniq => true
@@ -31,7 +30,6 @@ class Admit < Person
   validates_inclusion_of :division, :in => Settings.instance.divisions.map(&:name)
   validates_inclusion_of :area1, :in => Settings.instance.areas
   validates_inclusion_of :area2, :in => Settings.instance.areas
-  validates_existence_of :peer_advisor, :allow_nil => true
   validate do |record| # uniqueness of ranks in faculty_rankings
     ranks = record.faculty_rankings.map(&:rank)
     if ranks.count != ranks.uniq.count

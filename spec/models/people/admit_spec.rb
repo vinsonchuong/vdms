@@ -76,10 +76,6 @@ describe Admit do
   end
 
   describe 'Associations' do
-    it 'belongs to a Peer Advisor (peer_advisor)' do
-      @admit.should belong_to(:peer_advisor)
-    end
-
     it 'has many Available Times (available_times)' do
       @admit.should have_many(:available_times)
     end
@@ -276,11 +272,6 @@ describe Admit do
         FacultyRanking.new(:rank => 1, :faculty => Factory.create(:faculty))
       ]
       @admit.faculty_rankings = faculty_rankings
-      @admit.should_not be_valid
-    end
-
-    it 'is not valid with an invalid Peer Advisor' do
-      @admit.peer_advisor = PeerAdvisor.new
       @admit.should_not be_valid
     end
   end
