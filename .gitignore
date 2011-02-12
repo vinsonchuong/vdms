@@ -1,4 +1,4 @@
-/coverage/
+/.idea/
 /db/*.sqlite3
 /db/schema.rb
 /log/
