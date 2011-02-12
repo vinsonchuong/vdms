@@ -13,9 +13,11 @@ class ApplicationController < ActionController::Base
     ldap_entry = LDAPWrapper.find_by_ldap_id(session[:cas_user])
     render :controller => "root", :action => "access_denied" if !ldap_entry
     
-    @current_user = Person.find_by_ldap_id(session[:cas_user])
+    #@current_user = Person.find_by_ldap_id(session[:cas_user])
+    @current_user = Person.find(:first, :conditions => ["ldap_id == ?", session[:cas_user]])
     ldap_entry.model.new(ldap_entry.attributes).save(false) if (!@current_user and ldap_entry)
-    @current_user = Person.find_by_ldap_id(session[:cas_user])
+    #@current_user = Person.find_by_ldap_id(session[:cas_user])
+    @current_user = Person.find(:first, :conditions => ["ldap_id == ?", session[:cas_user]])
   end
   
   def verify_current_user
