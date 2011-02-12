@@ -76,6 +76,12 @@ describe Faculty do
     end
   end
 
+  describe 'Virtual Attributes' do
+    it 'has a Full Name (full_name)' do
+      @faculty.full_name.should == "#{@faculty.first_name} #{@faculty.last_name}"
+    end
+  end
+
   describe 'Associations' do
     it 'has many Available Times (available_times)' do
       @faculty.should have_many(:available_times)
@@ -287,9 +293,9 @@ describe Faculty do
     it 'builds a collection of Faculty with the attributes in each row' do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
         First Name,Last Name,Email,Division,Area,Default Room,Max Admits Per Meeting,Max Additional Admits
-        First0,Last0,email0@email.com,Division0,Area,Room0,1,0
-        First1,Last1,email1@email.com,Division0,Area,Room1,2,1
-        First2,Last2,email2@email.com,Division0,Area,Room2,3,2
+        First0,Last0,email0@email.com,Division0,Area0,Room0,1,0
+        First1,Last1,email1@email.com,Division0,Area1,Room1,2,1
+        First2,Last2,email2@email.com,Division0,Area2,Room2,3,2
       EOF
       Faculty.new_from_csv(csv_text).should == @faculties
       @faculties.each_with_index do |faculty, i|

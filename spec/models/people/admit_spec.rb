@@ -47,7 +47,7 @@ describe Admit do
     end
     
     it 'has an attribute name to accessor map' do
-      Admit::ATTRIBUTE['LDAP ID'].should == :ldap_id
+      Admit::ATTRIBUTES['LDAP ID'].should == :ldap_id
       Admit::ATTRIBUTES['First Name'].should == :first_name
       Admit::ATTRIBUTES['Last Name'].should == :last_name
       Admit::ATTRIBUTES['Email'].should == :email
@@ -66,6 +66,12 @@ describe Admit do
       Admit::ATTRIBUTE_TYPES[:division].should == :string
       Admit::ATTRIBUTE_TYPES[:area1].should == :string
       Admit::ATTRIBUTE_TYPES[:area2].should == :string
+    end
+  end
+
+  describe 'Virtual Attributes' do
+    it 'has a Full Name (full_name)' do
+      @admit.full_name.should == "#{@admit.first_name} #{@admit.last_name}"
     end
   end
 

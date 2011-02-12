@@ -41,6 +41,12 @@ describe Staff do
     end
   end
 
+  describe 'Virtual Attributes' do
+    it 'has a Full Name (full_name)' do
+      @staff.full_name.should == "#{@staff.first_name} #{@staff.last_name}"
+    end
+  end
+
   context 'when validating' do
     it 'is valid with valid attributes' do
       @staff.should be_valid

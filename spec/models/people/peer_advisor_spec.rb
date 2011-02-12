@@ -41,6 +41,12 @@ describe PeerAdvisor do
     end
   end
 
+  describe 'Virtual Attributes' do
+    it 'has a Full Name (full_name)' do
+      @peer_advisor.full_name.should == "#{@peer_advisor.first_name} #{@peer_advisor.last_name}"
+    end
+  end
+
   describe 'Associations' do
     it 'has many Admits (admits)' do
       @peer_advisor.should have_many(:admits)
