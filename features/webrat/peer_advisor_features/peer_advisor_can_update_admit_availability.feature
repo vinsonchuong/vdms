@@ -8,10 +8,10 @@ Feature: Peer advisor can update admit availability
     Given I am registered as a "Peer Advisor"
     And I am signed in
     And the following "Admits" have been added:
-      | first_name  | last_name  | email            | phone      | area1   | area2   |
-      | First1      | Last1      | email1@email.com | 1234567891 | Area 11 | Area 21 |
-      | First2      | Last2      | email2@email.com | 1234567892 | Area 12 | Area 22 |
-      | First3      | Last3      | email3@email.com | 1234567893 | Area 13 | Area 23 |
+      | first_name  | last_name  | email            | phone      | division               | area1                      | area2                   |
+      | First1      | Last1      | email1@email.com | 1234567891 | Computer Science       | Theory                     | Artificial Intelligence |
+      | First2      | Last2      | email2@email.com | 1234567892 | Computer Science       | Human-Computer Interaction | Graphics                |
+      | First3      | Last3      | email3@email.com | 1234567893 | Electrical Engineering | Energy                     | Physical Electronics    |
     And "Computer Science" has the following meeting times:
       | begin            | end              |
       | 1/1/2011 9:00AM  | 1/1/2011 11:00AM |

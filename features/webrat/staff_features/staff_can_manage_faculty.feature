@@ -16,20 +16,20 @@ Feature: Staff can manage faculty
 
   Scenario: I view a list of all faculty
     Given the following "Faculty" have been added:
-      | ldap_id | first_name  | last_name  | email            | area  | division               |
-      | ID1     | First1      | Last1      | email1@email.com | Area1 | Computer Science       |
-      | ID2     | First2      | Last2      | email2@email.com | Area2 | Electrical Engineering |
-      | ID3     | First3      | Last3      | email3@email.com | Area3 | Computer Science       |
+      | ldap_id | first_name  | last_name  | email            | area     | division               |
+      | ID1     | First1      | Last1      | email1@email.com | Theory   | Computer Science       |
+      | ID2     | First2      | Last2      | email2@email.com | Energy   | Electrical Engineering |
+      | ID3     | First3      | Last3      | email3@email.com | Graphics | Computer Science       |
     When I go to the view faculty page
     And I should see "First1"
     And I should see "Last1"
-    And I should see "Area1"
+    And I should see "Theory"
     And I should see "First2"
     And I should see "Last2"
-    And I should see "Area2"
+    And I should see "Energy"
     And I should see "First3"
     And I should see "Last3"
-    And I should see "Area3"
+    And I should see "Graphics"
 
   Scenario Outline: I add a faculty
     Given I am on the view faculty page
@@ -44,14 +44,14 @@ Feature: Staff can manage faculty
     And I should see "<result>" 
 
     Scenarios: with valid information
-      | ldap_id | first_name | last_name | email           | area | division               | result                          |
-      | ID1     | First      | Last      | email@email.com | Area | Computer Science       | Faculty was successfully added. |
-      | ID2     | First      | Last      | email@email.com | Area | Electrical Engineering | Faculty was successfully added. |
+      | ldap_id | first_name | last_name | email           | division               | area                        | result                          |
+      | ID1     | First      | Last      | email@email.com | Computer Science       | Artificial Intelligence     | Faculty was successfully added. |
+      | ID2     | First      | Last      | email@email.com | Electrical Engineering | Communications & Networking | Faculty was successfully added. |
 
     Scenarios: with invalid information
-      | ldap_id | first_name | last_name | email           | area | division               | result                               |
-      | ID1     | First      | Last      | invalid_email   | Area | Computer Science       | Email is invalid                     |
-      | ID2     | First      | Last      | email@email.com | Area | Invalid Division       | Division is not included in the list |
+      | ldap_id | first_name | last_name | email           | division               | area                    | result                               |
+      | ID1     | First      | Last      | invalid_email   | Computer Science       | Artificial Intelligence | Email is invalid                     |
+      | ID2     | First      | Last      | email@email.com | Invalid Division       | Artificial Intelligence | Division is not included in the list |
 
   Scenario: I add faculty by importing a CSV with valid data
     Given I am on the view faculty page
@@ -69,7 +69,7 @@ Feature: Staff can manage faculty
     And I attach the file "features/assets/invalid_faculty.csv" to "CSV File"
     And I press "Import"
     Then I should see "Email can't be blank"
-    And I should see "Area can't be blank"
+    And I should see "Area is not included in the list"
     And I should see "Division is not included in the list"
 
   Scenario: I update a faculty's information

@@ -9,15 +9,15 @@ Feature: Peer advisor can rank faculty on behalf of admits
     Given I am registered as a "Peer Advisor"
     And I am signed in
     And the following "Admits" have been added:
-      | first_name  | last_name  | email            | phone      | area1   | area2   |
-      | First1      | Last1      | email1@email.com | 1234567891 | Area 11 | Area 21 |
-      | First2      | Last2      | email2@email.com | 1234567892 | Area 12 | Area 22 |
-      | First3      | Last3      | email3@email.com | 1234567893 | Area 13 | Area 23 |
+      | first_name  | last_name  | email            | phone      | division               | area1                      | area2                |
+      | First1      | Last1      | email1@email.com | 1234567891 | Computer Science       | Artificial Intelligence    | Theory               |
+      | First2      | Last2      | email2@email.com | 1234567892 | Computer Science       | Human-Computer Interaction | Graphics             |
+      | First3      | Last3      | email3@email.com | 1234567893 | Electrical Engineering | Integrated Circuits        | Physical Electronics |
     And the following "Faculty" have been added:
-      | first_name  | last_name | email            | area  | division               |
-      | Faculty     | Aaaa      | email1@email.com | Area1 | Computer Science       |
-      | Faculty     | Cccc      | email2@email.com | Area2 | Electrical Engineering |
-      | Faculty     | Bbbb      | email3@email.com | Area3 | Computer Science       |
+      | first_name  | last_name | email            | division               | area                |
+      | Faculty     | Aaaa      | email1@email.com | Computer Science       | Theory              |
+      | Faculty     | Cccc      | email2@email.com | Electrical Engineering | Integrated Circuits |
+      | Faculty     | Bbbb      | email3@email.com | Computer Science       | Graphics            |
 
   Scenario: I specify an admit's faculty rankings
     Given I am on the view admits page

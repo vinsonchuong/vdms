@@ -29,8 +29,8 @@ class Admit < Person
   validates_format_of :phone, :with => /^\(?\b([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
     :message => 'must be a valid numeric US phone number'
   validates_inclusion_of :division, :in => Settings.instance.divisions.map(&:name)
-  validates_presence_of :area1
-  validates_presence_of :area2
+  validates_inclusion_of :area1, :in => Settings.instance.areas
+  validates_inclusion_of :area2, :in => Settings.instance.areas
   validates_existence_of :peer_advisor, :allow_nil => true
   validate do |record| # uniqueness of ranks in faculty_rankings
     ranks = record.faculty_rankings.map(&:rank)

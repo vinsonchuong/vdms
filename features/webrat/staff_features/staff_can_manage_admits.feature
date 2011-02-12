@@ -16,20 +16,20 @@ Feature: Staff can manage admits
 
   Scenario: I view a list of all admits
     Given the following "Admits" have been added:
-      | first_name  | last_name  | email            | phone      | area1   | area2   |
-      | First1      | Last1      | email1@email.com | 1234567891 | Area 11 | Area 21 |
-      | First2      | Last2      | email2@email.com | 1234567892 | Area 12 | Area 22 |
-      | First3      | Last3      | email3@email.com | 1234567893 | Area 13 | Area 23 |
+      | first_name  | last_name  | email            | phone      | division               | area1                       | area2    |
+      | First1      | Last1      | email1@email.com | 1234567891 | Computer Science       | Theory                      | Graphics |
+      | First2      | Last2      | email2@email.com | 1234567892 | Electrical Engineering | Communications & Networking | Energy   |
+      | First3      | Last3      | email3@email.com | 1234567893 | Computer Science       | Human-Computer Interaction  | Graphics |
     When I go to the view admits page
     And I should see "First1"
     And I should see "Last1"
-    And I should see "Area 11"
+    And I should see "Theory"
     And I should see "First2"
     And I should see "Last2"
-    And I should see "Area 12"
+    And I should see "Communications & Networking"
     And I should see "First3"
     And I should see "Last3"
-    And I should see "Area 13"
+    And I should see "Human-Computer Interaction"
 
   Scenario Outline: I add an admit
     Given I am on the view admits page
@@ -38,24 +38,25 @@ Feature: Staff can manage admits
     And I fill in "Last Name" with "<last_name>"
     And I fill in "Email" with "<email>"
     And I fill in "Phone" with "<phone>"
+    And I fill in "Division" with "<division>"
     And I fill in "Area 1" with "<area1>"
     And I fill in "Area 2" with "<area2>"
     And I press "Save changes"
     And I should see "<result>" 
 
     Scenarios: with valid information
-      | first_name | last_name | email           | phone          | area1  | area2  | result                        |
-      | First      | Last      | email@email.com | 123-456-7890   | Area 1 | Area 2 | Admit was successfully added. |
-      | First      | Last      | email@email.com | 123.456.7890   | Area 1 | Area 2 | Admit was successfully added. |
-      | First      | Last      | email@email.com | (123) 456-7890 | Area 1 | Area 2 | Admit was successfully added. |
-      | First      | Last      | email@email.com | 1234567890     | Area 1 | Area 2 | Admit was successfully added. |
+      | first_name | last_name | email           | phone          | division               | area1                       | area2             | result                        |
+      | First      | Last      | email@email.com | 123-456-7890   | Computer Science       | Artificial Intelligence     | Theory            | Admit was successfully added. |
+      | First      | Last      | email@email.com | 123.456.7890   | Computer Science       | Human-Computer Interaction  | Graphics          | Admit was successfully added. |
+      | First      | Last      | email@email.com | (123) 456-7890 | Electrical Engineering | Communications & Networking | Energy            | Admit was successfully added. |
+      | First      | Last      | email@email.com | 1234567890     | Electrical Engineering | Physical Electronics        | Signal Processing | Admit was successfully added. |
 
     Scenarios: with invalid information
-      | first_name | last_name | email           | result                                                           |
-      | First      | Last      | invalid_email   | Email is invalid                                                 |
-      | First      | Last      | invalid_phone   | Phone must be a valid numeric US phone number                    |
-      | First      | Last      | 123-4567        | Phone must be a valid numeric US phone number                    |
-      | First      | Last      | 1-123-456-7890  | Phone must be a valid numeric US phone number                    |
+      | first_name | last_name | email           | phone           | division               | area1                       | area2             | result                                                           |
+      | First      | Last      | invalid_email   | 123-456-7890    | Computer Science       | Artificial Intelligence     | Theory            | Email is invalid                                                 |
+      | First      | Last      | email@email.com | invalid_phone   | Computer Science       | Human-Computer Interaction  | Graphics          | Phone must be a valid numeric US phone number                    |
+      | First      | Last      | email@email.com | 123-4567        | Electrical Engineering | Communications & Networking | Energy            | Phone must be a valid numeric US phone number                    |
+      | First      | Last      | email@email.com | 1-123-456-7890  | Electrical Engineering | Physical Electronics        | Signal Processing | Phone must be a valid numeric US phone number                    |
 
   Scenario: I add admits by importing a CSV with valid data
     Given I am on the view admits page
@@ -74,7 +75,7 @@ Feature: Staff can manage admits
     And I press "Import"
     Then I should see "Email can't be blank"
     And I should see "Phone can't be blank"
-    And I should see "Area1 can't be blank"
+    And I should see "Area1 is not included in the list"
 
   Scenario: I update an admit's information
 
