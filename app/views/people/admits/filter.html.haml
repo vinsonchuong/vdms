@@ -25,7 +25,7 @@
   %h3 List of Admits              
   %span Please check admits whom you desire to schedule a meeting with
   #fieldset
-  - form_for :admits, :url => rank_admits_faculty_path(:id => 6), :html => {:method => :get}  do |select_admit_form|
+  - form_for :admits, :url => rank_admits_faculty_path(@current_user), :html => {:method => :get}  do |select_admit_form|
     %fieldset
       %h3 Select Admits
       %ul

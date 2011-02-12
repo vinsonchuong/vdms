@@ -2,7 +2,7 @@
 module LDAPWrapper
 
   class << self
-
+    
 # Definition: finds an LDAP entry by LDAP ID
 # @params: an integer
 # @return: an LDAPWrapper::Person object or nil
@@ -85,7 +85,6 @@ module LDAPWrapper
       reduced_list
     end        
   end
-
 
 
   class Person    
@@ -220,17 +219,13 @@ module LDAPWrapper
 # Definition: returns the LDAP entry's corresponding VDMS model name
 # @params: N/A
 # @return: a string
-    def model_name
-      if faculty?
-        "faculty"
-      elsif grad_student?
-        "peer_advisor"
-      elsif staff?
-        "staff"
-      else
-        nil
+    def model
+      if faculty? : Faculty
+      elsif grad_student? : PeerAdvisor
+      elsif staff? : Staff
+      else nil
       end
     end    
-  end  
   
+  end  
 end

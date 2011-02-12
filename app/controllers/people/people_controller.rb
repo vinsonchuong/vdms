@@ -1,7 +1,6 @@
 class PeopleController < ApplicationController
   before_filter :set_model
-  #skip_before_filter :create_new_user_if_no_current_user, :only => [:new, :create]
-  
+  skip_before_filter :verify_current_user, :only => [:edit, :update]
   
   # GET /people/PEOPLE
   def index
@@ -10,17 +9,7 @@ class PeopleController < ApplicationController
 
   # GET /people/PEOPLE/new
   def new
-    #if @current_user.class == Staff
-      self.instance_variable_set("@#{@model.name.underscore}", @model.new)      
-    #else
-    #  ldap_person = get_current_ldap_entry
-    #  if self.controller_name.singularize == ldap_person.model_name
-    #    self.instance_variable_set("@#{@model.name.underscore}",
-    #                               @model.new(ldap_person.attributes))
-    #  else
-    #    redirect_to :controller => ldap_person.model_name.pluralize, :action => 'new'
-    #  end
-    #end
+    self.instance_variable_set("@#{@model.name.underscore}", @model.new)      
   end
 
   # GET /people/PEOPLE/upload
