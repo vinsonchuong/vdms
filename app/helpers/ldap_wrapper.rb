@@ -6,7 +6,7 @@ module LDAPWrapper
 # Definition: finds an LDAP entry by LDAP ID
 # @params: an integer
 # @return: an LDAPWrapper::Person object or nil
-    def find_by_ldap_id(ldap_id)
+    def find_by_ldap_id_A(ldap_id)
       ldap_entry = UCB::LDAP::Person.find_by_uid(ldap_id)
       ldap_entry.nil? ? nil : LDAPWrapper::Person.new(ldap_entry)
     end
