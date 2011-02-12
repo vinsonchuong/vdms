@@ -14,10 +14,10 @@ class ApplicationController < ActionController::Base
     render :controller => "root", :action => "access_denied" if !ldap_entry
     
     #@current_user = Person.find_by_ldap_id(session[:cas_user])
-    @current_user = Person.find(:first, :conditions => ["ldap_id == ?", session[:cas_user]])
+    @current_user = Person.find(:first)
     ldap_entry.model.new(ldap_entry.attributes).save(false) if (!@current_user and ldap_entry)
     #@current_user = Person.find_by_ldap_id(session[:cas_user])
-    @current_user = Person.find(:first, :conditions => ["ldap_id == ?", session[:cas_user]])
+    @current_user = Person.find(:first)
   end
   
   def verify_current_user
