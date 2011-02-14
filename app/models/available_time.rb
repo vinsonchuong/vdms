@@ -1,17 +1,4 @@
 class AvailableTime < ActiveRecord::Base
-  ATTRIBUTES = {
-    'Beginning' => :begin,
-    'End' => :end,
-    'Room' => :room,
-    'Available' => :available
-  }
-  ATTRIBUTE_TYPES = {
-    :begin => :time,
-    :end => :time,
-    :room => :string,
-    :available => :boolean
-  }
-
   belongs_to :schedulable, :polymorphic => true
 
   validates_datetime :begin

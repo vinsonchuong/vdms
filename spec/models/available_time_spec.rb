@@ -25,20 +25,6 @@ describe AvailableTime do
       @available_time.should respond_to(:available)
       @available_time.should respond_to(:available=)
     end
-
-    it 'has an attribute name to accessor map' do
-      AvailableTime::ATTRIBUTES['Beginning'].should == :begin
-      AvailableTime::ATTRIBUTES['End'].should == :end
-      AvailableTime::ATTRIBUTES['Room'].should == :room
-      AvailableTime::ATTRIBUTES['Available'].should == :available
-    end
-
-    it 'has an accessor to type map' do
-      AvailableTime::ATTRIBUTE_TYPES[:begin].should == :time
-      AvailableTime::ATTRIBUTE_TYPES[:end].should == :time
-      AvailableTime::ATTRIBUTE_TYPES[:room].should == :string
-      AvailableTime::ATTRIBUTE_TYPES[:available].should == :boolean
-    end
   end
 
   describe 'Associations' do
@@ -50,6 +36,20 @@ describe AvailableTime do
   context 'when validating' do
     it 'is valid with valid attributes' do
       @available_time.should be_valid
+    end
+
+    it 'is valid with a valid Beginning' do
+      [@available_time.begin, @available_time.begin.to_s].each do |t|
+        @available_time.begin = t
+        @available_time.should be_valid
+      end
+    end
+
+    it 'is valid with a valid End' do
+      [@available_time.end, @available_time.end.to_s].each do |t|
+        @available_time.end = t
+        @available_time.should be_valid
+      end
     end
 
     it 'is not valid with an invalid Beginning' do

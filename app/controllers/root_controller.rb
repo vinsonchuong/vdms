@@ -1,5 +1,7 @@
 class RootController < ApplicationController
   skip_before_filter CASClient::Frameworks::Rails::Filter, :only => :home
+  skip_before_filter :get_current_user, :only => :home
+  skip_before_filter :verify_new_user, :only => :home
   
   # GET /
   def home
@@ -23,8 +25,4 @@ class RootController < ApplicationController
   # GET /faculty
   def faculty_dashboard
   end
-
-  def access_denied
-  end
-
 end

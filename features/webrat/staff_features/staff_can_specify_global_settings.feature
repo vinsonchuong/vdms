@@ -1,4 +1,3 @@
-@staff_can_specify_global_settings
 Feature: Staff can specify global settings
 
   So that the app has enough information to produce useful results

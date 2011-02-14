@@ -1,4 +1,3 @@
-@staff_can_manage_faculty
 Feature: Staff can manage faculty
 
   So that faculty can specify their meeting preferences and admits can specify theirs

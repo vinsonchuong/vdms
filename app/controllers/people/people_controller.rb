@@ -1,7 +1,6 @@
 class PeopleController < ApplicationController
   before_filter :set_model
-  skip_before_filter :verify_current_user, :only => [:edit, :update]
-  
+
   # GET /people/PEOPLE
   def index
     self.instance_variable_set("@#{@model.name.tableize}", @model.all)

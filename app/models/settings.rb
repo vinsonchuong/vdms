@@ -1,16 +1,6 @@
 class Settings < ActiveRecord::Base
   include Singleton
 
-  # See config/settings.yml for static attributes
-  ATTRIBUTES = {
-    'Meeting Times' => :meeting_times,
-    'Unsatisfied Admit Threshold' => :unsatisfied_admit_threshold
-  }
-  ATTRIBUTE_TYPES = {
-    :meeting_times => :hash,
-    :unsatisfied_admit_threshold => :integer
-  }
-
   def after_initialize
     if self.new_record?
       self.unsatisfied_admit_threshold ||= 0

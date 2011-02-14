@@ -5,8 +5,6 @@
 divisions:
   - Computer Science
   - Electrical Engineering
-meeting_length: 900
-meeting_gap: 300
 areas:
   - Artificial Intelligence
   - Biosystems & Computational Biology
@@ -28,3 +26,6 @@ areas:
   - Security
   - Signal Processing
   - Theory
+meeting_length: 900
+meeting_gap: 300
+

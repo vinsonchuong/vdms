@@ -16,16 +16,6 @@ describe Settings do
       @settings.should respond_to(:unsatisfied_admit_threshold)
       @settings.should respond_to(:unsatisfied_admit_threshold=)
     end
-
-    it 'has an attribute name to accessor map' do
-      Settings::ATTRIBUTES['Meeting Times'].should == :meeting_times
-      Settings::ATTRIBUTES['Unsatisfied Admit Threshold'].should == :unsatisfied_admit_threshold
-    end
-
-    it 'has an accessor to type map' do
-      Settings::ATTRIBUTE_TYPES[:meeting_times].should == :hash
-      Settings::ATTRIBUTE_TYPES[:unsatisfied_admit_threshold].should == :integer
-    end
   end
 
   describe 'Static Attributes' do
@@ -79,8 +69,6 @@ describe Settings do
     it 'is valid with valid attributes' do
       @settings.should be_valid
     end
-
-    it 'is not valid with invalid Meeting Times'
 
     it 'is not valid with an invalid Unsatisfied Admit Threshold' do
       ['', -1, 'foobar'].each do |invalid_threshold|

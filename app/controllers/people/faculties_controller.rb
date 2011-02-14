@@ -1,6 +1,14 @@
 class FacultiesController < PeopleController
-    
-  # GET /people/admits/1/rank_admits
+  # GET /people/faculty/1/new
+  def new
+    if @current_user.new_record?
+      @faculty = @current_user
+    else
+      @faculty = Faculty.new
+    end
+  end
+
+  # GET /people/faculty/1/rank_admits
   def rank_admits
     puts params
     @faculty = Faculty.find(params[:id])
@@ -13,6 +21,18 @@ class FacultiesController < PeopleController
 
     settings = Settings.instance
     @faculty.build_available_times(settings.meeting_times(@faculty.division), settings.meeting_length, settings.meeting_gap)
+  end
+
+  # POST /people/faculty
+  def create
+    @faculty = Faculty.new(params[:faculty])
+    @faculty.ldap_id = @current_user.ldap_id if @current_user.new_record?
+
+    if @faculty.save
+      redirect_to(faculties_url, :notice => 'Faculty was successfully added.')
+    else
+      render :action => 'new'
+    end
   end
 
   # PUT /people/faculty/1

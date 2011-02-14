@@ -1,4 +1,3 @@
-@staff_can_manage_admits
 Feature: Staff can manage admits
 
   So that peer advisors can specify the meeting preferences of their admits and faculty can specify theirs

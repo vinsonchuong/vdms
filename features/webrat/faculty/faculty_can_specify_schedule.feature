@@ -1,4 +1,3 @@
-@faculty_can_specify_schedule
 Feature: Faculty can specify schedule
 
   So that I can make my meeting preferences and availability known

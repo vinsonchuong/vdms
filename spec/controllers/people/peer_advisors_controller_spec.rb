@@ -32,9 +32,33 @@ describe PeerAdvisorsController do
       end
     end
 
-    context 'when signed in as a Peer Advisor'
+    context 'when signed in as a registered Peer Advisor'
 
-    context 'when signed in as a Faculty'
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
+      end
+
+      it 'redirects to the New Peer Advisor page' do
+        get :index
+        response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
+      end
+    end
+
+    context 'when signed in as a registered Faculty'
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        get :index
+        response.should redirect_to(:controller => 'faculties', :action => 'new')
+      end
+    end
   end
 
   describe 'GET new' do
@@ -61,9 +85,33 @@ describe PeerAdvisorsController do
       end
     end
 
-    context 'when signed in as a Peer Advisor'
+    context 'when signed in as a registered Peer Advisor'
 
-    context 'when signed in as a Faculty'
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
+      end
+
+      it 'renders the new template' do
+        get :new
+        response.should render_template('new')
+      end
+    end
+
+    context 'when signed in as a registered Faculty'
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        get :index
+        response.should redirect_to(:controller => 'faculties', :action => 'new')
+      end
+    end
   end
 
   describe 'GET upload' do
@@ -74,11 +122,44 @@ describe PeerAdvisorsController do
       end
     end
 
-    context 'when signed in as a Staff'
+    context 'when signed in as a Staff' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
+      end
 
-    context 'when signed in as a Peer Advisor'
+      it 'renders the upload template' do
+        get :upload
+        response.should render_template('upload')
+      end
+    end
 
-    context 'when signed in as a Faculty'
+    context 'when signed in as a registered Peer Advisor'
+
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
+      end
+
+      it 'redirects to the New Peer Advisor page' do
+        get :upload
+        response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
+      end
+    end
+
+    context 'when signed in as a registered Faculty'
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        get :upload
+        response.should redirect_to(:controller => 'faculties', :action => 'new')
+      end
+    end
   end
 
   describe 'GET edit' do
@@ -106,9 +187,33 @@ describe PeerAdvisorsController do
       end
     end
 
-    context 'when signed in as a Peer Advisor'
+    context 'when signed in as a registered Peer Advisor'
 
-    context 'when signed in as a Faculty'
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
+      end
+
+      it 'redirects to the New Peer Advisor page' do
+        get :edit, :id => @peer_advisor.id
+        response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
+      end
+    end
+
+    context 'when signed in as a registered Faculty'
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        get :edit, :id => @peer_advisor.id
+        response.should redirect_to(:controller => 'faculties', :action => 'new')
+      end
+    end
   end
 
   describe 'GET delete' do
@@ -136,9 +241,33 @@ describe PeerAdvisorsController do
       end
     end
 
-    context 'when signed in as a Peer Advisor'
+    context 'when signed in as a registered Peer Advisor'
 
-    context 'when signed in as a Faculty'
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
+      end
+
+      it 'redirects to the New Peer Advisor page' do
+        get :delete, :id => @peer_advisor.id
+        response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
+      end
+    end
+
+    context 'when signed in as a registered Faculty'
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        get :delete, :id => @peer_advisor.id
+        response.should redirect_to(:controller => 'faculties', :action => 'new')
+      end
+    end
   end
 
   describe 'POST create' do
@@ -194,9 +323,39 @@ describe PeerAdvisorsController do
       end
     end
 
-    context 'when signed in as a Peer Advisor'
+    context 'when signed in as a registered Peer Advisor'
 
-    context 'when signed in as a Faculty'
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new(:ldap_id => '12345'))
+      end
+
+      it 'assigns to @peer_advisor a PeerAdvisor with the same LDAP UID as the logged in user' do
+        post :create
+        assigns[:peer_advisor].ldap_id.should == '12345'
+      end
+
+      it 'saves the PeerAdvisor' do
+        PeerAdvisor.stub(:new).and_return(@peer_advisor)
+        @peer_advisor.should_receive(:save)
+        post :create
+      end
+    end
+
+    context 'when signed in as a registered Faculty'
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        post :create
+        response.should redirect_to(:controller => 'faculties', :action => 'new')
+      end
+    end
   end
 
   describe 'POST import' do
@@ -249,9 +408,33 @@ describe PeerAdvisorsController do
       end
     end
 
-    context 'when signed in as a Peer Advisor'
+    context 'when signed in as a registered Peer Advisor'
 
-    context 'when signed in as a Faculty'
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
+      end
+
+      it 'redirects to the New Peer Advisor page' do
+        post :import
+        response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
+      end
+    end
+
+    context 'when signed in as a registered Faculty'
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        post :import
+        response.should redirect_to(:controller => 'faculties', :action => 'new')
+      end
+    end
   end
 
   describe 'PUT update' do
@@ -307,9 +490,33 @@ describe PeerAdvisorsController do
       end
     end
 
-    context 'when signed in as a Peer Advisor'
+    context 'when signed in as a registered Peer Advisor'
 
-    context 'when signed in as a Faculty'
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
+      end
+
+      it 'redirects to the New Peer Advisor page' do
+        put :update, :id => @peer_advisor.id
+        response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
+      end
+    end
+
+    context 'when signed in as a registered Faculty'
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        put :update, :id => @peer_advisor.id
+        response.should redirect_to(:controller => 'faculties', :action => 'new')
+      end
+    end
   end
 
   describe 'DELETE destroy' do
@@ -348,8 +555,32 @@ describe PeerAdvisorsController do
       end
     end
 
-    context 'when signed in as a Peer Advisor'
+    context 'when signed in as a registered Peer Advisor'
 
-    context 'when signed in as a Faculty'
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
+      end
+
+      it 'redirects to the New Peer Advisor page' do
+        delete :destroy, :id => @peer_advisor.id
+        response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
+      end
+    end
+
+    context 'when signed in as a registered Faculty'
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        delete :destroy, :id => @peer_advisor.id
+        response.should redirect_to(:controller => 'faculties', :action => 'new')
+      end
+    end
   end
 end

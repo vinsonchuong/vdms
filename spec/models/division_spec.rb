@@ -11,19 +11,24 @@ describe Division do
       @division.should respond_to(:name)
       @division.should respond_to(:name=)
     end
-
-    it 'has an attribute name to accessor map' do
-      Division::ATTRIBUTES['Name'].should == :name
-    end
-
-    it 'has an accessor to type map' do
-      Division::ATTRIBUTE_TYPES[:name].should == :string
-    end
   end
 
   describe 'Associations' do
-    it 'has many Available Meeting Times (available_times)' do
-      @division.should have_many(:available_times)
+    describe 'Available Times' do
+      it 'has many Available Times (available_times)' do
+        @division.should have_many(:available_times)
+      end
+
+      it 'has many Available Times sorted by Start Time' do
+        @division.available_times.create(:begin => Time.zone.parse('1/4/2011'), :end => Time.zone.parse('1/5/2011'))
+        @division.available_times.create(:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011'))
+        @division.available_times.create(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
+        @division.available_times.reload.map {|t| t.attributes['begin']}.should == [
+          Time.zone.parse('1/3/2011'),
+          Time.zone.parse('1/4/2011'),
+          Time.zone.parse('1/6/2011'),
+        ]
+      end
     end
 
     it 'belongs to Settings (settings)' do

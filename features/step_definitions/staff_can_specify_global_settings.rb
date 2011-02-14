@@ -1,9 +1,21 @@
 When /^I add "([^"]*)" to "([^"]*)" to the meeting times for "([^"]*)"$/ do |start, finish, division|
+  start_time = Time.zone.parse(start)
+  finish_time = Time.zone.parse(finish)
+
   division_index = Settings.instance.divisions.index {|d| d.name == division}
   time_index = Settings.instance.divisions[division_index].available_times.count
 
-  fill_in "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_begin", :with => start
-  fill_in "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_end", :with => finish
+  select start_time.strftime('%Y'), :from => "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_begin_1i"
+  select start_time.strftime('%B'), :from => "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_begin_2i"
+  select start_time.day.to_s, :from => "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_begin_3i"
+  select start_time.strftime('%H'), :from => "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_begin_4i"
+  select start_time.strftime('%M'), :from => "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_begin_5i"
+
+  select finish_time.strftime('%Y'), :from => "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_end_1i"
+  select finish_time.strftime('%B'), :from => "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_end_2i"
+  select finish_time.day.to_s, :from => "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_end_3i"
+  select finish_time.strftime('%H'), :from => "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_end_4i"
+  select finish_time.strftime('%M'), :from => "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_end_5i"
 end
 
 When /^I remove the "([^"]*)" meeting time beginning with "([^"]*)"$/ do |division, start|

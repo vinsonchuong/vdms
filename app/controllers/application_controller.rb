@@ -1,28 +1,40 @@
 require 'casclient/frameworks/rails/filter'
 
 class ApplicationController < ActionController::Base
-  helper :all
   prepend_before_filter CASClient::Frameworks::Rails::Filter
-  #before_filter :get_current_user
-  #before_filter :verify_current_user
-  
-  
+  before_filter :get_current_user
+  before_filter :verify_new_user
+
   self.allow_forgery_protection = false
 
-  def get_current_user
-    @ldap_entry = LDAPWrapper.find_by_ldap_id(session[:cas_user])
-    render :controller => "root", :action => "access_denied" if !@ldap_entry
-  
-    @ldap_entry.model.new(@ldap_entry.attributes).save(false) if (!Person.find_by_ldap_id(session[:cas_user]) and @ldap_entry)
-    @current_user = Person.find_by_ldap_id(session[:cas_user])
-  end
-  
-  def verify_current_user
-    redirect_to :controller => @ldap_entry.model.name.downcase.pluralize, :action => 'edit', :id => @current_user.id if !@current_user.valid?
-  end
-  
-  def get_referrer_action	 	
+  def get_referrer_action
     request.env['HTTP_REFERER'].gsub(/.*?\/([\w]*?)$/, '\1')
   end
-   
+
+  private
+
+  def get_current_user
+    person = Person.find_by_ldap_id(session[:cas_user])
+    (@current_user = person) && return unless person.nil?
+
+    entry = LDAP.find_person(session[:cas_user])
+    unless entry.nil?
+      attributes = {
+        :ldap_id => entry[:uid],
+        :first_name => entry[:first_name],
+        :last_name => entry[:last_name],
+        :email => entry[:email]
+      }
+      @current_user = (entry[:role] == :faculty) ? Faculty.new(attributes) :
+                      (entry[:role] == :grad) ? PeerAdvisor.new(attributes) :
+                      nil
+    end
+  end
+
+  def verify_new_user
+    model_name = @current_user.class.name
+    if @current_user.new_record? && !(params[:controller] == model_name.tableize && ['new', 'create'].include?(params[:action]))
+      redirect_to(:controller => model_name.tableize, :action => 'new')
+    end
+  end
 end

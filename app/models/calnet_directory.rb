@@ -1,3 +1,0 @@
-class CalNetDirectory
-
-end

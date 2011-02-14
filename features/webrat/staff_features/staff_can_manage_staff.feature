@@ -1,4 +1,3 @@
-@staff_can_manage_staff
 Feature: Staff can manage staff
 
   So that other staff can manage scheduling for visit day

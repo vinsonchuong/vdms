@@ -1,4 +1,3 @@
-@peer_advisor_can_rank_faculty_on_behalf_of_admits
 Feature: Peer advisor can rank faculty on behalf of admits
 
   So that I can specify the meeting preferences of my admits
@@ -42,7 +41,6 @@ Feature: Peer advisor can rank faculty on behalf of admits
     And I fill in "Rank" with "2" for the first ranking
     And I fill in "Rank" with "1" for the second ranking
     And I press "Save changes"
-    Then show me the page
     Then I should see "Admit was successfully updated"
 
   Scenario: I remove an admit's faculty ranking
@@ -55,5 +53,4 @@ Feature: Peer advisor can rank faculty on behalf of admits
     And I check "Remove" for the second ranking
     And I check "Remove" for the third ranking
     And I press "Save changes"
-    Then show me the page
     Then I should see "Admit was successfully updated"

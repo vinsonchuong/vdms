@@ -6,14 +6,14 @@ describe Admit do
   end
 
   describe 'Attributes' do
-    it 'has a First Name (first_name)' do
-      @admit.should respond_to(:first_name)
-      @admit.should respond_to(:first_name=)
-    end
-
     it 'has an LDAP ID (ldap_id)' do
       @admit.should respond_to(:ldap_id)
       @admit.should respond_to(:ldap_id=)
+    end
+
+    it 'has a First Name (first_name)' do
+      @admit.should respond_to(:first_name)
+      @admit.should respond_to(:first_name=)
     end
 
     it 'has a Last Name (last_name)' do
@@ -76,12 +76,34 @@ describe Admit do
   end
 
   describe 'Associations' do
-    it 'has many Available Times (available_times)' do
-      @admit.should have_many(:available_times)
+    describe 'Available Times' do
+      it 'has many Available Times (available_times)' do
+        @admit.should have_many(:available_times)
+      end
+
+      it 'has many Available Times sorted by Start Time' do
+        @admit.available_times.create(:begin => Time.zone.parse('1/4/2011'), :end => Time.zone.parse('1/5/2011'))
+        @admit.available_times.create(:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011'))
+        @admit.available_times.create(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
+        @admit.available_times.reload.map {|t| t.attributes['begin']}.should == [
+          Time.zone.parse('1/3/2011'),
+          Time.zone.parse('1/4/2011'),
+          Time.zone.parse('1/6/2011'),
+        ]
+      end
     end
 
-    it 'has many Faculty Rankings (faculty_rankings)' do
-      @admit.should have_many(:faculty_rankings)
+    describe 'Faculty Rankings' do
+      it 'has many Faculty Rankings (faculty_rankings)' do
+        @admit.should have_many(:faculty_rankings)
+      end
+
+      it 'has many Faculty Rankings sorted by rank' do
+        @admit.faculty_rankings.create(:rank => 2, :faculty => Factory.create(:faculty))
+        @admit.faculty_rankings.create(:rank => 1, :faculty => Factory.create(:faculty))
+        @admit.faculty_rankings.create(:rank => 3, :faculty => Factory.create(:faculty))
+        @admit.faculty_rankings.reload.map {|r| r.attributes['rank']}.should == [1, 2, 3]
+      end
     end
 
     it 'has and belongs to many Meetings (meetings)' do

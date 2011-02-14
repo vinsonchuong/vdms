@@ -16,6 +16,9 @@ require 'cucumber/web/tableish'
 require 'webrat'
 require 'webrat/core/matchers'
 
+require 'spec/stubs/cucumber'
+require 'spec/expectations'
+
 require 'email_spec'
 require 'email_spec/cucumber'
 

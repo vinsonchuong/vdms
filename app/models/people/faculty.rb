@@ -28,9 +28,9 @@ class Faculty < Person
     record.available_times.each {|t| t.destroy unless t.available}
   end
 
-  has_many :admit_rankings, :dependent => :destroy
+  has_many :admit_rankings, :order => 'rank ASC', :dependent => :destroy
   has_many :meetings, :dependent => :destroy
-  accepts_nested_attributes_for :admit_rankings, :allow_destroy => true, :reject_if => :all_blank
+  accepts_nested_attributes_for :admit_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
   
   validates_inclusion_of :division, :in => Settings.instance.divisions.map(&:name)
   validates_inclusion_of :area, :in => Settings.instance.areas
@@ -39,4 +39,10 @@ class Faculty < Person
   validates_numericality_of :max_admits_per_meeting, :only_integer => true, :greater_than => 0
   validates_presence_of :max_additional_admits
   validates_numericality_of :max_additional_admits, :only_integer => true, :greater_than_or_equal_to => 0
+  validate do |record| # uniqueness of ranks in admit_rankings
+    ranks = record.admit_rankings.map(&:rank)
+    if ranks.count != ranks.uniq.count
+      record.errors.add_to_base('Ranks must be unique')
+    end
+  end
 end

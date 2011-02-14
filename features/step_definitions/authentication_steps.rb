@@ -11,8 +11,24 @@ Given /^(?:I am|"([^"]*?)" "([^"]*?)" is) registered as a "([^"]*?)"(?: in "([^"
   instance_variable_set("@#{role.downcase.gsub(' ', '_')}", @user)
 end
 
+Given /^I am a "([^"]*?)"$/ do |role|
+  role = case role
+         when 'Faculty': :faculty
+         when 'Grad Student': :grad
+         else nil
+         end
+
+  LDAP.stub(:find_person).and_return({
+    :uid => '12345',
+    :first_name => 'My',
+    :last_name => 'Name',
+    :email => 'myemail@email.com',
+    :role => role
+  })
+end
+
 Given /^(?:I am|.*? is) signed in$/ do
-  CASClient::Frameworks::Rails::Filter.fake(@user.ldap_id)
+  CASClient::Frameworks::Rails::Filter.fake(@user.nil? ? '12345' : @user.ldap_id)
 end
 
 When /^I fill in (my|invalid) CalNet account information$/ do |type|

@@ -26,7 +26,7 @@
               %td!= admit_ranking_fields.check_box :mandatory, {}, "true", "false"
               %td
               %td!= admit_ranking_fields.check_box :one_on_one, {}, "true", "false"
-              %td!= admit_ranking_fields.label @admit_ranking.admit_full_name
+              %td!= admit_ranking_fields.label @admit_ranking.admit.full_name
               %td!= admit_ranking_fields.check_box :_destroy
               != admit_ranking_fields.hidden_field :admit_id             
     != faculty_form.submit

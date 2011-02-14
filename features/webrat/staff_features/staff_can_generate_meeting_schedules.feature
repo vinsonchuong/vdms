@@ -1,4 +1,3 @@
-@staff_can_generate_meeting_schedules
 Feature: Staff can generate meeting schedules
 
   So that faculty and admits can meet

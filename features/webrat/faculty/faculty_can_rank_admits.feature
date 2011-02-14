@@ -1,4 +1,3 @@
-@faculty_can_rank_admits
 Feature: Faculty can rank admits
 
   So that I can meet with the admits I want

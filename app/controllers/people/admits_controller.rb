@@ -40,6 +40,7 @@ class AdmitsController < PeopleController
   end
 
   private
+
   def set_model
     @model = Admit
   end

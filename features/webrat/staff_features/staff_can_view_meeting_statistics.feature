@@ -1,4 +1,3 @@
-@staff_can_view_meeting_statistics
 Feature: Staff can view meeting statistics
 
   So that I can evaluate the current meeting schedules

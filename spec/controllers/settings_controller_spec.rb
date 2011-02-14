@@ -43,15 +43,39 @@ describe SettingsController do
       end
     end
 
-    context 'when signed in as a Peer Advisor' do
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
+      end
+
+      it 'redirects to the New Peer Advisor page' do
+        get :edit
+        response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
+      end
+    end
+
+    context 'when signed in as a registered Peer Advisor' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake(@peer_advisor.ldap_id)
       end
     end
 
-    context 'when signed in as a Faculty' do
+    context 'when signed in as a registered Faculty' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake(@faculty.ldap_id)
+      end
+    end
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        get :edit
+        response.should redirect_to(:controller => 'faculties', :action => 'new')
       end
     end
   end
@@ -107,27 +131,34 @@ describe SettingsController do
       end
     end
 
-    context 'when signed in as a Peer Advisor' do
+    context 'when signed in as a registered Peer Advisor' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake(@peer_advisor.ldap_id)
       end
+    end
 
-      it 'redirects to the CalNet sign in page' do
-        pending
-        put :update
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(settings_url)}")
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
       end
     end
 
-    context 'when signed in as a Faculty' do
+    context 'when signed in as a registered Faculty' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake(@faculty.ldap_id)
       end
+    end
 
-      it 'redirects to the CalNet sign in page' do
-        pending
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
         put :update
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(settings_url)}")
+        response.should redirect_to(:controller => 'faculties', :action => 'new')
       end
     end
   end

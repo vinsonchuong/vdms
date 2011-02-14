@@ -83,12 +83,34 @@ describe Faculty do
   end
 
   describe 'Associations' do
-    it 'has many Available Times (available_times)' do
-      @faculty.should have_many(:available_times)
+    describe 'Available Times' do
+      it 'has many Available Times (available_times)' do
+        @faculty.should have_many(:available_times)
+      end
+
+      it 'has many Available Times sorted by Start Time' do
+        @faculty.available_times.create(:begin => Time.zone.parse('1/4/2011'), :end => Time.zone.parse('1/5/2011'))
+        @faculty.available_times.create(:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011'))
+        @faculty.available_times.create(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
+        @faculty.available_times.reload.map {|t| t.attributes['begin']}.should == [
+          Time.zone.parse('1/3/2011'),
+          Time.zone.parse('1/4/2011'),
+          Time.zone.parse('1/6/2011'),
+        ]
+      end
     end
 
-    it 'has many Admit Rankings (admit_rankings)' do
-      @faculty.should have_many(:admit_rankings)
+    describe 'Admit Rankings' do
+      it 'has many Admit Rankings (admit_rankings)' do
+        @faculty.should have_many(:admit_rankings)
+      end
+
+      it 'has many Faculty Rankings sorted by rank' do
+        @faculty.admit_rankings.create(:rank => 2, :admit => Factory.create(:admit))
+        @faculty.admit_rankings.create(:rank => 1, :admit => Factory.create(:admit))
+        @faculty.admit_rankings.create(:rank => 3, :admit => Factory.create(:admit))
+        @faculty.admit_rankings.reload.map {|r| r.attributes['rank']}.should == [1, 2, 3]
+      end
     end
 
     it 'has many Meetings (meetings)' do
@@ -100,14 +122,64 @@ describe Faculty do
     describe 'Available Times (available_times)' do
       it 'allows nested attributes for Available Times (available_times)' do
         attributes = {:available_times_attributes => [
-          {:available => true, :begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
-          {:available => true, :begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011')}
+          {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
+          {:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011')}
         ]}
         @faculty.attributes = attributes
         @faculty.available_times.each_with_index do |time, i|
           time.begin.should == attributes[:available_times_attributes][i][:begin]
           time.end.should == attributes[:available_times_attributes][i][:end]
         end
+      end
+
+      it 'ignores completely blank entries' do
+        attributes = {:available_times_attributes => [
+          {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
+          {:begin => '', :end => ''}
+        ]}
+        @faculty.attributes = attributes
+        @faculty.available_times.length.should == 1
+      end
+    end
+
+    describe 'Admit Rankings (admit_rankings)' do
+      before(:each) do
+        @admit1 = Factory.create(:admit)
+        @admit2 = Factory.create(:admit)
+      end
+
+      it 'allows nested attributes for Admit Rankings (admit_rankings)' do
+        attributes = {:admit_rankings_attributes => [
+          {:rank => 1, :admit => @admit1},
+          {:rank => 2, :admit => @admit2}
+        ]}
+        @faculty.attributes = attributes
+        @faculty.admit_rankings.map {|r| r.admit.id}.should == [@admit1.id, @admit2.id]
+      end
+
+      it 'ignores entries with blank ranks' do
+        attributes = {:admit_rankings_attributes => [
+          {:rank => 1, :admit => @admit1},
+          {:rank => '', :admit => @admit2}
+        ]}
+        @faculty.attributes = attributes
+        @faculty.admit_rankings.length.should == 1
+      end
+
+      it 'allows deletion' do
+        attributes = {:admit_rankings_attributes => [
+          {:rank => 1, :admit => @admit1},
+          {:rank => 2, :admit => @admit2}
+        ]}
+        @faculty.attributes = attributes
+        @faculty.save
+
+        delete_id = @faculty.admit_rankings.first.id
+        new_attributes = {:admit_rankings_attributes => [
+          {:id => delete_id, :_destroy => true}
+        ]}
+        @faculty.attributes = new_attributes
+        @faculty.admit_rankings.detect {|r| r.id == delete_id}.should be_marked_for_destruction
       end
     end
   end
@@ -239,6 +311,15 @@ describe Faculty do
         @faculty.max_additional_admits = invalid_preference
         @faculty.should_not be_valid
       end
+    end
+
+    it 'is not valid with non-unique Admit Ranking ranks' do
+      admit_rankings = [
+        AdmitRanking.new(:rank => 1, :admit => Factory.create(:admit)),
+        AdmitRanking.new(:rank => 1, :admit => Factory.create(:admit))
+      ]
+      @faculty.admit_rankings = admit_rankings
+      @faculty.should_not be_valid
     end
   end
 
