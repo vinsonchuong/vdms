@@ -16,12 +16,8 @@
         != admit_form.text_field :phone
       %li
         != admit_form.label :area1, 'Area 1'
-        != admit_form.text_field :area1
+        != admit_form.select :area1, @areas
       %li
         != admit_form.label :area2, 'Area 2'
-        != admit_form.text_field :area2
-      %li
-        != admit_form.label :division, 'Division'
-        != admit_form.text_field :division        
-
+        != admit_form.select :area2, @areas
     != admit_form.submit

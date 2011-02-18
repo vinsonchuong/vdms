@@ -1,4 +1,6 @@
 class AdmitsController < PeopleController
+  before_filter :get_areas_and_divisions, :only => [:new, :edit, :create, :update]
+
   # GET /people/PEOPLE/admits/filter
   def filter
       @areas =  Settings.instance.areas
@@ -43,5 +45,11 @@ class AdmitsController < PeopleController
 
   def set_model
     @model = Admit
+  end
+
+  def get_areas_and_divisions
+    settings = Settings.instance
+    @areas = settings.areas.values
+    @divisions = settings.divisions.map(&:long_name)
   end
 end

@@ -15,10 +15,10 @@ Feature: Staff can manage admits
 
   Scenario: I view a list of all admits
     Given the following "Admits" have been added:
-      | first_name  | last_name  | email            | phone      | division               | area1                       | area2    |
-      | First1      | Last1      | email1@email.com | 1234567891 | Computer Science       | Theory                      | Graphics |
-      | First2      | Last2      | email2@email.com | 1234567892 | Electrical Engineering | Communications & Networking | Energy   |
-      | First3      | Last3      | email3@email.com | 1234567893 | Computer Science       | Human-Computer Interaction  | Graphics |
+      | first_name  | last_name  | email            | phone      | area1                       | area2    |
+      | First1      | Last1      | email1@email.com | 1234567891 | Theory                      | Graphics |
+      | First2      | Last2      | email2@email.com | 1234567892 | Communications & Networking | Energy   |
+      | First3      | Last3      | email3@email.com | 1234567893 | Human-Computer Interaction  | Graphics |
     When I go to the view admits page
     And I should see "First1"
     And I should see "Last1"
@@ -37,25 +37,21 @@ Feature: Staff can manage admits
     And I fill in "Last Name" with "<last_name>"
     And I fill in "Email" with "<email>"
     And I fill in "Phone" with "<phone>"
-    And I fill in "Division" with "<division>"
-    And I fill in "Area 1" with "<area1>"
-    And I fill in "Area 2" with "<area2>"
+    And I select "<area1>" from "Area 1"
+    And I select "<area2>" from "Area 2"
     And I press "Save changes"
     And I should see "<result>" 
 
     Scenarios: with valid information
-      | first_name | last_name | email           | phone          | division               | area1                       | area2             | result                        |
-      | First      | Last      | email@email.com | 123-456-7890   | Computer Science       | Artificial Intelligence     | Theory            | Admit was successfully added. |
-      | First      | Last      | email@email.com | 123.456.7890   | Computer Science       | Human-Computer Interaction  | Graphics          | Admit was successfully added. |
-      | First      | Last      | email@email.com | (123) 456-7890 | Electrical Engineering | Communications & Networking | Energy            | Admit was successfully added. |
-      | First      | Last      | email@email.com | 1234567890     | Electrical Engineering | Physical Electronics        | Signal Processing | Admit was successfully added. |
+      | first_name | last_name | email           | phone          | area1                       | area2             | result                        |
+      | First      | Last      | email@email.com | 123-456-7890   | Artificial Intelligence     | Theory            | Admit was successfully added. |
+      | First      | Last      | email@email.com | 123.456.7890   | Human-Computer Interaction  | Graphics          | Admit was successfully added. |
+      | First      | Last      | email@email.com | (123) 456-7890 | Communications & Networking | Energy            | Admit was successfully added. |
+      | First      | Last      | email@email.com | 1234567890     | Physical Electronics        | Signal Processing | Admit was successfully added. |
 
     Scenarios: with invalid information
-      | first_name | last_name | email           | phone           | division               | area1                       | area2             | result                                                           |
-      | First      | Last      | invalid_email   | 123-456-7890    | Computer Science       | Artificial Intelligence     | Theory            | Email is invalid                                                 |
-      | First      | Last      | email@email.com | invalid_phone   | Computer Science       | Human-Computer Interaction  | Graphics          | Phone must be a valid numeric US phone number                    |
-      | First      | Last      | email@email.com | 123-4567        | Electrical Engineering | Communications & Networking | Energy            | Phone must be a valid numeric US phone number                    |
-      | First      | Last      | email@email.com | 1-123-456-7890  | Electrical Engineering | Physical Electronics        | Signal Processing | Phone must be a valid numeric US phone number                    |
+      | first_name | last_name | email           | phone           | area1                       | area2             | result                                                           |
+      | First      | Last      | invalid_email   | 123-456-7890    | Artificial Intelligence     | Theory            | Email is invalid                                                 |
 
   Scenario: I add admits by importing a CSV with valid data
     Given I am on the view admits page

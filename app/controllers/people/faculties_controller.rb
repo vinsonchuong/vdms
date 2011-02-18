@@ -1,4 +1,6 @@
 class FacultiesController < PeopleController
+  before_filter :get_areas_and_divisions, :only => [:new, :edit, :create, :update]
+
   # GET /people/faculty/1/new
   def new
     if @current_user.new_record?
@@ -54,5 +56,11 @@ class FacultiesController < PeopleController
 
   def set_model
     @model = Faculty
+  end
+
+  def get_areas_and_divisions
+    settings = Settings.instance
+    @areas = settings.areas.values
+    @divisions = settings.divisions.map(&:long_name)
   end
 end

@@ -25,4 +25,6 @@
         %td= faculty.area
         %td= faculty.division
         %td!= link_to 'Update Faculty', edit_faculty_path(faculty)
+        %td!= link_to 'Rank Admits', rank_admits_faculty_path(faculty)
+        %td!= link_to 'Update Availability', schedule_faculty_path(faculty)
         %td!= link_to 'Remove Faculty', delete_faculty_path(faculty)

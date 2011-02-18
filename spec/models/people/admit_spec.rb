@@ -31,11 +31,6 @@ describe Admit do
       @admit.should respond_to(:phone=)
     end
 
-    it 'has a Division (division)' do
-      @admit.should respond_to(:division)
-      @admit.should respond_to(:division=)
-    end
-
     it 'has an Area 1 (area1)' do
       @admit.should respond_to(:area1)
       @admit.should respond_to(:area1=)
@@ -52,7 +47,6 @@ describe Admit do
       Admit::ATTRIBUTES['Last Name'].should == :last_name
       Admit::ATTRIBUTES['Email'].should == :email
       Admit::ATTRIBUTES['Phone'].should == :phone
-      Admit::ATTRIBUTES['Division'].should == :division
       Admit::ATTRIBUTES['Area 1'].should == :area1
       Admit::ATTRIBUTES['Area 2'].should == :area2
     end
@@ -63,7 +57,6 @@ describe Admit do
       Admit::ATTRIBUTE_TYPES[:last_name].should == :string
       Admit::ATTRIBUTE_TYPES[:email].should == :string
       Admit::ATTRIBUTE_TYPES[:phone].should == :string
-      Admit::ATTRIBUTE_TYPES[:division].should == :string
       Admit::ATTRIBUTE_TYPES[:area1].should == :string
       Admit::ATTRIBUTE_TYPES[:area2].should == :string
     end
@@ -204,44 +197,48 @@ describe Admit do
       end
     end
 
-    it 'is valid with a valid Phone' do
-      ['1234567890', '(123) 456-7890', '123.456.7890', '123-456-7890'].each do |valid_phone|
-        @admit.phone = valid_phone
-        @admit.should be_valid
-      end
-    end
-
     it 'is not valid without a Phone' do
       @admit.phone = ''
       @admit.should_not be_valid
     end
 
-    it 'is not valid with an invalid Phone' do
-      ['12345678', 'foobarbaz', '12345678900'].each do |invalid_phone|
-        @admit.phone = invalid_phone
+    it 'is valid with a valid Area 1' do
+      stub_areas('A1' => 'Area 1', 'A2' => 'Area 2')
+      ['A1', 'Area 1', 'A2', 'Area 2'].each do |area|
+        @admit.area1 = area
         @admit.should_not be_valid
       end
     end
 
-    it 'is not valid with an invalid Division' do
-      stub_divisions(['Division 1', 'Division 2'])
-      ['', 'Division 3', 123].each do |invalid_division|
-        @admit.division = invalid_division
-        @admit.should_not be_valid
-      end
+    it 'is valid without an Area 1' do
+      @admit.area1 = ''
+      @admit.should be_valid
     end
 
     it 'is not valid with an invalid Area 1' do
-      stub_areas(['Area 1', 'Area 2'])
-      ['', 'Area 3', 123].each do |invalid_area|
+      stub_areas('A1' => 'Area 1', 'A2' => 'Area 2')
+      ['Area 3', 123].each do |invalid_area|
         @admit.area1 = invalid_area
         @admit.should_not be_valid
       end
     end
 
+    it 'is valid with a valid Area 2' do
+      stub_areas('A1' => 'Area 1', 'A2' => 'Area 2')
+      ['A1', 'Area 1', 'A2', 'Area 2'].each do |area|
+        @admit.area2 = area
+        @admit.should_not be_valid
+      end
+    end
+
+    it 'is valid without an Area 1' do
+      @admit.area2 = ''
+      @admit.should be_valid
+    end
+
     it 'is not valid with an invalid Area 2' do
-      stub_areas(['Area 1', 'Area 2'])
-      ['', 'Area 3', 123].each do |invalid_area|
+      stub_areas('A1' => 'Area 1', 'A2' => 'Area 2')
+      ['Area 3', 123].each do |invalid_area|
         @admit.area2 = invalid_area
         @admit.should_not be_valid
       end
@@ -299,12 +296,34 @@ describe Admit do
   end
 
   context 'after validating' do
-    it 'parses and formats Phone' do
-      ['1234567890', '123-456-7890', '123.456.7890'].each do |phone|
-        @admit.phone = phone
+    it 'maps Areas to their canonical forms' do
+      stub_areas('A1' => 'Area 1', 'A2' => 'Area 2')
+      [
+        ['Area 1', 'Area 2'],
+        ['A1', 'A2'],
+        ['Area 1', 'A2']
+      ].each do |area1, area2|
+        @admit.area1 = area1
+        @admit.area2 = area2
         @admit.valid?
-        @admit.phone.should == '(123) 456-7890'
+        @admit.area1.should == 'A1'
+        @admit.area2.should == 'A2'
       end
+
+      @admit.area1 = nil
+      @admit.valid?
+      @admit.area1.should == nil
+    end
+
+    it 'destroys all AvailableTimes which are not flagged as available' do
+      time1 = @admit.available_times.create(:available => true, :begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011'))
+      time2 = @admit.available_times.create(:available => false, :begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011'))
+      time3 = @admit.available_times.create(:available => false, :begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/6/2011'))
+      @admit.available_times = [time1, time2, time3]
+      time1.should_not_receive(:destroy)
+      time2.should_receive(:destroy)
+      time3.should_receive(:destroy)
+      @admit.save
     end
   end
 
@@ -346,10 +365,10 @@ describe Admit do
 
     it 'builds a collection of Admits with the attributes in each row' do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
-        First Name,Last Name,Email,Phone,Division,Area 1,Area 2
-        First0,Last0,email0@email.com,1234567890,Division 0,Area 10,Area 20
-        First1,Last1,email1@email.com,1234567891,Division 1,Area 11,Area 21
-        First2,Last2,email2@email.com,1234567892,Division 2,Area 12,Area 22
+        First Name,Last Name,Email,Phone,Area 1,Area 2
+        First0,Last0,email0@email.com,1234567890,Area 10,Area 20
+        First1,Last1,email1@email.com,1234567891,Area 11,Area 21
+        First2,Last2,email2@email.com,1234567892,Area 12,Area 22
       EOF
       Admit.new_from_csv(csv_text).should == @admits
       @admits.each_with_index do |admit, i|
@@ -357,7 +376,6 @@ describe Admit do
         admit.last_name.should == "Last#{i}"
         admit.email.should == "email#{i}@email.com"
         admit.phone.should == "123456789#{i}"
-        admit.division.should == "Division #{i}"
         admit.area1.should == "Area 1#{i}"
         admit.area2.should == "Area 2#{i}"
       end
@@ -365,10 +383,10 @@ describe Admit do
 
     it 'ignores extraneous attributes' do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
-        Baz,First Name,Last Name,Email,Phone,Division,Area 1,Area 2,Foo,Bar
-        Baz0,First0,Last0,email0@email.com,1234567890,Division 0,Area 10,Area 20,Foo0,Bar0
-        Baz1,First1,Last1,email1@email.com,1234567891,Division 1,Area 11,Area 21,Foo1,Bar1
-        Baz2,First2,Last2,email2@email.com,1234567892,Division 2,Area 12,Area 22,Foo2,Bar2
+        Baz,First Name,Last Name,Email,Phone,Area 1,Area 2,Foo,Bar
+        Baz0,First0,Last0,email0@email.com,1234567890,Area 10,Area 20,Foo0,Bar0
+        Baz1,First1,Last1,email1@email.com,1234567891,Area 11,Area 21,Foo1,Bar1
+        Baz2,First2,Last2,email2@email.com,1234567892,Area 12,Area 22,Foo2,Bar2
       EOF
       Admit.new_from_csv(csv_text).should == @admits
       @admits.each_with_index do |admit, i|
@@ -376,7 +394,6 @@ describe Admit do
         admit.last_name.should == "Last#{i}"
         admit.email.should == "email#{i}@email.com"
         admit.phone.should == "123456789#{i}"
-        admit.division.should == "Division #{i}"
         admit.area1.should == "Area 1#{i}"
         admit.area2.should == "Area 2#{i}"
       end

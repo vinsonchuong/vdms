@@ -17,8 +17,8 @@
         != faculty_form.text_field :email
       %li
         != faculty_form.label :area, 'Area'
-        != faculty_form.text_field :area
+        != faculty_form.select :area, @areas
       %li
         != faculty_form.label :division, 'Division'
-        != faculty_form.text_field :division
+        != faculty_form.select :division, @divisions
     != faculty_form.submit

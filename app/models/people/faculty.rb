@@ -24,6 +24,15 @@ class Faculty < Person
     end
   end
   
+  after_validation do |record| # Map Area and Division to their canonical forms
+    settings = Settings.instance
+    areas = settings.areas.invert
+    divisions = {}
+    settings.divisions.each {|d| divisions[d.long_name] = d.name}
+    record.area = areas[record.area1] unless record.area1.nil? || areas[record.area1].nil?
+    record.division = divisions[record.division] unless record.division.nil? || divisions[record.division].nil?
+  end
+
   after_validation do |record| # destroy available_times not flagged as available
     record.available_times.each {|t| t.destroy unless t.available}
   end
@@ -32,8 +41,8 @@ class Faculty < Person
   has_many :meetings, :dependent => :destroy
   accepts_nested_attributes_for :admit_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
   
-  validates_inclusion_of :division, :in => Settings.instance.divisions.map(&:name)
-  validates_inclusion_of :area, :in => Settings.instance.areas
+  validates_inclusion_of :division, :in => (Settings.instance.divisions.map(&:name) + Settings.instance.divisions.map(&:long_name))
+  validates_inclusion_of :area, :in => Settings.instance.areas.to_a.flatten
   validates_presence_of :default_room
   validates_presence_of :max_admits_per_meeting
   validates_numericality_of :max_admits_per_meeting, :only_integer => true, :greater_than => 0

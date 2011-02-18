@@ -8,7 +8,7 @@ class Settings < ActiveRecord::Base
   end
   after_save do |record|
     if record.divisions.empty?
-      STATIC_SETTINGS['divisions'].each {|name| record.divisions.create(:name => name)}
+      STATIC_SETTINGS['divisions'].each_key {|name| record.divisions.create(:name => name)}
     end
   end
 

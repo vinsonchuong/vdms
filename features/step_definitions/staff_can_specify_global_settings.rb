@@ -2,7 +2,7 @@ When /^I add "([^"]*)" to "([^"]*)" to the meeting times for "([^"]*)"$/ do |sta
   start_time = Time.zone.parse(start)
   finish_time = Time.zone.parse(finish)
 
-  division_index = Settings.instance.divisions.index {|d| d.name == division}
+  division_index = Settings.instance.divisions.index {|d| d.long_name == division}
   time_index = Settings.instance.divisions[division_index].available_times.count
 
   select start_time.strftime('%Y'), :from => "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}_begin_1i"
@@ -19,13 +19,13 @@ When /^I add "([^"]*)" to "([^"]*)" to the meeting times for "([^"]*)"$/ do |sta
 end
 
 When /^I remove the "([^"]*)" meeting time beginning with "([^"]*)"$/ do |division, start|
-  division_index = Settings.instance.divisions.index {|d| d.name == division}
+  division_index = Settings.instance.divisions.index {|d| d.long_name == division}
   time_index = Settings.instance.divisions[division_index].available_times.index {|t| t.begin == Time.zone.parse(start)}
 
   check "settings_divisions_attributes_#{division_index}_available_times_attributes_#{time_index}__destroy"
 end
 
 Then /^"([^"]*)" should not have a meeting time beginning with "([^"]*)"$/ do |division, start|
-  division = Settings.instance.divisions.find_by_name(division)
+  division = Settings.instance.divisions.detect {|d| d.long_name == division}
   division.available_times.find_by_begin(Time.zone.parse(start)).should be_nil
 end

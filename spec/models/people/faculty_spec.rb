@@ -235,7 +235,7 @@ describe Faculty do
     end
 
     it 'is not valid with an invalid Division' do
-      stub_divisions(['Division 1', 'Division 2'])
+      stub_divisions('D1' => 'Division 1', 'D2' => 'Division 2')
       ['', 'Division 3', 123].each do |invalid_division|
         @faculty.division = invalid_division
         @faculty.should_not be_valid
@@ -243,7 +243,7 @@ describe Faculty do
     end
 
     it 'is not valid with an invalid Area' do
-      stub_areas(['Area 1', 'Area 2'])
+      stub_areas('A1' => 'Area 1', 'A2' => 'Area 2')
       ['', 'Area 3', 123].each do |invalid_area|
         @faculty.area = invalid_area
         @faculty.should_not be_valid

@@ -16,6 +16,8 @@ Feature: Faculty can register
   Scenario: I verify my info
     Given I am on the home page
     When I follow "For Staff"
+    And I select "Computer Science" from "Division"
+    And I select "Theory" from "Area"
     And I fill in "Division" with "Computer Science"
     And I fill in "Area" with "Theory"
     And I press "Save changes"

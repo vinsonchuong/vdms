@@ -37,8 +37,8 @@ Feature: Staff can manage faculty
     And I fill in "First Name" with "<first_name>"
     And I fill in "Last Name" with "<last_name>"
     And I fill in "Email" with "<email>"
-    And I fill in "Area" with "<area>"
-    And I fill in "Division" with "<division>"
+    And I select "<division>" from "Division"
+    And I select "<area>" from "Area"
     And I press "Save changes"
     And I should see "<result>" 
 
@@ -50,7 +50,6 @@ Feature: Staff can manage faculty
     Scenarios: with invalid information
       | ldap_id | first_name | last_name | email           | division               | area                    | result                               |
       | ID1     | First      | Last      | invalid_email   | Computer Science       | Artificial Intelligence | Email is invalid                     |
-      | ID2     | First      | Last      | email@email.com | Invalid Division       | Artificial Intelligence | Division is not included in the list |
 
   Scenario: I add faculty by importing a CSV with valid data
     Given I am on the view faculty page
