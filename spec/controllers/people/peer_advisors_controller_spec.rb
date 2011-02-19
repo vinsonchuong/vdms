@@ -180,7 +180,17 @@ describe PeerAdvisorsController do
         get :edit, :id => @peer_advisor.id
         assigns[:peer_advisor].should == @peer_advisor
       end
- 
+
+      it 'sets the error redirect to the edit action' do
+        get :edit, :id => @peer_advisor.id
+        assigns[:origin_action].should == 'edit'
+      end
+
+      it 'sets the success redirect to the index action' do
+        get :edit, :id => @peer_advisor.id
+        assigns[:redirect_action].should == 'index'
+      end
+
       it 'renders the edit template' do
         get :edit, :id => @peer_advisor.id
         response.should render_template('edit')
@@ -472,8 +482,8 @@ describe PeerAdvisorsController do
           flash[:notice].should == 'Peer Advisor was successfully updated.'
         end
 
-        it 'redirects to the View Peer Advisor page' do
-          put :update, :id => @peer_advisor.id
+        it 'redirects to the given success redirect action' do
+          put :update, :id => @peer_advisor.id, :redirect_action => 'index'
           response.should redirect_to(:action => 'index')
         end
       end
@@ -483,8 +493,18 @@ describe PeerAdvisorsController do
           @peer_advisor.stub(:update_attributes).and_return(false)
         end
 
-        it 'renders the edit template' do
-          put :update, :id => @peer_advisor.id
+        it 'sets the error redirect to the given error action' do
+          put :update, :id => @peer_advisor.id, :origin_action => 'edit'
+          assigns[:origin_action].should == 'edit'
+        end
+
+        it 'sets the success redirect to the index action' do
+          put :update, :id => @peer_advisor.id, :redirect_action => 'index'
+          assigns[:redirect_action].should == 'index'
+        end
+
+        it 'renders the template for the given error action' do
+          put :update, :id => @peer_advisor.id, :origin_action => 'edit'
           response.should render_template('edit')
         end
       end

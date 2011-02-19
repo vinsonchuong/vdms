@@ -21,4 +21,6 @@
       %li
         != faculty_form.label :division, 'Division'
         != faculty_form.select :division, @divisions
+    != hidden_field_tag :origin_action, @origin_action
+    != hidden_field_tag :redirect_action, @redirect_action
     != faculty_form.submit

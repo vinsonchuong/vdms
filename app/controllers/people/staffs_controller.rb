@@ -1,7 +1,7 @@
 class StaffsController < PeopleController
   private
 
-  def set_model
+  def get_model
     @model = Staff
   end
 end

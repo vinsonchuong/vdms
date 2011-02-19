@@ -192,6 +192,16 @@ describe FacultiesController do
         get :edit, :id => @faculty.id
         assigns[:faculty].should == @faculty
       end
+
+      it 'sets the error redirect to the edit action' do
+        get :edit, :id => @faculty.id
+        assigns[:origin_action].should == 'edit'
+      end
+
+      it 'sets the success redirect to the index action' do
+        get :edit, :id => @faculty.id
+        assigns[:redirect_action].should == 'index'
+      end
  
       it 'renders the edit template' do
         get :edit, :id => @faculty.id
@@ -260,6 +270,16 @@ describe FacultiesController do
       it 'assigns to @faculty the given Faculty' do
         get :schedule, :id => @faculty.id
         assigns[:faculty].should == @faculty
+      end
+
+      it 'sets the error redirect to the schedule action' do
+        get :schedule, :id => @faculty.id
+        assigns[:origin_action].should == 'schedule'
+      end
+
+      it 'sets the success redirect to the schedule action' do
+        get :schedule, :id => @faculty.id
+        assigns[:redirect_action].should == 'schedule'
       end
 
       it 'builds a list of possible meeting slots' do
@@ -545,8 +565,8 @@ describe FacultiesController do
           flash[:notice].should == 'Faculty was successfully updated.'
         end
 
-        it 'redirects to the View Faculty page' do
-          put :update, :id => @faculty.id
+        it 'redirects to the given success redirect action' do
+          put :update, :id => @faculty.id, :redirect_action => 'index'
           response.should redirect_to(:action => 'index')
         end
       end
@@ -556,8 +576,18 @@ describe FacultiesController do
           @faculty.stub(:update_attributes).and_return(false)
         end
 
-        it 'renders the edit template' do
-          put :update, :id => @faculty.id
+        it 'sets the error redirect to the given error action' do
+          put :update, :id => @faculty.id, :origin_action => 'edit'
+          assigns[:origin_action].should == 'edit'
+        end
+
+        it 'sets the success redirect to the index action' do
+          put :update, :id => @faculty.id, :redirect_action => 'index'
+          assigns[:redirect_action].should == 'index'
+        end
+
+        it 'renders the template for the given error action' do
+          put :update, :id => @faculty.id, :origin_action => 'edit'
           response.should render_template('edit')
         end
       end

@@ -17,13 +17,13 @@ Feature: Faculty can specify schedule
     Given I am on the schedule faculty page
     When I fill in "Default room" with "373 Soda"
     And I press "Save Changes"
-    Then I should see "Meeting availability was successfully updated"
+    Then I should see "Faculty was successfully updated"
 
   Scenario: I specify the maximum number of students per meeting slot
     Given I am on the schedule faculty page
     When I fill in "Max admits per meeting" with "4"
     And I press "Save Changes"
-    Then I should see "Meeting availability was successfully updated"
+    Then I should see "Faculty was successfully updated"
 
   Scenario: I specify the meeting slots for which I am available
     Given "Computer Science" has the following meeting times:
@@ -34,7 +34,7 @@ Feature: Faculty can specify schedule
     When I flag the "1/1/2011 9:00AM" to "1/1/2011 9:15AM" slot as available
     And I flag the "1/1/2011 10:00AM" to "1/1/2011 10:15AM" slot as available
     And I press "Save changes"
-    Then I should see "Meeting availability was successfully updated"
+    Then I should see "Faculty was successfully updated"
 
   Scenario: I specify a different room for a meeting slot
     Given "Computer Science" has the following meeting times:
@@ -47,4 +47,4 @@ Feature: Faculty can specify schedule
     And I flag the "1/1/2011 10:00AM" to "1/1/2011 10:15AM" slot as available
     And I set the room for the "1/1/2011 9:00AM" to "1/1/2011 9:15AM" slot to "373 Soda"
     And I press "Save changes"
-    Then I should see "Meeting availability was successfully updated"
+    Then I should see "Faculty was successfully updated"

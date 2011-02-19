@@ -20,4 +20,6 @@
       %li
         != admit_form.label :area2, 'Area 2'
         != admit_form.select :area2, @areas
+    != hidden_field_tag :origin_action, @origin_action
+    != hidden_field_tag :redirect_action, @redirect_action
     != admit_form.submit

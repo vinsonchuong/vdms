@@ -1,5 +1,5 @@
 class PeopleController < ApplicationController
-  before_filter :set_model
+  before_filter :get_model
 
   # GET /people/PEOPLE
   def index
@@ -8,7 +8,7 @@ class PeopleController < ApplicationController
 
   # GET /people/PEOPLE/new
   def new
-    self.instance_variable_set("@#{@model.name.underscore}", @model.new)      
+    self.instance_variable_set("@#{@model.name.underscore}", @model.new)
   end
 
   # GET /people/PEOPLE/upload
@@ -18,6 +18,8 @@ class PeopleController < ApplicationController
   # GET /people/PEOPLE/1/edit
   def edit
     self.instance_variable_set("@#{@model.name.underscore}", @model.find(params[:id]))
+    @origin_action = 'edit'
+    @redirect_action = 'index'
   end
 
   # GET /people/PEOPLE/1/delete
@@ -53,9 +55,12 @@ class PeopleController < ApplicationController
     self.instance_variable_set("@#{@model.name.underscore}", @model.find(params[:id]))
 
     if instance_variable_get("@#{@model.name.underscore}").update_attributes(params[@model.name.underscore.to_sym])
-      redirect_to(self.send("#{@model.name.tableize}_url".to_sym), :notice => "#{@model.name.titleize} was successfully updated.")
+      flash[:notice] = "#{@model.name.titleize} was successfully updated."
+      redirect_to(:action => params[:redirect_action], :record => instance_variable_get("@#{@model.name.underscore}"))
     else
-      render :action => 'edit'
+      @origin_action = params[:origin_action]
+      @redirect_action = params[:redirect_action]
+      render :action => @origin_action
     end
   end
 

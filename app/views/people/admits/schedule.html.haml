@@ -16,4 +16,6 @@
           %tr
             %td!= "#{@available_time.begin.strftime('%m/%d/%y - %I:%M%p')} to #{@available_time.end.strftime('%I:%M%p')}"
             %td!= available_time_fields.check_box :available
+    != hidden_field_tag :origin_action, @origin_action
+    != hidden_field_tag :redirect_action, @redirect_action
     != admit_form.submit

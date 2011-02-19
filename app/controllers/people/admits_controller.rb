@@ -1,5 +1,6 @@
 class AdmitsController < PeopleController
   before_filter :get_areas_and_divisions, :only => [:new, :edit, :create, :update]
+  before_filter :get_faculty_list, :only => [:rank_faculty, :update]
 
   # GET /people/PEOPLE/admits/filter
   def filter
@@ -17,6 +18,8 @@ class AdmitsController < PeopleController
   # GET /people/admits/1/schedule
   def schedule
     @admit = Admit.find(params[:id])
+    @origin_action = 'schedule'
+    @redirect_action = 'schedule'
 
     settings = Settings.instance
     @admit.build_available_times(settings.divisions.map(&:available_times).flatten, settings.meeting_length, settings.meeting_gap)
@@ -26,24 +29,13 @@ class AdmitsController < PeopleController
   def rank_faculty
     @admit = Admit.find(params[:id])
     @admit.faculty_rankings.build
-    @faculty = Faculty.all.sort! {|x, y| x.last_name <=> y.last_name}
-  end
-
-  # PUT /people/admits/1
-  def update
-    @admit = Admit.find(params[:id])
-    @faculty = Faculty.all.sort! {|x, y| x.last_name <=> y.last_name}
-
-    if @admit.update_attributes(params[:admit])
-      redirect_to(:back, :notice => "Admit was successfully updated.")
-    else
-      render :action => get_referrer_action
-    end
+    @origin_action = 'rank_faculty'
+    @redirect_action = 'rank_faculty'
   end
 
   private
 
-  def set_model
+  def get_model
     @model = Admit
   end
 
@@ -51,5 +43,9 @@ class AdmitsController < PeopleController
     settings = Settings.instance
     @areas = settings.areas.values
     @divisions = settings.divisions.map(&:long_name)
+  end
+
+  def get_faculty_list
+    @faculty = Faculty.all.sort! {|x, y| x.last_name <=> y.last_name}
   end
 end

@@ -192,6 +192,16 @@ describe AdmitsController do
         get :edit, :id => @admit.id
         assigns[:admit].should == @admit
       end
+
+      it 'sets the error redirect to the edit action' do
+        get :edit, :id => @admit.id
+        assigns[:origin_action].should == 'edit'
+      end
+
+      it 'sets the success redirect to the index action' do
+        get :edit, :id => @admit.id
+        assigns[:redirect_action].should == 'index'
+      end
  
       it 'renders the edit template' do
         get :edit, :id => @admit.id
@@ -246,6 +256,16 @@ describe AdmitsController do
       it 'assigns to @admit the given Admit' do
         get :schedule, :id => @admit.id
         assigns[:admit].should == @admit
+      end
+
+      it 'sets the error redirect to the schedule action' do
+        get :schedule, :id => @admit.id
+        assigns[:origin_action].should == 'schedule'
+      end
+
+      it 'sets the success redirect to the schedule action' do
+        get :schedule, :id => @admit.id
+        assigns[:redirect_action].should == 'schedule'
       end
 
       it 'builds a list of possible meeting slots' do
@@ -303,6 +323,16 @@ describe AdmitsController do
       it 'assigns to @admit the given Admit' do
         get :rank_faculty, :id => @admit.id
         assigns[:admit].should == @admit
+      end
+
+      it 'sets the error redirect to the rank_faculty action' do
+        get :rank_faculty, :id => @admit.id
+        assigns[:origin_action].should == 'rank_faculty'
+      end
+
+      it 'sets the success redirect to the rank_faculty action' do
+        get :rank_faculty, :id => @admit.id
+        assigns[:redirect_action].should == 'rank_faculty'
       end
 
       it 'builds a new FacultyRanking for the admit' do
@@ -606,10 +636,9 @@ describe AdmitsController do
           flash[:notice].should == 'Admit was successfully updated.'
         end
 
-        it 'redirects to the referring action' do
-          request.env['HTTP_REFERER'] = "/people/admits/#{@admit.id}/edit"
-          put :update, :id => @admit.id
-          response.should redirect_to(:action => 'edit')
+        it 'redirects to the given success redirect action' do
+          put :update, :id => @admit.id, :redirect_action => 'index'
+          response.should redirect_to(:action => 'index')
         end
       end
 
@@ -618,9 +647,18 @@ describe AdmitsController do
           @admit.stub(:update_attributes).and_return(false)
         end
 
-        it 'renders the template for the referring action' do
-          request.env['HTTP_REFERER'] = "/people/admits/#{@admit.id}/edit"
-          put :update, :id => @admit.id
+        it 'sets the error redirect to the given error action' do
+          put :update, :id => @admit.id, :origin_action => 'edit'
+          assigns[:origin_action].should == 'edit'
+        end
+
+        it 'sets the success redirect to the index action' do
+          put :update, :id => @admit.id, :redirect_action => 'index'
+          assigns[:redirect_action].should == 'index'
+        end
+
+        it 'renders the template for the given error action' do
+          put :update, :id => @admit.id, :origin_action => 'edit'
           response.should render_template('edit')
         end
       end

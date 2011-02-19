@@ -1,11 +1,7 @@
 class PeerAdvisorsController < PeopleController
   # GET /people/peer_advisors/1/new
   def new
-    if @current_user.new_record?
-      @peer_advisor = @current_user
-    else
-      @peer_advisor = PeerAdvisor.new
-    end
+    @peer_advisor = (@current_user.new_record?) ? @current_user : PeerAdvisor.new
   end
 
   # POST /people/peer_advisors
@@ -22,7 +18,7 @@ class PeerAdvisorsController < PeopleController
 
   private
 
-  def set_model
+  def get_model
     @model = PeerAdvisor
   end
 end

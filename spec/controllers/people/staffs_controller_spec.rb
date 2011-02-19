@@ -179,6 +179,16 @@ describe StaffsController do
         get :edit, :id => @staff.id
         assigns[:staff].should == @staff
       end
+
+      it 'sets the error redirect to the edit action' do
+        get :edit, :id => @staff.id
+        assigns[:origin_action].should == 'edit'
+      end
+
+      it 'sets the success redirect to the index action' do
+        get :edit, :id => @staff.id
+        assigns[:redirect_action].should == 'index'
+      end
  
       it 'renders the edit template' do
         get :edit, :id => @staff.id
@@ -465,8 +475,8 @@ describe StaffsController do
           flash[:notice].should == 'Staff was successfully updated.'
         end
 
-        it 'redirects to the View Staff page' do
-          put :update, :id => @staff.id
+        it 'redirects to the given success redirect action' do
+          put :update, :id => @staff.id, :redirect_action => 'index'
           response.should redirect_to(:action => 'index')
         end
       end
@@ -476,8 +486,18 @@ describe StaffsController do
           @staff.stub(:update_attributes).and_return(false)
         end
 
-        it 'renders the edit template' do
-          put :update, :id => @staff.id
+        it 'sets the error redirect to the given error action' do
+          put :update, :id => @staff.id, :origin_action => 'edit'
+          assigns[:origin_action].should == 'edit'
+        end
+
+        it 'sets the success redirect to the index action' do
+          put :update, :id => @staff.id, :redirect_action => 'index'
+          assigns[:redirect_action].should == 'index'
+        end
+
+        it 'renders the template for the given error action' do
+          put :update, :id => @staff.id, :origin_action => 'edit'
           response.should render_template('edit')
         end
       end

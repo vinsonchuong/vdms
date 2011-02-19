@@ -16,5 +16,6 @@
             %li
               != faculty_ranking_fields.check_box :_destroy
               != faculty_ranking_fields.label :_destroy, 'Remove'
-
+    != hidden_field_tag :origin_action, @origin_action
+    != hidden_field_tag :redirect_action, @redirect_action
     != admit_form.submit
