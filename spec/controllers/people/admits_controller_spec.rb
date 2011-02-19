@@ -56,7 +56,7 @@ describe AdmitsController do
 
       it 'redirects to the New Faculty page' do
         get :index
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -121,7 +121,7 @@ describe AdmitsController do
 
       it 'redirects to the New Faculty page' do
         get :new
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -169,7 +169,7 @@ describe AdmitsController do
 
       it 'redirects to the New Faculty page' do
         get :upload
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -233,7 +233,7 @@ describe AdmitsController do
 
       it 'redirects to the New Faculty page' do
         get :edit, :id => @admit.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -302,7 +302,7 @@ describe AdmitsController do
 
       it 'redirects to the New Faculty page' do
         get :schedule, :id => @admit.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -380,7 +380,7 @@ describe AdmitsController do
 
       it 'redirects to the New Faculty page' do
         get :rank_faculty, :id => @admit.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -434,7 +434,7 @@ describe AdmitsController do
 
       it 'redirects to the New Faculty page' do
         get :delete, :id => @admit.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -516,7 +516,7 @@ describe AdmitsController do
 
       it 'redirects to the New Faculty page' do
         post :create
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -595,7 +595,7 @@ describe AdmitsController do
 
         it 'redirects to the New Faculty page' do
           post :import
-          response.should redirect_to(:controller => 'faculties', :action => 'new')
+          response.should redirect_to(:controller => 'faculty', :action => 'new')
         end
       end
   end
@@ -688,7 +688,7 @@ describe AdmitsController do
 
       it 'redirects to the New Faculty page' do
         put :update, :id => @admit.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -753,7 +753,7 @@ describe AdmitsController do
 
       it 'redirects to the New Faculty page' do
         delete :destroy, :id => @admit.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -796,7 +796,7 @@ describe AdmitsController do
 
       it 'redirects to the New Faculty page' do
         get :filter
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end

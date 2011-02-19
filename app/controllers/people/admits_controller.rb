@@ -1,6 +1,6 @@
 class AdmitsController < PeopleController
   before_filter :get_areas_and_divisions, :only => [:new, :edit, :create, :update]
-  before_filter :get_faculty_list, :only => [:rank_faculty, :update]
+  before_filter :get_faculty, :only => [:rank_faculty, :update]
 
   # GET /people/PEOPLE/admits/filter
   def filter
@@ -37,6 +37,8 @@ class AdmitsController < PeopleController
 
   def get_model
     @model = Admit
+    @collection = 'admits'
+    @instance = 'admit'
   end
 
   def get_areas_and_divisions
@@ -45,7 +47,7 @@ class AdmitsController < PeopleController
     @divisions = settings.divisions.map(&:long_name)
   end
 
-  def get_faculty_list
+  def get_faculty
     @faculty = Faculty.all.sort! {|x, y| x.last_name <=> y.last_name}
   end
 end

@@ -20,5 +20,7 @@ class PeerAdvisorsController < PeopleController
 
   def get_model
     @model = PeerAdvisor
+    @collection = 'peer_advisors'
+    @instance = 'peer_advisor'
   end
 end

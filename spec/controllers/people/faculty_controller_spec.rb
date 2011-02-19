@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-describe FacultiesController do
+describe FacultyController do
   before(:each) do
     @staff = Factory.create(:staff)
-    @faculty = Factory.create(:faculty)
+    @faculty_instance = Factory.create(:faculty)
   end
 
   describe 'GET index' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
         get :index
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(faculties_url)}")
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(faculty_url)}")
       end
     end
 
@@ -19,11 +19,11 @@ describe FacultiesController do
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
-      it 'assigns to @faculties a list of all the Faculty' do
-        faculties = Array.new(3) {Faculty.new}
-        Faculty.stub(:find).and_return(faculties)
+      it 'assigns to @faculty a list of all the Faculty' do
+        faculty = Array.new(3) {Faculty.new}
+        Faculty.stub(:find).and_return(faculty)
         get :index
-        assigns[:faculties].should == faculties
+        assigns[:faculty].should == faculty
       end
 
       it 'renders the index template' do
@@ -56,7 +56,7 @@ describe FacultiesController do
 
       it 'redirects to the New Faculty page' do
         get :index
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -65,7 +65,7 @@ describe FacultiesController do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
         get :new
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(new_faculty_url)}")
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(new_faculty_instance_url)}")
       end
     end
 
@@ -74,9 +74,9 @@ describe FacultiesController do
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
-      it 'assigns to @faculty a new Faculty' do
+      it 'assigns to @faculty_instance a new Faculty' do
         get :new
-        assigns[:faculty].should be_a_new_record
+        assigns[:faculty_instance].should be_a_new_record
       end
 
       it 'assigns to @areas a list of the Areas' do
@@ -130,7 +130,7 @@ describe FacultiesController do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
         get :upload
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(upload_faculties_url)}")
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(upload_faculty_url)}")
       end
     end
 
@@ -169,7 +169,7 @@ describe FacultiesController do
 
       it 'redirects to the New Faculty page' do
         get :upload
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -177,8 +177,8 @@ describe FacultiesController do
   describe 'GET edit' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
-        get :edit, :id => @faculty.id
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(edit_faculty_url(@faculty.id))}")
+        get :edit, :id => @faculty_instance.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(edit_faculty_instance_url(@faculty_instance.id))}")
       end
     end
 
@@ -187,24 +187,24 @@ describe FacultiesController do
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
   
-      it 'assigns to @faculty the given Faculty' do
-        Faculty.stub(:find).and_return(@faculty)
-        get :edit, :id => @faculty.id
-        assigns[:faculty].should == @faculty
+      it 'assigns to @faculty_instance the given Faculty' do
+        Faculty.stub(:find).and_return(@faculty_instance)
+        get :edit, :id => @faculty_instance.id
+        assigns[:faculty_instance].should == @faculty_instance
       end
 
       it 'sets the error redirect to the edit action' do
-        get :edit, :id => @faculty.id
+        get :edit, :id => @faculty_instance.id
         assigns[:origin_action].should == 'edit'
       end
 
       it 'sets the success redirect to the index action' do
-        get :edit, :id => @faculty.id
+        get :edit, :id => @faculty_instance.id
         assigns[:redirect_action].should == 'index'
       end
  
       it 'renders the edit template' do
-        get :edit, :id => @faculty.id
+        get :edit, :id => @faculty_instance.id
         response.should render_template('edit')
       end
     end
@@ -218,7 +218,7 @@ describe FacultiesController do
       end
 
       it 'redirects to the New Peer Advisor page' do
-        get :edit, :id => @faculty.id
+        get :edit, :id => @faculty_instance.id
         response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
       end
     end
@@ -232,8 +232,8 @@ describe FacultiesController do
       end
 
       it 'redirects to the New Faculty page' do
-        get :edit, :id => @faculty.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        get :edit, :id => @faculty_instance.id
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -241,8 +241,8 @@ describe FacultiesController do
   describe 'GET schedule' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
-        get :schedule, :id => @faculty.id
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(schedule_faculty_url(@faculty.id))}")
+        get :schedule, :id => @faculty_instance.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(schedule_faculty_instance_url(@faculty_instance.id))}")
       end
     end
 
@@ -257,44 +257,45 @@ describe FacultiesController do
       end
 
       it 'redirects to the New Peer Advisor page' do
-        get :schedule, :id => @faculty.id
+        get :schedule, :id => @faculty_instance.id
         response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
       end
     end
 
     context 'when signed in as as the given registered Faculty' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@faculty.ldap_id)
+        CASClient::Frameworks::Rails::Filter.fake(@faculty_instance.ldap_id)
+        Faculty.stub(:find).and_return(@faculty_instance)
       end
 
-      it 'assigns to @faculty the given Faculty' do
-        get :schedule, :id => @faculty.id
-        assigns[:faculty].should == @faculty
+      it 'assigns to @faculty_instance the given Faculty' do
+        get :schedule, :id => @faculty_instance.id
+        assigns[:faculty_instance].should == @faculty_instance
       end
 
       it 'sets the error redirect to the schedule action' do
-        get :schedule, :id => @faculty.id
+        get :schedule, :id => @faculty_instance.id
         assigns[:origin_action].should == 'schedule'
       end
 
       it 'sets the success redirect to the schedule action' do
-        get :schedule, :id => @faculty.id
+        get :schedule, :id => @faculty_instance.id
         assigns[:redirect_action].should == 'schedule'
       end
 
       it 'builds a list of possible meeting slots' do
-        Faculty.stub(:find).and_return(@faculty)
-        @faculty.should_receive(:build_available_times)
-        get :schedule, :id => @faculty.id
+        Faculty.stub(:find).and_return(@faculty_instance)
+        @faculty_instance.should_receive(:build_available_times)
+        get :schedule, :id => @faculty_instance.id
       end
 
       it 'renders the schedule template' do
-        get :schedule, :id => @faculty.id
+        get :schedule, :id => @faculty_instance.id
         response.should render_template('schedule')
       end
     end
 
-    context 'when signed in as some other registered faculty'
+    context 'when signed in as some other registered Faculty'
 
     context 'when signed in as an unregistered Faculty' do
       before(:each) do
@@ -303,8 +304,8 @@ describe FacultiesController do
       end
 
       it 'redirects to the New Faculty page' do
-        get :schedule, :id => @faculty.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        get :schedule, :id => @faculty_instance.id
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -312,8 +313,8 @@ describe FacultiesController do
   describe 'GET delete' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
-        get :delete, :id => @faculty.id
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(delete_faculty_url(@faculty.id))}")
+        get :delete, :id => @faculty_instance.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(delete_faculty_instance_url(@faculty_instance.id))}")
       end
     end
 
@@ -322,14 +323,14 @@ describe FacultiesController do
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
-      it 'assigns to @faculty the given Faculty' do
-        Faculty.stub(:find).and_return(@faculty)
-        get :delete, :id => @faculty.id
-        assigns[:faculty].should == @faculty
+      it 'assigns to @faculty_instance the given Faculty' do
+        Faculty.stub(:find).and_return(@faculty_instance)
+        get :delete, :id => @faculty_instance.id
+        assigns[:faculty_instance].should == @faculty_instance
       end
  
       it 'renders the delete template' do
-        get :delete, :id => @faculty.id
+        get :delete, :id => @faculty_instance.id
         response.should render_template('delete')
       end
     end
@@ -343,7 +344,7 @@ describe FacultiesController do
       end
 
       it 'redirects to the New Peer Advisor page' do
-        get :delete, :id => @faculty.id
+        get :delete, :id => @faculty_instance.id
         response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
       end
     end
@@ -357,8 +358,8 @@ describe FacultiesController do
       end
 
       it 'redirects to the New Faculty page' do
-        get :delete, :id => @faculty.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        get :delete, :id => @faculty_instance.id
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -367,30 +368,30 @@ describe FacultiesController do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
         post :create
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(faculties_url)}")
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(faculty_url)}")
       end
     end
 
     context 'when signed in as a Staff' do
       before(:each) do
-        Faculty.stub(:new).and_return(@faculty)
+        Faculty.stub(:new).and_return(@faculty_instance)
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
-      it 'assigns to @faculty a new Faculty with the given parameters' do
-        Faculty.should_receive(:new).with('foo' => 'bar').and_return(@faculty)
+      it 'assigns to @faculty_instance a new Faculty with the given parameters' do
+        Faculty.should_receive(:new).with('foo' => 'bar').and_return(@faculty_instance)
         post :create, :faculty => {'foo' => 'bar'}
-        assigns[:faculty].should equal(@faculty)
+        assigns[:faculty_instance].should equal(@faculty_instance)
       end
  
       it 'saves the Faculty' do
-        @faculty.should_receive(:save)
+        @faculty_instance.should_receive(:save)
         post :create
       end
 
       context 'when the Faculty is successfully saved' do
         before(:each) do
-          @faculty.stub(:save).and_return(true)
+          @faculty_instance.stub(:save).and_return(true)
         end
 
         it 'sets a flash[:notice] message' do
@@ -406,7 +407,7 @@ describe FacultiesController do
 
       context 'when the Faculty fails to be saved' do
         before(:each) do
-          @faculty.stub(:save).and_return(false)
+          @faculty_instance.stub(:save).and_return(false)
         end
 
         it 'renders the new template' do
@@ -438,14 +439,14 @@ describe FacultiesController do
         Person.stub(:find).and_return(Faculty.new(:ldap_id => '12345'))
       end
 
-      it 'assigns to @faculty a Faculty with the same LDAP UID as the logged in user' do
+      it 'assigns to @faculty_instance a Faculty with the same LDAP UID as the logged in user' do
         post :create
-        assigns[:faculty].ldap_id.should == '12345'
+        assigns[:faculty_instance].ldap_id.should == '12345'
       end
 
       it 'saves the Faculty' do
-        Faculty.stub(:new).and_return(@faculty)
-        @faculty.should_receive(:save)
+        Faculty.stub(:new).and_return(@faculty_instance)
+        @faculty_instance.should_receive(:save)
         post :create
       end
     end
@@ -455,32 +456,32 @@ describe FacultiesController do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
         post :import
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(import_faculties_url)}")
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(import_faculty_url)}")
       end
     end
 
     context 'when signed in as a Staff' do
       before(:each) do
         @csv_text = 'text'
-        @faculties = [Faculty.new, Faculty.new, Faculty.new]
-        Faculty.stub(:new_from_csv).and_return(@faculties)
+        @faculty = [Faculty.new, Faculty.new, Faculty.new]
+        Faculty.stub(:new_from_csv).and_return(@faculty)
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
-      it 'assigns to @staff a collection of Faculties built from the attributes in each row' do
-        Faculty.should_receive(:new_from_csv).with(@csv_text).and_return(@faculties)
+      it 'assigns to @faculty a collection of Faculty built from the attributes in each row' do
+        Faculty.should_receive(:new_from_csv).with(@csv_text).and_return(@faculty)
         post :import, :csv_file => @csv_text
-        assigns[:faculties].should equal(@faculties)
+        assigns[:faculty].should equal(@faculty)
       end
 
-      context 'when the Faculties are all valid' do
+      context 'when the Faculty are all valid' do
         before(:each) do
-          @faculties.each {|s| s.stub(:valid?).and_return(true)}
+          @faculty.each {|s| s.stub(:valid?).and_return(true)}
         end
 
         it 'sets a flash[:notice] message' do
           post :import, :csv_file => @csv_text
-          flash[:notice].should == 'Faculties were successfully imported.'
+          flash[:notice].should == 'Faculty were successfully imported.'
         end
 
         it 'redirects to the View Faculty page' do
@@ -489,9 +490,9 @@ describe FacultiesController do
         end
       end
 
-      context 'when not all of the Faculties are valid' do
+      context 'when not all of the Faculty are valid' do
         before(:each) do
-          @faculties.first.stub(:valid?).and_return(false)
+          @faculty.first.stub(:valid?).and_return(false)
         end
 
         it 'renders the upload template' do
@@ -525,7 +526,7 @@ describe FacultiesController do
 
       it 'redirects to the New Faculty page' do
         post :import
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -533,61 +534,61 @@ describe FacultiesController do
   describe 'PUT update' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
-        put :update, :id => @faculty.id
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(faculty_url(@faculty.id))}")
+        put :update, :id => @faculty_instance.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(faculty_instance_url(@faculty_instance.id))}")
       end
     end
 
     context 'when signed in as a Staff' do
       before(:each) do
-        Faculty.stub(:find).and_return(@faculty)
+        Faculty.stub(:find).and_return(@faculty_instance)
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
-      it 'assigns to @faculty the given Faculty' do
-        Faculty.should_receive(:find).with(@faculty.id.to_s).and_return(@faculty)
-        put :update, :id => @faculty.id
-        assigns[:faculty].should equal(@faculty)
+      it 'assigns to @faculty_instance the given Faculty' do
+        Faculty.should_receive(:find).with(@faculty_instance.id.to_s).and_return(@faculty_instance)
+        put :update, :id => @faculty_instance.id
+        assigns[:faculty_instance].should equal(@faculty_instance)
       end
 
       it 'updates the Faculty' do
-        @faculty.should_receive(:update_attributes).with('foo' => 'bar')
-        put :update, :id => @faculty.id, :faculty => {'foo' => 'bar'}
+        @faculty_instance.should_receive(:update_attributes).with('foo' => 'bar')
+        put :update, :id => @faculty_instance.id, :faculty => {'foo' => 'bar'}
       end
 
       context 'when the Faculty is successfully updated' do
         before(:each) do
-          @faculty.stub(:update_attributes).and_return(true)
+          @faculty_instance.stub(:update_attributes).and_return(true)
         end
   
         it 'sets a flash[:notice] message' do
-          put :update, :id => @faculty.id
+          put :update, :id => @faculty_instance.id
           flash[:notice].should == 'Faculty was successfully updated.'
         end
 
         it 'redirects to the given success redirect action' do
-          put :update, :id => @faculty.id, :redirect_action => 'index'
+          put :update, :id => @faculty_instance.id, :redirect_action => 'index'
           response.should redirect_to(:action => 'index')
         end
       end
 
       context 'when the Faculty fails to be saved' do
         before(:each) do
-          @faculty.stub(:update_attributes).and_return(false)
+          @faculty_instance.stub(:update_attributes).and_return(false)
         end
 
         it 'sets the error redirect to the given error action' do
-          put :update, :id => @faculty.id, :origin_action => 'edit'
+          put :update, :id => @faculty_instance.id, :origin_action => 'edit'
           assigns[:origin_action].should == 'edit'
         end
 
         it 'sets the success redirect to the index action' do
-          put :update, :id => @faculty.id, :redirect_action => 'index'
+          put :update, :id => @faculty_instance.id, :redirect_action => 'index'
           assigns[:redirect_action].should == 'index'
         end
 
         it 'renders the template for the given error action' do
-          put :update, :id => @faculty.id, :origin_action => 'edit'
+          put :update, :id => @faculty_instance.id, :origin_action => 'edit'
           response.should render_template('edit')
         end
       end
@@ -602,7 +603,7 @@ describe FacultiesController do
       end
 
       it 'redirects to the New Peer Advisor page' do
-        put :update, :id => @faculty.id
+        put :update, :id => @faculty_instance.id
         response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
       end
     end
@@ -616,8 +617,8 @@ describe FacultiesController do
       end
 
       it 'redirects to the New Faculty page' do
-        put :update, :id => @faculty.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        put :update, :id => @faculty_instance.id
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -625,35 +626,35 @@ describe FacultiesController do
   describe 'DELETE destroy' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
-        delete :destroy, :id => @faculty.id
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(faculty_url(@faculty.id))}")
+        delete :destroy, :id => @faculty_instance.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(faculty_instance_url(@faculty_instance.id))}")
       end
     end
 
     context 'when signed in as a Staff' do
       before(:each) do
-        Faculty.stub(:find).and_return(@faculty)
+        Faculty.stub(:find).and_return(@faculty_instance)
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
-      it 'assigns to @faculty the given Faculty' do
-        Faculty.should_receive(:find).with(@faculty.id.to_s).and_return(@faculty)
-        delete :destroy, :id => @faculty.id
-        assigns[:faculty].should equal(@faculty)
+      it 'assigns to @faculty_instance the given Faculty' do
+        Faculty.should_receive(:find).with(@faculty_instance.id.to_s).and_return(@faculty_instance)
+        delete :destroy, :id => @faculty_instance.id
+        assigns[:faculty_instance].should equal(@faculty_instance)
       end
 
       it 'destroys the Faculty' do
-        @faculty.should_receive(:destroy)
-        delete :destroy, :id => @faculty.id
+        @faculty_instance.should_receive(:destroy)
+        delete :destroy, :id => @faculty_instance.id
       end
 
       it 'sets a flash[:notice] message' do
-        delete :destroy, :id => @faculty.id
+        delete :destroy, :id => @faculty_instance.id
         flash[:notice].should == 'Faculty was removed.'
       end
 
       it 'redirects to the View Faculty page' do
-        delete :destroy, :id => @faculty.id
+        delete :destroy, :id => @faculty_instance.id
         response.should redirect_to(:action => 'index')
       end
     end
@@ -667,7 +668,7 @@ describe FacultiesController do
       end
 
       it 'redirects to the New Peer Advisor page' do
-        delete :destroy, :id => @faculty.id
+        delete :destroy, :id => @faculty_instance.id
         response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
       end
     end
@@ -681,8 +682,8 @@ describe FacultiesController do
       end
 
       it 'redirects to the New Faculty page' do
-        delete :destroy, :id => @faculty.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        delete :destroy, :id => @faculty_instance.id
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end

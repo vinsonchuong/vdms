@@ -3,12 +3,12 @@ class PeopleController < ApplicationController
 
   # GET /people/PEOPLE
   def index
-    self.instance_variable_set("@#{@model.name.tableize}", @model.all)
+    self.instance_variable_set("@#{@collection}", @model.all)
   end
 
   # GET /people/PEOPLE/new
   def new
-    self.instance_variable_set("@#{@model.name.underscore}", @model.new)
+    self.instance_variable_set("@#{@instance}", @model.new)
   end
 
   # GET /people/PEOPLE/upload
@@ -17,22 +17,22 @@ class PeopleController < ApplicationController
 
   # GET /people/PEOPLE/1/edit
   def edit
-    self.instance_variable_set("@#{@model.name.underscore}", @model.find(params[:id]))
+    self.instance_variable_set("@#{@instance}", @model.find(params[:id]))
     @origin_action = 'edit'
     @redirect_action = 'index'
   end
 
   # GET /people/PEOPLE/1/delete
   def delete
-    self.instance_variable_set("@#{@model.name.underscore}", @model.find(params[:id]))
+    self.instance_variable_set("@#{@instance}", @model.find(params[:id]))
   end
 
   # POST /people/PEOPLE
   def create
-    self.instance_variable_set("@#{@model.name.underscore}", @model.new(params[@model.name.underscore.to_sym]))
+    self.instance_variable_set("@#{@instance}", @model.new(params[@model.name.underscore.to_sym]))
 
-    if instance_variable_get("@#{@model.name.underscore}").save
-      redirect_to(self.send("#{@model.name.tableize}_url".to_sym), :notice => "#{@model.name.titleize} was successfully added.")
+    if instance_variable_get("@#{@instance}").save
+      redirect_to(self.send("#{@collection}_url".to_sym), :notice => "#{@model.name.titleize} was successfully added.")
     else
       render :action => 'new'
     end
@@ -40,11 +40,11 @@ class PeopleController < ApplicationController
 
   # POST /people/PEOPLE/import
   def import
-    self.instance_variable_set("@#{@model.name.tableize}", @model.new_from_csv(params[:csv_file]))
+    self.instance_variable_set("@#{@collection}", @model.new_from_csv(params[:csv_file]))
 
-    if instance_variable_get("@#{@model.name.tableize}").map(&:valid?).all?
-      instance_variable_get("@#{@model.name.tableize}").each(&:save)
-      redirect_to(self.send("#{@model.name.tableize}_url".to_sym), :notice => "#{@model.name.titleize.pluralize} were successfully imported.")
+    if instance_variable_get("@#{@collection}").map(&:valid?).all?
+      instance_variable_get("@#{@collection}").each(&:save)
+      redirect_to(self.send("#{@collection}_url".to_sym), :notice => "#{@model.name.pluralize.titleize} were successfully imported.")
     else
       render :action => 'upload'
     end
@@ -52,11 +52,11 @@ class PeopleController < ApplicationController
 
   # PUT /people/PEOPLE/1
   def update
-    self.instance_variable_set("@#{@model.name.underscore}", @model.find(params[:id]))
+    self.instance_variable_set("@#{@instance}", @model.find(params[:id]))
 
-    if instance_variable_get("@#{@model.name.underscore}").update_attributes(params[@model.name.underscore.to_sym])
+    if instance_variable_get("@#{@instance}").update_attributes(params[@model.name.underscore.to_sym])
       flash[:notice] = "#{@model.name.titleize} was successfully updated."
-      redirect_to(:action => params[:redirect_action], :record => instance_variable_get("@#{@model.name.underscore}"))
+      redirect_to(:action => params[:redirect_action], :record => instance_variable_get("@#{@instance}"))
     else
       @origin_action = params[:origin_action]
       @redirect_action = params[:redirect_action]
@@ -66,7 +66,7 @@ class PeopleController < ApplicationController
 
   # DELETE /people/PEOPLE/1
   def destroy
-    self.instance_variable_set("@#{@model.name.underscore}", @model.find(params[:id])).destroy
-    redirect_to(self.send("#{@model.name.tableize}_url".to_sym), :notice => "#{@model.name.titleize} was removed.")
+    self.instance_variable_set("@#{@instance}", @model.find(params[:id])).destroy
+    redirect_to(self.send("#{@collection}_url".to_sym), :notice => "#{@model.name.titleize} was removed.")
   end
 end

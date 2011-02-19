@@ -50,48 +50,48 @@ describe 'Routes' do
   context 'People' do
     context 'Staff' do
       context 'View Staff' do
-        it 'routes GET /people/staffs to Staffs#index' do
-          {:get => '/people/staffs'}.should route_to(:controller => 'staffs', :action => 'index')
+        it 'routes GET /people/staff to Staff#index' do
+          {:get => '/people/staff'}.should route_to(:controller => 'staff', :action => 'index')
         end
       end
 
       context 'Add Staff' do
-        it 'routes GET /people/staffs/new to Staffs#new' do
-          {:get => '/people/staffs/new'}.should route_to(:controller => 'staffs', :action => 'new')
+        it 'routes GET /people/staff/new to Staff#new' do
+          {:get => '/people/staff/new'}.should route_to(:controller => 'staff', :action => 'new')
         end
 
-        it 'routes POST /people/staffs to Staffs#create' do
-          {:post => '/people/staffs'}.should route_to(:controller => 'staffs', :action => 'create')
+        it 'routes POST /people/staff to Staff#create' do
+          {:post => '/people/staff'}.should route_to(:controller => 'staff', :action => 'create')
         end
       end
 
       context 'Import Staff' do
-        it 'routes GET /people/staffs/upload to Staffs#upload' do
-          {:get => '/people/staffs/upload'}.should route_to(:controller => 'staffs', :action => 'upload')
+        it 'routes GET /people/staff/upload to Staff#upload' do
+          {:get => '/people/staff/upload'}.should route_to(:controller => 'staff', :action => 'upload')
         end
 
-        it 'routes POST /people/staffs/import to Staffs#import' do
-          {:post => '/people/staffs/import'}.should route_to(:controller => 'staffs', :action => 'import')
+        it 'routes POST /people/staff/import to Staff#import' do
+          {:post => '/people/staff/import'}.should route_to(:controller => 'staff', :action => 'import')
         end
       end
 
       context 'Update Staff' do
-        it 'routes GET /people/staffs/1/edit to Staffs#edit' do
-          {:get => '/people/staffs/1/edit'}.should route_to(:controller => 'staffs', :action => 'edit', :id => '1')
+        it 'routes GET /people/staff/1/edit to Staff#edit' do
+          {:get => '/people/staff/1/edit'}.should route_to(:controller => 'staff', :action => 'edit', :id => '1')
         end
 
-        it 'routes PUT /people/staffs/1 to Staffs#update' do
-          {:put => '/people/staffs/1'}.should route_to(:controller => 'staffs', :action => 'update', :id => '1')
+        it 'routes PUT /people/staff/1 to Staff#update' do
+          {:put => '/people/staff/1'}.should route_to(:controller => 'staff', :action => 'update', :id => '1')
         end
       end
 
       context 'Remove Staff' do
-        it 'routes GET /people/staffs/1/delete to Staffs#delete' do
-          {:get => '/people/staffs/1/delete'}.should route_to(:controller => 'staffs', :action => 'delete', :id => '1')
+        it 'routes GET /people/staff/1/delete to Staff#delete' do
+          {:get => '/people/staff/1/delete'}.should route_to(:controller => 'staff', :action => 'delete', :id => '1')
         end
 
-        it 'routes DELETE /people/staffs/1 to Staffs#destroy' do
-          {:delete => '/people/staffs/1'}.should route_to(:controller => 'staffs', :action => 'destroy', :id => '1')
+        it 'routes DELETE /people/staff/1 to Staff#destroy' do
+          {:delete => '/people/staff/1'}.should route_to(:controller => 'staff', :action => 'destroy', :id => '1')
         end
       end
     end
@@ -146,60 +146,60 @@ describe 'Routes' do
 
     context 'Faculty' do
       context 'View Faculty' do
-        it 'routes GET /people/faculties to Faculties#index' do
-          {:get => '/people/faculties'}.should route_to(:controller => 'faculties', :action => 'index')
+        it 'routes GET /people/faculty to Faculty#index' do
+          {:get => '/people/faculty'}.should route_to(:controller => 'faculty', :action => 'index')
         end
       end
 
       context 'Add Faculty' do
-        it 'routes GET /people/faculties/new to Faculties#new' do
-          {:get => '/people/faculties/new'}.should route_to(:controller => 'faculties', :action => 'new')
+        it 'routes GET /people/faculty/new to Faculty#new' do
+          {:get => '/people/faculty/new'}.should route_to(:controller => 'faculty', :action => 'new')
         end
 
-        it 'routes POST /people/faculties to Faculties#create' do
-          {:post => '/people/faculties'}.should route_to(:controller => 'faculties', :action => 'create')
+        it 'routes POST /people/faculty to Faculty#create' do
+          {:post => '/people/faculty'}.should route_to(:controller => 'faculty', :action => 'create')
         end
       end
 
       context 'Import Faculty' do
-        it 'routes GET /people/faculties/upload to Faculties#upload' do
-          {:get => '/people/faculties/upload'}.should route_to(:controller => 'faculties', :action => 'upload')
+        it 'routes GET /people/faculty/upload to Faculty#upload' do
+          {:get => '/people/faculty/upload'}.should route_to(:controller => 'faculty', :action => 'upload')
         end
 
-        it 'routes POST /people/faculties/import to Faculties#import' do
-          {:post => '/people/faculties/import'}.should route_to(:controller => 'faculties', :action => 'import')
+        it 'routes POST /people/faculty/import to Faculty#import' do
+          {:post => '/people/faculty/import'}.should route_to(:controller => 'faculty', :action => 'import')
         end
       end
 
       context 'Update Faculty' do
-        it 'routes GET /people/faculties/1/edit to Faculties#edit' do
-          {:get => '/people/faculties/1/edit'}.should route_to(:controller => 'faculties', :action => 'edit', :id => '1')
+        it 'routes GET /people/faculty/1/edit to Faculty#edit' do
+          {:get => '/people/faculty/1/edit'}.should route_to(:controller => 'faculty', :action => 'edit', :id => '1')
         end
 
-        it 'routes PUT /people/faculties/1 to Faculties#update' do
-          {:put => '/people/faculties/1'}.should route_to(:controller => 'faculties', :action => 'update', :id => '1')
+        it 'routes PUT /people/faculty/1 to Faculty#update' do
+          {:put => '/people/faculty/1'}.should route_to(:controller => 'faculty', :action => 'update', :id => '1')
         end
       end
 
       context 'Update Faculty Schedule' do
-        it 'routes GET /people/faculties/1/schedule to Faculties#schedule' do
-          {:get => '/people/faculties/1/schedule'}.should route_to(:controller => 'faculties', :action => 'schedule', :id => '1')
+        it 'routes GET /people/faculty/1/schedule to Faculty#schedule' do
+          {:get => '/people/faculty/1/schedule'}.should route_to(:controller => 'faculty', :action => 'schedule', :id => '1')
         end
       end
 
       context 'Remove Faculty' do
-        it 'routes GET /people/faculties/1/delete to Faculties#delete' do
-          {:get => '/people/faculties/1/delete'}.should route_to(:controller => 'faculties', :action => 'delete', :id => '1')
+        it 'routes GET /people/faculty/1/delete to Faculty#delete' do
+          {:get => '/people/faculty/1/delete'}.should route_to(:controller => 'faculty', :action => 'delete', :id => '1')
         end
 
-        it 'routes DELETE /people/faculties/1 to Faculties#destroy' do
-          {:delete => '/people/faculties/1'}.should route_to(:controller => 'faculties', :action => 'destroy', :id => '1')
+        it 'routes DELETE /people/faculty/1 to Faculty#destroy' do
+          {:delete => '/people/faculty/1'}.should route_to(:controller => 'faculty', :action => 'destroy', :id => '1')
         end
       end
       
       context 'Update Faculty Admit Rankings' do
-        it 'routes GET /people/faculties/1/rank_admits to Faculties#rank_admits' do
-          {:get => '/people/faculties/1/rank_admits'}.should route_to(:controller => 'faculties', :action => 'rank_admits', :id => '1')
+        it 'routes GET /people/faculty/1/rank_admits to Faculty#rank_admits' do
+          {:get => '/people/faculty/1/rank_admits'}.should route_to(:controller => 'faculty', :action => 'rank_admits', :id => '1')
         end
       end
     end

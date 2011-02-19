@@ -1,6 +1,6 @@
 %h2 Import Faculty
-- form_tag import_faculties_path, :method => :post, :multipart => true do
-  - if !@faculties.nil? && @faculties.any?(&:invalid?)
+- form_tag import_faculty_path, :method => :post, :multipart => true do
+  - if !@faculty.nil? && @faculty.any?(&:invalid?)
     %table
       %thead
         %tr
@@ -11,16 +11,16 @@
           %th{:scope => 'col'} Division
           %th{:scope => 'col'} Errors
       %tbody
-        - @faculties.each do |faculty|
+        - @faculty.each do |faculty_instance|
           %tr
-            %td= faculty.first_name
-            %td= faculty.last_name
-            %td= faculty.email
-            %td= faculty.area
-            %td= faculty.division
+            %td= faculty_instance.first_name
+            %td= faculty_instance.last_name
+            %td= faculty_instance.email
+            %td= faculty_instance.area
+            %td= faculty_instance.division
             %td
               %ul
-                - faculty.errors.full_messages.each do |error|
+                - faculty_instance.errors.full_messages.each do |error|
                   %li= error
   %fieldset
     %h3 Data

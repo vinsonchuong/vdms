@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resource :settings, :only => [:edit, :update]
 
-  map.resources :staffs, :path_prefix => '/people',
+  map.resources :staff, :singular => 'staff_instance', :path_prefix => '/people',
     :except => [:show],
     :collection => {:upload => :get, :import => :post},
     :member => {:delete => :get}
@@ -18,7 +18,7 @@ ActionController::Routing::Routes.draw do |map|
     :except => [:show],
     :collection => {:upload => :get, :import => :post},
     :member => {:delete => :get}
-  map.resources :faculties, :path_prefix => '/people',
+  map.resources :faculty, :singular => 'faculty_instance', :path_prefix => '/people',
     :except => [:show],
     :collection => {:upload => :get, :import => :post},
     :member => {:schedule => :get, :delete => :get, :rank_admits => :get}

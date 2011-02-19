@@ -56,7 +56,7 @@ describe PeerAdvisorsController do
 
       it 'redirects to the New Faculty page' do
         get :index
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -109,7 +109,7 @@ describe PeerAdvisorsController do
 
       it 'redirects to the New Faculty page' do
         get :index
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -157,7 +157,7 @@ describe PeerAdvisorsController do
 
       it 'redirects to the New Faculty page' do
         get :upload
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -221,7 +221,7 @@ describe PeerAdvisorsController do
 
       it 'redirects to the New Faculty page' do
         get :edit, :id => @peer_advisor.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -275,7 +275,7 @@ describe PeerAdvisorsController do
 
       it 'redirects to the New Faculty page' do
         get :delete, :id => @peer_advisor.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -363,7 +363,7 @@ describe PeerAdvisorsController do
 
       it 'redirects to the New Faculty page' do
         post :create
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -442,7 +442,7 @@ describe PeerAdvisorsController do
 
       it 'redirects to the New Faculty page' do
         post :import
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -534,7 +534,7 @@ describe PeerAdvisorsController do
 
       it 'redirects to the New Faculty page' do
         put :update, :id => @peer_advisor.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -599,7 +599,7 @@ describe PeerAdvisorsController do
 
       it 'redirects to the New Faculty page' do
         delete :destroy, :id => @peer_advisor.id
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end

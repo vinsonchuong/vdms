@@ -1,6 +1,6 @@
 %h2 Import Staff
-- form_tag import_staffs_path, :method => :post, :multipart => true do
-  - if !@staffs.nil? && @staffs.any?(&:invalid?)
+- form_tag import_staff_path, :method => :post, :multipart => true do
+  - if !@staff.nil? && @staff.any?(&:invalid?)
     %table
       %thead
         %tr
@@ -9,14 +9,14 @@
           %th{:scope => 'col'} Email
           %th{:scope => 'col'} Errors
       %tbody
-        - @staffs.each do |staff|
+        - @staff.each do |staff_instance|
           %tr
-            %td= staff.first_name
-            %td= staff.last_name
-            %td= staff.email
+            %td= staff_instance.first_name
+            %td= staff_instance.last_name
+            %td= staff_instance.email
             %td
               %ul
-                - staff.errors.full_messages.each do |error|
+                - staff_instance.errors.full_messages.each do |error|
                   %li= error
   %fieldset
     %h3 Data

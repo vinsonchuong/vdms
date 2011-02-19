@@ -75,7 +75,7 @@ describe SettingsController do
 
       it 'redirects to the New Faculty page' do
         get :edit
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end
@@ -158,7 +158,7 @@ describe SettingsController do
 
       it 'redirects to the New Faculty page' do
         put :update
-        response.should redirect_to(:controller => 'faculties', :action => 'new')
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
   end

@@ -50,7 +50,7 @@ Feature: Staff can manage staff
     When I follow "Import Staff"
     And I attach the file "features/assets/valid_staff.csv" to "CSV File"
     And I press "Import"
-    Then I should see "Staffs were successfully imported."
+    Then I should see "Staff were successfully imported."
     And I should see "First1"
     And I should see "First2"
     And I should see "First3"

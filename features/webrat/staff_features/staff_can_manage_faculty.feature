@@ -56,7 +56,7 @@ Feature: Staff can manage faculty
     When I follow "Import Faculty"
     And I attach the file "features/assets/valid_faculty.csv" to "CSV File"
     And I press "Import"
-    Then I should see "Faculties were successfully imported."
+    Then I should see "Faculty were successfully imported."
     And I should see "First1"
     And I should see "First2"
     And I should see "First3"

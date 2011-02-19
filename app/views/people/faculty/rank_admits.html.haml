@@ -2,11 +2,10 @@
 %h3 Navigation
 %ul
   %li!= link_to 'Add Admits to My Desired Appointments', filter_admits_path
-
 #admit_ranking
   %span
   %p
-  - form_for @faculty do |faculty_form|
+  - form_for @faculty_instance do |faculty_form|
     != faculty_form.error_messages
     %fieldset
       %table
@@ -22,7 +21,7 @@
           - faculty_form.fields_for :admit_rankings do |admit_ranking_fields|
             - @admit_ranking = admit_ranking_fields.object
             %tr
-              %td!= admit_ranking_fields.select(:rank, @faculty.admit_rankings.each_index.collect {|index| [index+1, index+1]})
+              %td!= admit_ranking_fields.select(:rank, @faculty_instance.admit_rankings.each_index.collect {|index| [index+1, index+1]})
               %td!= admit_ranking_fields.check_box :mandatory, {}, "true", "false"
               %td
               %td!= admit_ranking_fields.check_box :one_on_one, {}, "true", "false"
