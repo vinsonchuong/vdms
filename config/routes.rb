@@ -24,6 +24,6 @@ ActionController::Routing::Routes.draw do |map|
     :member => {:schedule => :get, :delete => :get, :rank_admits => :get}
   map.resources :admits, :path_prefix => '/people',
     :except => [:show],
-    :collection => {:upload => :get, :import => :post, :filter => :get},
+    :collection => {:upload => :get, :import => :post},
     :member => {:schedule => :get, :rank_faculty => :get, :delete => :get}
 end

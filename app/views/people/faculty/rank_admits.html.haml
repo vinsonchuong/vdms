@@ -1,4 +1,44 @@
 %h2 My Desired Appointments
+#area_of_interests
+  %h3 Step 1: Area of Interests
+  %span Please select your area of interests. A list of admits in the area of interests will appear in the List of Admits
+  - form_for :rank_admits, :html => {:method => :get, :id => 'filter_form'} do |filter_form|
+    %fieldset
+      %h4 Filter by Area
+      != link_to_function("Select All CS","CheckAllCS(filter_form)")
+      != link_to_function("Select All EE","CheckAllEE(filter_form)")
+      != link_to_function("Unselect All","UncheckAll(filter_form)")
+      %ul
+        - @areas.each do |area, checked|
+          %li
+            != filter_form.check_box area, :checked => checked, :index => "areas"
+            != filter_form.label area, area
+    %fieldset
+      %h4 Submit
+      != filter_form.submit 'Filter Admits'
+
+#list_of_admits
+  %h3 Step 2: List of Admits              
+  %span Please check admits whom you desire to schedule a meeting with
+  #fieldset
+  - form_for :rank_admits, :html => {:method => :get}  do |select_admit_form|
+    %fieldset
+      %h4 Select Admits
+      %ul
+        - if !@admits.empty?
+          - @admits.each do |admit, checked|
+            %li
+              != select_admit_form.check_box admit.id, :checked => checked
+              != select_admit_form.label admit.full_name, admit.full_name
+    %fieldset
+      %h4 Submit
+      != select_admit_form.submit 'Add to My Desired Appointment List'
+
+#admit_ranking
+  %h3 Step 3: Update My Desired Appointment
+  %fieldset
+  - form_for @faculty do |faculty_form|
+
 %h3 Navigation
 %ul
   %li!= link_to 'Add Admits to My Desired Appointments', filter_admits_path

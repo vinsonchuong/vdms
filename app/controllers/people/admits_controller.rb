@@ -2,18 +2,6 @@ class AdmitsController < PeopleController
   before_filter :get_areas_and_divisions, :only => [:new, :edit, :create, :update]
   before_filter :get_faculty, :only => [:rank_faculty, :update]
 
-  # GET /people/PEOPLE/admits/filter
-  def filter
-      @areas =  Settings.instance.areas
-      @divisions = Settings.instance.divisions.map(&:name)
-      @admits = []
-      
-      if params[:commit] == "Filter Admits"
-        params[:filter][:divisions].collect {|division, checked| @admits += Admit.find_all_by_division(division) if checked == "1" }
-        params[:filter][:areas].collect {|area, checked| @admits += Admit.find(:all, :conditions => ["area1 = ? OR area2 = ?", area, area]) if checked == "1"}
-        @admits.uniq!
-      end   
-  end
 
   # GET /people/admits/1/schedule
   def schedule

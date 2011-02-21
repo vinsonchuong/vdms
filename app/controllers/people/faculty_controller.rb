@@ -13,6 +13,16 @@ class FacultyController < PeopleController
     @origin_action = 'rank_admits'
     @redirect_action = 'rank_admits'
 
+    @areas =  Settings.instance.areas
+    @admits = []
+    
+    if params[:commit] == "Filter Admits"
+      params[:rank_admits][:areas].collect {|area, checked| @admits += Admit.find(:all, :conditions => ["area1 = ? OR area2 = ?", area, area]) if checked == "1"}
+      @admits.delete_if {|admit| @faculty.admit_rankings.find_by_admit_id(admit.id)}
+      @admits.uniq!
+    end
+
+
     params[:admits].each {|admit_id, checked| @faculty_instance.admit_rankings.build(:admit_id => admit_id) if checked == "1" && !@faculty_instance.admit_rankings.find_by_admit_id(admit_id)} if params[:admits]
   end
 
