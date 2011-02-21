@@ -471,7 +471,7 @@ describe AdmitsController do
 
         it 'sets a flash[:notice] message' do
           post :create
-          flash[:notice].should == 'Admit was successfully added.'
+          flash[:notice].should == I18n.t('people.admits.create.success')
         end
 
         it 'redirects to the View Admits page' do
@@ -550,7 +550,7 @@ describe AdmitsController do
 
         it 'sets a flash[:notice] message' do
           post :import, :csv_file => @csv_text
-          flash[:notice].should == 'Admits were successfully imported.'
+          flash[:notice].should == I18n.t('people.admits.import.success')
         end
 
         it 'redirects to the View Admit page' do
@@ -633,7 +633,7 @@ describe AdmitsController do
   
         it 'sets a flash[:notice] message' do
           put :update, :id => @admit.id
-          flash[:notice].should == 'Admit was successfully updated.'
+          flash[:notice].should == I18n.t('people.admits.update.success')
         end
 
         it 'redirects to the given success redirect action' do
@@ -720,7 +720,7 @@ describe AdmitsController do
 
       it 'sets a flash[:notice] message' do
         delete :destroy, :id => @admit.id
-        flash[:notice].should == 'Admit was removed.'
+        flash[:notice].should == I18n.t('people.admits.destroy.success')
       end
 
       it 'redirects to the View Admits page' do

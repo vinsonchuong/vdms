@@ -20,5 +20,5 @@ Feature: Faculty can register
     And I select "Theory" from "Area"
     And I fill in "Division" with "Computer Science"
     And I fill in "Area" with "Theory"
-    And I press "Save changes"
+    And I press "Register"
     Then I should see "Faculty was successfully added."

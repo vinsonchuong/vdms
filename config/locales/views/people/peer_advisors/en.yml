@@ -1,0 +1,26 @@
+en:
+  peer_advisors:
+    index:
+      title: "Manage Peer Advisors"
+      actions: "Actions"
+    new:
+      title: "Add Peer Advisor"
+      alt_title: "Register As A Peer Advisor"
+      info: "Peer Advisor Info"
+      submit: "Add Peer Advisor"
+      alt_submit: "Register"
+    upload:
+      title: "Import Peer Advisors"
+      errors: "Errors"
+      data: "Data"
+      csv_file: "CSV File"
+      submit: "Import Peer Advisors"
+    edit:
+      title: "Update Peer Advisor"
+      alt_title: "Update My Registration"
+      info: "Peer Advisor Info"
+      submit: "Update Peer Advisor"
+      alt_submit: "Update Registration"
+    delete:
+      title: "Remove Peer Advisor"
+      submit: "Remove Peer Advisor"

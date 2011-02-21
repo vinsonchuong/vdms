@@ -311,7 +311,7 @@ describe StaffController do
 
         it 'sets a flash[:notice] message' do
           post :create
-          flash[:notice].should == 'Staff was successfully added.'
+          flash[:notice].should == I18n.t('people.staff.create.success')
         end
 
         it 'redirects to the View Staff page' do
@@ -390,7 +390,7 @@ describe StaffController do
 
         it 'sets a flash[:notice] message' do
           post :import, :csv_file => @csv_text
-          flash[:notice].should == 'Staff were successfully imported.'
+          flash[:notice].should == I18n.t('people.staff.import.success')
         end
 
         it 'redirects to the View Staff page' do
@@ -472,7 +472,7 @@ describe StaffController do
   
         it 'sets a flash[:notice] message' do
           put :update, :id => @staff_instance.id
-          flash[:notice].should == 'Staff was successfully updated.'
+          flash[:notice].should == I18n.t('people.staff.update.success')
         end
 
         it 'redirects to the given success redirect action' do
@@ -559,7 +559,7 @@ describe StaffController do
 
       it 'sets a flash[:notice] message' do
         delete :destroy, :id => @staff_instance.id
-        flash[:notice].should == 'Staff was removed.'
+        flash[:notice].should == I18n.t('people.staff.destroy.success')
       end
 
       it 'redirects to the View Staff page' do

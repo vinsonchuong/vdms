@@ -1,2 +1,22 @@
-%h2 Add Peer Advisor
-!= render 'form'
+- if @current_user.class == PeerAdvisor
+  - content_for :title, t('.alt_title')
+- else
+  - content_for :title, t('.title')
+- form_for @peer_advisor do |peer_advisor_form|
+  != peer_advisor_form.error_messages
+  %fieldset
+    %h3!= t('.info')
+    %ul.plain
+      %li
+        != peer_advisor_form.label :ldap_id
+        != peer_advisor_form.text_field :ldap_id
+      %li
+        != peer_advisor_form.label :first_name
+        != peer_advisor_form.text_field :first_name
+      %li
+        != peer_advisor_form.label :last_name
+        != peer_advisor_form.text_field :last_name
+      %li
+        != peer_advisor_form.label :email
+        != peer_advisor_form.text_field :email
+    != peer_advisor_form.submit ((@current_user.class == PeerAdvisor) ? t('.alt_submit') : t('.submit'))

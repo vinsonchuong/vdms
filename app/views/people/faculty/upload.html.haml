@@ -1,31 +1,33 @@
-%h2 Import Faculty
+- content_for :title, t('.title')
 - form_tag import_faculty_path, :method => :post, :multipart => true do
   - if !@faculty.nil? && @faculty.any?(&:invalid?)
     %table
       %thead
         %tr
-          %th{:scope => 'col'} First Name
-          %th{:scope => 'col'} Last Name
-          %th{:scope => 'col'} Email
-          %th{:scope => 'col'} Area
-          %th{:scope => 'col'} Division
-          %th{:scope => 'col'} Errors
+        %th{:scope => 'col'}!= Faculty.human_attribute_name(:ldap_id)
+        %th{:scope => 'col'}!= Faculty.human_attribute_name(:first_name)
+        %th{:scope => 'col'}!= Faculty.human_attribute_name(:last_name)
+        %th{:scope => 'col'}!= Faculty.human_attribute_name(:email)
+        %th{:scope => 'col'}!= Faculty.human_attribute_name(:division)
+        %th{:scope => 'col'}!= Faculty.human_attribute_name(:area)
+        %th{:scope => 'col'}!= t('.errors')
       %tbody
         - @faculty.each do |faculty_instance|
           %tr
+            %td= faculty_instance.ldap_id
             %td= faculty_instance.first_name
             %td= faculty_instance.last_name
             %td= faculty_instance.email
-            %td= faculty_instance.area
             %td= faculty_instance.division
+            %td= faculty_instance.area
             %td
               %ul
                 - faculty_instance.errors.full_messages.each do |error|
                   %li= error
   %fieldset
-    %h3 Data
+    %h3!= t('.data')
     %ul.plain
       %li
-        != label_tag :csv_file, 'CSV File'
+        != label_tag :csv_file, t('.csv_file')
         != file_field_tag :csv_file
-    != submit_tag 'Import Faculty'
+    != submit_tag t('.submit')

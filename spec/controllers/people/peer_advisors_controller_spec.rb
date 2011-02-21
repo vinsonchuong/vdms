@@ -312,7 +312,7 @@ describe PeerAdvisorsController do
 
         it 'sets a flash[:notice] message' do
           post :create
-          flash[:notice].should == 'Peer Advisor was successfully added.'
+          flash[:notice].should == I18n.t('people.peer_advisors.create.success')
         end
 
         it 'redirects to the View Peer Advisors page' do
@@ -397,7 +397,7 @@ describe PeerAdvisorsController do
 
         it 'sets a flash[:notice] message' do
           post :import, :csv_file => @csv_text
-          flash[:notice].should == 'Peer Advisors were successfully imported.'
+          flash[:notice].should == I18n.t('people.peer_advisors.import.success')
         end
 
         it 'redirects to the View Peer Advisors page' do
@@ -479,7 +479,7 @@ describe PeerAdvisorsController do
   
         it 'sets a flash[:notice] message' do
           put :update, :id => @peer_advisor.id
-          flash[:notice].should == 'Peer Advisor was successfully updated.'
+          flash[:notice].should == I18n.t('people.peer_advisors.update.success')
         end
 
         it 'redirects to the given success redirect action' do
@@ -566,7 +566,7 @@ describe PeerAdvisorsController do
 
       it 'sets a flash[:notice] message' do
         delete :destroy, :id => @peer_advisor.id
-        flash[:notice].should == 'Peer Advisor was removed.'
+        flash[:notice].should == I18n.t('people.peer_advisors.destroy.success')
       end
 
       it 'redirects to the View Peer Advisors page' do

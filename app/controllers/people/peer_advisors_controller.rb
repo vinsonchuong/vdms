@@ -10,7 +10,7 @@ class PeerAdvisorsController < PeopleController
     @peer_advisor.ldap_id = @current_user.ldap_id if @current_user.new_record?
 
     if @peer_advisor.save
-      redirect_to(peer_advisors_url, :notice => 'Peer Advisor was successfully added.')
+      redirect_to(peer_advisors_url, :notice => t(:success, :scope => [:people, :peer_advisors, :create]))
     else
       render :action => 'new'
     end

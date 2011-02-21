@@ -1,17 +1,54 @@
 !!! Strict
 %html
-    %head
-    %title Visit Day Meeting Scheduler
+  %head
+    %title!= yield :title
     != javascript_include_tag :defaults
-    != stylesheet_link_tag 'main'
-    != stylesheet_link_tag 'home'
-    != stylesheet_link_tag 'scaffold'
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
-    %body
-        #container
-            != link_to '', home_path, :id => 'logo'
-            #inner-container
-                %p{:style => 'color: green'}= flash[:notice]
-                %p{:style => 'color: red'}= flash[:error]
-                %p{:style => 'color: red'}= flash[:alert]
-                != yield
+    != stylesheet_link_tag :all
+    != stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Droid+Sans'
+  %body
+    #masthead
+      %h1 Visit Day Meeting Scheduler
+    #navigation
+      - if @current_user.class == Staff
+        %ul
+          %li!= link_to t('staff.edit.alt_title'), edit_staff_instance_path(@current_user)
+          %li!= link_to t('settings.edit.title'), edit_settings_path
+          %li
+            != link_to t('staff.index.title'), staff_path
+            %ul
+              %li!= link_to t('staff.new.title'), new_staff_instance_path
+              %li!= link_to t('staff.upload.title'), upload_staff_path
+          %li
+            != link_to t('peer_advisors.index.title'), peer_advisors_path
+            %ul
+              %li!= link_to t('peer_advisors.new.title'), new_peer_advisor_path
+              %li!= link_to t('peer_advisors.upload.title'), upload_peer_advisors_path
+          %li
+            != link_to t('faculty.index.title'), faculty_path
+            %ul
+              %li!= link_to t('faculty.new.title'), new_faculty_instance_path
+              %li!= link_to t('faculty.upload.title'), upload_faculty_path
+          %li
+            != link_to t('admits.index.title'), admits_path
+            %ul
+              %li!= link_to t('admits.new.title'), new_admit_path
+              %li!= link_to t('admits.upload.title'), upload_admits_path
+      - elsif @current_user.class == PeerAdvisor && !@current_user.new_record?
+        %ul
+          %li!= link_to t('peer_advisors.edit.alt_title'), edit_peer_advisor_path(@current_user)
+          %li!= link_to t('admits.index.title'), admits_path
+      - elsif @current_user.class == Faculty && !@current_user.new_record?
+        %ul
+          %li!= link_to t('faculty.edit.alt_title'), edit_faculty_instance_path(@current_user)
+          %li!= link_to t('faculty.schedule.alt_title'), schedule_faculty_instance_path(@current_user)
+          %li!= link_to t('faculty.rank_admits.alt_title'), rank_admits_faculty_instance_path(@current_user)
+    #content
+      %h2!= yield :title
+      #messages
+        - unless flash[:notice].nil?
+          %p{:style => 'color: green'}!= flash[:notice]
+        - unless flash[:error].nil?
+          %p{:style => 'color: red'}!= flash[:error]
+        - unless flash[:alert].nil?
+          %p{:style => 'color: red'}!= flash[:alert]
+      != yield

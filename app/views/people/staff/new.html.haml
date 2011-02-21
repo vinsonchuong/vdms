@@ -1,2 +1,19 @@
-%h2 Add Staff
-!= render 'form'
+- content_for :title, t('.title')
+- form_for @staff_instance do |staff_form|
+  != staff_form.error_messages
+  %fieldset
+    %h3!= t('.info')
+    %ul.plain
+      %li
+        != staff_form.label :ldap_id
+        != staff_form.text_field :ldap_id
+      %li
+        != staff_form.label :first_name
+        != staff_form.text_field :first_name
+      %li
+        != staff_form.label :last_name
+        != staff_form.text_field :last_name
+      %li
+        != staff_form.label :email
+        != staff_form.text_field :email
+    != staff_form.submit t('.submit')

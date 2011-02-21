@@ -29,7 +29,7 @@ class Faculty < Person
     areas = settings.areas.invert
     divisions = {}
     settings.divisions.each {|d| divisions[d.long_name] = d.name}
-    record.area = areas[record.area1] unless record.area1.nil? || areas[record.area1].nil?
+    record.area = areas[record.area] unless record.area.nil? || areas[record.area].nil?
     record.division = divisions[record.division] unless record.division.nil? || divisions[record.division].nil?
   end
 
@@ -40,7 +40,9 @@ class Faculty < Person
   has_many :admit_rankings, :order => 'rank ASC', :dependent => :destroy
   has_many :meetings, :dependent => :destroy
   accepts_nested_attributes_for :admit_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
-  
+
+  validates_presence_of :email
+  validates_format_of :email, :with => /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
   validates_inclusion_of :division, :in => (Settings.instance.divisions.map(&:name) + Settings.instance.divisions.map(&:long_name))
   validates_inclusion_of :area, :in => Settings.instance.areas.to_a.flatten
   validates_presence_of :default_room

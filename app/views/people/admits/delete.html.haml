@@ -1,3 +1,3 @@
-%h2 Remove Admit
-- form_for @admit, :html => {:method => :delete} do |admit_form|
-  != admit_form.submit 'Confirm'
+- content_for :title, t('.title')
+- form_for @admit, :url => {:action => 'destroy'}, :html => {:method => :delete} do |admit_form|
+  != admit_form.submit t('.submit')

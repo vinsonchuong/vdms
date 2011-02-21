@@ -1,30 +1,27 @@
-%h2 View Faculty
-%h3 Navigation
-%ul
-  %li!= link_to 'Add Faculty', new_faculty_instance_path
-  %li!= link_to 'Import Faculty', upload_faculty_path
-%h3 Faculty
+- content_for :title, t('.title')
 %table
   %thead
     %tr
-      %th{:scope => 'col'} LDAP Id
-      %th{:scope => 'col'} First Name
-      %th{:scope => 'col'} Last Name
-      %th{:scope => 'col'} Email
-      %th{:scope => 'col'} Area
-      %th{:scope => 'col'} Division
-      %th{:scope => 'col'}
-      %th{:scope => 'col'}
+      %th{:scope => 'col'}!= Faculty.human_attribute_name(:ldap_id)
+      %th{:scope => 'col'}!= Faculty.human_attribute_name(:first_name)
+      %th{:scope => 'col'}!= Faculty.human_attribute_name(:last_name)
+      %th{:scope => 'col'}!= Faculty.human_attribute_name(:email)
+      %th{:scope => 'col'}!= Faculty.human_attribute_name(:division)
+      %th{:scope => 'col'}!= Faculty.human_attribute_name(:area)
+      %th{:scope => 'col'}!= t('.actions')
   %tbody
+    - @settings = Settings.instance
     - @faculty.each do |faculty_instance|
       %tr
         %td= faculty_instance.ldap_id
         %td= faculty_instance.first_name
         %td= faculty_instance.last_name
         %td= faculty_instance.email
-        %td= faculty_instance.area
-        %td= faculty_instance.division
-        %td!= link_to 'Update Faculty', edit_faculty_instance_path(faculty_instance)
-        %td!= link_to 'Rank Admits', rank_admits_faculty_instance_path(faculty_instance)
-        %td!= link_to 'Update Availability', schedule_faculty_instance_path(faculty_instance)
-        %td!= link_to 'Remove Faculty', delete_faculty_instance_path(faculty_instance)
+        %td= @settings.divisions.find_by_name(faculty_instance.division).long_name
+        %td= @settings.areas[faculty_instance.area]
+        %td
+          %ul
+            %li!= link_to t('faculty.edit.title'), edit_faculty_instance_path(faculty_instance)
+            %li!= link_to t('faculty.rank_admits.title'), rank_admits_faculty_instance_path(faculty_instance)
+            %li!= link_to t('faculty.schedule.title'), schedule_faculty_instance_path(faculty_instance)
+            %li!= link_to t('faculty.delete.title'), delete_faculty_instance_path(faculty_instance)

@@ -1,8 +1,1 @@
-%h2 Staff Dashboard
-%h3 Navigation
-%ul
-  %li!= link_to 'Update Global Settings', edit_settings_path
-  %li!= link_to 'Manage Staff', staff_path
-  %li!= link_to 'Manage Peer Advisors', peer_advisors_path
-  %li!= link_to 'Manage Faculty', faculty_path
-  %li!= link_to 'Manage Admits', admits_path
+- content_for :title, t('.title')

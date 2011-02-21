@@ -396,7 +396,7 @@ describe FacultyController do
 
         it 'sets a flash[:notice] message' do
           post :create
-          flash[:notice].should == 'Faculty was successfully added.'
+          flash[:notice].should == I18n.t('people.faculty.create.success')
         end
 
         it 'redirects to the View Faculty page' do
@@ -481,7 +481,7 @@ describe FacultyController do
 
         it 'sets a flash[:notice] message' do
           post :import, :csv_file => @csv_text
-          flash[:notice].should == 'Faculty were successfully imported.'
+          flash[:notice].should == I18n.t('people.faculty.import.success')
         end
 
         it 'redirects to the View Faculty page' do
@@ -563,7 +563,7 @@ describe FacultyController do
   
         it 'sets a flash[:notice] message' do
           put :update, :id => @faculty_instance.id
-          flash[:notice].should == 'Faculty was successfully updated.'
+          flash[:notice].should == I18n.t('people.faculty.update.success')
         end
 
         it 'redirects to the given success redirect action' do
@@ -650,7 +650,7 @@ describe FacultyController do
 
       it 'sets a flash[:notice] message' do
         delete :destroy, :id => @faculty_instance.id
-        flash[:notice].should == 'Faculty was removed.'
+        flash[:notice].should == I18n.t('people.faculty.destroy.success')
       end
 
       it 'redirects to the View Faculty page' do

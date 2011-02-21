@@ -43,8 +43,8 @@ class AdmitsController < PeopleController
 
   def get_areas_and_divisions
     settings = Settings.instance
-    @areas = settings.areas.values
-    @divisions = settings.divisions.map(&:long_name)
+    @areas = settings.areas.map {|k, v| [v, k]}
+    @divisions = settings.divisions.map {|d| [d.long_name, d.name]}
   end
 
   def get_faculty

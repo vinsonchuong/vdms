@@ -1,14 +1,14 @@
-%h2 Update Global Settings
+- content_for :title, t('.title')
 - form_for @settings, :url => settings_path do |settings_form|
   != settings_form.error_messages
   %fieldset
-    %h3 Global Settings
+    %h3!= t('.global_settings')
     %ul.plain
       %li
         != settings_form.label :unsatisfied_admit_threshold
         != settings_form.text_field :unsatisfied_admit_threshold
       %li
-        %h4 Meeting Times
+        %h4!= t('.meeting_times')
         %ul.plain
           - settings_form.fields_for :divisions do |division_fields|
             %li
@@ -27,6 +27,5 @@
                       - unless available_time_fields.object.new_record?
                         %li
                           != available_time_fields.check_box :_destroy
-                          != available_time_fields.label :_destroy, 'Remove'
-
+                          != available_time_fields.label :_destroy, t('.remove')
     != settings_form.submit

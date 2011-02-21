@@ -10,19 +10,19 @@ Feature: Faculty can specify schedule
 
   Scenario: I can specify my schedule
     Given I am on the faculty dashboard page
-    When I follow "Update Meeting Availability"
+    When I follow "Update My Availability"
     Then I should be on the schedule faculty page
 
   Scenario: I specify a default meeting room
     Given I am on the schedule faculty page
     When I fill in "Default room" with "373 Soda"
-    And I press "Save Changes"
+    And I press "Update Availability"
     Then I should see "Faculty was successfully updated"
 
   Scenario: I specify the maximum number of students per meeting slot
     Given I am on the schedule faculty page
     When I fill in "Max admits per meeting" with "4"
-    And I press "Save Changes"
+    And I press "Update Availability"
     Then I should see "Faculty was successfully updated"
 
   Scenario: I specify the meeting slots for which I am available
@@ -33,7 +33,7 @@ Feature: Faculty can specify schedule
     And I am on the schedule faculty page
     When I flag the "1/1/2011 9:00AM" to "1/1/2011 9:15AM" slot as available
     And I flag the "1/1/2011 10:00AM" to "1/1/2011 10:15AM" slot as available
-    And I press "Save changes"
+    And I press "Update Availability"
     Then I should see "Faculty was successfully updated"
 
   Scenario: I specify a different room for a meeting slot
@@ -46,5 +46,5 @@ Feature: Faculty can specify schedule
     And I set the room for the "1/1/2011 9:00AM" to "1/1/2011 9:15AM" slot to "373 Soda"
     And I flag the "1/1/2011 10:00AM" to "1/1/2011 10:15AM" slot as available
     And I set the room for the "1/1/2011 9:00AM" to "1/1/2011 9:15AM" slot to "373 Soda"
-    And I press "Save changes"
+    And I press "Update Availability"
     Then I should see "Faculty was successfully updated"

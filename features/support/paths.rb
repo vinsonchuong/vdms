@@ -12,7 +12,7 @@ module NavigationHelpers
     when /the peer advisor dashboard page/ then peer_advisor_dashboard_path
     when /the faculty dashboard page/ then faculty_dashboard_path
 
-    when /the update global settings page/ then edit_settings_path
+    when /the update settings page/ then edit_settings_path
 
     when /the view staff page/ then staff_path
     when /the new staff page/ then new_staff_instance_path

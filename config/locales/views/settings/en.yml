@@ -1,0 +1,7 @@
+en:
+  settings:
+    edit:
+      title: "Update Settings"
+      global_settings: "Global Settings"
+      meeting_times: "Meeting Times"
+      remove: "Remove"

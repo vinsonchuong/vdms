@@ -26,7 +26,6 @@ class Admit < Person
   accepts_nested_attributes_for :faculty_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
   has_and_belongs_to_many :meetings, :uniq => true
 
-  validates_presence_of :phone
   validates_inclusion_of :area1, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
   validates_inclusion_of :area2, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
   validate do |record| # uniqueness of ranks in faculty_rankings
