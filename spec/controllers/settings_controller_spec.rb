@@ -110,7 +110,7 @@ describe SettingsController do
 
         it 'sets a flash[:notice] message' do
           put :update
-          flash[:notice].should == 'Settings were successfully updated.'
+          flash[:notice].should == I18n.t('settings.update.success')
         end
 
         it 'redirects to the edit settings page' do

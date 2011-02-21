@@ -22,8 +22,8 @@ Feature: Peer advisor can update admit availability
 
   Scenario: I update an admit's availability
     Given I am on the view admits page
-    When I follow "Update Admit Availability" for the first admit
+    When I follow "Update Admit's Availability" for the first admit
     When I flag the "1/1/2011 9:00AM" to "1/1/2011 9:15AM" slot as available
     And I flag the "1/1/2011 12:00PM" to "1/1/2011 12:15PM" slot as available
-    And I press "Save changes"
+    And I press "Update Availability"
     Then I should see "Admit was successfully updated"

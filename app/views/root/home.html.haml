@@ -1,6 +1,6 @@
 #home-container
     #logo
     %ul#signin-options.plain
-        %li!= link_to 'For Staff', staff_dashboard_path
-        %li!= link_to 'For Peer Advisors', peer_advisor_dashboard_path
-        %li!= link_to 'For Faculty', faculty_dashboard_path
+        %li!= link_to t('.staff'), staff_dashboard_path
+        %li!= link_to t('.peer_advisors'), peer_advisor_dashboard_path
+        %li!= link_to t('.faculty'), faculty_dashboard_path

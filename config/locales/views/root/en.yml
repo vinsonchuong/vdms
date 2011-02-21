@@ -1,0 +1,15 @@
+en:
+  root:
+    home:
+      title: "Visit Day Meeting Scheduler"
+      staff: "For Staff"
+      faculty: "For Faculty"
+      peer_advisors: "For Peer Advisors"
+    new:
+      title: "Sign Out"
+    staff_dashboard:
+      title: "Staff Dashboard"
+    peer_advisor_dashboard:
+      title: "Peer Advisor Dashboard"
+    faculty_dashboard:
+      title: "Faculty Dashboard"

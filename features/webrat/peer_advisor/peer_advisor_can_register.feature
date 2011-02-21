@@ -16,5 +16,5 @@ Feature: Peer advisor can register
   Scenario: I verify my info
     Given I am on the home page
     When I follow "For Peer Advisors"
-    And I press "Save changes"
+    And I press "Register"
     Then I should see "Peer Advisor was successfully added."

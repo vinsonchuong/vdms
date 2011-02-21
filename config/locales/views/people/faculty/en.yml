@@ -1,0 +1,35 @@
+en:
+  faculty:
+    index:
+      title: "Manage Faculty"
+      actions: "Actions"
+    new:
+      title: "Add Faculty"
+      alt_title: "Register As A Faculty"
+      info: "Faculty Info"
+      submit: "Add Faculty"
+      alt_submit: "Register"
+    upload:
+      title: "Import Faculty"
+      errors: "Errors"
+      data: "Data"
+      csv_file: "CSV File"
+      submit: "Import Faculty"
+    edit:
+      title: "Update Faculty"
+      alt_title: "Update My Registration"
+      info: "Staff Info"
+      submit: "Update Faculty"
+      alt_submit: "Update Registration"
+    schedule:
+      title: "Update Faculty's Availability"
+      alt_title: "Update My Availability"
+      preferences: "Preferences"
+      availability: "Availability"
+      submit: "Update Availability"
+    rank_admits:
+      title: "Update Faculty's Admit Rankings"
+      alt_title: "Update My Admit Rankings"
+    delete:
+      title: "Remove Faculty"
+      submit: "Remove Faculty"

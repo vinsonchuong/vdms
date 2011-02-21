@@ -1,0 +1,41 @@
+en:
+  people:
+    staff:
+      create:
+        success: "Staff was successfully added."
+      import:
+        success: "Staff were successfully imported."
+      update:
+        success: "Staff was successfully updated."
+      destroy:
+        success: "Staff was successfully removed."
+    peer_advisors:
+      create:
+        success: "Peer Advisor was successfully added."
+      import:
+        success: "Peer Advisors were successfully imported."
+      update:
+        success: "Peer Advisor was successfully updated."
+      destroy:
+        success: "Peer Advisor was successfully removed."
+    faculty:
+      create:
+        success: "Faculty was successfully added."
+      import:
+        success: "Faculty were successfully imported."
+      update:
+        success: "Faculty was successfully updated."
+      destroy:
+        success: "Faculty was successfully removed."
+    admits:
+      create:
+        success: "Admit was successfully added."
+      import:
+        success: "Admits were successfully imported."
+      update:
+        success: "Admit was successfully updated."
+      destroy:
+        success: "Admit was successfully removed."
+  settings:
+    update:
+      success: "Settings were successfully updated."

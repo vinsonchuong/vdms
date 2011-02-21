@@ -1,0 +1,31 @@
+en:
+  admits:
+    index:
+      title: "Manage Admits"
+      actions: "Actions"
+    new:
+      title: "Add Admit"
+      info: "Admit Info"
+      submit: "Add Admit"
+    upload:
+      title: "Import Admits"
+      errors: "Errors"
+      data: "Data"
+      csv_file: "CSV File"
+      submit: "Import Admits"
+    edit:
+      title: "Update Admit"
+      info: "Admit Info"
+      submit: "Update Admit"
+    schedule:
+      title: "Update Admit's Availability"
+      availability: "Availability"
+      submit: "Update Availability"
+    rank_faculty:
+      title: "Update Admit's Faculty Rankings"
+      faculty_rankings: "Faculty Rankings"
+      remove: "Remove"
+      submit: "Update Faculty Rankings"
+    delete:
+      title: "Remove Admit"
+      submit: "Remove Admit"

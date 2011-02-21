@@ -1,16 +1,18 @@
-%h2 Import Staff
+- content_for :title, t('.title')
 - form_tag import_staff_path, :method => :post, :multipart => true do
   - if !@staff.nil? && @staff.any?(&:invalid?)
     %table
       %thead
         %tr
-          %th{:scope => 'col'} First Name
-          %th{:scope => 'col'} Last Name
-          %th{:scope => 'col'} Email
-          %th{:scope => 'col'} Errors
+          %th{:scope => 'col'}!= Staff.human_attribute_name(:ldap_id)
+          %th{:scope => 'col'}!= Staff.human_attribute_name(:first_name)
+          %th{:scope => 'col'}!= Staff.human_attribute_name(:last_name)
+          %th{:scope => 'col'}!= Staff.human_attribute_name(:email)
+          %th{:scope => 'col'}!= t('.errors')
       %tbody
         - @staff.each do |staff_instance|
           %tr
+            %td= staff_instance.ldap_id
             %td= staff_instance.first_name
             %td= staff_instance.last_name
             %td= staff_instance.email
@@ -19,9 +21,9 @@
                 - staff_instance.errors.full_messages.each do |error|
                   %li= error
   %fieldset
-    %h3 Data
+    %h3!= t('.data')
     %ul.plain
       %li
-        != label_tag :csv_file, 'CSV File'
+        != label_tag :csv_file, t('.csv_file')
         != file_field_tag :csv_file
-    != submit_tag 'Import Staff'
+    != submit_tag t('.submit')

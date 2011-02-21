@@ -1,22 +1,14 @@
-%h2 View Admits
-%h3 Navigation
-%ul
-  %li!= link_to 'Add Admit', new_admit_path
-  %li!= link_to 'Import Admits', upload_admits_path
-%h3 Admits
+- content_for :title, t('.title')
 %table
   %thead
     %tr
-      %th{:scope => 'col'} First Name
-      %th{:scope => 'col'} Last Name
-      %th{:scope => 'col'} Email
-      %th{:scope => 'col'} Phone
-      %th{:scope => 'col'} Area 1
-      %th{:scope => 'col'} Area 2
-      %th{:scope => 'col'}
-      %th{:scope => 'col'}
-      %th{:scope => 'col'}
-      %th{:scope => 'col'}
+      %th{:scope => 'col'}!= Admit.human_attribute_name(:first_name)
+      %th{:scope => 'col'}!= Admit.human_attribute_name(:last_name)
+      %th{:scope => 'col'}!= Admit.human_attribute_name(:email)
+      %th{:scope => 'col'}!= Admit.human_attribute_name(:phone)
+      %th{:scope => 'col'}!= Admit.human_attribute_name(:area1)
+      %th{:scope => 'col'}!= Admit.human_attribute_name(:area2)
+      %th{:scope => 'col'}!= t('.actions')
   %tbody
     - @settings = Settings.instance
     - @admits.each do |admit|
@@ -27,7 +19,9 @@
         %td= admit.phone
         %td= @settings.areas[admit.area1]
         %td= @settings.areas[admit.area2]
-        %td!= link_to 'Update Admit', edit_admit_path(admit)
-        %td!= link_to 'Update Admit Availability', schedule_admit_path(admit)
-        %td!= link_to 'Update Faculty Rankings', rank_faculty_admit_path(admit)
-        %td!= link_to 'Remove Admit', delete_admit_path(admit)
+        %td
+          %ul
+            %li!= link_to t('admits.edit.title'), edit_admit_path(admit)
+            %li!= link_to t('admits.schedule.title'), schedule_admit_path(admit)
+            %li!= link_to t('admits.rank_faculty.title'), rank_faculty_admit_path(admit)
+            %li!= link_to t('admits.delete.title'), delete_admit_path(admit)

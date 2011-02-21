@@ -1,0 +1,23 @@
+en:
+  staff:
+    index:
+      title: "Manage Staff"
+      actions: "Actions"
+    new:
+      title: "Add Staff"
+      info: "Staff Info"
+      submit: "Add Staff"
+    upload:
+      title: "Import Staff"
+      errors: "Errors"
+      data: "Data"
+      csv_file: "CSV File"
+      submit: "Import Staff"
+    edit:
+      title: "Update Staff"
+      alt_title: "Update My Registration"
+      info: "Staff Info"
+      submit: "Update Staff"
+    delete:
+      title: "Remove Staff"
+      submit: "Remove Staff"

@@ -32,7 +32,7 @@ class PeopleController < ApplicationController
     self.instance_variable_set("@#{@instance}", @model.new(params[@model.name.underscore.to_sym]))
 
     if instance_variable_get("@#{@instance}").save
-      redirect_to(self.send("#{@collection}_url".to_sym), :notice => "#{@model.name.titleize} was successfully added.")
+      redirect_to(self.send("#{@collection}_url".to_sym), :notice => t(:success, :scope => [:people, @model.name.tableize, :create]))
     else
       render :action => 'new'
     end
@@ -44,7 +44,7 @@ class PeopleController < ApplicationController
 
     if instance_variable_get("@#{@collection}").map(&:valid?).all?
       instance_variable_get("@#{@collection}").each(&:save)
-      redirect_to(self.send("#{@collection}_url".to_sym), :notice => "#{@model.name.pluralize.titleize} were successfully imported.")
+      redirect_to(self.send("#{@collection}_url".to_sym), :notice => t(:success, :scope => [:people, @model.name.tableize, :import]))
     else
       render :action => 'upload'
     end
@@ -55,7 +55,7 @@ class PeopleController < ApplicationController
     self.instance_variable_set("@#{@instance}", @model.find(params[:id]))
 
     if instance_variable_get("@#{@instance}").update_attributes(params[@model.name.underscore.to_sym])
-      flash[:notice] = "#{@model.name.titleize} was successfully updated."
+      flash[:notice] = t(:success, :scope => [:people, @model.name.tableize, :update])
       redirect_to(:action => params[:redirect_action], :record => instance_variable_get("@#{@instance}"))
     else
       @origin_action = params[:origin_action]
@@ -67,6 +67,6 @@ class PeopleController < ApplicationController
   # DELETE /people/PEOPLE/1
   def destroy
     self.instance_variable_set("@#{@instance}", @model.find(params[:id])).destroy
-    redirect_to(self.send("#{@collection}_url".to_sym), :notice => "#{@model.name.titleize} was removed.")
+    redirect_to(self.send("#{@collection}_url".to_sym), :notice => t(:success, :scope => [:people, @model.name.tableize, :destroy]))
   end
 end

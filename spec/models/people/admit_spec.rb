@@ -185,23 +185,6 @@ describe Admit do
       @admit.should_not be_valid
     end
 
-    it 'is not valid without an Email' do
-      @admit.email = ''
-      @admit.should_not be_valid
-    end
-
-    it 'is not valid with an invalid Email' do
-      ['foobar', 'foo@bar', 'foo.com'].each do |invalid_email|
-        @admit.email = invalid_email
-        @admit.should_not be_valid
-      end
-    end
-
-    it 'is not valid without a Phone' do
-      @admit.phone = ''
-      @admit.should_not be_valid
-    end
-
     it 'is valid with a valid Area 1' do
       stub_areas('A1' => 'Area 1', 'A2' => 'Area 2')
       ['A1', 'Area 1', 'A2', 'Area 2'].each do |area|

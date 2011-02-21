@@ -1,18 +1,12 @@
-%h2 View Peer Advisor
-%h3 Navigation
-%ul
-  %li!= link_to 'Add Peer Advisor', new_peer_advisor_path
-  %li!= link_to 'Import Peer Advisors', upload_peer_advisors_path
-%h3 Peer Advisors
+- content_for :title, t('.title')
 %table
   %thead
     %tr
-      %th{:scope => 'col'} LDAP ID
-      %th{:scope => 'col'} First Name
-      %th{:scope => 'col'} Last Name
-      %th{:scope => 'col'} Email
-      %th{:scope => 'col'}
-      %th{:scope => 'col'}
+      %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:ldap_id)
+      %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:first_name)
+      %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:last_name)
+      %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:email)
+      %th{:scope => 'col'}!= t('.actions')
   %tbody
     - @peer_advisors.each do |peer_advisor|
       %tr
@@ -20,5 +14,7 @@
         %td= peer_advisor.first_name
         %td= peer_advisor.last_name
         %td= peer_advisor.email
-        %td!= link_to 'Update Peer Advisor', edit_peer_advisor_path(peer_advisor)
-        %td!= link_to 'Remove Peer Advisor', delete_peer_advisor_path(peer_advisor)
+        %td
+          %ul
+            %li!= link_to t('peer_advisors.edit.title'), edit_peer_advisor_path(peer_advisor)
+            %li!= link_to t('peer_advisors.delete.title'), delete_peer_advisor_path(peer_advisor)

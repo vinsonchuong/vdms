@@ -20,13 +20,13 @@ Feature: Peer advisor can rank faculty on behalf of admits
 
   Scenario: I specify an admit's faculty rankings
     Given I am on the view admits page
-    When I follow "Update Faculty Rankings"
+    When I follow "Update Admit's Faculty Rankings"
     And I fill in "Rank" with "1" for the new ranking
     And I select "Faculty Aaaa" from "Faculty" for the new ranking
-    And I press "Save changes"
+    And I press "Update Faculty Rankings"
     And I fill in "Rank" with "2" for the new ranking
     And I select "Faculty Bbbb" from "Faculty" for the new ranking
-    And I press "Save changes"
+    And I press "Update Faculty Rankings"
     And I fill in "Rank" with "3" for the new ranking
     And I select "Faculty Cccc" from "Faculty" for the new ranking
     Then I should see "Admit was successfully updated"
@@ -40,7 +40,7 @@ Feature: Peer advisor can rank faculty on behalf of admits
     When I go to the rank faculty page
     And I fill in "Rank" with "2" for the first ranking
     And I fill in "Rank" with "1" for the second ranking
-    And I press "Save changes"
+    And I press "Update Faculty Rankings"
     Then I should see "Admit was successfully updated"
 
   Scenario: I remove an admit's faculty ranking
@@ -52,5 +52,5 @@ Feature: Peer advisor can rank faculty on behalf of admits
     When I go to the rank faculty page
     And I check "Remove" for the second ranking
     And I check "Remove" for the third ranking
-    And I press "Save changes"
+    And I press "Update Faculty Rankings"
     Then I should see "Admit was successfully updated"

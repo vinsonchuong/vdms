@@ -39,7 +39,7 @@ Feature: Staff can manage admits
     And I fill in "Phone" with "<phone>"
     And I select "<area1>" from "Area 1"
     And I select "<area2>" from "Area 2"
-    And I press "Save changes"
+    And I press "Add Admit"
     And I should see "<result>" 
 
     Scenarios: with valid information
@@ -51,7 +51,6 @@ Feature: Staff can manage admits
 
     Scenarios: with invalid information
       | first_name | last_name | email           | phone           | area1                       | area2             | result                                                           |
-      | First      | Last      | invalid_email   | 123-456-7890    | Artificial Intelligence     | Theory            | Email is invalid                                                 |
 
   Scenario: I add admits by importing a CSV with valid data
     Given I am on the view admits page
@@ -68,9 +67,7 @@ Feature: Staff can manage admits
     When I follow "Import Admits"
     And I attach the file "features/assets/invalid_admits.csv" to "CSV File"
     And I press "Import"
-    Then I should see "Email can't be blank"
-    And I should see "Phone can't be blank"
-    And I should see "Area1 is not included in the list"
+    And I should see "Area 1 is not included in the list"
 
   Scenario: I update an admit's information
 

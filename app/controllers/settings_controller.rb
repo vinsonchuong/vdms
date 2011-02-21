@@ -10,7 +10,7 @@ class SettingsController < ApplicationController
     @settings = Settings.instance
 
     if @settings.update_attributes(params[:settings])
-      redirect_to(edit_settings_url, :notice => 'Settings were successfully updated.')
+      redirect_to(edit_settings_url, :notice => t(:success, :scope => [:settings, :update]))
     else
       render :action => 'edit'
     end

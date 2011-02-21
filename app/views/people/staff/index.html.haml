@@ -1,18 +1,12 @@
-%h2 View Staff
-%h3 Navigation
-%ul
-  %li!= link_to 'Add Staff', new_staff_instance_path
-  %li!= link_to 'Import Staff', upload_staff_path
-%h3 Staff
+- content_for :title, t('.title')
 %table
   %thead
     %tr
-      %th{:scope => 'col'} LDAP ID
-      %th{:scope => 'col'} First Name
-      %th{:scope => 'col'} Last Name
-      %th{:scope => 'col'} Email
-      %th{:scope => 'col'}
-      %th{:scope => 'col'}
+      %th{:scope => 'col'}!= Staff.human_attribute_name(:ldap_id)
+      %th{:scope => 'col'}!= Staff.human_attribute_name(:first_name)
+      %th{:scope => 'col'}!= Staff.human_attribute_name(:last_name)
+      %th{:scope => 'col'}!= Staff.human_attribute_name(:email)
+      %th{:scope => 'col'}!= t('.actions')
   %tbody
     - @staff.each do |staff_instance|
       %tr
@@ -20,5 +14,7 @@
         %td= staff_instance.first_name
         %td= staff_instance.last_name
         %td= staff_instance.email
-        %td!= link_to 'Update Staff', edit_staff_instance_path(staff_instance)
-        %td!= link_to 'Remove Staff', delete_staff_instance_path(staff_instance)
+        %td
+          %ul
+            %li!= link_to t('staff.edit.title'), edit_staff_instance_path(staff_instance)
+            %li!= link_to t('staff.delete.title'), delete_staff_instance_path(staff_instance)

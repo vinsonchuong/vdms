@@ -33,13 +33,13 @@ Feature: Staff can manage faculty
   Scenario Outline: I add a faculty
     Given I am on the view faculty page
     When I follow "Add Faculty"
-    And I fill in "LDAP ID" with "<ldap_id>"
+    And I fill in "CalNet Directory UID" with "<ldap_id>"
     And I fill in "First Name" with "<first_name>"
     And I fill in "Last Name" with "<last_name>"
     And I fill in "Email" with "<email>"
     And I select "<division>" from "Division"
     And I select "<area>" from "Area"
-    And I press "Save changes"
+    And I press "Add Faculty"
     And I should see "<result>" 
 
     Scenarios: with valid information
