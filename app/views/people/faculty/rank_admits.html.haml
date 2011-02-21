@@ -20,7 +20,6 @@
 #list_of_admits
   %h3 Step 2: List of Admits              
   %span Please check admits whom you desire to schedule a meeting with
-  #fieldset
   - form_for :rank_admits, :html => {:method => :get}  do |select_admit_form|
     %fieldset
       %h4 Select Admits
@@ -37,38 +36,33 @@
 #admit_ranking
   %h3 Step 3: Update My Desired Appointment
   %fieldset
-  - form_for @faculty do |faculty_form|
-
-
-%h3 Navigation
-%ul
-  %li!= link_to 'Add Admits to My Desired Appointments', filter_admits_path
-#admit_ranking
-  %span
-  %p
-  - form_for @faculty_instance do |faculty_form|
-    != faculty_form.error_messages
-    %fieldset
-      %table
-        %thead
-          %tr
-            %th Rank
-            %th Mandatory Meeting?
-            %th #Slots
-            %th One on One Meeting?
-            %th Name
-            %th Remove
-        %tbody
-          - faculty_form.fields_for :admit_rankings do |admit_ranking_fields|
-            - @admit_ranking = admit_ranking_fields.object
+    - form_for @faculty_instance, :url => {:action => 'update'} do |faculty_form|
+      != faculty_form.error_messages  
+      %fieldset
+        %table
+          %thead
             %tr
-              %td!= admit_ranking_fields.select(:rank, @faculty_instance.admit_rankings.each_index.collect {|index| [index+1, index+1]})
-              %td!= admit_ranking_fields.check_box :mandatory, {}, "true", "false"
-              %td
-              %td!= admit_ranking_fields.check_box :one_on_one, {}, "true", "false"
-              %td!= admit_ranking_fields.label @admit_ranking.admit.full_name
-              %td!= admit_ranking_fields.check_box :_destroy
-              != admit_ranking_fields.hidden_field :admit_id
-    != hidden_field_tag :origin_action, @origin_action
-    != hidden_field_tag :redirect_action, @redirect_action
-    != faculty_form.submit
+              %th Rank
+              %th Mandatory Meeting?
+              %th #Slots
+              %th One on One Meeting?
+              %th Name
+              %th Remove
+          %tbody
+            - faculty_form.fields_for :admit_rankings do |admit_ranking_fields|
+              - @admit_ranking = admit_ranking_fields.object
+              %tr
+                %td!= admit_ranking_fields.select(:rank, @faculty_instance.admit_rankings.each_index.collect {|index| [index+1, index+1]})
+                %td!= admit_ranking_fields.check_box :mandatory, {}, "true", "false"
+                %td
+                %td!= admit_ranking_fields.check_box :one_on_one, {}, "true", "false"
+                %td!= admit_ranking_fields.label @admit_ranking.admit.full_name
+                %td!= admit_ranking_fields.check_box :_destroy
+                != admit_ranking_fields.hidden_field :admit_id
+                != hidden_field_tag :origin_action, @origin_action
+                != hidden_field_tag :redirect_action, @redirect_action
+ 
+      != faculty_form.submit    
+
+            
+            
