@@ -12,7 +12,7 @@
         %ul.plain
           - settings_form.fields_for :divisions do |division_fields|
             %li
-              %h5!= division_fields.object.name
+              %h5!= division_fields.object.long_name
               %ul.plain
                 - division_fields.fields_for :available_times do |available_time_fields|
                   - @time = available_time_fields.object

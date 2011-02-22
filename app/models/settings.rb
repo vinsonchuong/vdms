@@ -12,7 +12,7 @@ class Settings < ActiveRecord::Base
     end
   end
 
-  has_many :divisions, :dependent => :destroy
+  has_many :divisions, :order => 'name ASC', :dependent => :destroy
   accepts_nested_attributes_for :divisions
 
   validates_presence_of :unsatisfied_admit_threshold

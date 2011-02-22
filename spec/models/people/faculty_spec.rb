@@ -324,6 +324,32 @@ describe Faculty do
   end
 
   context 'after validating' do
+    it 'maps Area to its canonical form' do
+      stub_areas('A1' => 'Area 1', 'A2' => 'Area 2')
+      ['A1', 'Area 1'].each do |area|
+        @faculty.area = area
+        @faculty.valid?
+        @faculty.area.should == 'A1'
+      end
+
+      @faculty.area = nil
+      @faculty.valid?
+      @faculty.area.should == nil
+    end
+
+    it 'maps Division to its canonical form' do
+      stub_divisions('D1' => 'Division 1', 'D2' => 'Division 2')
+      ['D1', 'Division 1'].each do |division|
+        @faculty.division = division
+        @faculty.valid?
+        @faculty.division.should == 'D1'
+      end
+
+      @faculty.division = nil
+      @faculty.valid?
+      @faculty.division.should == nil
+    end
+
     it 'destroys all AvailableTimes which are not flagged as available' do
       time1 = @faculty.available_times.create(:available => true, :begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011'))
       time2 = @faculty.available_times.create(:available => false, :begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011'))

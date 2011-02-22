@@ -7,11 +7,6 @@ describe Settings do
   end
 
   describe 'Attributes' do
-    it 'has Meeting Times' do
-      @settings.should respond_to(:meeting_times)
-      @settings.should respond_to(:meeting_times=)
-    end
-
     it 'has an Unsatisfied Admit Threshold' do
       @settings.should respond_to(:unsatisfied_admit_threshold)
       @settings.should respond_to(:unsatisfied_admit_threshold=)

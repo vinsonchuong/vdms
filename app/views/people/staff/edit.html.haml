@@ -4,9 +4,10 @@
   %fieldset
     %h3!= t('.info')
     %ul.plain
-      %li
-        != staff_form.label :ldap_id
-        != staff_form.text_field :ldap_id
+      - unless @staff_instance == @current_user
+        %li
+          != staff_form.label :ldap_id
+          != staff_form.text_field :ldap_id
       %li
         != staff_form.label :first_name
         != staff_form.text_field :first_name

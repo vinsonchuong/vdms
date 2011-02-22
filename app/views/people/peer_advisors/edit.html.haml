@@ -4,9 +4,10 @@
   %fieldset
     %h3!= t('.info')
     %ul.plain
-      %li
-        != peer_advisor_form.label :ldap_id
-        != peer_advisor_form.text_field :ldap_id
+      - unless @peer_advisor == @current_user
+        %li
+          != peer_advisor_form.label :ldap_id
+          != peer_advisor_form.text_field :ldap_id
       %li
         != peer_advisor_form.label :first_name
         != peer_advisor_form.text_field :first_name

@@ -10,16 +10,6 @@ class AvailableTime < ActiveRecord::Base
   end
   validates_existence_of :schedulable
 
-  def begin=(begin_time)
-    begin_time = Time.zone.parse(begin_time) if begin_time.class == String
-    self.write_attribute(:begin, begin_time)
-  end
-
-  def end=(end_time)
-    end_time = Time.zone.parse(end_time) if end_time.class == String
-    self.write_attribute(:end, end_time)
-  end
-
   def overlap?(other)
     (self.begin != other.end && self.end != other.begin) &&
     (

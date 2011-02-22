@@ -82,13 +82,13 @@ describe FacultyController do
       it 'assigns to @areas a list of the Areas' do
         stub_areas('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
         get :new
-        assigns[:areas].should == ['Area 1', 'Area 2', 'Area 3']
+        assigns[:areas].should == [['Area 1', 'A1'], ['Area 2', 'A2'], ['Area 3', 'A3']]
       end
 
       it 'assigns to @divisions a list of the Division names' do
         stub_divisions('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
         get :new
-        assigns[:divisions].should == ['Division 1', 'Division 2', 'Division 3']
+        assigns[:divisions].should == [['Division 1', 'D1'], ['Division 2', 'D2'], ['Division 3', 'D3']]
       end
 
       it 'renders the new template' do
@@ -223,7 +223,9 @@ describe FacultyController do
       end
     end
 
-    context 'when signed in as a registered Faculty'
+    context 'when signed in as the given Faculty'
+
+    context 'when signed in as some other registered Faculty'
 
     context 'when signed in as an unregistered Faculty' do
       before(:each) do
@@ -608,7 +610,19 @@ describe FacultyController do
       end
     end
 
-    context 'when signed in as a registered Faculty'
+    context 'when signed in as the given Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@faculty_instance.ldap_id)
+        Person.stub(:find).and_return(@faculty_instance)
+      end
+
+      it 'prevents changes to the LDAP ID' do
+        put :update, :id => @faculty_instance.id, :faculty => {:ldap_id => 'foobar'}
+        assigns[:faculty_instance].ldap_id.should == @faculty_instance.ldap_id
+      end
+    end
+
+    context 'when signed in as some other registered Faculty'
 
     context 'when signed in as an unregistered Faculty' do
       before(:each) do
