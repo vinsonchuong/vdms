@@ -1,103 +1,163 @@
-/*Global*/
-body { 
-    background-color: white; 
-    color: #333; 
-    padding-top: 5%;
+@charset "utf-8";
+/* Typography */
+body {
+  font: 1.4em/1.3 "Droid Sans", Helvetica, Verdana, Arial sans-serif;
+}
+caption, h1, h2, h3, h4, h5, h6, legend, th, td thead {
+  color: #4c8bd3;
+}
+code, kbd, samp, var {
+  font-family: "Lucida Console", Monaco, "Courier New"; /* monospace not included, WebKit ignores other fonts. */
 }
 
-body, p, ol, ul, td {
-  font-family: "Droid Sans", helvetica, verdana, arial sans-serif;
-  font-size:   13px;
-  line-height: 18px;
+/* Main */
+body {
+  margin: 0 auto;
+  padding-top: 100px;
+  width: 90%;
+  background-color: #ffffff;
+  color: #333333;
+}
+a {
+  color: #000000;
+  text-decoration: none;
+}
+a:visited {
+  color: #666666;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1 a {
+  display: block;
+  margin-left: 225px;
+  height: 57px;
+  width: 272px;
+  background-image: url("/images/logo_small.png");
+  text-indent: -5000px;
+}
+.hidden {
+  display: none;
 }
 
-h1, h2, h3, h4, h5, h6{
-    color: #4c8bd3;
+#navigation {
+  margin-top: 33px;
+  width: 180px;
+  float: left;
+}
+#navigation ul li a {
+  display: block;
+  margin-top: 5px;
+  padding: 0.4em;
+  width: 180px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  background: #70a8e1;
+  color: white !important;
+  opacity: 0.7;
+  font-size: 1.1em;
+  text-align: center;
+}
+#navigation ul li a:hover {
+  opacity: 1;
+}
+#navigation ul li ul li {
+  margin-left: 40px;
+}
+#navigation ul li ul li a {
+  width: 140px;
 }
 
-pre {
-  background-color: #eee;
-  padding: 10px;
-  font-size: 11px;
+#content {
+  margin: 10px 0 0 210px;
+  padding: 20px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  background: -webkit-gradient(linear, 0% 3%, 0% 100%, from(#fcfcfc), to(#f7f7f7));
+  background: -moz-linear-gradient(19% 75% 90deg,#f7f7f7, #fcfcfc 100%);
+  border: #eeeeee 1px solid;
 }
-
-a { color: #000; text-decoration: none }
-a:visited { color: #666; }
-a:hover { text-decoration: underline; }
-
-fieldset{
-    border: 0px;
-}
-.fieldWithErrors {
-  padding: 2px;
-  background-color: red;
-  display: table;
-}
-
-#errorExplanation {
-  width: 400px;
-  border: 2px solid red;
-  padding: 7px;
-  padding-bottom: 12px;
+#content h2 {
   margin-bottom: 20px;
-  background-color: #f0f0f0;
+  font-size: 2.2em;
+}
+#content h3 {
+  margin: 10px 0;
+  font-size: 1.5em;
+}
+#content h4 {
+  margin: 5px 0;
+  font-size: 1.2em;
 }
 
-#errorExplanation h2 {
-  text-align: left;
-  font-weight: bold;
-  padding: 5px 5px 5px 15px;
-  font-size: 12px;
-  margin: -7px;
-  background-color: #c00;
-  color: #fff;
+#content table {
+  width: 100%;
+}
+#content table th {
+  padding: 10px 8px;
+  border-bottom: 2px solid #4c8bd3;
+  font-size: 1.2em;
+}
+#content table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #eeeeee;
+}
+#content #errors table th {
+  border-bottom-color: #d34f4a;
+  color: #d34f4a;
+}
+#content #errors table td.error {
+  background-color: #fbefef;
+  color: #d34f4a;
+}
+#content #errors table td:last-child {
+  background-color: #fbefef;
+  color: #d34f4a;
 }
 
-#errorExplanation p {
-  color: #333;
+#content #errors h3 {
+  color: #d34f4a;
+}
+#content #errors {
+  margin-bottom: 20px;
+}
+#content fieldset {
+  margin-bottom: 20px;
+}
+#content fieldset:last-child {
   margin-bottom: 0;
-  padding: 5px;
 }
-
-#errorExplanation ul li {
-  font-size: 12px;
-  list-style: square;
+#content fieldset h3 + p, #content fieldset .description {
+  margin-top: -10px;
 }
-
-ul.plain{
-    list-style: none;
-    list-indent: 0px;
-    -webkit-padding-start: 0px;
+#content fieldset .description ul {
+  margin-left: 15px;
+  list-style: disc;
 }
-
-label {
-    display: inline-block;
-    width: 12em;
+#content fieldset .field {
+  margin: 15px 0;
+  clear: both;
+  overflow: auto;
 }
-
-/*General*/
-#logo{
-    display: block;
-    width: 272px;
-    height: 57px;
-    background: url("../images/visitday_logo_sm.png");
-    z-index: 100;
+#content fieldset .field ul li {
+  margin-right: 5px;
+  float: left;
 }
-
-#container{
-    width: 80%;
-    height: 100%;
-    margin: auto;
+#content fieldset .field ul li:last-child {
+  margin-right: 0;
 }
-
-#inner-container{
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    background: -webkit-gradient(linear, 0% 3%, 0% 100%, from(#FCFCFC), to(#F7F7F7));
-    background: -moz-linear-gradient(19% 75% 90deg,#F7F7F7, #FCFCFC 100%);
-    border: #eee 1px solid;
-    padding: 1em;
-    z-index: 10;
+#content fieldset .field > label {
+  color: #4c8bd3;
+  display: block;
 }
-
+#content fieldset .field.required label:after {
+  content: " (Required)"
+}
+#content fieldset .field .units {
+  margin-left: 3px;
+}
+#content fieldset .fieldWithErrors {
+  color: #d34f4a;
+}

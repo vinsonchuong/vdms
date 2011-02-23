@@ -1,20 +1,28 @@
 - content_for :title, t('.title')
 - form_for @peer_advisor, :url => {:action => 'update'} do |peer_advisor_form|
-  != peer_advisor_form.error_messages
+  - if @peer_advisor.errors.any?
+    #errors
+      %h3!= t('.errors')
+      %ul
+        - @peer_advisor.errors.full_messages.each do |message|
+          %li!= message
   %fieldset
     %h3!= t('.info')
-    %ul.plain
+    %ul
       - unless @peer_advisor == @current_user
-        %li
+        %li.field.required
           != peer_advisor_form.label :ldap_id
+          %p!= t('.ldap_id_description', :calnet_directory => link_to('CalNet Directory', 'https://calnet.berkeley.edu/directory/'))
           != peer_advisor_form.text_field :ldap_id
-      %li
+      %li.field.required
         != peer_advisor_form.label :first_name
         != peer_advisor_form.text_field :first_name
-      %li
+      %li.field.required
         != peer_advisor_form.label :last_name
         != peer_advisor_form.text_field :last_name
-      %li
+      %li.field.required
         != peer_advisor_form.label :email
         != peer_advisor_form.text_field :email
+    != hidden_field_tag :origin_action, @origin_action
+    != hidden_field_tag :redirect_action, @redirect_action
     != peer_advisor_form.submit ((@current_user.class == PeerAdvisor) ? t('.alt_submit') : t('.submit'))

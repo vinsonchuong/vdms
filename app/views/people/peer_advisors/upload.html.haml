@@ -1,29 +1,45 @@
 - content_for :title, t('.title')
 - form_tag import_peer_advisors_path, :method => :post, :multipart => true do
   - if !@peer_advisors.nil? && @peer_advisors.any?(&:invalid?)
-    %table
-      %thead
-        %tr
-          %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:ldap_id)
-          %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:first_name)
-          %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:last_name)
-          %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:email)
-          %th{:scope => 'col'}!= t('.errors')
-      %tbody
-        - @peer_advisors.each do |peer_advisor|
+    #errors
+      %h3!= t('.errors')
+      %table
+        %thead
           %tr
-            %td= peer_advisor.ldap_id
-            %td= peer_advisor.first_name
-            %td= peer_advisor.last_name
-            %td= peer_advisor.email
-            %td
-              %ul
-                - peer_advisor.errors.full_messages.each do |error|
-                  %li= error
+            %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:full_name)
+            %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:email)
+            %th{:scope => 'col'}!= t('.errors')
+        %tbody
+          - @peer_advisors.select(&:invalid?).each do |peer_advisor|
+            - errors = peer_advisor.errors
+            %tr
+              %td{:class => (errors[:first_name].nil? && errors[:first_name].nil? ? nil : 'error')}= peer_advisor.full_name
+              %td{:class => (errors[:email].nil? ? nil : 'error')}= peer_advisor.email
+              %td
+                %ul
+                  - peer_advisor.errors.full_messages.each do |error|
+                    %li= error
   %fieldset
     %h3!= t('.data')
-    %ul.plain
-      %li
+    .description
+      != t('.data_description')
+      %ul
+        %li
+          %em LDAP ID
+          != "(#{t('.required')})"
+          != " - #{t('.ldap_id_requirement', :calnet_directory => link_to('CalNet Directory', 'https://calnet.berkeley.edu/directory/'))}"
+        %li
+          %em First Name
+          != "(#{t('.required')})"
+        %li
+          %em Last Name
+          != "(#{t('.required')})"
+        %li
+          %em Email
+          != "(#{t('.required')})"
+          != " - #{t('.email_requirement')}"
+    %ul
+      %li.field.required
         != label_tag :csv_file, t('.csv_file')
         != file_field_tag :csv_file
     != submit_tag t('.submit')

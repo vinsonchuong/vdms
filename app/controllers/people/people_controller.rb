@@ -30,9 +30,7 @@ class PeopleController < ApplicationController
   # POST /people/PEOPLE
   def create
     self.instance_variable_set("@#{@instance}", @model.new(params[@model.name.underscore.to_sym]))
-    if instance_variable_get("@#{@instance}").new_record?
-      instance_variable_get("@#{@instance}").ldap_id = @current_user.ldap_id
-    end
+    instance_variable_get("@#{@instance}").ldap_id = @current_user.ldap_id if @current_user.new_record?
 
     if instance_variable_get("@#{@instance}").save
       redirect_to(self.send("#{@collection}_url".to_sym), :notice => t(:success, :scope => [:people, @model.name.tableize, :create]))

@@ -1,27 +1,32 @@
 - content_for :title, t('.title')
 - form_for @admit do |admit_form|
-  != admit_form.error_messages
+  - if @admit.errors.any?
+    #errors
+      %h3!= t('.errors')
+      %ul
+        - @admit.errors.full_messages.each do |message|
+          %li!= message
   %fieldset
     %h3!= t('.info')
-    %ul.plain
-      %li
+    %ul
+      %li.field.required
         != admit_form.label :first_name
         != admit_form.text_field :first_name
-      %li
+      %li.field.required
         != admit_form.label :last_name
         != admit_form.text_field :last_name
-      %li
+      %li.field
         != admit_form.label :email
         != admit_form.text_field :email
-      %li
+      %li.field
         != admit_form.label :phone
         != admit_form.text_field :phone
-      %li
+      %li.field
         != admit_form.label :area1
-        != admit_form.select :area1, @areas
-      %li
+        != admit_form.select :area1, @areas, :include_blank => true
+      %li.field
         != admit_form.label :area2
-        != admit_form.select :area2, @areas
+        != admit_form.select :area2, @areas, :include_blank => true
     != hidden_field_tag :origin_action, @origin_action
     != hidden_field_tag :redirect_action, @redirect_action
     != admit_form.submit t('.submit')
