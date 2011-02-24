@@ -3,11 +3,11 @@
   != faculty_form.error_messages
   %fieldset
     %h3!= t('.preferences')
-    %ul.plain
-      %li
+    %ul
+      %li.field
         != faculty_form.label :default_room
         != faculty_form.text_field :default_room
-      %li
+      %li.field
         != faculty_form.label :max_admits_per_meeting
         != faculty_form.text_field :max_admits_per_meeting
   %fieldset

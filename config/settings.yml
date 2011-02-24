@@ -3,29 +3,29 @@
 #
 # All lengths of time are in seconds.
 divisions:
-  CS: Computer Science
-  EE: Electrical Engineering
+  cs: Computer Science
+  ee: Electrical Engineering
 areas:
-  AI: Artificial Intelligence
-  BIO: Biosystems & Computational Biology
-  COMNET: Communications & Networking
-  ARC: Computer Architecture & Engineering
-  CIR: Control, Intelligent Systems, and Robotics
-  DBMS: Database Management Systems
-  DES: Design of Electronic Systems
-  EDUC: Education
-  ENE: Energy
-  GR: Graphics
-  HCI: Human-Computer Interaction
-  INC: Integrated Circuits
-  MEMS: Micro/Nano Electro Mechanical Systems
-  OSNT: Operating Systems & Networking
-  PHY: Physical Electronics
-  PS: Programming Systems
-  SCI: Scientific Computing
-  SEC: Security
-  SP: Signal Processing
-  THY: Theory
+  ai: Artificial Intelligence
+  bio: Biosystems & Computational Biology
+  comnet: Communications & Networking
+  arc: Computer Architecture & Engineering
+  cir: Control, Intelligent Systems, and Robotics
+  dbms: Database Management Systems
+  des: Design of Electronic Systems
+  educ: Education
+  ene: Energy
+  gr: Graphics
+  hci: Human-Computer Interaction
+  inc: Integrated Circuits
+  mems: Micro/Nano Electro Mechanical Systems
+  osnt: Operating Systems & Networking
+  phy: Physical Electronics
+  ps: Programming Systems
+  sci: Scientific Computing
+  sec: Security
+  sp: Signal Processing
+  thy: Theory
 meeting_length: 900
 meeting_gap: 300
 

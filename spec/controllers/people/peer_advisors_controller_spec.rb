@@ -510,7 +510,19 @@ describe PeerAdvisorsController do
       end
     end
 
-    context 'when signed in as a registered Peer Advisor'
+    context 'when signed in as the given Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@peer_advisor.ldap_id)
+        Person.stub(:find).and_return(@peer_advisor)
+      end
+
+      it 'prevents changes to the LDAP ID' do
+        put :update, :id => @peer_advisor.id, :peer_advisor => {:ldap_id => 'foobar'}
+        assigns[:peer_advisor].ldap_id.should == @peer_advisor.ldap_id
+      end
+    end
+
+    context 'when signed in as some other registered Peer Advisor'
 
     context 'when signed in as an unregistered Peer Advisor' do
       before(:each) do

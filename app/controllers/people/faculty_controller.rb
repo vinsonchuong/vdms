@@ -35,18 +35,6 @@ class FacultyController < PeopleController
     params[:rank_admits].each {|admit_id, checked| @faculty_instance.admit_rankings.build(:admit_id => admit_id) if checked == "1" && !@faculty_instance.admit_rankings.find_by_admit_id(admit_id)} if params[:rank_admits]
   end
 
-  # POST /people/faculty
-  def create
-    @faculty_instance = Faculty.new(params[:faculty])
-    @faculty_instance.ldap_id = @current_user.ldap_id if @current_user.new_record?
-
-    if @faculty_instance.save
-      redirect_to(faculty_url, :notice => t(:success, :scope => [:people, :faculty, :create]))
-    else
-      render :action => 'new'
-    end
-  end
-
   private
 
   def get_model
@@ -57,7 +45,7 @@ class FacultyController < PeopleController
 
   def get_areas_and_divisions
     settings = Settings.instance
-    @areas = settings.areas.map {|k, v| [v, k]}
-    @divisions = settings.divisions.map {|d| [d.long_name, d.name]}
+    @areas = settings.areas.map {|k, v| [v, k]}.sort!
+    @divisions = settings.divisions.map {|d| [d.long_name, d.name]}.sort!
   end
 end

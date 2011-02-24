@@ -2,27 +2,23 @@
 %html
   %head
     %title!= yield :title
-    != javascript_include_tag :defaults
-    != stylesheet_link_tag :all
+    != stylesheet_link_tag 'reset'
+    != stylesheet_link_tag 'main'
     != stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Droid+Sans'
+    != javascript_include_tag :defaults
   %body
-    #masthead
-      %h1 Visit Day Meeting Scheduler
+    %h1!= link_to 'Visit Day', home_path
     #navigation
       - if @current_user.class == Staff
         %ul
-          %li!= link_to t('staff.edit.alt_title'), edit_staff_instance_path(@current_user)
           %li!= link_to t('settings.edit.title'), edit_settings_path
           %li
             != link_to t('staff.index.title'), staff_path
             %ul
+              %li!= link_to t('staff.edit.alt_title'), edit_staff_instance_path(@current_user)
               %li!= link_to t('staff.new.title'), new_staff_instance_path
-              %li!= link_to t('staff.upload.title'), upload_staff_path
           %li
             != link_to t('peer_advisors.index.title'), peer_advisors_path
-            %ul
-              %li!= link_to t('peer_advisors.new.title'), new_peer_advisor_path
-              %li!= link_to t('peer_advisors.upload.title'), upload_peer_advisors_path
           %li
             != link_to t('faculty.index.title'), faculty_path
             %ul

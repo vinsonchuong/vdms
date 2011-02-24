@@ -15,9 +15,10 @@ en:
       meeting: "Meeting"
     attributes:
       person:
-        ldap_id: "CalNet Directory UID"
+        ldap_id: "CalNet UID"
         first_name: "First Name"
         last_name: "Last Name"
+        full_name: "Name"
         email: "Email"
       faculty:
         division: "Division"
@@ -51,6 +52,7 @@ en:
       available_time:
         begin: "From"
         end: "To"
+        offset: "To"
         room: "Different Room"
         available: "Available?"
       meeting:

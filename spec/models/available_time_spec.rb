@@ -38,20 +38,6 @@ describe AvailableTime do
       @available_time.should be_valid
     end
 
-    it 'is valid with a valid Beginning' do
-      [@available_time.begin, @available_time.begin.to_s].each do |t|
-        @available_time.begin = t
-        @available_time.should be_valid
-      end
-    end
-
-    it 'is valid with a valid End' do
-      [@available_time.end, @available_time.end.to_s].each do |t|
-        @available_time.end = t
-        @available_time.should be_valid
-      end
-    end
-
     it 'is not valid with an invalid Beginning' do
       ['', 'foobar'].each do |invalid_time|
         @available_time.begin = invalid_time

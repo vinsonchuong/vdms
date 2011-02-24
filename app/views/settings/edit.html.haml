@@ -2,30 +2,46 @@
 - form_for @settings, :url => settings_path do |settings_form|
   != settings_form.error_messages
   %fieldset
-    %h3!= t('.global_settings')
-    %ul.plain
-      %li
+    - numbers = []
+    - 121.times {|i| numbers[i] = i}
+    %h3!= t('.scheduler_settings')
+    %p!= t('.scheduler_settings_description')
+    %ul
+      %li.field
         != settings_form.label :unsatisfied_admit_threshold
-        != settings_form.text_field :unsatisfied_admit_threshold
-      %li
-        %h4!= t('.meeting_times')
-        %ul.plain
-          - settings_form.fields_for :divisions do |division_fields|
-            %li
-              %h5!= division_fields.object.name
-              %ul.plain
-                - division_fields.fields_for :available_times do |available_time_fields|
-                  - @time = available_time_fields.object
+        %p!= t('.unsatisfied_admit_threshold_description')
+        != settings_form.select :unsatisfied_admit_threshold, numbers
+        %span.units!= t('.meetings')
+  %fieldset
+    - sec_to_min = []
+    - 121.times {|i| sec_to_min[i] = [i, i * 60]}
+    %h3!= t('.meeting_times')
+    %p!= t('.meeting_times_description')
+    %ul
+      %li.field
+        != settings_form.label :meeting_length
+        != settings_form.select :meeting_length, sec_to_min, {}, :disabled => true
+        %span.units!= t('.minutes')
+      %li.field
+        != settings_form.label :meeting_gap
+        != settings_form.select :meeting_gap, sec_to_min, {}, :disabled => true
+        %span.units!= t('.minutes')
+      - settings_form.fields_for :divisions do |division_fields|
+        %li
+          %h4!= "#{t('.time_intervals_for')} #{division_fields.object.long_name}"
+          %ul
+            - division_fields.fields_for :available_times do |available_time_fields|
+              - @time = available_time_fields.object
+              %li.field
+                %ul
                   %li
-                    %ul.plain
-                      %li
-                        != available_time_fields.label :begin
-                        != available_time_fields.datetime_select :begin, :include_blank => true
-                      %li
-                        != available_time_fields.label :end
-                        != available_time_fields.datetime_select :end, :include_blank => true
-                      - unless available_time_fields.object.new_record?
-                        %li
-                          != available_time_fields.check_box :_destroy
-                          != available_time_fields.label :_destroy, t('.remove')
+                    != available_time_fields.label :begin, nil, :class => 'hidden'
+                    != available_time_fields.datetime_select :begin, :include_blank => true
+                  %li
+                    != available_time_fields.label :end
+                    != available_time_fields.time_select :end, :include_blank => true
+                  - unless available_time_fields.object.new_record?
+                    %li
+                      != available_time_fields.check_box :_destroy
+                      != available_time_fields.label :_destroy, t('.remove')
     != settings_form.submit

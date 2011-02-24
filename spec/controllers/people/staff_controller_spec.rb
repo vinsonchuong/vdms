@@ -448,10 +448,24 @@ describe StaffController do
       end
     end
 
-    context 'when signed in as a Staff' do
+    context 'when signed in as the given Staff' do
       before(:each) do
-        Staff.stub(:find).and_return(@staff_instance)
         CASClient::Frameworks::Rails::Filter.fake(@staff_instance.ldap_id)
+        Person.stub(:find).and_return(@staff_instance)
+      end
+
+      it 'prevents changes to the LDAP ID' do
+        put :update, :id => @staff_instance.id, :staff => {:ldap_id => 'foobar'}
+        assigns[:staff_instance].ldap_id.should == @staff_instance.ldap_id
+      end
+    end
+
+    context 'when signed in as some other registered Staff' do
+      before(:each) do
+        @other_staff_instance = Factory.create(:staff)
+        Person.stub(:find).and_return(@other_staff_instance)
+        CASClient::Frameworks::Rails::Filter.fake(@other_staff_instance.ldap_id)
+        Staff.stub(:find).and_return(@staff_instance)
       end
 
       it 'assigns to @staff_instance the given Staff' do

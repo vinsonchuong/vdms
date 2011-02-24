@@ -2,8 +2,7 @@
 %table
   %thead
     %tr
-      %th{:scope => 'col'}!= Admit.human_attribute_name(:first_name)
-      %th{:scope => 'col'}!= Admit.human_attribute_name(:last_name)
+      %th{:scope => 'col'}!= Admit.human_attribute_name(:full_name)
       %th{:scope => 'col'}!= Admit.human_attribute_name(:email)
       %th{:scope => 'col'}!= Admit.human_attribute_name(:phone)
       %th{:scope => 'col'}!= Admit.human_attribute_name(:area1)
@@ -13,15 +12,14 @@
     - @settings = Settings.instance
     - @admits.each do |admit|
       %tr
-        %td= admit.first_name
-        %td= admit.last_name
+        %td= admit.full_name
         %td= admit.email
         %td= admit.phone
-        %td= @settings.areas[admit.area1]
-        %td= @settings.areas[admit.area2]
+        %td= admit.area1
+        %td= admit.area2
         %td
           %ul
-            %li!= link_to t('admits.edit.title'), edit_admit_path(admit)
-            %li!= link_to t('admits.schedule.title'), schedule_admit_path(admit)
-            %li!= link_to t('admits.rank_faculty.title'), rank_faculty_admit_path(admit)
-            %li!= link_to t('admits.delete.title'), delete_admit_path(admit)
+            %li!= link_to t('admits.edit.short_title'), edit_admit_path(admit)
+            %li!= link_to t('admits.schedule.short_title'), schedule_admit_path(admit)
+            %li!= link_to t('admits.rank_faculty.short_title'), rank_faculty_admit_path(admit)
+            %li!= link_to t('admits.delete.short_title'), delete_admit_path(admit)

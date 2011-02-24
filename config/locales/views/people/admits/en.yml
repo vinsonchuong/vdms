@@ -5,27 +5,40 @@ en:
       actions: "Actions"
     new:
       title: "Add Admit"
+      errors: "Errors"
       info: "Admit Info"
       submit: "Add Admit"
     upload:
       title: "Import Admits"
       errors: "Errors"
       data: "Data"
+      data_description: "Admits can be quickly registered by importing a CSV (comma-separated values) file. The required
+                         columns and data formats are as follows. Unrecognized columns will be ignored. Note that column
+                         names and data are case-sensitive and must obey the formatting constraints exactly:"
+      required: "required"
+      email_requirement: "Must be a valid email address (e.g. email@email.com)."
+      area_requirement: "Must be one of the %{areas}, either the full name (e.g. Artificial Intelligence) or
+                         abbreviation in lower case (e.g. ai)."
       csv_file: "CSV File"
       submit: "Import Admits"
     edit:
       title: "Update Admit"
+      short_title: "Update Info"
+      errors: "Errors"
       info: "Admit Info"
       submit: "Update Admit"
     schedule:
       title: "Update Admit's Availability"
+      short_title: "Update Availability"
       availability: "Availability"
       submit: "Update Availability"
     rank_faculty:
       title: "Update Admit's Faculty Rankings"
+      short_title: "Update Rankings"
       faculty_rankings: "Faculty Rankings"
       remove: "Remove"
       submit: "Update Faculty Rankings"
     delete:
       title: "Remove Admit"
+      short_title: "Remove"
       submit: "Remove Admit"

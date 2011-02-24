@@ -1,10 +1,10 @@
 !!! Strict
 %html
   %head
-    %title Visit Day Meeting Scheduler
-    != javascript_include_tag :defaults
-    != stylesheet_link_tag 'main'
+    %title!= yield :title
+    != stylesheet_link_tag 'reset'
     != stylesheet_link_tag 'home'
     != stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Droid+Sans'
   %body
+    %h1!= yield :title
     != yield

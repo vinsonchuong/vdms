@@ -2,6 +2,19 @@ en:
   settings:
     edit:
       title: "Update Settings"
-      global_settings: "Global Settings"
+      scheduler_settings: "Scheduler Settings"
+      scheduler_settings_description: "Numbers and weights which allow for customization of the meeting scheduler's
+                                       priorities."
+      unsatisfied_admit_threshold_description: "Admits assigned to fewer than this number of meetings are considered
+                                                unsatisfied."
+      meetings: "Meetings"
       meeting_times: "Meeting Times"
+      meeting_times_description: "Settings which define the time slots and ranges over which meetings can be scheduled.
+                                  For each division, the given time intervals are partitioned into time slots of the
+                                  given length (Meeting Length) separated by gaps (Inter-Meeting Gap). Faculty and
+                                  admits then specify their availability in terms of these time slots. Note that the
+                                  Meeting Length and Inter-Meeting Gap must be specified in advance and cannot be
+                                  changed."
+      minutes: "Minutes"
+      time_intervals_for: "Time Intervals for"
       remove: "Remove"

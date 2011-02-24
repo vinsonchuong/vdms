@@ -1,33 +1,57 @@
 - content_for :title, t('.title')
 - form_tag import_faculty_path, :method => :post, :multipart => true do
   - if !@faculty.nil? && @faculty.any?(&:invalid?)
-    %table
-      %thead
-        %tr
-        %th{:scope => 'col'}!= Faculty.human_attribute_name(:ldap_id)
-        %th{:scope => 'col'}!= Faculty.human_attribute_name(:first_name)
-        %th{:scope => 'col'}!= Faculty.human_attribute_name(:last_name)
-        %th{:scope => 'col'}!= Faculty.human_attribute_name(:email)
-        %th{:scope => 'col'}!= Faculty.human_attribute_name(:division)
-        %th{:scope => 'col'}!= Faculty.human_attribute_name(:area)
-        %th{:scope => 'col'}!= t('.errors')
-      %tbody
-        - @faculty.each do |faculty_instance|
+    #errors
+      %h3!= t('.errors')
+      %table
+        %thead
           %tr
-            %td= faculty_instance.ldap_id
-            %td= faculty_instance.first_name
-            %td= faculty_instance.last_name
-            %td= faculty_instance.email
-            %td= faculty_instance.division
-            %td= faculty_instance.area
-            %td
-              %ul
-                - faculty_instance.errors.full_messages.each do |error|
-                  %li= error
+          %th{:scope => 'col'}!= Faculty.human_attribute_name(:full_name)
+          %th{:scope => 'col'}!= Faculty.human_attribute_name(:email)
+          %th{:scope => 'col'}!= Faculty.human_attribute_name(:division)
+          %th{:scope => 'col'}!= Faculty.human_attribute_name(:area)
+          %th{:scope => 'col'}!= t('.errors')
+        %tbody
+          - @faculty.select(&:invalid?).each do |faculty_instance|
+            - errors = faculty_instance.errors
+            %tr
+              %td{:class => (errors[:first_name].nil? && errors[:first_name].nil? ? nil : 'error')}= faculty_instance.full_name
+              %td{:class => (errors[:email].nil? ? nil : 'error')}= faculty_instance.email
+              %td{:class => (errors[:division].nil? ? nil : 'error')}= faculty_instance.division
+              %td{:class => (errors[:area].nil? ? nil : 'error')}= faculty_instance.area
+              %td
+                %ul
+                  - faculty_instance.errors.full_messages.each do |error|
+                    %li= error
   %fieldset
     %h3!= t('.data')
-    %ul.plain
-      %li
+    .description
+      != t('.data_description')
+      %ul
+        %li
+          %em LDAP ID
+          != "(#{t('.required')})"
+          != " - #{t('.ldap_id_requirement', :calnet_directory => link_to('CalNet Directory', 'https://calnet.berkeley.edu/directory/'))}"
+        %li
+          %em First Name
+          != "(#{t('.required')})"
+        %li
+          %em Last Name
+          != "(#{t('.required')})"
+        %li
+          %em Email
+          != "(#{t('.required')})"
+          != " - #{t('.email_requirement')}"
+        %li
+          %em Division
+          != "(#{t('.required')})"
+          != " - #{t('.division_requirement')}"
+        %li
+          %em Area
+          != "(#{t('.required')})"
+          != " - #{t('.area_requirement', :areas => link_to('EECS Research Areas', 'http://www.eecs.berkeley.edu/Research/Areas/'))}"
+    %ul
+      %li.field.required
         != label_tag :csv_file, t('.csv_file')
         != file_field_tag :csv_file
     != submit_tag t('.submit')

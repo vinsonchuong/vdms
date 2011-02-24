@@ -82,13 +82,13 @@ describe AdmitsController do
       it 'assigns to @areas a list of the Areas' do
         stub_areas('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
         get :new
-        assigns[:areas].should == ['Area 1', 'Area 2', 'Area 3']
+        assigns[:areas].should == [['Area 1', 'A1'], ['Area 2', 'A2'], ['Area 3', 'A3']]
       end
 
       it 'assigns to @divisions a list of the Division names' do
         stub_divisions('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
         get :new
-        assigns[:divisions].should == ['Division 1', 'Division 2', 'Division 3']
+        assigns[:divisions].should == [['Division 1', 'D1'], ['Division 2', 'D2'], ['Division 3', 'D3']]
       end
 
       it 'renders the new template' do

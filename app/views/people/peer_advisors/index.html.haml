@@ -2,19 +2,15 @@
 %table
   %thead
     %tr
-      %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:ldap_id)
-      %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:first_name)
-      %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:last_name)
+      %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:full_name)
       %th{:scope => 'col'}!= PeerAdvisor.human_attribute_name(:email)
       %th{:scope => 'col'}!= t('.actions')
   %tbody
     - @peer_advisors.each do |peer_advisor|
       %tr
-        %td= peer_advisor.ldap_id
-        %td= peer_advisor.first_name
-        %td= peer_advisor.last_name
+        %td= peer_advisor.full_name
         %td= peer_advisor.email
         %td
           %ul
-            %li!= link_to t('peer_advisors.edit.title'), edit_peer_advisor_path(peer_advisor)
-            %li!= link_to t('peer_advisors.delete.title'), delete_peer_advisor_path(peer_advisor)
+            %li!= link_to t('peer_advisors.edit.short_title'), edit_peer_advisor_path(peer_advisor)
+            %li!= link_to t('peer_advisors.delete.short_title'), delete_peer_advisor_path(peer_advisor)

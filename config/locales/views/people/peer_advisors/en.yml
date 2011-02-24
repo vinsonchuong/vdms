@@ -6,21 +6,36 @@ en:
     new:
       title: "Add Peer Advisor"
       alt_title: "Register As A Peer Advisor"
+      errors: "Errors"
       info: "Peer Advisor Info"
+      ldap_id_description: "The UID is needed to identify registered people with users who login through CalNet. It can
+                            be found at the %{calnet_directory}."
       submit: "Add Peer Advisor"
       alt_submit: "Register"
     upload:
       title: "Import Peer Advisors"
       errors: "Errors"
       data: "Data"
+      data_description: "Faculty can be quickly registered by importing a CSV (comma-separated values) file. The
+                         required columns and data formats are as follows. Unrecognized columns will be ignored. Note
+                         that column names and data are case-sensitive and must obey the formatting constraints
+                         exactly:"
+      required: "required"
+      ldap_id_requirement: "Must be the exact UID for the person as listed in the %{calnet_directory}."
+      email_requirement: "Must be a valid email address (e.g. email@email.com)."
       csv_file: "CSV File"
       submit: "Import Peer Advisors"
     edit:
       title: "Update Peer Advisor"
-      alt_title: "Update My Registration"
+      short_title: "Update Info"
+      alt_title: "Update My Info"
+      errors: "Errors"
       info: "Peer Advisor Info"
+      ldap_id_description: "The UID is needed to identify registered people with users who login through CalNet. It can
+                            be found at the %{calnet_directory}."
       submit: "Update Peer Advisor"
       alt_submit: "Update Registration"
     delete:
       title: "Remove Peer Advisor"
+      short_title: "Remove"
       submit: "Remove Peer Advisor"
