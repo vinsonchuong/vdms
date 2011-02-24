@@ -25,5 +25,5 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :admits, :path_prefix => '/people',
     :except => [:show],
     :collection => {:upload => :get, :import => :post},
-    :member => {:schedule => :get, :rank_faculty => :get, :delete => :get}
+    :member => {:schedule => :get, :rank_faculty => :get, :delete => :get, :view_meetings => :get}
 end

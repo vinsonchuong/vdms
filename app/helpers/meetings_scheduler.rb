@@ -1,5 +1,4 @@
 module MeetingsScheduler
-
 #factors_to_consider: a hash that contains all the necessary information to compute optimum meeting arrangement.
 #                    The structure of factors_to_consider looks like:
 #                    {:attending_admits => a hash of admits attending Visit Day, 

@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 describe MeetingsScheduler do
-  describe MeetingsScheduler::Scheduler do
-    
-  end
 
   describe MeetingsScheduler::GeneticAlgorithm do
     describe "class method: run" do

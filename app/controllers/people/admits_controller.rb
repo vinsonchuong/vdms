@@ -2,6 +2,12 @@ class AdmitsController < PeopleController
   before_filter :get_areas_and_divisions, :only => [:new, :edit, :create, :update]
   before_filter :get_faculty, :only => [:rank_faculty, :update]
 
+  # GET /people/admits/1/meetings
+  def view_meetings
+    @admit = Admit.find(params[:id])
+    @admit_meetings = @admit.meetings
+  end
+
 
   # GET /people/admits/1/schedule
   def schedule

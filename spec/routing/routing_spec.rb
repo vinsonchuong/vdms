@@ -263,11 +263,12 @@ describe 'Routes' do
         end
       end
       
-      context 'Filter Admits' do
-        it 'routes GET /people/PEOPLE/admits/filter to Admits#filter' do
-          {:get => '/people/admits/filter'}.should route_to(:controller => 'admits', :action => 'filter')
+      context 'View Admit Meeting Schedule' do
+        it 'routes  GET /people/admits/1/meetings' do 
+          {:get => '/people/admits/1/view_meetings'}.should route_to(:controller => 'admits', :action => 'view_meetings', :id => '1')
         end
       end
+      
     end
   end
 end

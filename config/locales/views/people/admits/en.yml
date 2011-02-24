@@ -38,6 +38,10 @@ en:
       faculty_rankings: "Faculty Rankings"
       remove: "Remove"
       submit: "Update Faculty Rankings"
+    view_meetings:
+      title: "View Admit's Meeting Schedule"
+      short_title: "View Meeting Schedule"
+      view_meetings: "View Meetings"
     delete:
       title: "Remove Admit"
       short_title: "Remove"

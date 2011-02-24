@@ -4,6 +4,7 @@ describe AdmitsController do
   before(:each) do
     @staff = Factory.create(:staff)
     @admit = Factory.create(:admit)
+    @peer_advisor = Factory.create(:peer_advisor)
   end
 
   describe 'GET index' do
@@ -758,46 +759,57 @@ describe AdmitsController do
     end
   end
   
-  describe 'GET filter' do
+  describe 'GET view_meetings' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
-        get :filter
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(filter_admits_url)}")
+        get :view_meetings, :id => @admit.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(view_meetings_admit_url(@admit.id))}")
       end
     end
     
-    context 'when signed in as a staff' do
-      it 'filters @admits by areas' do
-        
+    context 'when signed in as a Staff'
+    
+    context 'when signed in as a registered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@peer_advisor.ldap_id)
+        Admit.stub(:find).and_return(@admit)
+        @meetings = [Meeting.new, Meeting.new, Meeting.new]
       end
+      
+      it 'should display a list of admit\'s meetings' do
+        @admit.stub(:meetings).and_return(@meetings)
+        get :view_meetings, :id => @admit.id
+        assigns[:admit].should == @admit
+        assigns[:admit_meetings].should == @meetings
+      end  
     end
     
-    context 'when signed in as a registered Peer Advisor'
-
     context 'when signed in as an unregistered Peer Advisor' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
         Person.stub(:find).and_return(PeerAdvisor.new)
       end
-
-      it 'redirects to the New Peer Advisor page' do
-        get :filter
+      
+      it 'redirects to the New PeerAdvisor page' do
+        get :view_meetings, :id => @admit.id
         response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
       end
     end
-
+    
     context 'when signed in as a registered Faculty'
-
-    context 'when signed in as an unregistered Faculty' do
+       
+    context 'when signed in as an unregistered Faculty' do 
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
         Person.stub(:find).and_return(Faculty.new)
       end
-
+      
       it 'redirects to the New Faculty page' do
-        get :filter
+        get :view_meetings, :id => @admit.id
         response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end
+    
+    
   end
 end
