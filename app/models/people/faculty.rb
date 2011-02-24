@@ -56,4 +56,12 @@ class Faculty < Person
       record.errors.add_to_base('Ranks must be unique')
     end
   end
+  
+  
+  
+  def self.attending_faculties
+    Faculty.all.select {|faculty| faculty.available_times.select {|available_time| available_time.available?}.count > 0 }
+  end
+  
+  
 end
