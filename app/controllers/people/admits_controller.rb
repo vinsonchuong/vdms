@@ -1,5 +1,5 @@
 class AdmitsController < PeopleController
-  before_filter :get_areas_and_divisions, :only => [:new, :edit, :create, :update]
+  before_filter :get_areas_and_divisions, :only => [:new, :edit, :create, :update, :view_meetings]
   before_filter :get_faculty, :only => [:rank_faculty, :update]
 
   # GET /people/admits/1/meetings

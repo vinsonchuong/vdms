@@ -1,10 +1,18 @@
 - content_for :title, t('.title')
-- @admit.available_times.each do |available_time_fiedls|
-  - @available_time = available_time_fields.object
-  != available_time_fields.hidden_field :begin
-  != available_time_fields.hidden_field :end
-  %tr
-    %td!= "#{@available_time.begin.strftime('%m/%d/%y - %I:%M%p')} to #{@available_time.end.strftime('%I:%M%p')}"
+%table
+  %thead
+    %tr
+      %th{:scope => 'col'} Time
+      %th{:scope => 'col'} Faculty Name
+      %th{:scope => 'col'} Room
+  %tbody
+    - @admit_meetings.each do |meeting|
+      %tr
+        %td!= meeting.time
+        %td!= meeting.faculty.full_name
+        %td!= meeting.room
+
+
 
 
 

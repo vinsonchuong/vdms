@@ -32,6 +32,7 @@ module NavigationHelpers
     when /the edit faculty page/ then edit_faculty_instance_path(@faculty)
     when /the schedule faculty page/ then schedule_faculty_instance_path(@faculty)
     when /the delete faculty page/ then delete_faculty_instance_path(@faculty)
+    when /the admit_ranking page/ then rank_admits_faculty_instance_path(@faculty)   
 
     when /the view admits page/ then admits_path
     when /the new admit page/ then new_admit_path
@@ -39,10 +40,10 @@ module NavigationHelpers
     when /the edit admit page/ then edit_admit_path(@admit)
     when /the schedule admit page/ then schedule_admit_path(@admit)
     when /the rank faculty page/ then rank_faculty_admit_path(@admit)
-    when /the delete admit page/ then delete_admit_path(@admit)
+    when /the delete admit page/ then delete_admit_path(@admit)  
+    when /the view admit meeting schedule page/ then view_meetings_admit_path(@admit)
 
-    when /the Add Admits to My Desired Appointments/ then filter_admits_path
-    when /the admit_ranking page/ then rank_admits_faculty_path(@faculty)  
+ 
     
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
