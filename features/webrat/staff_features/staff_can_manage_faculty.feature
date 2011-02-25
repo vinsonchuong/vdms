@@ -22,18 +22,18 @@ Feature: Staff can manage faculty
     When I go to the view faculty page
     And I should see "First1"
     And I should see "Last1"
-    And I should see "Theory"
+    And I should see "email1@email.com"
     And I should see "First2"
     And I should see "Last2"
-    And I should see "Energy"
+    And I should see "email2@email.com"
     And I should see "First3"
     And I should see "Last3"
-    And I should see "Graphics"
+    And I should see "email3@email.com"
 
   Scenario Outline: I add a faculty
     Given I am on the view faculty page
     When I follow "Add Faculty"
-    And I fill in "CalNet Directory UID" with "<ldap_id>"
+    And I fill in "CalNet UID" with "<ldap_id>"
     And I fill in "First Name" with "<first_name>"
     And I fill in "Last Name" with "<last_name>"
     And I fill in "Email" with "<email>"

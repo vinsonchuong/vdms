@@ -22,13 +22,16 @@ Feature: Staff can manage admits
     When I go to the view admits page
     And I should see "First1"
     And I should see "Last1"
-    And I should see "Theory"
+    And I should see "email1@email.com"
+    And I should see "1234567891"
     And I should see "First2"
     And I should see "Last2"
-    And I should see "Communications & Networking"
+    And I should see "email2@email.com"
+    And I should see "1234567892"
     And I should see "First3"
     And I should see "Last3"
-    And I should see "Human-Computer Interaction"
+    And I should see "email3@email.com"
+    And I should see "1234567893"
 
   Scenario Outline: I add an admit
     Given I am on the view admits page

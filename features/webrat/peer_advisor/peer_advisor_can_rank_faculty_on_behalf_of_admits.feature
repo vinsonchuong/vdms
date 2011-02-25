@@ -20,7 +20,7 @@ Feature: Peer advisor can rank faculty on behalf of admits
 
   Scenario: I specify an admit's faculty rankings
     Given I am on the view admits page
-    When I follow "Update Admit's Faculty Rankings"
+    When I follow "Update Rankings"
     And I fill in "Rank" with "1" for the new ranking
     And I select "Faculty Aaaa" from "Faculty" for the new ranking
     And I press "Update Faculty Rankings"

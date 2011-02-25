@@ -15,8 +15,8 @@ Feature: Staff can specify global settings
 
   Scenario: I specify the meeting time ranges
     Given I am on the update settings page
-    When I add "January 1, 2011 10:00" to "January 1, 2011 12:00" to the meeting times for "Computer Science"
-    And I add "January 1, 2011 10:00" to "January 1, 2011 12:00" to the meeting times for "Electrical Engineering"
+    When I add "January 1, 2011 10:00AM" to "12:00PM" to the meeting times for "Computer Science"
+    And I add "January 1, 2011 10:00AM" to "12:00PM" to the meeting times for "Electrical Engineering"
     And I press "Save changes"
     Then I should see "Settings were successfully updated."
 
