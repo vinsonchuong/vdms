@@ -52,9 +52,6 @@ Feature: Staff can manage admits
       | First      | Last      | email@email.com | (123) 456-7890 | Communications & Networking | Energy            | Admit was successfully added. |
       | First      | Last      | email@email.com | 1234567890     | Physical Electronics        | Signal Processing | Admit was successfully added. |
 
-    Scenarios: with invalid information
-      | first_name | last_name | email           | phone           | area1                       | area2             | result                                                           |
-
   Scenario: I add admits by importing a CSV with valid data
     Given I am on the view admits page
     When I follow "Import Admits"
