@@ -767,7 +767,20 @@ describe AdmitsController do
       end
     end
     
-    context 'when signed in as a Staff'
+    context 'when signed in as a Staff' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
+        Admit.stub(:find).and_return(@admit)
+        @meetings = [Meeting.new, Meeting.new, Meeting.new]
+      end
+      
+      it 'should display a list of admit\'s meetings' do
+        @admit.stub(:meetings).and_return(@meetings)
+        get :view_meetings, :id => @admit.id
+        assigns[:admit].should == @admit
+        assigns[:admit_meetings].should == @meetings
+      end  
+    end
     
     context 'when signed in as a registered Peer Advisor' do
       before(:each) do

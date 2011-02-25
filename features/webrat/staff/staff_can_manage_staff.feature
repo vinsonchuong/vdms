@@ -30,7 +30,7 @@ Feature: Staff can manage staff
   Scenario Outline: I add a staff
     Given I am on the view staff page
     When I follow "Add Staff"
-    And I fill in "CalNet Directory UID" with "<ldap_id>"
+    And I fill in "CalNet UID" with "<ldap_id>"
     And I fill in "First Name" with "<first_name>"
     And I fill in "Last Name" with "<last_name>"
     And I fill in "Email" with "<email>"
@@ -44,25 +44,6 @@ Feature: Staff can manage staff
     Scenarios: with invalid information
       | ldap_id | first_name | last_name | email           | result                        |
       | ldap_id | First      | Last      | invalid_email   | Email is invalid              |
-
-  Scenario: I add staff by importing a CSV with valid data
-    Given I am on the view staff page
-    When I follow "Import Staff"
-    And I attach the file "features/assets/valid_staff.csv" to "CSV File"
-    And I press "Import"
-    Then I should see "Staff were successfully imported."
-    And I should see "First1"
-    And I should see "First2"
-    And I should see "First3"
-
-  Scenario: I try to add staff by importing a CSV with some invalid data
-    Given I am on the view staff page
-    When I follow "Import Staff"
-    And I attach the file "features/assets/invalid_staff.csv" to "CSV File"
-    And I press "Import"
-    Then I should see "Last Name can't be blank"
-    And I should see "First Name can't be blank"
-    And I should see "Email can't be blank"
 
   Scenario: I update a staff's information
 

@@ -2,6 +2,11 @@ require 'spec_helper'
 
 describe MeetingsScheduler do
 
+  #describe MeetingsScheduler::Scheduler do
+    
+  #end
+=begin
+>>>>>>> 887a10646eb23d0dec2a24a9b95dda44f84833f2
   describe MeetingsScheduler::GeneticAlgorithm do
     describe "class method: run" do
     end
@@ -855,14 +860,18 @@ describe MeetingsScheduler do
       end
     end   
   end
-    
+=end    
   describe MeetingsScheduler::Nucleotide do
+    before(:each) do
+      @fitness_scores_table = create_valid_fitness_scores_table
+      MeetingsScheduler::Nucleotide.initialize_fitness_scores_table(@fitness_scores_table)
+    end
+    
     describe 'Nucleotide attributes' do
       before(:each) do
-        faculty_hash = create_valid_faculty_hash(15)
-        admit_hash = create_valid_admit_hash(20)
-        schedule_index = 5
-        @nucleotide = MeetingsScheduler::Nucleotide.new(faculty_hash, schedule_index, admit_hash)
+        @faculty_hash = create_valid_faculty_hash(@faculty_id = rand(100))
+        @admit_hash = create_valid_admit_hash(@admit_id = rand(100))
+        @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty_hash, @schedule_index = 5, @admit_hash)
       end
       
       it 'has a schedule_index' do 
@@ -886,17 +895,155 @@ describe MeetingsScheduler do
       end
       
       it "should return 15 when calling nucleotide.faculty_id with its faculty[:id] = 15" do
-        @nucleotide.faculty_id.should == 15
+        @nucleotide.faculty_id.should == @faculty_id
       end
       
       it "should return 20 when calling nucleotide.admit_id with its admit_id[:id] = 20" do
-        @nucleotide.admit_id.should == 20
+        @nucleotide.admit_id.should == @admit_id
       end
       
       it 'is comparable to another nucleotide' do 
-        faculty_hash = create_valid_faculty_hash(15)
-        admit_hash = create_valid_admit_hash(20)
-        @nucleotide.==(MeetingsScheduler::Nucleotide.new(faculty_hash,5,admit_hash)).should == true 
+        @nucleotide.==(MeetingsScheduler::Nucleotide.new(@faculty_hash, @schedule_index, @admit_hash)).should == true 
+      end
+    end
+
+    describe 'instance method: fitness' do
+      before(:each) do
+        @faculty_hash, @admit_hash, @schedule_index = mock('faculty'), mock('admit'), rand(100)
+        @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty_hash, @schedule_index, @admit_hash)
+        @nucleotide.stub!(:is_meeting_possible_score).and_return(@is_meeting_possible_score = rand(100))
+      end
+      it 'should calculate nucleotide-scale scores if meeting is physically possible' do
+        @nucleotide.stub!(:is_meeting_possible?).and_return(true)
+        @nucleotide.stub!(:faculty_preference_score).and_return(@faculty_preference_score = rand(100))
+        @nucleotide.stub!(:admit_preference_score).and_return(@admit_preference_score = rand(100))
+        @nucleotide.stub!(:area_match_score).and_return(@area_match_score = rand(100))
+        @nucleotide.fitness.should == @is_meeting_possible_score + @faculty_preference_score + @admit_preference_score + @area_match_score
+      end
+      
+      it 'should return is_meeting_possible penalty if meeting is physically impossible' do
+        @nucleotide.stub!(:is_meeting_possible?).and_return(false)
+        @nucleotide.fitness.should == @is_meeting_possible_score
+      end
+    end
+
+    describe 'instance method: get_faculty_ranking' do
+      it 'should return the ADMIT\'s ranking that contains the faculty' do
+        @faculty = { :id => (@faculty_id = rand(100)) }
+        @ranking = { :faculty_id  => @faculty_id }
+        @admit = { :rankings => (rand(20).times.collect{ |id| { :faculty_id => "Non-id #{id}" }} + [@ranking]).shuffle.shuffle }
+        MeetingsScheduler::Nucleotide.new(@faculty,rand(100),@admit).get_faculty_ranking.inspect.should == @ranking.inspect
+      end
+    end
+
+    describe 'instance method: get_admit_ranking' do
+      it 'should return the FACULTY\'s ranking that contains the admit' do
+        @admit = { :id => (@admit_id = rand(100)) }
+        @ranking = { :admit_id  => @admit_id }
+        @faculty = { :rankings => (rand(20).times.collect{ |id| { :admit_id => "Non-id #{id}" }} + [@ranking]).shuffle.shuffle }          
+        MeetingsScheduler::Nucleotide.new(@faculty,rand(100),@admit).get_admit_ranking.inspect.should == @ranking.inspect
+      end
+    end
+
+    describe 'instance method: is_meeting_possible?' do
+      before(:each) do  
+        @admit = create_valid_admit_hash(rand(100))
+        @faculty = create_valid_faculty_hash(rand(100))
+      end
+      
+      it 'should return true if nucleotide encodes for a physically possible meeting' do
+        @schedule_index = 1
+        MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit).is_meeting_possible?.should == true
+      end
+      
+      it 'should return false if nucleotide encodes for a physically impossible meeting' do
+        @schedule_index = 0
+        MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit).is_meeting_possible?.should == false
+      end
+    end
+
+    describe 'instance method: is_meeting_possible_score' do      
+      before(:each) do  
+        @faculty_hash, @admit_hash, @schedule_index = mock('faculty'), mock('admit'), rand(100)
+      end
+      
+      it 'should return a score if a meeting arrangement defined by a single nucleotide is physically possible' do
+        @schedule_index = 1
+        @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit)
+        @nucleotide.stub!(:is_meeting_possible?).and_return(true)
+        @nucleotide.is_meeting_possible_score.should == @fitness_scores_table[:is_meeting_possible_score]
+      end
+
+      it 'should return a penalty if a meeting arrangement defined by a single nucleotide is physically impossible' do
+        @schedule_index = 0
+        @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit)
+        @nucleotide.stub!(:is_meeting_possible?).and_return(false)        
+        @nucleotide.is_meeting_possible_score.should == @fitness_scores_table[:is_meeting_possible_penalty]
+      end
+    end
+
+    describe 'instance method: area_match_score' do
+      it 'should return the appropriate points when a faculty\'s areas of research matches one of an admit\'s areas of interest' do
+        @admit, @faculty = create_valid_admit_hash(1), create_valid_faculty_hash(1)        
+        @faculty[:area], @admit[:area1], @admit[:area2] = 'subjectA', 'subjectA', 'subjectC'
+        @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, rand(100), @admit)
+        @nucleotide.area_match_score.should == @fitness_scores_table[:area_match_score]
+      end
+
+      it 'should return the appropriate default when a faculty\'s areas of research does not match any one of an admit\'s areas of interest' do
+        @admit, @faculty = create_valid_admit_hash(1), create_valid_faculty_hash(1)
+        @faculty[:area], @admit[:area1], @admit[:area2] = 'subjectA', 'subjectB', 'subjectC'
+        @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, rand(100), @admit)
+        @nucleotide.area_match_score.should == @fitness_scores_table[:area_match_default]
+      end
+    end
+
+    describe 'instance method: admit_preference_score' do
+      before(:each) do
+        @admit, @faculty = create_valid_admit_hash(1), create_valid_faculty_hash(1)
+        @faculty[:rankings] = (@ranking = { :rank => rand(100) })
+        @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, rand(100), @admit)
+      end
+      
+      it 'should compute a rank-weighted score if an admit is among a FACULTY\'s ranking' do
+        @nucleotide.stub!(:get_admit_ranking).and_return(@ranking)
+        @nucleotide.should_receive(:get_admit_ranking).once
+        @nucleotide.stub!(:mandatory_meeting_score).and_return(@mandatory_meeting_score = rand(100))
+        @nucleotide.admit_preference_score.should ==
+          @fitness_scores_table[:admit_ranking_weight_score] * (@faculty[:rankings].count+1 - @ranking[:rank]) + @mandatory_meeting_score
+      end
+      it 'should return a default score if an admit is not among a FACULTY\'s ranking' do
+        @nucleotide.stub!(:get_admit_ranking).and_return(nil)
+        @nucleotide.admit_preference_score.should == @fitness_scores_table[:admit_ranking_default]
+      end
+    end
+
+    describe 'instance method: faculty_preference_score' do
+      before(:each) do
+        @admit, @faculty = create_valid_admit_hash(1), create_valid_faculty_hash(1)
+        @admit[:rankings] = (@ranking = { :rank => rand(100) })
+        @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, rand(100), @admit)
+      end
+      
+      it 'should compute a rank-weighted score if an admit is among a FACULTY\'s ranking' do
+        @nucleotide.stub!(:get_faculty_ranking).and_return(@ranking)
+        @nucleotide.should_receive(:get_faculty_ranking).once
+        @nucleotide.faculty_preference_score.should ==
+          @fitness_scores_table[:faculty_ranking_weight_score] * (@admit[:rankings].count+1 - @ranking[:rank])
+      end
+      it 'should return a default score if an admit is not among a FACULTY\'s ranking' do
+        @nucleotide.stub!(:get_faculty_ranking).and_return(nil)
+        @nucleotide.faculty_preference_score.should == @fitness_scores_table[:faculty_ranking_default]
+      end
+    end
+
+    describe 'instance method: mandatory_meeting_score' do
+      [true, false].each do |val|
+        it "should return the appropriate points for whether a FACULTY\'s admit ranking is marked #{val}" do
+          @ranking = { :mandatory => val }
+          score = val ? @fitness_scores_table[:mandatory_score] : @fitness_scores_table[:mandatory_default]
+          MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), mock('admit')).mandatory_meeting_score(@ranking).should == score
+        end
       end
     end
   end
