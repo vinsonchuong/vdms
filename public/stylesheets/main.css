@@ -96,12 +96,12 @@ h1 a {
   width: 100%;
 }
 #content table th {
-  padding: 10px 8px;
+  padding: 10px 4px;
   border-bottom: 2px solid #4c8bd3;
   font-size: 1.2em;
 }
 #content table td {
-  padding: 6px 8px;
+  padding: 6px 4px;
   border-bottom: 1px solid #eeeeee;
 }
 #content #errors table th {
