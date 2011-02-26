@@ -38,6 +38,8 @@ class Faculty < Person
   end
 
   has_many :admit_rankings, :order => 'rank ASC', :dependent => :destroy
+  has_many :ranked_admits, :source => :admit, :through => :admit_rankings
+  has_many :ranked_one_on_one_admits, :source => :admit, :through => :admit_rankings, :conditions => ['rankings.one_on_one = ?', true]
   has_many :faculty_rankings, :dependent => :destroy
   has_many :meetings, :dependent => :destroy
   accepts_nested_attributes_for :admit_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true

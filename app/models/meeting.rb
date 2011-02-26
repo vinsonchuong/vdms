@@ -6,6 +6,8 @@ class Meeting < ActiveRecord::Base
   validates_presence_of :room
   validates_existence_of :faculty
 
+  validate :does_not_conflict, :if => Proc.new { |m| m.faculty && !m.admits.blank? }
+
   def self.generate
     puts "GA initialize..."
     MeetingsScheduler::GeneticAlgorithm.initialize(self.factors_to_consider, self.fitness_scores_table)
@@ -16,7 +18,25 @@ class Meeting < ActiveRecord::Base
   
   private unless Rails.env == "test"
   
+  def does_not_conflict
+    if (meeting = conflicts_with_one_on_one)
+      self.errors.add_to_base "#{faculty.full_name} has a 1-on-1 meeting with #{meeting.admits.first.full_name} at #{time.strftime('%l:%M')}."
+    end
+  end
 
+  def conflicts_with_one_on_one
+    # conflicts if faculty has a meeting at this same time with a "1 on 1" ranked candidate
+    self.other_meetings_this_timeslot.detect { |m| m.one_on_one_meeting? }
+  end
+
+  def other_meetings_this_timeslot
+    faculty.meetings.find_all_by_time(self.time, :include => :admits)
+  end
+
+  def one_on_one_meeting?
+    self.admits & self.faculty.ranked_one_on_one_admits
+  end
+  
   def self.fitness_scores_table
     { :is_meeting_possible_score       => 50000,
       :is_meeting_possible_penalty     => -50000,

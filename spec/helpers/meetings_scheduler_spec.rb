@@ -174,6 +174,7 @@ describe MeetingsScheduler do
         end
         
         it 'should return an Array encoding a solution of admit_id\'s' do
+          pending
           @chromosome = MeetingsScheduler::Chromosome.new(@sol_string)
           @chromosome.solution_string.should == @sol_string
         end
@@ -185,6 +186,7 @@ describe MeetingsScheduler do
         end
        
         it 'should be able to use chromosome as an array and the return values should match that of the input solutiong_string array' do  
+          pending 
           @solution_string.each_with_index do |admit_id, index|
             @chromosome[index].should == admit_id
           end
@@ -207,6 +209,7 @@ describe MeetingsScheduler do
         end
         
         it 'should be able to compare the solution_strings (array of admit_id\'s) of each chromosome' do
+          pending
           @copy_of_solution_string = Array.new(@solution_string)
             
           @chromosome2 = MeetingsScheduler::Chromosome.new(@solution_string)    
@@ -229,6 +232,7 @@ describe MeetingsScheduler do
         end
 
         it 'should first remove duplicates before evaluating fitness' do
+          pending
           MeetingsScheduler::Chromosome.stub!(:remove_duplicates).and_return(@chromosome.meeting_solution)
           MeetingsScheduler::Chromosome.stub!(:fitness_of_nucleotide).and_return(0)
           MeetingsScheduler::Chromosome.should_receive(:remove_duplicates).once
@@ -236,6 +240,7 @@ describe MeetingsScheduler do
         end
 
         it 'should return the sum of the fitness scores of each nucleotide, nil or not' do          
+          pending
           @fitness = 500
           MeetingsScheduler::Chromosome.stub!(:remove_duplicates).and_return(@chromosome.meeting_solution)
           MeetingsScheduler::Chromosome.stub!(:fitness_of_nucleotide).and_return(@fitness)
