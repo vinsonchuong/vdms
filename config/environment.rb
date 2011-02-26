@@ -21,6 +21,7 @@ Rails::Initializer.run do |config|
   require 'facets/hash/rekey'
   require 'facets/hash/update_each'
   require 'facets/hash/update_keys'
+  require 'facets/hash/update_values'
   require 'facets/range/combine'
   require 'facets/range/overlap'
 

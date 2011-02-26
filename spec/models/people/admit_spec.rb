@@ -68,6 +68,28 @@ describe Admit do
     end
   end
 
+  describe 'Named Scopes' do
+    it 'has a list of Admits sorted by last and first name (by_name)' do
+      @admit.update_attributes(:first_name => 'Foo', :last_name => 'Bar')
+      Factory.create(:admit, :first_name => 'Ccc', :last_name => 'Ccc')
+      Factory.create(:admit, :first_name => 'Jack', :last_name => 'Bbb')
+      Factory.create(:admit, :first_name => 'Jill', :last_name => 'Bbb')
+      Admit.by_name.map(&:full_name).should == ['Foo Bar', 'Jack Bbb', 'Jill Bbb', 'Ccc Ccc']
+    end
+
+    it 'has a list of Admits with the given Areas, sorted by last and first name (with_areas)' do
+      #Refactor Area inclusion validation to allow stubbing
+      #stub_areas('a1' => 'Area 1', 'a2' => 'Area 2', 'a3' => 'Area 3')
+      @admit.update_attributes(:first_name => 'Foo', :last_name => 'Bar', :area1 => 'ai', :area2 => '')
+      Factory.create(:admit, :first_name => 'Ccc', :last_name => 'Ccc', :area1 => 'ai', :area2 => '')
+      Factory.create(:admit, :first_name => 'Jack', :last_name => 'Bbb', :area1 => 'bio', :area2 => '')
+      Factory.create(:admit, :first_name => 'Jill', :last_name => 'Bbb', :area1 => 'cir', :area2 => '')
+      Admit.with_areas('ai').map(&:full_name).should == ['Foo Bar', 'Ccc Ccc']
+      Admit.with_areas('ai', 'bio').map(&:full_name).should == ['Foo Bar', 'Jack Bbb', 'Ccc Ccc']
+      Admit.with_areas('ai', 'bio', 'cir').map(&:full_name).should == ['Foo Bar', 'Jack Bbb', 'Jill Bbb', 'Ccc Ccc']
+    end
+  end
+
   describe 'Associations' do
     describe 'Available Times' do
       it 'has many Available Times (available_times)' do
@@ -331,6 +353,16 @@ describe Admit do
         faculty_ranking
       end
       @admit.stub(:faculty_rankings).and_return(faculty_rankings)
+      @admit.destroy
+    end
+
+    it 'destroys its Admit Rankings' do
+      admit_rankings = Array.new(3) do
+        faculty_ranking = Factory.create(:admit_ranking, :admit => @admit)
+        faculty_ranking.should_receive(:destroy)
+        faculty_ranking
+      end
+      @admit.stub(:admit_rankings).and_return(admit_rankings)
       @admit.destroy
     end
   end

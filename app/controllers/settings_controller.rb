@@ -8,6 +8,9 @@ class SettingsController < ApplicationController
   # PUT /settings
   def update
     @settings = Settings.instance
+
+    # Hack to address standing bug in Rails 2.3: time_select doesn't work with :include_blank
+    # NOT tested in RSpec.
     unless params['settings'].nil? || params['settings']['divisions_attributes'].nil?
       params['settings']['divisions_attributes'].each_pair do |i, divs|
         unless divs['available_times_attributes'].nil?

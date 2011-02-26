@@ -33,7 +33,11 @@ class PeopleController < ApplicationController
     instance_variable_get("@#{@instance}").ldap_id = @current_user.ldap_id if @current_user.new_record?
 
     if instance_variable_get("@#{@instance}").save
-      redirect_to(self.send("#{@collection}_url".to_sym), :notice => t(:success, :scope => [:people, @model.name.tableize, :create]))
+      if @current_user.new_record?
+        redirect_to(self.send("#{@model.name.underscore}_dashboard_url".to_sym), :notice => t(:success, :scope => [:people, @model.name.tableize, :create]))
+      else
+        redirect_to(self.send("#{@collection}_url".to_sym), :notice => t(:success, :scope => [:people, @model.name.tableize, :create]))
+      end
     else
       render :action => 'new'
     end
