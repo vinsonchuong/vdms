@@ -262,13 +262,17 @@ describe 'Routes' do
           {:delete => '/people/admits/1'}.should route_to(:controller => 'admits', :action => 'destroy', :id => '1')
         end
       end
-      
-      context 'View Admit Meeting Schedule' do
-        it 'routes  GET /people/admits/1/meetings' do 
-          {:get => '/people/admits/1/view_meetings'}.should route_to(:controller => 'admits', :action => 'view_meetings', :id => '1')
-        end
+    end
+    context 'Completed Schedules' do
+      it 'can view meetings for a faculty member' do
+        {:get => '/people/faculty/1/meetings'}.should route_to(:controller => 'meetings', :action => 'index', :faculty_id => '1')
       end
-      
+      it 'can view meetings for an admit' do
+        {:get => '/people/admits/1/meetings'}.should route_to(:controller => 'meetings', :action => 'index', :admit_id => '1')
+      end
+      it 'can view the master schedule' do
+        {:get => '/meetings/master'}.should route_to(:controller => 'meetings', :action => 'master')
+      end
     end
   end
 end

@@ -10,6 +10,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resource :settings, :only => [:edit, :update]
 
+  map.resources :meetings, :collection => {:create_all => :post, :master => :get}
+
   map.resources :staff, :singular => 'staff_instance', :path_prefix => '/people',
     :except => [:show],
     :collection => {:upload => :get, :import => :post},
@@ -22,8 +24,14 @@ ActionController::Routing::Routes.draw do |map|
     :except => [:show],
     :collection => {:upload => :get, :import => :post},
     :member => {:schedule => :get, :delete => :get, :rank_admits => :get}
+  map.resources :faculty, :path_prefix => '/people' do |faculty|
+    faculty.resources :meetings, :only => :index
+  end
   map.resources :admits, :path_prefix => '/people',
     :except => [:show],
     :collection => {:upload => :get, :import => :post},
-    :member => {:schedule => :get, :rank_faculty => :get, :delete => :get, :view_meetings => :get}
+    :member => {:schedule => :get, :rank_faculty => :get, :delete => :get}
+  map.resources :admits, :path_prefix => '/people' do |admit|
+    admit.resources :meetings, :only => :index
+  end
 end

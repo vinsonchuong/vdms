@@ -1,8 +1,8 @@
-Feature: Staff can view meeting schedules for admits
+Feature: Staff can view master meeting schedule
 
   So that I can identify possible improvements to the master schedule
   As a staff
-  I want to view the master schedule
+  I want to view the master meeting schedule
 
   Background: I am signed in as a staff and my admits are registered
      Given I am registered as a "Staff"
@@ -25,3 +25,20 @@ Feature: Staff can view meeting schedules for admits
        | Armando Fox    |               | Frances Allen | Frances Allen |
        | Kris Pister    | Jim Gray      | Alan Turing   |               |
        |                | Donald Norman |               |               |
+
+  Scenario: view master schedule
+    When I go to the master meetings page
+    Then I should see "Jitendra Malik"
+    And  I should see "Armando Fox"
+    And  I should see "Kris Pister"
+    And  I should see "Frances Allen"
+    And  I should see "Alan Turing"
+
+  Scenario: follow link from master schedule to admit's schedule
+    When I go to the master meetings page
+    And  I follow "Frances Allen"
+    Then I should be on the view admit meeting schedule page for "Frances Allen"
+
+  Scenario: follow link from master schedule to faculty's schedule
+    When I go to the master meetings page
+

@@ -1,0 +1,20 @@
+- content_for :title, t('.title')
+%table#master
+  %thead
+    %tr
+      %th Faculty Name
+      - @times.each do |time|
+        %th.time= time.strftime('%l:%M')
+  %tbody
+    - @meetings_by_faculty.each_pair do |faculty,meetings|
+      %tr
+        %td!= link_to faculty.full_name, faculty_meetings_path(faculty)
+        - @times.each do |time|
+          %td.meeting
+            - meetings.select { |m| m.time == time }.each do |meeting|
+              - meeting.admits.each do |admit|
+                %span{:class => ('mandatory' if meeting.mandatory?)}
+                  != link_to  admit.full_name, admit_meetings_path(admit), {:title => room_if_not_default(meeting, faculty)}
+              %br
+
+            
