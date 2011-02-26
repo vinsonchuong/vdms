@@ -6,12 +6,6 @@ class Meeting < ActiveRecord::Base
   validates_presence_of :room
   validates_existence_of :faculty
 
-  # This instance method should return true iff this meeting is between a faculty member
-  # and a candidate that was ranked 'mandatory  meeting' by that faculty member.  Until someone
-  # decides how to implement this, here is a trivial version:
-  attr_accessor :mandatory
-  def mandatory? ; mandatory ; end
-  
   def self.generate
     puts "GA initialize..."
     MeetingsScheduler::GeneticAlgorithm.initialize(self.factors_to_consider, self.fitness_scores_table)

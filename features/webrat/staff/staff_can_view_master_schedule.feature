@@ -36,9 +36,16 @@ Feature: Staff can view master meeting schedule
 
   Scenario: follow link from master schedule to admit's schedule
     When I go to the master meetings page
-    And  I follow "Frances Allen"
-    Then I should be on the view admit meeting schedule page for "Frances Allen"
+    And  I follow "Jim Gray"
+    Then I should be on the view admit meeting schedule page for "Jim Gray"
+    And  I should see "Jitendra Malik"
+    And  I should see "Kris Pister"
+    But  I should not see "Armando Fox"
 
   Scenario: follow link from master schedule to faculty's schedule
     When I go to the master meetings page
+    And  I follow "Armando Fox"
+    Then I should be on the view faculty meeting schedule page for "Armando Fox"
+    And  I should see "Frances Allen"
+    But  I should not see "Jim Gray"
 

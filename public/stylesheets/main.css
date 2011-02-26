@@ -167,6 +167,9 @@ h1 a {
 .mandatory {
     font-weight: bold;
 }
+.room {
+    background-color: yellow;
+}
 
 table#master {
 	border-style: solid;

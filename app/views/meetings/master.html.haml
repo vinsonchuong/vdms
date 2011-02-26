@@ -13,7 +13,7 @@
           %td.meeting
             - meetings.select { |m| m.time == time }.each do |meeting|
               - meeting.admits.each do |admit|
-                %span{:class => ('mandatory' if meeting.mandatory?)}
+                %span
                   != link_to  admit.full_name, admit_meetings_path(admit), {:title => room_if_not_default(meeting, faculty)}
               %br
 
