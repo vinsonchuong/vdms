@@ -19,9 +19,9 @@ describe FacultyController do
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
-      it 'assigns to @faculty a list of all the Faculty' do
+      it 'assigns to @faculty a list of all the Faculty sorted by last and first name' do
         faculty = Array.new(3) {Faculty.new}
-        Faculty.stub(:find).and_return(faculty)
+        Faculty.stub(:by_name).and_return(faculty)
         get :index
         assigns[:faculty].should == faculty
       end

@@ -3,7 +3,7 @@ class PeopleController < ApplicationController
 
   # GET /people/PEOPLE
   def index
-    self.instance_variable_set("@#{@collection}", @model.all)
+    self.instance_variable_set("@#{@collection}", @model.by_name)
   end
 
   # GET /people/PEOPLE/new

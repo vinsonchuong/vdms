@@ -20,9 +20,9 @@ describe AdmitsController do
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
-      it 'assigns to @admits a list of all the Admits' do
+      it 'assigns to @admits a list of all the Admits sorted by last and first name' do
         admits = Array.new(3) {Admit.new}
-        Admit.stub(:find).and_return(admits)
+        Admit.stub(:by_name).and_return(admits)
         get :index
         assigns[:admits].should == admits
       end

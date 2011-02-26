@@ -18,9 +18,9 @@ describe StaffController do
         CASClient::Frameworks::Rails::Filter.fake(@staff_instance.ldap_id)
       end
 
-      it 'assigns to @staff a list of all the Staff' do
+      it 'assigns to @staff a list of all the Staff sorted by last and first name' do
         staff = Array.new(3) {Staff.new}
-        Staff.stub(:find).and_return(staff)
+        Staff.stub(:by_name).and_return(staff)
         get :index
         assigns[:staff].should == staff
       end

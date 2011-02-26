@@ -19,9 +19,9 @@ describe PeerAdvisorsController do
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
-      it 'assigns to @peer_advisors a list of all the Peer Advisors' do
+      it 'assigns to @peer_advisors a list of all the Peer Advisors sorted by last and first name' do
         peer_advisors = Array.new(3) {PeerAdvisor.new}
-        PeerAdvisor.stub(:find).and_return(peer_advisors)
+        PeerAdvisor.stub(:by_name).and_return(peer_advisors)
         get :index
         assigns[:peer_advisors].should == peer_advisors
       end
