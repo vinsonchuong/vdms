@@ -38,7 +38,7 @@ en:
                             be found at the %{calnet_directory}."
       submit: "Update Faculty"
       alt_submit: "Update Registration"
-    schedule:
+    edit_availability:
       title: "Update Faculty's Availability"
       short_title: "Update Availability"
       alt_title: "Update My Availability"

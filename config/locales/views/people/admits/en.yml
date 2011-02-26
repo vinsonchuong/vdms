@@ -27,7 +27,7 @@ en:
       errors: "Errors"
       info: "Admit Info"
       submit: "Update Admit"
-    schedule:
+    edit_availability:
       title: "Update Admit's Availability"
       short_title: "Update Availability"
       availability: "Availability"

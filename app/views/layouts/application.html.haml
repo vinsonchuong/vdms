@@ -36,7 +36,7 @@
       - elsif @current_user.class == Faculty && !@current_user.new_record?
         %ul
           %li!= link_to t('faculty.edit.alt_title'), edit_faculty_instance_path(@current_user)
-          %li!= link_to t('faculty.schedule.alt_title'), schedule_faculty_instance_path(@current_user)
+          %li!= link_to t('faculty.edit_availability.alt_title'), edit_availability_faculty_instance_path(@current_user)
           %li!= link_to t('faculty.rank_admits.alt_title'), rank_admits_faculty_instance_path(@current_user)
     #content
       %h2!= yield :title

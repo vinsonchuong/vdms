@@ -15,7 +15,7 @@ Feature: Faculty can register
 
   Scenario: I verify my info
     Given I am on the home page
-    When I follow "For Staff"
+    When I follow "For Faculty"
     And I select "Computer Science" from "Division"
     And I select "Theory" from "Area"
     And I fill in "Division" with "Computer Science"
@@ -23,3 +23,22 @@ Feature: Faculty can register
     And I press "Register"
     Then I should see "Faculty was successfully added."
     And I should be on the faculty dashboard page
+
+  Scenario: I enter invalid info
+    Given I am on the home page
+    When I follow "For Faculty"
+    And I fill in "First Name" with ""
+    And I fill in "Email" with "foobar"
+    And I press "Register"
+    And I should see "First Name can't be blank"
+    And I should see "Email is invalid"
+
+  Scenario: I enter invalid info twice
+    Given I am on the home page
+    When I follow "For Faculty"
+    And I fill in "First Name" with ""
+    And I fill in "Email" with "foobar"
+    And I press "Register"
+    And I press "Register"
+    And I should see "First Name can't be blank"
+    And I should see "Email is invalid"

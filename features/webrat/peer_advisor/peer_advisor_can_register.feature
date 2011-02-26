@@ -19,3 +19,22 @@ Feature: Peer advisor can register
     And I press "Register"
     Then I should see "Peer Advisor was successfully added."
     And I should be on the peer advisor dashboard page
+
+  Scenario: I enter invalid info
+    Given I am on the home page
+    When I follow "For Peer Advisors"
+    And I fill in "First Name" with ""
+    And I fill in "Email" with "foobar"
+    And I press "Register"
+    And I should see "First Name can't be blank"
+    And I should see "Email is invalid"
+
+  Scenario: I enter invalid info twice
+    Given I am on the home page
+    When I follow "For Peer Advisors"
+    And I fill in "First Name" with ""
+    And I fill in "Email" with "foobar"
+    And I press "Register"
+    And I press "Register"
+    And I should see "First Name can't be blank"
+    And I should see "Email is invalid"
