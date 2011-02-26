@@ -47,6 +47,16 @@ describe PeerAdvisor do
     end
   end
 
+  describe 'Named Scopes' do
+    it 'has a list of Peer Advisors sorted by last and first name (by_name)' do
+      @peer_advisor.update_attributes(:first_name => 'Foo', :last_name => 'Bar')
+      Factory.create(:peer_advisor, :first_name => 'Ccc', :last_name => 'Ccc')
+      Factory.create(:peer_advisor, :first_name => 'Jack', :last_name => 'Bbb')
+      Factory.create(:peer_advisor, :first_name => 'Jill', :last_name => 'Bbb')
+      PeerAdvisor.by_name.map {|a| "#{a.first_name} #{a.last_name}"}.should == ['Foo Bar', 'Jack Bbb', 'Jill Bbb', 'Ccc Ccc']
+    end
+  end
+
   context 'when validating' do
     it 'is valid with valid attributes' do
       @peer_advisor.should be_valid

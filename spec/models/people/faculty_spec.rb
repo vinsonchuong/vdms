@@ -82,6 +82,16 @@ describe Faculty do
     end
   end
 
+  describe 'Named Scopes' do
+    it 'has a list of Faculty sorted by last and first name (by_name)' do
+      @faculty.update_attributes(:first_name => 'Foo', :last_name => 'Bar')
+      Factory.create(:faculty, :first_name => 'Ccc', :last_name => 'Ccc')
+      Factory.create(:faculty, :first_name => 'Jack', :last_name => 'Bbb')
+      Factory.create(:faculty, :first_name => 'Jill', :last_name => 'Bbb')
+      Faculty.by_name.map {|a| "#{a.first_name} #{a.last_name}"}.should == ['Foo Bar', 'Jack Bbb', 'Jill Bbb', 'Ccc Ccc']
+    end
+  end
+
   describe 'Associations' do
     describe 'Available Times' do
       it 'has many Available Times (available_times)' do
@@ -383,6 +393,16 @@ describe Faculty do
         admit_ranking
       end
       @faculty.stub(:admit_rankings).and_return(admit_rankings)
+      @faculty.destroy
+    end
+
+    it 'destroys the Faculty Rankings to which it belongs' do
+      faculty_rankings = Array.new(3) do
+        faculty_ranking = Factory.create(:faculty_ranking, :faculty => @faculty)
+        faculty_ranking.should_receive(:destroy)
+        faculty_ranking
+      end
+      @faculty.stub(:faculty_rankings).and_return(faculty_rankings)
       @faculty.destroy
     end
 

@@ -1,68 +1,43 @@
-%h2 My Desired Appointments
-#area_of_interests
-  %h3 Step 1: Area of Interests
-  %span Please select your area of interests. A list of admits in the area of interests will appear in the List of Admits
-  - form_for :rank_admits, :html => {:method => :get, :id => 'filter_form'} do |filter_form|
-    %fieldset
-      %h4 Filter by Area
-      != link_to_function("Select All CS","CheckAllCS(filter_form)")
-      != link_to_function("Select All EE","CheckAllEE(filter_form)")
-      != link_to_function("Unselect All","UncheckAll(filter_form)")
+- if @current_user.class == Faculty
+  - content_for :title, t('.alt_title')
+- else
+  - content_for :title, t('.title')
+- form_for @faculty_instance, :url => {:action => 'update'} do |faculty_form|
+  - if @faculty_instance.errors.any?
+    #errors
+      %h3!= t('.errors')
       %ul
-        - @areas.each do |area, checked|
-          %li
-            != filter_form.check_box area, :checked => checked, :index => "areas"
-            != filter_form.label area, area
-    %fieldset
-      %h4 Submit
-      != filter_form.submit 'Filter Admits'
-
-#list_of_admits
-  %h3 Step 2: List of Admits              
-  %span Please check admits whom you desire to schedule a meeting with
-  - form_for :rank_admits, :html => {:method => :get}  do |select_admit_form|
-    %fieldset
-      %h4 Select Admits
-      %ul
-        - if !@admits.empty?
-          - @admits.each do |admit, checked|
-            %li
-              != select_admit_form.check_box admit.id, :checked => checked
-              != select_admit_form.label admit.full_name, admit.full_name
-    %fieldset
-      %h4 Submit
-      != select_admit_form.submit 'Add to My Desired Appointment List'
-
-#admit_ranking
-  %h3 Step 3: Update My Desired Appointment
+        - @faculty_instance.errors.full_messages.each do |message|
+          %li!= message
   %fieldset
-    - form_for @faculty_instance, :url => {:action => 'update'} do |faculty_form|
-      != faculty_form.error_messages  
-      %fieldset
-        %table
-          %thead
-            %tr
-              %th Rank
-              %th Mandatory Meeting?
-              %th #Slots
-              %th One on One Meeting?
-              %th Name
-              %th Remove
-          %tbody
-            - faculty_form.fields_for :admit_rankings do |admit_ranking_fields|
-              - @admit_ranking = admit_ranking_fields.object
-              %tr
-                %td!= admit_ranking_fields.select(:rank, @faculty_instance.admit_rankings.each_index.collect {|index| [index+1, index+1]})
-                %td!= admit_ranking_fields.check_box :mandatory, {}, "true", "false"
-                %td
-                %td!= admit_ranking_fields.check_box :one_on_one, {}, "true", "false"
-                %td!= admit_ranking_fields.label @admit_ranking.admit.full_name
-                %td!= admit_ranking_fields.check_box :_destroy
-                != admit_ranking_fields.hidden_field :admit_id
-                != hidden_field_tag :origin_action, @origin_action
-                != hidden_field_tag :redirect_action, @redirect_action
- 
-      != faculty_form.submit    
-
-            
-            
+    %h3!= t('.admit_rankings')
+    %p!= t('.admit_rankings_description')
+    %ul
+      %li!= link_to t('.add_admits'), select_admits_faculty_instance_path(@faculty_instance)
+    %table
+      %thead
+        %tr
+          %th{:scope => 'col'}!= AdmitRanking.human_attribute_name(:rank)
+          %th{:scope => 'col'}!= Admit.human_attribute_name(:full_name)
+          %th{:scope => 'col'}!= AdmitRanking.human_attribute_name(:mandatory)
+          %th{:scope => 'col'}!= AdmitRanking.human_attribute_name(:time_slots)
+          %th{:scope => 'col'}!= AdmitRanking.human_attribute_name(:one_on_one)
+          %th{:scope => 'col'}!= t('.remove')
+      %tbody
+        - ranks = []
+        - (@faculty_instance.admit_rankings.map(&:rank) << @faculty_instance.admit_rankings.length).max.times {|i| ranks[i] = i + 1}
+        - time_slots = []
+        - [@faculty_instance.available_times.count, 10].max.times {|i| time_slots[i] = i + 1}
+        - faculty_form.fields_for :admit_rankings do |admit_ranking_fields|
+          - @admit_ranking = admit_ranking_fields.object
+          %tr
+            %td!= admit_ranking_fields.select :rank, ranks
+            %td!= @admit_ranking.admit.full_name
+            %td!= admit_ranking_fields.check_box :mandatory, {}, "true", "false"
+            %td!= admit_ranking_fields.select :time_slots, time_slots
+            %td!= admit_ranking_fields.check_box :one_on_one, {}, "true", "false"
+            %td!= admit_ranking_fields.check_box :_destroy
+            != admit_ranking_fields.hidden_field :admit_id
+  != hidden_field_tag :origin_action, @origin_action
+  != hidden_field_tag :redirect_action, @redirect_action
+  != faculty_form.submit t('.submit')

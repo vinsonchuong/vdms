@@ -18,18 +18,59 @@ Feature: Peer advisor can rank faculty on behalf of admits
       | Faculty     | Cccc      | email2@email.com | Electrical Engineering | Integrated Circuits |
       | Faculty     | Bbbb      | email3@email.com | Computer Science       | Graphics            |
 
-  Scenario: I specify an admit's faculty rankings
+  Scenario: I can view an admit's rankings
     Given I am on the view admits page
     When I follow "Update Rankings"
-    And I fill in "Rank" with "1" for the new ranking
-    And I select "Faculty Aaaa" from "Faculty" for the new ranking
-    And I press "Update Faculty Rankings"
-    And I fill in "Rank" with "2" for the new ranking
-    And I select "Faculty Bbbb" from "Faculty" for the new ranking
-    And I press "Update Faculty Rankings"
-    And I fill in "Rank" with "3" for the new ranking
-    And I select "Faculty Cccc" from "Faculty" for the new ranking
-    Then I should see "Admit was successfully updated"
+    Then I should be on the rank faculty page
+
+  Scenario: I select faculty to rank
+    Given I am on the rank faculty page
+    When I follow "Add Faculty"
+    And I check "Faculty Aaaa"
+    And I check "Faculty Cccc"
+    And I press "Rank Faculty"
+    Then I should be on the rank faculty page
+    And I should see "Faculty Aaaa"
+    And I should see "Faculty Cccc"
+
+  Scenario: I rank some faculty
+    Given I am on the rank faculty page
+    When I follow "Add Faculty"
+    And I check "Faculty Aaaa"
+    And I check "Faculty Cccc"
+    And I press "Rank Faculty"
+    And I rank the "first" faculty "2"
+    And I rank the "second" faculty "1"
+    And I press "Update Rankings"
+    Then I should see "Admit was successfully updated."
+    And I should be on the rank faculty page
+
+  Scenario: I give two faculty duplicate ranks
+    Given I am on the rank faculty page
+    When I follow "Add Faculty"
+    And I check "Faculty Aaaa"
+    And I check "Faculty Bbbb"
+    And I press "Rank Faculty"
+    And I rank the "first" faculty "2"
+    And I rank the "second" faculty "2"
+    And I press "Update Rankings"
+    Then I should see "Ranks must be unique"
+    And I should see "Faculty Aaaa"
+    And I should see "Faculty Bbbb"
+
+  Scenario: I give two faculty duplicate ranks twice
+    Given I am on the rank faculty page
+    When I follow "Add Faculty"
+    And I check "Faculty Aaaa"
+    And I check "Faculty Bbbb"
+    And I press "Rank Faculty"
+    And I rank the "first" faculty "2"
+    And I rank the "second" faculty "2"
+    And I press "Update Rankings"
+    And I press "Update Rankings"
+    Then I should see "Ranks must be unique"
+    And I should see "Faculty Aaaa"
+    And I should see "Faculty Bbbb"
 
   Scenario: I change an admit's faculty rankings
     Given my admit has the following faculty rankings:
@@ -38,19 +79,23 @@ Feature: Peer advisor can rank faculty on behalf of admits
       | 2    | Faculty Bbbb |
       | 3    | Faculty Cccc |
     When I go to the rank faculty page
-    And I fill in "Rank" with "2" for the first ranking
-    And I fill in "Rank" with "1" for the second ranking
-    And I press "Update Faculty Rankings"
+    And I rank the "first" faculty "2"
+    And I rank the "second" faculty "1"
+    And I press "Update Rankings"
     Then I should see "Admit was successfully updated"
+    And I should be on the rank faculty page
 
-  Scenario: I remove an admit's faculty ranking
+  Scenario: I remove an admit's faculty rankings
     Given my admit has the following faculty rankings:
       | rank | faculty      |
       | 1    | Faculty Aaaa |
       | 2    | Faculty Bbbb |
       | 3    | Faculty Cccc |
     When I go to the rank faculty page
-    And I check "Remove" for the second ranking
-    And I check "Remove" for the third ranking
-    And I press "Update Faculty Rankings"
+    And I flag the "second" faculty for removal
+    And I flag the "third" faculty for removal
+    And I press "Update Rankings"
     Then I should see "Admit was successfully updated"
+    And I should see "Faculty Aaa"
+    But I should not see "Faculty Bbb"
+    And I should not see "Faculty Ccc"

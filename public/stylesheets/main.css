@@ -132,6 +132,9 @@ h1 a {
 #content fieldset h3 + p, #content fieldset .description {
   margin-top: -10px;
 }
+#content fieldset h3 + p + ul {
+  margin-top: 10px;
+}
 #content fieldset .description ul {
   margin-left: 15px;
   list-style: disc;
@@ -162,6 +165,20 @@ h1 a {
   color: #d34f4a;
 }
 
+#content #admit_filter {
+  float :left;
+}
+#content #admit_list {
+  margin-left: 40px;
+  float: left;
+}
+#content:after {
+  display: block;
+  clear: both;
+  content: ".";
+  text-indent: -5000px;
+}
+
 /* Schedule views */
 
 .mandatory {
@@ -185,4 +202,3 @@ table#master td {
 table#master a {
 	text-decoration: none;
 }
-

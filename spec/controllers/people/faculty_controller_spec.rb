@@ -312,6 +312,203 @@ describe FacultyController do
     end
   end
 
+  describe 'GET rank_admits' do
+    context 'when not signed in' do
+      it 'redirects to the CalNet sign in page' do
+        get :rank_admits, :id => @faculty_instance.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(rank_admits_faculty_instance_url(@faculty_instance.id))}")
+      end
+    end
+
+    context 'when signed in as a Staff' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
+      end
+
+      it 'renders the rank_admits template' do
+        get :rank_admits, :id => @faculty_instance.id
+        response.should render_template('rank_admits')
+      end
+    end
+
+    context 'when signed in as a registered Peer Advisor'
+
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
+      end
+
+      it 'redirects to the New Peer Advisor page' do
+        get :rank_admits, :id => @faculty_instance.id
+        response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
+      end
+    end
+
+    context 'when signed in as the given Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@faculty_instance.ldap_id)
+        Person.stub(:find).and_return(@faculty_instance)
+      end
+
+      it 'assigns to @faculty_instance the given Faculty' do
+        Faculty.stub(:find).and_return(@faculty_instance)
+        get :rank_admits, :id => @faculty_instance.id
+        assigns[:faculty_instance].should == @faculty_instance
+      end
+
+      context 'when given new Admits to rank' do
+        before(:each) do
+          @admits = Array.new(3) {Admit.new}
+        end
+
+        it 'finds the given Admits' do
+          Admit.should_receive(:find).with(['1', '2', '3']).and_return(@admits)
+          get :rank_admits, :id => @faculty_instance.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
+        end
+
+        it 'builds a new AdmitRanking for each given Admit' do
+          Faculty.stub(:find).and_return(@faculty_instance)
+          Admit.stub(:find).and_return(@admits)
+          get :rank_admits, :id => @faculty_instance.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
+          @faculty_instance.admit_rankings.map(&:admit).should == @admits
+        end
+      end
+
+      it 'sets the error redirect to the rank_admits action' do
+        get :rank_admits, :id => @faculty_instance.id
+        assigns[:origin_action].should == 'rank_admits'
+      end
+
+      it 'sets the success redirect to the rank_admits action' do
+        get :rank_admits, :id => @faculty_instance.id
+        assigns[:redirect_action].should == 'rank_admits'
+      end
+
+      it 'renders the select_admits template' do
+        get :rank_admits, :id => @faculty_instance.id
+        response.should render_template('rank_admits')
+      end
+    end
+
+    context 'when signed in as some other registered Faculty'
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        get :rank_admits, :id => @faculty_instance.id
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
+      end
+    end
+  end
+
+  describe 'GET select_admits' do
+    context 'when not signed in' do
+      it 'redirects to the CalNet sign in page' do
+        get :select_admits, :id => @faculty_instance.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(select_admits_faculty_instance_url(@faculty_instance.id))}")
+      end
+    end
+
+    context 'when signed in as a Staff' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
+      end
+
+      it 'renders the select_admits template' do
+        get :select_admits, :id => @faculty_instance.id
+        response.should render_template('select_admits')
+      end
+    end
+
+    context 'when signed in as a registered Peer Advisor'
+
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
+      end
+
+      it 'redirects to the New Peer Advisor page' do
+        get :select_admits, :id => @faculty_instance.id
+        response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
+      end
+    end
+
+    context 'when signed in as the given Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@faculty_instance.ldap_id)
+      end
+
+      it 'assigns to @faculty_instance the given Faculty' do
+        Faculty.stub(:find).and_return(@faculty_instance)
+        get :select_admits, :id => @faculty_instance.id
+        assigns[:faculty_instance].should == @faculty_instance
+      end
+
+      context 'when given no filter' do
+        it 'assigns to @admits a sorted list of all the Admits' do
+          admits = Array.new(3) {Admit.new}
+          Admit.should_receive(:by_name).and_return(admits)
+          get :select_admits, :id => @faculty_instance.id
+          assigns[:admits].should == admits
+        end
+
+        it 'removes the currently ranked Admits from @admits' do
+          admit = Admit.new
+          admits = Array.new(3) {Admit.new}
+          Admit.stub(:by_name).and_return(admits + [admit])
+          @faculty_instance.admit_rankings.build(:admit => admit)
+          Faculty.stub(:find).and_return(@faculty_instance)
+          get :select_admits, :id => @faculty_instance.id
+          assigns[:admits].should == admits
+        end
+      end
+
+      context 'when given a filter' do
+        it 'assigns to @admits a sorted list of Admits in the given Areas' do
+          admits = Array.new(3) {Admit.new}
+          Admit.should_receive(:with_areas).with('a1', 'a3').and_return(admits)
+          get :select_admits, :id => @faculty_instance.id, :filter => {'a1' => '1', 'a2' => '0', 'a3' => '1'}
+          assigns[:admits].should == admits
+        end
+
+        it 'removes the currently ranked Admits from @admits' do
+          admit = Admit.new
+          admits = Array.new(3) {Admit.new}
+          Admit.stub(:with_areas).and_return(admits + [admit])
+          @faculty_instance.admit_rankings.build(:admit => admit)
+          Faculty.stub(:find).and_return(@faculty_instance)
+          get :select_admits, :id => @faculty_instance.id, :filter => {'a1' => '1', 'a2' => '0', 'a3' => '1'}
+          assigns[:admits].should == admits
+        end
+      end
+
+      it 'renders the select_admits template' do
+        get :select_admits, :id => @faculty_instance.id
+        response.should render_template('select_admits')
+      end
+    end
+
+    context 'when signed in as some other registered Faculty'
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        get :select_admits, :id => @faculty_instance.id
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
+      end
+    end
+  end
+
   describe 'GET delete' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
@@ -450,6 +647,14 @@ describe FacultyController do
         Faculty.stub(:new).and_return(@faculty_instance)
         @faculty_instance.should_receive(:save)
         post :create
+      end
+
+      it 'redirects to the Faculty Dashboard on success' do
+        Faculty.stub(:new).and_return(@faculty_instance)
+        @faculty_instance.stub(:new_record?).and_return(true)
+        @faculty_instance.stub(:save).and_return(true)
+        post :create
+        response.should redirect_to(:controller => 'root', :action => 'faculty_dashboard')
       end
     end
   end

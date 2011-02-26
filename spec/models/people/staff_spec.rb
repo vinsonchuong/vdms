@@ -47,6 +47,16 @@ describe Staff do
     end
   end
 
+  describe 'Named Scopes' do
+    it 'has a list of Staff sorted by last and first name (by_name)' do
+      @staff.update_attributes(:first_name => 'Foo', :last_name => 'Bar')
+      Factory.create(:staff, :first_name => 'Ccc', :last_name => 'Ccc')
+      Factory.create(:staff, :first_name => 'Jack', :last_name => 'Bbb')
+      Factory.create(:staff, :first_name => 'Jill', :last_name => 'Bbb')
+      Staff.by_name.map {|a| "#{a.first_name} #{a.last_name}"}.should == ['Foo Bar', 'Jack Bbb', 'Jill Bbb', 'Ccc Ccc']
+    end
+  end
+
   context 'when validating' do
     it 'is valid with valid attributes' do
       @staff.should be_valid

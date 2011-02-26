@@ -1,6 +1,11 @@
 - content_for :title, t('.title')
 - form_for @settings, :url => settings_path do |settings_form|
-  != settings_form.error_messages
+  - if @settings.errors.any?
+    #errors
+      %h3!= t('.errors')
+      %ul
+        - @settings.errors.full_messages.each do |message|
+          %li!= message
   %fieldset
     - numbers = []
     - 121.times {|i| numbers[i] = i}

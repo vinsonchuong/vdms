@@ -2,6 +2,7 @@ en:
   settings:
     edit:
       title: "Update Settings"
+      errors: "Errors"
       scheduler_settings: "Scheduler Settings"
       scheduler_settings_description: "Numbers and weights which allow for customization of the meeting scheduler's
                                        priorities."

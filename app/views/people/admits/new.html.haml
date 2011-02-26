@@ -27,6 +27,4 @@
       %li.field
         != admit_form.label :area2
         != admit_form.select :area2, @areas, :include_blank => true
-    != hidden_field_tag :origin_action, @origin_action
-    != hidden_field_tag :redirect_action, @redirect_action
     != admit_form.submit t('.submit')

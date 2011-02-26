@@ -12,10 +12,11 @@
   %fieldset
     %h3!= t('.info')
     %ul
-      %li.field.required
-        != peer_advisor_form.label :ldap_id
-        %p!= t('.ldap_id_description', :calnet_directory => link_to('CalNet Directory', 'https://calnet.berkeley.edu/directory/'))
-        != peer_advisor_form.text_field :ldap_id
+      - unless @current_user.new_record?
+        %li.field.required
+          != peer_advisor_form.label :ldap_id
+          %p!= t('.ldap_id_description', :calnet_directory => link_to('CalNet Directory', 'https://calnet.berkeley.edu/directory/'))
+          != peer_advisor_form.text_field :ldap_id
       %li.field.required
         != peer_advisor_form.label :first_name
         != peer_advisor_form.text_field :first_name
@@ -25,4 +26,4 @@
       %li.field.required
         != peer_advisor_form.label :email
         != peer_advisor_form.text_field :email
-    != peer_advisor_form.submit ((@current_user.class == PeerAdvisor) ? t('.alt_submit') : t('.submit'))
+    != peer_advisor_form.submit((@current_user.class == PeerAdvisor) ? t('.alt_submit') : t('.submit'))

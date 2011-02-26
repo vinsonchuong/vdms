@@ -1,0 +1,10 @@
+- content_for :title, t('.title')
+- form_for :select, :url => {:action => 'rank_faculty'}, :html => {:method => :get} do |select_form|
+  %fieldset
+    %h3!= t('.faculty')
+    %ul
+      - @faculty.each do |faculty_instance|
+        %li
+          != select_form.check_box faculty_instance.id
+          != select_form.label faculty_instance.id, faculty_instance.full_name
+  != select_form.submit t('.submit')

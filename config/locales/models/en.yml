@@ -35,8 +35,8 @@ en:
         admit: "Admit"
         admit_id: "Admit"
         mandatory: "Mandatory"
-        time_slots: "Number of Time Slots"
-        one_on_one: "One-On-One"
+        time_slots: "# Time Slots"
+        one_on_one: "1-On-1"
       faculty_ranking:
         faculty: "Faculty"
         faculty_id: "Faculty"

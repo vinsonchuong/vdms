@@ -21,4 +21,6 @@ class Person < ActiveRecord::Base
   def full_name
     "#{self.first_name} #{self.last_name}"
   end
+
+  named_scope :by_name, :order => 'last_name, first_name'
 end

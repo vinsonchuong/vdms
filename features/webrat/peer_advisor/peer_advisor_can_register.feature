@@ -18,3 +18,4 @@ Feature: Peer advisor can register
     When I follow "For Peer Advisors"
     And I press "Register"
     Then I should see "Peer Advisor was successfully added."
+    And I should be on the peer advisor dashboard page

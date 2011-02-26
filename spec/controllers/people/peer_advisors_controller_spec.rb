@@ -351,6 +351,14 @@ describe PeerAdvisorsController do
         @peer_advisor.should_receive(:save)
         post :create
       end
+
+      it 'redirects to the Peer Advisor Dashboard on success' do
+        PeerAdvisor.stub(:new).and_return(@peer_advisor)
+        @peer_advisor.stub(:new_record?).and_return(true)
+        @peer_advisor.stub(:save).and_return(true)
+        post :create
+        response.should redirect_to(:controller => 'root', :action => 'peer_advisor_dashboard')
+      end
     end
 
     context 'when signed in as a registered Faculty'

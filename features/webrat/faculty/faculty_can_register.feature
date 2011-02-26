@@ -22,3 +22,4 @@ Feature: Faculty can register
     And I fill in "Area" with "Theory"
     And I press "Register"
     Then I should see "Faculty was successfully added."
+    And I should be on the faculty dashboard page

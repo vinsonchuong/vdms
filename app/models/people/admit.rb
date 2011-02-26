@@ -23,6 +23,7 @@ class Admit < Person
   end
 
   has_many :faculty_rankings, :order => 'rank ASC', :dependent => :destroy
+  has_many :admit_rankings, :dependent => :destroy
   accepts_nested_attributes_for :faculty_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
   has_and_belongs_to_many :meetings, :uniq => true
 
@@ -34,9 +35,13 @@ class Admit < Person
       record.errors.add_to_base('Ranks must be unique')
     end
   end
+
+  named_scope :with_areas, lambda {|*areas| {
+    :conditions => ['area1 IN(?) or area2 IN(?)', areas, areas],
+    :order => 'last_name, first_name'
+  }}
   
   def self.attending_admits
     Admit.all.select {|admit| admit.available_times.select {|available_time| available_time.available?}.count > 0 }
   end
-
 end
