@@ -46,6 +46,8 @@ module NavigationHelpers
     when /the rank faculty page/ then rank_faculty_admit_path(@admit)
     when /the select faculty page/ then select_faculty_admit_path(@admit)
     when /the delete admit page/ then delete_admit_path(@admit)
+    when /the view admit meeting schedule page$/ then admit_meetings_path(@admit)
+    when /the view admit meeting schedule page for "(.*) (.*)"$/ then admit_meetings_path(Admit.find_by_first_name_and_last_name($1,$2))
 
     when /the master meetings page/  then master_meetings_path() 
 

@@ -1,7 +1,6 @@
 class AdmitsController < PeopleController
   before_filter :get_areas_and_divisions, :only => [:new, :edit, :create, :update, :view_meetings]
 
-
   # GET /people/admits/1/schedule
   def schedule
     @admit = Admit.find(params[:id])
