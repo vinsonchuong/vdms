@@ -17,22 +17,29 @@ class FacultyController < PeopleController
 
   # GET /people/faculty/1/rank_admits
   def rank_admits
-    puts params
     @faculty_instance = Faculty.find(params[:id])
-    @origin_action = 'rank_admits'
-    @redirect_action = 'rank_admits'
 
-    @areas =  Settings.instance.areas
-    @admits = []
-    
-    if params[:commit] == "Filter Admits"
-      params[:rank_admits][:areas].collect {|area, checked| @admits += Admit.find(:all, :conditions => ["area1 = ? OR area2 = ?", area, area]) if checked == "1"}
-      @admits.delete_if {|admit| @faculty_instance.admit_rankings.find_by_admit_id(admit.id)}
-      @admits.uniq!
+    unless params[:select].nil?
+      new_admits = Admit.find(params[:select].select {|admit, checked| checked.to_b}.map(&:first))
+      new_admits.each {|a| @faculty_instance.admit_rankings.build(:admit => a, :rank => 1)}
     end
 
+    @origin_action = 'rank_admits'
+    @redirect_action = 'rank_admits'
+  end
 
-    params[:rank_admits].each {|admit_id, checked| @faculty_instance.admit_rankings.build(:admit_id => admit_id) if checked == "1" && !@faculty_instance.admit_rankings.find_by_admit_id(admit_id)} if params[:rank_admits]
+  # GET /people/faculty/1/select_admits
+  def select_admits
+    @faculty_instance = Faculty.find(params[:id])
+    if params[:filter].nil?
+      @areas = Settings.instance.areas.keys.sort!.map {|a| [a, true]}
+      @admits = Admit.by_name
+    else
+      @areas = params[:filter].update_values(&:to_b).to_a.sort
+      filter_areas = @areas.select {|area, checked| checked}.map(&:first)
+      @admits = Admit.with_areas(*filter_areas)
+    end
+    @admits -= @faculty_instance.admit_rankings.map(&:admit)
   end
 
   private

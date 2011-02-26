@@ -1,6 +1,5 @@
 class AdmitsController < PeopleController
   before_filter :get_areas_and_divisions, :only => [:new, :edit, :create, :update, :view_meetings]
-  before_filter :get_faculty, :only => [:rank_faculty, :update]
 
 
   # GET /people/admits/1/schedule
@@ -16,9 +15,20 @@ class AdmitsController < PeopleController
   # GET /people/admits/1/rank_faculty
   def rank_faculty
     @admit = Admit.find(params[:id])
-    @admit.faculty_rankings.build
+
+    unless params[:select].nil?
+      new_faculty = Faculty.find(params[:select].select {|f, checked| checked.to_b}.map(&:first))
+      new_faculty.each {|f| @admit.faculty_rankings.build(:faculty => f, :rank => 1)}
+    end
+
     @origin_action = 'rank_faculty'
     @redirect_action = 'rank_faculty'
+  end
+
+  # GET /people/admits/1/select_faculty
+  def select_faculty
+    @admit = Admit.find(params[:id])
+    @faculty = Faculty.by_name - @admit.faculty_rankings.map(&:faculty)
   end
 
   private
@@ -36,6 +46,6 @@ class AdmitsController < PeopleController
   end
 
   def get_faculty
-    @faculty = Faculty.all.sort! {|x, y| x.last_name <=> y.last_name}
+    @faculty = Faculty.by_name
   end
 end

@@ -181,9 +181,19 @@ describe 'Routes' do
         end
       end
 
-      context 'Update Faculty Schedule' do
+      context 'Update Faculty Availability' do
         it 'routes GET /people/faculty/1/schedule to Faculty#schedule' do
           {:get => '/people/faculty/1/schedule'}.should route_to(:controller => 'faculty', :action => 'schedule', :id => '1')
+        end
+      end
+
+      context 'Update Faculty Admit Rankings' do
+        it 'routes GET /people/faculty/1/rank_admits to Faculty#rank_admits' do
+          {:get => '/people/faculty/1/rank_admits'}.should route_to(:controller => 'faculty', :action => 'rank_admits', :id => '1')
+        end
+
+        it 'routes GET /people/faculty/1/select_admits to Faculty#admits' do
+          {:get => '/people/faculty/1/select_admits'}.should route_to(:controller => 'faculty', :action => 'select_admits', :id => '1')
         end
       end
 
@@ -250,6 +260,10 @@ describe 'Routes' do
       context 'Update Admit Faculty Rankings' do
         it 'routes GET /people/admits/1/rank_faculty to Admits#rank_faculty' do
           {:get => '/people/admits/1/rank_faculty'}.should route_to(:controller => 'admits', :action => 'rank_faculty', :id => '1')
+        end
+
+        it 'routes GET /people/admits/1/select_faculty to Admits#select_faculty' do
+          {:get => '/people/admits/1/select_faculty'}.should route_to(:controller => 'admits', :action => 'select_faculty', :id => '1')
         end
       end
 

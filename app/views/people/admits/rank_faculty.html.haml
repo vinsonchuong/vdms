@@ -1,21 +1,31 @@
 - content_for :title, t('.title')
 - form_for @admit, :url => {:action => 'update'} do |admit_form|
-  != admit_form.error_messages
+  - if @admit.errors.any?
+    #errors
+      %h3!= t('.errors')
+      %ul
+        - @admit.errors.full_messages.each do |message|
+          %li!= message
   %fieldset
     %h3!= t('.faculty_rankings')
-    %ol
-      - admit_form.fields_for :faculty_rankings do |faculty_ranking_fields|
-        %li
-          %ul
-            %li.field
-              != faculty_ranking_fields.label :rank
-              != faculty_ranking_fields.text_field :rank
-            %li.field
-              != faculty_ranking_fields.label :faculty_id
-              != faculty_ranking_fields.select :faculty_id, [''] + @faculty.map {|f| ["#{f.first_name} #{f.last_name}", f.id]}
-            %li.field
-              != faculty_ranking_fields.check_box :_destroy
-              != faculty_ranking_fields.label :_destroy, t('.remove')
-    != hidden_field_tag :origin_action, @origin_action
-    != hidden_field_tag :redirect_action, @redirect_action
-    != admit_form.submit t('.submit')
+    %ul
+      %li!= link_to t('.add_faculty'), select_faculty_admit_path(@admit)
+    %table
+      %thead
+        %tr
+          %th{:scope => 'col'}!= FacultyRanking.human_attribute_name(:rank)
+          %th{:scope => 'col'}!= Faculty.human_attribute_name(:full_name)
+          %th{:scope => 'col'}!= t('.remove')
+      %tbody
+        - ranks = []
+        - (@admit.faculty_rankings.map(&:rank) << @admit.faculty_rankings.length).max.times {|i| ranks[i] = i + 1}
+        - admit_form.fields_for :faculty_rankings do |faculty_ranking_fields|
+          - @faculty_ranking = faculty_ranking_fields.object
+          %tr
+            %td!= faculty_ranking_fields.select :rank, ranks
+            %td!= @faculty_ranking.faculty.full_name
+            %td!= faculty_ranking_fields.check_box :_destroy
+            != faculty_ranking_fields.hidden_field :faculty_id
+  != hidden_field_tag :origin_action, @origin_action
+  != hidden_field_tag :redirect_action, @redirect_action
+  != admit_form.submit t('.submit')

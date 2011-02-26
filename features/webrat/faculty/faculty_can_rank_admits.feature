@@ -5,84 +5,108 @@ Feature: Faculty can rank admits
   I want to rank the admits
   
   Background: I am signed in as a faculty
-    Given "Jacky" "Wu" is registered as a "Faculty" in "Computer Science"
+    Given I am registered as a "Faculty" in "Computer Science"
     And I am signed in
     And the following "Admits" have been added:
       | first_name  | last_name  | email            | phone      | area1                      | area2                | division              |
-      | Andy        | Foo        | email1@email.com | 1234567891 | Artificial Intelligence    | Physical Electronics | Electrical Engineering|
-      | Ben         | Bar        | email2@email.com | 1234567892 | Graphics                   | Programming Systems  | Computer Science      |
-      | Charlie     | Goo        | email3@email.com | 1234567893 | Human-Computer Interaction | Education            | Computer Science      |
+      | Aaa         | Aaa        | email1@email.com | 1234567891 | Artificial Intelligence    | Physical Electronics | Electrical Engineering|
+      | Bbb         | Bbb        | email2@email.com | 1234567892 | Graphics                   | Programming Systems  | Computer Science      |
+      | Ccc         | Ccc        | email3@email.com | 1234567893 | Human-Computer Interaction | Education            | Computer Science      |
 
-  Scenario: I can add admits to my desired appointments
+  Scenario: I can view my admit rankings
     Given I am on the faculty dashboard page
-    When I follow "My Desired Appointments"
-    And I follow "Add Admits to My Desired Appointments"
-    Then I should be on the Add Admits to My Desired Appointments page
+    When I follow "Update My Admit Rankings"
+    Then I should be on the rank admits page
 
-  Scenario: I can see a list of different areas of interests in the EECS department
-    Given I am on the Add Admits to My Desired Appointments page
-    Then I should see "Artificial Intelligence"
-    And I should see "Biosystems & Computational Biology"
-    And I should see "Communications & Networking"
-    And I should see "Computer Architecture & Engineering"
-    And I should see "Control, Intelligent Systems, and Robotics"
-    And I should see "Database Management Systems"
-    And I should see "Design of Electronic Systems"
-    And I should see "Education"
-    And I should see "Energy"
-    And I should see "Graphics"
-    And I should see "Human-Computer Interaction"
-    And I should see "Integrated Circuits"
-    And I should see "Micro/Nano Electro Mechanical Systems"
-    And I should see "Operating Systems & Networking"
-    And I should see "Physical Electronics"
-    And I should see "Programming Systems"
-    And I should see "Scientific Computing"
-    And I should see "Security"
-    And I should see "Signal Processing"
-    And I should see "Theory"
-  
-  Scenario: I can see a list of EECS divisions
-    Given I am on the Add Admits to My Desired Appointments page
-    Then I should see "Computer Science"
-    Then I should see "Electrical Engineering"
+  Scenario: I select admits to rank
+    Given I am on the rank admits page
+    When I follow "Add Admits"
+    And I check "Aaa Aaa"
+    And I check "Ccc Ccc"
+    And I press "Rank Admits"
+    Then I should be on the rank admits page
+    And I should see "Aaa Aaa"
+    And I should see "Ccc Ccc"
 
-  Scenario: I can see a list of admits section
-    Given I am on the Add Admits to My Desired Appointments page
-    Then I should see "List of Admits"
-    Then I should see "Select Admits"
-            
-  Scenario: I select nothing on the area of interests page
-    Given I am on the Add Admits to My Desired Appointments page
-    When I press "Filter Admits"
-    Then I should see "List of Admits"
-    Then I should see "Select Admits"
-  
-  Scenario: I filter the admits by their area of interests
-    Given I am on the Add Admits to My Desired Appointments page
-    When I check "filter[areas][Artificial Intelligence]"
-    And I check "filter[areas][Graphics]"
-    And I check "filter[areas][Physical Electronics]"
-    When I press "Filter Admits"
-    Then I should see "Andy Foo"
-    Then I should see "Ben Bar"
-  
-  Scenario: I filter the admits by their divisions
-    Given I am on the Add Admits to My Desired Appointments page
-    When I check "filter[divisions][Computer Science]"
-    When I press "Filter Admits"
-    Then I should see "Ben Bar"
-    Then I should see "Charlie Goo"
-  
-  Scenario: I can add admits to my desired appointment
-    Given I am on the Add Admits to My Desired Appointments page
-    When I check "filter[divisions][Computer Science]"
+  Scenario: I filter admits by area
+    Given I am on the rank admits page
+    When I follow "Add Admits"
+    And I unselect every area
+    And I check "Artificial Intelligence"
+    And I check "Graphics"
     And I press "Filter Admits"
-    And I check "admits_3" #Ben Bar
-    And I press "Add to My Desired Appointment List"
-    
-  Scenario: I rank a subset of the admits
+    Then I should see "Aaa Aaa"
+    And I should see "Bbb Bbb"
+    But I should not see "Ccc Ccc"
 
-  Scenario: I flag an admit for a one-on-one meeting
+  Scenario: I rank some admits
+    Given I am on the rank admits page
+    When I follow "Add Admits"
+    And I unselect every area
+    And I check "Artificial Intelligence"
+    And I check "Graphics"
+    And I press "Filter Admits"
+    And I check "Aaa Aaa"
+    And I check "Bbb Bbb"
+    And I press "Rank Admits"
+    And I rank the "first" admit "2"
+    And I flag the "first" admit as "1-On-1"
+    And I flag the "first" admit as "Mandatory"
+    And I rank the "second" admit "1"
+    And I select "2" time slots for the "second" admit
+    And I press "Update Rankings"
+    Then I should see "Faculty was successfully updated."
 
-  Scenario: I flag an admit for a mandatory meeting
+  Scenario: I give two admits duplicate ranks
+    Given I am on the rank admits page
+    When I follow "Add Admits"
+    And I check "Aaa Aaa"
+    And I check "Bbb Bbb"
+    And I press "Rank Admits"
+    And I rank the "first" admit "2"
+    And I rank the "second" admit "2"
+    And I press "Update Rankings"
+    Then I should see "Ranks must be unique"
+    And I should see "Aaa Aaa"
+    And I should see "Bbb Bbb"
+
+  Scenario: I give two admits duplicate ranks twice
+    Given I am on the rank admits page
+    When I follow "Add Admits"
+    And I check "Aaa Aaa"
+    And I check "Bbb Bbb"
+    And I press "Rank Admits"
+    And I rank the "first" admit "2"
+    And I rank the "second" admit "2"
+    And I press "Update Rankings"
+    And I press "Update Rankings"
+    Then I should see "Ranks must be unique"
+    And I should see "Aaa Aaa"
+    And I should see "Bbb Bbb"
+
+  Scenario: I change some rankings
+    Given I have the following admit rankings:
+      | rank | admit   |
+      | 1    | Aaa Aaa |
+      | 2    | Bbb Ccc |
+      | 3    | Ccc Ccc |
+    When I go to the rank admits page
+    And I rank the "first" admit "2"
+    And I rank the "second" admit "1"
+    And I press "Update Rankings"
+    Then I should see "Faculty was successfully updated"
+
+  Scenario: I remove some rankings
+    Given I have the following admit rankings:
+      | rank | admit   |
+      | 1    | Aaa Aaa |
+      | 2    | Bbb Bbb |
+      | 3    | Ccc Ccc |
+    When I go to the rank admits page
+    And I flag the "second" admit for removal
+    And I flag the "third" admit for removal
+    And I press "Update Rankings"
+    Then I should see "Faculty was successfully updated"
+    And I should see "Aaa Aaa"
+    But I should not see "Bbb Bbb"
+    And I should not see "Ccc Ccc"

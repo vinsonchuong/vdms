@@ -32,4 +32,4 @@
       %li.field.required
         != faculty_form.label :area
         != faculty_form.select :area, @areas
-    != faculty_form.submit ((@current_user.class == Faculty) ? t('.alt_submit') : t('.submit'))
+    != faculty_form.submit((@current_user.class == Faculty) ? t('.alt_submit') : t('.submit'))

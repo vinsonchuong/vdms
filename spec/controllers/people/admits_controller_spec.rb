@@ -326,6 +326,24 @@ describe AdmitsController do
         assigns[:admit].should == @admit
       end
 
+      context 'when given new Faculty to rank' do
+        before(:each) do
+          @faculty = Array.new(3) {Faculty.new}
+        end
+
+        it 'finds the given Faculty' do
+          Faculty.should_receive(:find).with(['1', '2', '3']).and_return(@faculty)
+          get :rank_faculty, :id => @admit.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
+        end
+
+        it 'builds a new FacultyRanking for each given Faculty' do
+          Admit.stub(:find).and_return(@admit)
+          Faculty.stub(:find).and_return(@faculty)
+          get :rank_faculty, :id => @admit.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
+          @admit.faculty_rankings.map(&:faculty).should == @faculty
+        end
+      end
+
       it 'sets the error redirect to the rank_faculty action' do
         get :rank_faculty, :id => @admit.id
         assigns[:origin_action].should == 'rank_faculty'
@@ -336,26 +354,77 @@ describe AdmitsController do
         assigns[:redirect_action].should == 'rank_faculty'
       end
 
-      it 'builds a new FacultyRanking for the admit' do
-        Admit.stub(:find).and_return(@admit)
-        @admit.faculty_rankings.should_receive(:build)
-        get :rank_faculty, :id => @admit.id
-      end
-
-      it 'assigns to @faculty a list of all the Faculty sorted by last name' do
-        faculty = [
-          Faculty.new(:first_name => 'First', :last_name => 'Bbb'),
-          Faculty.new(:first_name => 'First', :last_name => 'Ccc'),
-          Faculty.new(:first_name => 'First', :last_name => 'Aaa'),
-        ] 
-        Faculty.stub(:find).and_return(faculty)
-        get :rank_faculty, :id => @admit.id
-        assigns[:faculty].map(&:last_name).should == ['Aaa', 'Bbb', 'Ccc']
-      end
-
       it 'renders the rank_faculty template' do
         get :rank_faculty, :id => @admit.id
         response.should render_template('rank_faculty')
+      end
+    end
+
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
+      end
+
+      it 'redirects to the New Peer Advisor page' do
+        get :rank_faculty, :id => @admit.id
+        response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
+      end
+    end
+
+    context 'when signed in as a registered Faculty'
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        get :rank_faculty, :id => @admit.id
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
+      end
+    end
+  end
+
+  describe 'GET select_faculty' do
+    context 'when not signed in' do
+      it 'redirects to the CalNet sign in page' do
+        get :select_faculty, :id => @admit.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(select_faculty_admit_url(@admit.id))}")
+      end
+    end
+
+    context 'when signed in as a registered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@admit.ldap_id)
+      end
+
+      it 'assigns to @admit the given Admit' do
+        get :select_faculty, :id => @admit.id
+        assigns[:admit].should == @admit
+      end
+
+      it 'assigns to @faculty a sorted list of all the Faculty' do
+        faculty = Array.new(3) {Faculty.new}
+        Faculty.should_receive(:by_name).and_return(faculty)
+        get :select_faculty, :id => @admit.id
+        assigns[:faculty].should == faculty
+      end
+
+      it 'removes the currently ranked Faculty from @faculty' do
+        faculty_instance = Faculty.new
+        faculty = Array.new(3) {Faculty.new}
+        Faculty.stub(:by_name).and_return(faculty + [faculty_instance])
+        @admit.faculty_rankings.build(:faculty => faculty_instance)
+        Admit.stub(:find).and_return(@admit)
+        get :select_faculty, :id => @admit.id
+        assigns[:faculty].should == faculty
+      end
+
+      it 'renders the select_faculty template' do
+        get :select_faculty, :id => @admit.id
+        response.should render_template('select_faculty')
       end
     end
 

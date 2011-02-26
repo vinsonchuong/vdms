@@ -1,0 +1,29 @@
+- content_for :title, t('.title')
+#admit_filter
+  %h3!= t('.filter_admits')
+  - form_for :filter, :html => {:method => :get, :id => 'filter_form'} do |filter_form|
+    %fieldset
+      %h4!= t('.by_area')
+      %ul
+        %li!= link_to_function(t('.select_cs'), 'select_cs(filter_form)')
+        %li!= link_to_function(t('.select_ee'), 'select_ee(filter_form)')
+        %li!= link_to_function(t('.unselect_all'), 'unselect_all(filter_form)')
+      %ul
+        - settings = Settings.instance
+        - @areas.each do |area, checked|
+          %li
+            != filter_form.check_box area, :checked => checked
+            != filter_form.label area, settings.areas[area]
+    != filter_form.submit t('.filter_submit')
+#admit_list
+  %h3!= t('.select_admits')
+  - form_for :select, :url => {:action => 'rank_admits'}, :html => {:method => :get} do |select_form|
+    %fieldset
+      %h4!= t('.admits')
+      %ul
+        - @admits.each do |admit|
+          %li
+            != select_form.check_box admit.id
+            != select_form.label admit.id, admit.full_name
+    != select_form.submit t('.select_submit')
+
