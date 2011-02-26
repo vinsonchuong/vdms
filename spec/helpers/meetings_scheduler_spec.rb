@@ -6,7 +6,6 @@ describe MeetingsScheduler do
     
   #end
 =begin
->>>>>>> 887a10646eb23d0dec2a24a9b95dda44f84833f2
   describe MeetingsScheduler::GeneticAlgorithm do
     describe "class method: run" do
     end
@@ -125,13 +124,14 @@ describe MeetingsScheduler do
       end
     end    
   end
-   
+=end
+
   describe MeetingsScheduler::Chromosome do
     before(:each) do
       @factors_to_consider = create_valid_factors_hash
       MeetingsScheduler::Chromosome.set_factors_to_consider(@factors_to_consider)      
     end
-    
+
     describe "Instance Attributes:" do
       before(:each) do 
         @solution_string = create_valid_solution_string(@factors_to_consider)
@@ -139,12 +139,10 @@ describe MeetingsScheduler do
       end
           
       describe "meeting_solution" do
-        it "should respond to meeting_solution" do
-          @chromosome.should respond_to(:meeting_solution)
-        end
-        
-        it "should respond to meeting_solution=" do
-          @chromosome.should respond_to(:meeting_solution=)
+        ['', '='].each do |val|
+          it "should respond to meeting_solution#{val}" do
+            @chromosome.should respond_to("meeting_solution#{val}".to_sym)
+          end
         end
         
         it 'should return a meeting_solution, which is an array of nucleotides' do  
@@ -156,20 +154,18 @@ describe MeetingsScheduler do
       end
       
       describe "normalized_fitness" do
-        it "should respond to normalized_fitness" do
-          @chromosome.should respond_to(:normalized_fitness)
-        end
-        
-        it "should respond to normalized_fitness=" do
-          @chromosome.should respond_to(:normalized_fitness=)
+        ['', '='].each do |val|
+          it "should respond to normalized_fitness#{val}" do
+            @chromosome.should respond_to("normalized_fitness#{val}".to_sym)
+          end
         end
       end
     end
         
     describe "Instance Methods:" do
       before(:each) do 
-        @solution_string = create_valid_solution_string(@factors_to_consider)
-        @chromosome = MeetingsScheduler::Chromosome.new(@solution_string)
+        @sol_string = create_valid_solution_string(@factors_to_consider)
+        @chromosome = MeetingsScheduler::Chromosome.new(@sol_string)
       end
       
       describe "solution_string" do
@@ -177,8 +173,9 @@ describe MeetingsScheduler do
           @chromosome.should respond_to(:solution_string)
         end
         
-        it 'should return an Array encoding a solution of admit_id\'s' do  
-          @chromosome.solution_string.should == @solution_string
+        it 'should return an Array encoding a solution of admit_id\'s' do
+          @chromosome = MeetingsScheduler::Chromosome.new(@sol_string)
+          @chromosome.solution_string.should == @sol_string
         end
       end
       
@@ -248,6 +245,7 @@ describe MeetingsScheduler do
       end
     end
 
+=begin
     describe "Class Methods:" do  
         
       describe 'mutate' do
@@ -526,140 +524,6 @@ describe MeetingsScheduler do
         before(:each) do
           @fitness_scores_table = create_valid_fitness_scores_table
           MeetingsScheduler::Chromosome.set_fitness_scores_table(@fitness_scores_table)
-        end
-
-        describe 'class method: fitness_of_nucleotide' do
-          before(:each) do
-            @nucleotide = mock('Nucleotide', :admit_id => rand(100))
-          end
-          it 'should return the sum of all fitness criteria subscores of a single nucleotide, if physical arrangement is possible' do
-            @randA, @randB, @randC = rand(1000), rand(1000), rand(1000)
-            MeetingsScheduler::Chromosome.stub!(:is_meeting_possible_score).and_return @fitness_scores_table[:is_meeting_possible_score]
-            MeetingsScheduler::Chromosome.stub!(:admit_preference_score).and_return(@randA)
-            MeetingsScheduler::Chromosome.stub!(:faculty_preference_score).and_return(@randB)
-            MeetingsScheduler::Chromosome.stub!(:area_match_score).and_return(@randC)
-            MeetingsScheduler::Chromosome.fitness_of_nucleotide(@nucleotide).should == @fitness_scores_table[:is_meeting_possible_score] +
-              @randA + @randB + @randC
-          end
-          it 'should just return a penalty for impossible arrangement if physical arrangement described by a single nucleotide is impossible' do
-            MeetingsScheduler::Chromosome.stub!(:is_meeting_possible_score).and_return @fitness_scores_table[:is_meeting_possible_penalty]
-            MeetingsScheduler::Chromosome.fitness_of_nucleotide(@nucleotide).should == @fitness_scores_table[:is_meeting_possible_penalty]
-          end
-
-          it 'should return 0 if the nucleotide is nil (has a nil admit_id)' do
-            @nil_nucleotide = mock('Nucleotide', :admit_id => nil)
-            MeetingsScheduler::Chromosome.fitness_of_nucleotide(@nil_nucleotide).should == 0
-          end
-        end
-        
-        describe 'class method: meeting_possible_score' do
-          
-          before(:each) do  
-            @admit = create_valid_admit_hash(1)
-            @faculty = create_valid_faculty_hash(1)
-          end
-
-          it 'should return a score if a meeting arrangement defined by a single nucleotide is physically possible' do
-            @schedule_index = 1
-            @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit)
-    
-            MeetingsScheduler::Chromosome.is_meeting_possible_score(@nucleotide).should == @fitness_scores_table[:is_meeting_possible_score]
-          end
-
-          it 'should return a penalty if a meeting arrangement defined by a single nucleotide is physically impossible' do
-            @schedule_index = 0
-            @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit)
-            
-            MeetingsScheduler::Chromosome.is_meeting_possible_score(@nucleotide).should == @fitness_scores_table[:is_meeting_possible_penalty]
-          end        
-        end
-      
-        describe 'class method: find_faculty_ranking' do
-          it 'should return the ADMIT\'s ranking that contains the faculty' do
-            @faculty_id = rand(100)
-            @faculty = { :id => @faculty_id }
-            @ranking = { :faculty_id  => @faculty_id }
-            @admit = { :rankings => (rand(20).times.collect{ |id| { :faculty_id => "Non-id #{id}" }} + [@ranking]).shuffle.shuffle }
-            MeetingsScheduler::Chromosome.find_faculty_ranking(@admit, @faculty).should == @ranking
-          end
-        end
-      
-        describe 'class method: find_admit_ranking' do
-          it 'should return the FACULTY\'s ranking that contains the admit' do
-            @admit_id = rand(100)
-            @admit = { :id => @admit_id }
-            @ranking = { :admit_id  => @admit_id }
-            @faculty = { :rankings => (rand(20).times.collect{ |id| { :admit_id => "Non-id #{id}" }} + [@ranking]).shuffle.shuffle }          
-            MeetingsScheduler::Chromosome.find_admit_ranking(@admit, @faculty).should == @ranking
-          end
-        end      
-    
-        describe 'class method: faculty_preference_score' do
-          before(:each) do
-            @admit = create_valid_admit_hash(1)
-            @faculty = create_valid_faculty_hash(1)
-            @schedule_index = 0 #some arbitrary number because it does not affect the faculty_preference_score function
-            @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit)
-          end
-
-          it 'should return a rank-weighted score if a faculty is among an ADMIT\'s ranking' do
-            @ranking = { :rank => rand(@factors_to_consider[:number_of_spots_per_admit]) }            
-            MeetingsScheduler::Chromosome.stub!(:find_faculty_ranking).and_return(@ranking)
-            MeetingsScheduler::Chromosome.should_receive(:find_faculty_ranking).once.with(@admit, @faculty)
-
-            MeetingsScheduler::Chromosome.faculty_preference_score(@nucleotide).should ==
-              @fitness_scores_table[:faculty_ranking_weight_score] * (@factors_to_consider[:lowest_rank_possible]+1 - @ranking[:rank])
-          end
-
-          it 'should return a default score if a faculty is not among an ADMIT\'s ranking' do
-            MeetingsScheduler::Chromosome.stub!(:find_faculty_ranking).and_return nil
-            MeetingsScheduler::Chromosome.should_receive(:find_faculty_ranking).once.with(@admit, @faculty)
-
-            MeetingsScheduler::Chromosome.faculty_preference_score(@nucleotide).should ==
-              @fitness_scores_table[:faculty_ranking_default]
-          end        
-        end
-        
-        describe 'class method: admit_preference_score' do
-          before(:each) do
-            @admit = create_valid_admit_hash(1)
-            @faculty = create_valid_faculty_hash(1)
-            @schedule_index = 0 #some arbitrary number because it does not affect the faculty_preference_score function
-            @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit)
-                   
-            @meeting_solution = mock('meeting_solution')
-            @ranking = { :rank => rand(@factors_to_consider[:number_of_spots_per_admit]) } # should be same as :lowest_rank_possible
-          end
-
-          it 'should compute a rank-weighted score if an admit is among a FACULTY\'s ranking' do
-            MeetingsScheduler::Chromosome.stub!(:one_on_one_score).and_return(0)
-            MeetingsScheduler::Chromosome.stub!(:mandatory_meeting_score).and_return(0)          
-            MeetingsScheduler::Chromosome.stub!(:find_admit_ranking).and_return(@ranking)
-            MeetingsScheduler::Chromosome.should_receive(:find_admit_ranking).once.with(@admit, @faculty)
-
-            MeetingsScheduler::Chromosome.admit_preference_score(@meeting_solution, @nucleotide).should ==
-              @fitness_scores_table[:admit_ranking_weight_score] * (@factors_to_consider[:lowest_rank_possible]+1 - @ranking[:rank])
-          end
-
-          it 'should further compute and add one-on-one and mandatory-meeting scores if an admit is among a FACULTY\'s ranking' do
-            @one_on_one_score, @mandatory_meeting_score = rand(20)+1, rand(20)+1
-            MeetingsScheduler::Chromosome.stub!(:one_on_one_score).and_return(@one_on_one_score)
-            MeetingsScheduler::Chromosome.stub!(:mandatory_meeting_score).and_return(@mandatory_meeting_score)
-            MeetingsScheduler::Chromosome.stub!(:find_admit_ranking).and_return(@ranking)
-
-            MeetingsScheduler::Chromosome.should_receive(:one_on_one_score).once.with(@meeting_solution, @nucleotide, @ranking)
-            MeetingsScheduler::Chromosome.should_receive(:mandatory_meeting_score).once.with(@ranking)
-            MeetingsScheduler::Chromosome.admit_preference_score(@meeting_solution, @nucleotide).should ==
-              @fitness_scores_table[:admit_ranking_weight_score] * (@factors_to_consider[:lowest_rank_possible]+1 - @ranking[:rank]) +
-              @one_on_one_score + @mandatory_meeting_score
-          end
-
-          it 'should return a default score if an admit is not among a FACULTY\'s ranking' do
-            MeetingsScheduler::Chromosome.stub!(:find_admit_ranking).and_return nil
-            MeetingsScheduler::Chromosome.should_receive(:find_admit_ranking).once.with(@admit, @faculty)
-            MeetingsScheduler::Chromosome.admit_preference_score(@meeting_solution, @nucleotide).should ==
-              @fitness_scores_table[:admit_ranking_default]
-          end
         end        
         
         describe 'class method: one_on_one_score' do        
@@ -696,30 +560,6 @@ describe MeetingsScheduler do
           end
         end
         
-        describe 'class method: area_match_score' do
-          it 'should return the appropriate points when a faculty\'s areas of research matches one of an admit\'s areas of interest' do
-            @admit = create_valid_admit_hash(1)
-            @faculty = create_valid_faculty_hash(1)
-            @faculty[:area] = 'subjectA' 
-            @admit[:area1] = 'subjectA'
-            @admit[:area2] = 'subjectC'
-            @schedule_index = 0 #some arbitrary number because it does not affect the faculty_preference_score function
-            @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit)
-            MeetingsScheduler::Chromosome.area_match_score(@nucleotide).should == @fitness_scores_table[:area_match_score]
-          end
-
-          it 'should return the appropriate default when a faculty\'s areas of research does not match any one of an admit\'s areas of interest' do
-            @admit = create_valid_admit_hash(1)
-            @faculty = create_valid_faculty_hash(1)
-            @faculty[:area] = 'subjectA' 
-            @admit[:area1] = 'subjectB'
-            @admit[:area2] = 'subjectC'
-            @schedule_index = 0 #some arbitrary number because it does not affect the faculty_preference_score function
-            @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit)
-            MeetingsScheduler::Chromosome.area_match_score(@nucleotide).should == @fitness_scores_table[:area_match_default]
-          end
-        end        
-                      
         describe 'class method: find_admits_in_meeting' do
           it 'should return just a subset of admit_id\'s that are in a specific timeslot for a specific faculty' do
             @solution_string = create_valid_solution_string(@factors_to_consider)
@@ -763,108 +603,17 @@ describe MeetingsScheduler do
             end
           end
         end
-  
-        describe 'Duplicates removal and helper methods' do
-          before (:each) do
-            @solution_string = create_valid_solution_string(@factors_to_consider)
-            @chromosome = MeetingsScheduler::Chromosome.new(@solution_string)
-            @meeting_solution = @chromosome.meeting_solution
-          end
-
-          describe 'remove_duplicates' do
-            it 'should return a new meeting_solution (array of Nucleotides) with duplicate admit_ids per faculty removed' do
-              MeetingsScheduler::Chromosome.stub!(:new).and_return(mock('meeting_solution', :meeting_solution => @meeting_solution))          
-              MeetingsScheduler::Chromosome.stub!(:remove_duplicate_admits_from_faculty!)
-              @factors_to_consider[:faculties].each do |faculty_id, faculty|
-                MeetingsScheduler::Chromosome.should_receive(:remove_duplicate_admits_from_faculty!).once.with(@meeting_solution, faculty)
-              end
-              MeetingsScheduler::Chromosome.remove_duplicates(@solution_string)
-            end
-          end
-
-          describe 'class method: remove_duplicate_admits_from_faculty!' do
-            it 'should get a list of admit_ids that are duplicate throughout the chromosome' do
-              @meeting_solution, @faculty  = mock('meeting_solution'), mock('faculty')
-              @duplicate_admit_ids = rand(100).times.collect.shuffle.shuffle
-              MeetingsScheduler::Chromosome.stub!(:get_duplicate_admit_ids).and_return(@duplicate_admit_ids)
-              MeetingsScheduler::Chromosome.stub!(:remove_duplicate_spots_for_admit!)
-              @duplicate_admit_ids.each do |id|
-                MeetingsScheduler::Chromosome.should_receive(:remove_duplicate_spots_for_admit!).once.with(@meeting_solution, @faculty, id)
-              end
-              MeetingsScheduler::Chromosome.remove_duplicate_admits_from_faculty!(@meeting_solution, @faculty)
-            end
-          end
-
-          describe 'class method: remove_duplicate_spots_for_admit!' do
-            it 'should remove duplicate spots of one admit under a faculty\'s nucleotides' do
-              @duplicate_nucleotides, @best_nucleotide =  mock('duplicate_nucleotides'), mock('best_nucleotide')
-              @meeting_solution, @faculty, @admit_id = mock('meeting_solution'), mock('faculty'), mock('admit_id')
-              MeetingsScheduler::Chromosome.stub!(:get_duplicate_nucleotides_for_admit).and_return(@duplicate_nucleotides)
-              MeetingsScheduler::Chromosome.stub!(:pick_out_best_nucleotide).and_return(@best_nucleotide)
-              MeetingsScheduler::Chromosome.stub!(:reset_non_optimal_nucleotides!)
-              MeetingsScheduler::Chromosome.should_receive(:get_duplicate_nucleotides_for_admit).once.with(@meeting_solution, @faculty, @admit_id)
-              MeetingsScheduler::Chromosome.should_receive(:pick_out_best_nucleotide).once.with(@duplicate_nucleotides)
-              MeetingsScheduler::Chromosome.should_receive(:reset_non_optimal_nucleotides!).once.with(@duplicate_nucleotides, @best_nucleotide)
-              MeetingsScheduler::Chromosome.remove_duplicate_spots_for_admit!(@meeting_solution, @faculty, @admit_id)
-            end
-          end
-
-          describe 'class method: reset_non_optimal_nucleotides!' do
-            it 'should set the non-optimal duplicate nucleotides to nil admit_ids' do
-              @faculty_id = @factors_to_consider[:faculties].keys.shuffle.shuffle.fetch(0)
-              @admit_id = nil
-              while @admit_id.nil?
-                @admit_id = @meeting_solution[rand(@length)]
-              end          
-              @duplicate_nucleotides = @meeting_solution.find_all{ |n| n.faculty_id == @faculty_id and n.admit_id == @admit_id }
-              @best_nucleotide = @duplicate_nucleotides[rand(@duplicate_nucleotides.length)]
-
-              MeetingsScheduler::Chromosome.reset_non_optimal_nucleotides!(@duplicate_nucleotides, @best_nucleotide)
-              @duplicate_nucleotides.each do |n|
-                if n.schedule_index != @best_nucleotide.schedule_index
-                  n.admit_id.should == nil
-                end
-              end
-            end
-          end
-
-          describe 'class method: get_duplicate_nucleotides_for_admit' do
-            it 'should should return all nucleotides belonging to a Faculty with the same admit_ids' do
-              @faculty_id = @factors_to_consider[:faculties].keys.shuffle.shuffle.fetch(0)
-              @admit_id = @meeting_solution.shuffle.shuffle.fetch(0).admit_id          
-              @faculty = { :id => @faculty_id }
-              MeetingsScheduler::Chromosome.get_duplicate_nucleotides_for_admit(@meeting_solution, @faculty, @admit_id).should ==
-                @meeting_solution.find_all{ |n| n.faculty_id == @faculty_id and n.admit_id == @admit_id }
-            end
-          end
-
-          describe 'class method: get_duplicate_admits' do
-            it 'should return an array of admit_ids that appear more than once in a set of nucleotides with a given faculty_id' do
-              @faculty_id = @meeting_solution.shuffle.shuffle.fetch(0).faculty_id
-              @faculty = { :id => @faculty_id }
-              MeetingsScheduler::Chromosome.get_duplicate_admit_ids(@meeting_solution, @faculty).should ==
-                @meeting_solution.find_all{ |n| n.faculty_id == @faculty_id }.collect{ |n| n.admit_id }.inject({}) {|h,v| h[v]=h[v].to_i+1; h}.reject{|k,v| v==1}.keys
-            end
-          end
-
-          describe 'class method: dups' do
-            it 'should return an array of elements that are duplicates in an input array' do
-              @dup1, @dup2 = rand(100), rand(100)+100
-              @array = (200.upto(1000).collect + [@dup1]*(rand(20)+2) + [@dup2]*(rand(20)+2)).shuffle.shuffle
-              MeetingsScheduler::Chromosome.dups(@array).sort.should == [@dup1, @dup2]
-            end
-          end
-
-        end     
-         
       end
-    end   
+    end
+=end
+
   end
-=end    
+
+  
   describe MeetingsScheduler::Nucleotide do
     before(:each) do
       @fitness_scores_table = create_valid_fitness_scores_table
-      MeetingsScheduler::Nucleotide.initialize_fitness_scores_table(@fitness_scores_table)
+      MeetingsScheduler::Nucleotide.set_fitness_scores_table(@fitness_scores_table)
     end
     
     describe 'Nucleotide attributes' do
@@ -962,6 +711,22 @@ describe MeetingsScheduler do
       end
     end
 
+    describe 'instance method: mandatory?' do
+      [true, false].each do |val|
+        it "should return #{val} if the faculty\'s admit ranking\'s mandatory attribute is #{val}" do
+          @nucleotide = MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
+          @nucleotide.stub!(:get_admit_ranking).and_return({ :mandatory => val })
+          @nucleotide.mandatory?.should == val
+        end
+      end
+
+      it 'should return false if faculty has no ranking for the admit' do
+          @nucleotide = MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
+          @nucleotide.stub!(:get_admit_ranking).and_return(nil)
+          @nucleotide.mandatory?.should == false
+      end
+    end
+
     describe 'instance method: is_meeting_possible_score' do      
       before(:each) do  
         @faculty_hash, @admit_hash, @schedule_index = mock('faculty'), mock('admit'), rand(100)
@@ -1040,9 +805,10 @@ describe MeetingsScheduler do
     describe 'instance method: mandatory_meeting_score' do
       [true, false].each do |val|
         it "should return the appropriate points for whether a FACULTY\'s admit ranking is marked #{val}" do
-          @ranking = { :mandatory => val }
           score = val ? @fitness_scores_table[:mandatory_score] : @fitness_scores_table[:mandatory_default]
-          MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), mock('admit')).mandatory_meeting_score(@ranking).should == score
+          @nucleotide = MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
+          @nucleotide.stub!(:mandatory?).and_return(val)
+          @nucleotide.mandatory_meeting_score.should == score
         end
       end
     end
@@ -1104,29 +870,19 @@ end
 
 
 def create_valid_solution_string(factors_to_consider)
-  
   attending_admits = factors_to_consider[:attending_admits]
   total_number_of_seats = factors_to_consider[:total_number_of_seats]
   number_of_spots_per_admit = factors_to_consider[:number_of_spots_per_admit]
-   
+  
   solution_string = Array.new(total_number_of_seats)
-   
-  admit_ids = (attending_admits.keys * number_of_spots_per_admit).shuffle.shuffle
-   
-  admit_ids.each do |id|
-    index = rand(total_number_of_seats)
-    while solution_string[index] # if the spot is occupied, we find a new spot
-      index = rand(total_number_of_seats)
-    end
-    solution_string[index] = id
-  end
+  admit_ids = (attending_admits.keys * number_of_spots_per_admit)
   
-  solution_string.each_with_index do |admit_id, index|
-    if admit_id == nil
-      solution_string[index] = attending_admits.keys[rand(attending_admits.length)]
-    end
+  if admit_ids.length < total_number_of_seats
+    remaining_empty_seats = total_number_of_seats - admit_ids.length
+    admit_ids += remaining_empty_seats.times.collect{ admit_ids.sample }
   end
-  
+      
+  solution_string[0...solution_string.length] = admit_ids.shuffle.shuffle[0...solution_string.length] if total_number_of_seats > 0
   return solution_string
 end
 

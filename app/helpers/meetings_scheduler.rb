@@ -199,7 +199,7 @@ module MeetingsScheduler
             @meeting_solution << Nucleotide.new(faculty, schedule_index, admit)
           end
         end
-      end            
+      end
     end
    
     def self.set_factors_to_consider(factors_to_consider)
@@ -208,6 +208,7 @@ module MeetingsScheduler
           
     def self.set_fitness_scores_table(fitness_scores)
       @@fitness_scores_table = fitness_scores
+      Nucleotide.set_fitness_scores_table(fitness_scores)
     end
 
     def self.seed
@@ -219,7 +220,6 @@ module MeetingsScheduler
     end
 
     def [](index)
-      # @return: an element or subarray of solution_string
       self.solution_string[index]
     end
 
@@ -236,20 +236,25 @@ module MeetingsScheduler
     # @return: a fitness value as a Float
     def fitness
       return @fitness if @fitness
-      # remove duplicates in time slot for prof, get the best
-      #reduced_meeting_solution = Chromosome.remove_duplicates(self.solution_string)
+      # reduced_meeting_solution = Chromosome.remove_duplicates(self.solution_string)
+      # To simplify everything:
+      # Instead of actively removing duplicates before feeding them to solution, the algorithm will award points for
+      # requests for multiple time slots that are granted, and the staff will manually remove all other duplicates
       
-      #@fitness = @meeting_solution.inject(0) do |fitness, nucleotide|
-      #  fitness +=  Chromosome.fitness_of_nucleotide(nucleotide, @meeting_solution)
-      #end
+      @fitness = chromosome_fitness + reduced_meeting_solution.inject(0){ |fitness, nucleotide| fitness += nucleotide.fitness }
     
-      #@fitness = reduced_meeting_solution.inject(0) do |fitness, nucleotide|
-      #  fitness +=  Chromosome.fitness_of_nucleotide(nucleotide, @meeting_solution)
-      #end
-      #@fitness
+      # @fitness
       rand(100)
     end
-  
+
+    def chromosome_fitness
+      return 0 #TEMPORARY
+      @meeting_solution.each do |nucleotide|
+        is one_on_one
+        is consecutive
+      end
+    end
+    
     # Definition: Decides with probabilities defined in factors_to_consider HOW to mutate a chromosome, and calls the appropriate mutation method
     # @params: 
     # => a chromosome
@@ -257,14 +262,15 @@ module MeetingsScheduler
     # => a new Chromosome object with the appropriate mutation if it is unfit
     # => the old chromosome if it has good fitness value
     def self.mutate(chromosome)       
-      if Chromosome.ok_to_mutate(chromosome)
+      if chromosome.ok_to_mutate?
         puts "about to mutate"
         which_mutation = rand
         case which_mutation
         when 0...@@factors_to_consider[:chromosomal_inversion_probability]            
           index1, index2 = [rand(chromosome.length), rand(chromosome.length)].sort
           Chromosome.chromosomal_inversion(chromosome, index1, index2)        
-        when @@factors_to_consider[:chromosomal_inversion_probability]...(@@factors_to_consider[:chromosomal_inversion_probability] + @@factors_to_consider[:point_mutation_probability])
+        when @@factors_to_consider[:chromosomal_inversion_probability]...
+            (@@factors_to_consider[:chromosomal_inversion_probability] + @@factors_to_consider[:point_mutation_probability])
           index = rand(chromosome.length)
           Chromosome.point_mutation(chromosome, index)
         else
@@ -274,7 +280,7 @@ module MeetingsScheduler
       else
         puts "did not mutate"
         chromosome
-      end      
+      end
     end
 
     # Definition: Decides with probabilities defined in factors_to_consider HOW to reproduce,
@@ -283,7 +289,7 @@ module MeetingsScheduler
     # @return: only ONE new Chromosome object with the appropriate reproduction operation performed
     def self.reproduce(parent1, parent2)
       if rand < @@factors_to_consider[:double_crossover_probability]
-        splice_index1, splice_index2 = [rand(parent1.length - 1), rand(parent1.length - 1)].sort       
+        splice_index1, splice_index2 = [rand(parent1.length - 1), rand(parent1.length - 1)].sort
         Chromosome.double_crossover(parent1, parent2, splice_index1, splice_index2)
       else
         splice_index = rand(parent1.length - 2)+1
@@ -292,31 +298,26 @@ module MeetingsScheduler
     end
     
     
-    
-
-
+            
     private unless Rails.env == 'test'
     
     # Definition: Helper method to create a nucleotide sequence 
     # @params: NA
-    # @return: a shuffled array of admit_id's and nils
+    # @return: a shuffled array of admit_id's
     def self.create_solution_string
       attending_admits = @@factors_to_consider[:attending_admits]
       total_number_of_seats = @@factors_to_consider[:total_number_of_seats]
-      number_of_spots_per_admit = @@factors_to_consider[:number_of_spots_per_admit] # from the threshold?
+      number_of_spots_per_admit = @@factors_to_consider[:number_of_spots_per_admit]
       
       solution_string = Array.new(total_number_of_seats)
-      admit_ids = (attending_admits.keys * number_of_spots_per_admit).shuffle.shuffle  
+      admit_ids = (attending_admits.keys * number_of_spots_per_admit)
       
       if admit_ids.length < total_number_of_seats
         remaining_empty_seats = total_number_of_seats - admit_ids.length
-        extra_accommodation = [] 
-        remaining_empty_seats.times { extra_accommodation << admit_ids[rand(admit_ids.length)] }
-        admit_ids += extra_accommodation
+        admit_ids += remaining_empty_seats.times.collect{ admit_ids.sample }
       end
       
-      total_number_of_seats.times {|index| solution_string[index] = admit_ids[index] } if total_number_of_seats > 0
-      puts solution_string.inspect
+      solution_string[0...solution_string.length] = admit_ids.shuffle.shuffle[0...solution_string.length] if total_number_of_seats > 0
       solution_string    
     end
     
@@ -326,9 +327,17 @@ module MeetingsScheduler
     # => a Chromosome
     # @return: 
     # => true or false
-    def self.ok_to_mutate(chromosome)
+    def ok_to_mutate?
       #chromosome.normalized_fitness && rand < ((1 - chromosome.normalized_fitness) * 0.3)
       true
+    end
+
+
+
+    #####################################
+    # Chromosome Fitness Helper Methods #
+    #####################################
+    def Chromosome.one_on_one_score(meeting_solution, nucleotide, ranking)
     end
 
     
@@ -351,9 +360,9 @@ module MeetingsScheduler
     # @return: 
     # => a new Chromosome
     def self.chromosomal_inversion(chromosome, index1, index2)
-      partially_inverted_solution_string = chromosome[index1..index2].reverse      
-      mutated_solution_string = chromosome[0...index1] + partially_inverted_solution_string + chromosome[index2+1..-1]
-      Chromosome.new(mutated_solution_string)
+      partially_inverted_solution_string = chromosome[index1..index2].reverse
+      new_solution_string = chromosome[0...index1] + partially_inverted_solution_string + chromosome[index2+1..-1]
+      Chromosome.new(new_solution_string)
     end
     
     # Definition: Performs a point mutation on one sequence in a Chromosome
@@ -389,12 +398,6 @@ module MeetingsScheduler
     def self.double_crossover(parent1, parent2, splice_index1, splice_index2)
       Chromosome.new(parent1[0...splice_index1] + parent2[splice_index1...splice_index2] + parent1[splice_index2..-1])
     end
-        
-
-
-    def Chromosome.one_on_one_score(meeting_solution, nucleotide, ranking)
-    end
-
   end
   
 
@@ -403,7 +406,7 @@ module MeetingsScheduler
     attr_accessor :admit
     attr_reader :schedule_index
 
-    def self.initialize_fitness_scores_table(fitness_scores_table)
+    def self.set_fitness_scores_table(fitness_scores_table)
       @@fitness_scores_table = fitness_scores_table
     end
 
@@ -452,6 +455,11 @@ module MeetingsScheduler
       @admit[:available_times].contain_set?(RangeSet.new([faculty_time_slot]))
     end
 
+    def mandatory?
+      ranking = get_admit_ranking
+      (ranking and ranking[:mandatory]) ? true : false
+    end
+
     
     private unless Rails.env == 'test'
 
@@ -469,7 +477,7 @@ module MeetingsScheduler
       ranking = get_admit_ranking    
       if ranking
         @@fitness_scores_table[:admit_ranking_weight_score] * (@faculty[:rankings].count+1 - ranking[:rank]) +
-          mandatory_meeting_score(ranking)
+          mandatory_meeting_score
       else
         @@fitness_scores_table[:admit_ranking_default]
       end
@@ -484,8 +492,8 @@ module MeetingsScheduler
       end      
     end
     
-    def mandatory_meeting_score(ranking)
-      ranking[:mandatory] ? @@fitness_scores_table[:mandatory_score] : @@fitness_scores_table[:mandatory_default]
+    def mandatory_meeting_score
+      mandatory? ? @@fitness_scores_table[:mandatory_score] : @@fitness_scores_table[:mandatory_default]
     end
   end
   
