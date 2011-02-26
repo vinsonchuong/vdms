@@ -92,6 +92,17 @@ h1 a {
   font-size: 1.2em;
 }
 
+#content p#messages {
+  margin: 0 -10px;
+  padding: 10px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border: #4ad34f 1px solid;
+  background-color: #effbef;
+  color: #4ad34f;
+}
+
 #content table {
   width: 100%;
 }
@@ -109,8 +120,7 @@ h1 a {
   color: #d34f4a;
 }
 #content #errors table td.error {
-  background-color: #fbefef;
-  color: #d34f4a;
+  background-color: #d34f4a;
 }
 #content #errors table td:last-child {
   background-color: #fbefef;
@@ -121,7 +131,13 @@ h1 a {
   color: #d34f4a;
 }
 #content #errors {
-  margin-bottom: 20px;
+  margin: 0 -10px 20px;
+  padding: 0px 10px 10px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border: #d34f4a 1px solid;
+  background-color: #fbefef;
 }
 #content fieldset {
   margin-bottom: 20px;

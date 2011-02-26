@@ -40,12 +40,7 @@
           %li!= link_to t('faculty.rank_admits.alt_title'), rank_admits_faculty_instance_path(@current_user)
     #content
       %h2!= yield :title
-      #messages
-        - unless flash[:notice].nil?
-          %p{:style => 'color: green'}!= flash[:notice]
-        - unless flash[:error].nil?
-          %p{:style => 'color: red'}!= flash[:error]
-        - unless flash[:alert].nil?
-          %p{:style => 'color: red'}!= flash[:alert]
+      - unless flash[:notice].nil?
+        %p#messages!= flash[:notice]
       != yield
     #footer
