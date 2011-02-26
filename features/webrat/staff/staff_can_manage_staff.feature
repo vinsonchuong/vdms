@@ -5,6 +5,11 @@ Feature: Staff can manage staff
   I want to add other staff to the app
 
   Background: I am signed in as a staff
+    Given the following "Staff" have been added:
+      | ldap_id | first_name  | last_name  | email            |
+      | ID0     | First1      | Last1      | email1@email.com |
+      | ID1     | First2      | Last2      | email2@email.com |
+      | ID2     | First3      | Last3      | email3@email.com |
     Given I am registered as a "Staff"
     And I am signed in
 
@@ -14,11 +19,6 @@ Feature: Staff can manage staff
     Then I should be on the view staff page
 
   Scenario: I view a list of all staff
-    Given the following "Staff" have been added:
-      | ldap_id | first_name  | last_name  | email            |
-      | ID0     | First1      | Last1      | email1@email.com |
-      | ID1     | First2      | Last2      | email2@email.com |
-      | ID2     | First3      | Last3      | email3@email.com |
     When I go to the view staff page
     And I should see "First1"
     And I should see "Last1"
@@ -43,8 +43,34 @@ Feature: Staff can manage staff
 
     Scenarios: with invalid information
       | ldap_id | first_name | last_name | email           | result                        |
+      | ldap_id |            | Last      | email@email.com | First Name can't be blank     |
+      | ldap_id | First      |           | email@email.com | Last Name can't be blank      |
       | ldap_id | First      | Last      | invalid_email   | Email is invalid              |
 
   Scenario: I update a staff's information
+    Given I am on the view staff page
+    When I follow "Update Info"
+    And I fill in "Email" with "new_email@email.com"
+    And I press "Update Staff"
+    Then I should see "Staff was successfully updated."
+
+  Scenario: I try to update a staff with invalid information
+    Given I am on the view staff page
+    When I follow "Update Info"
+    And I fill in "First Name" with ""
+    And I press "Update Staff"
+    Then I should see "First Name can't be blank"
+
+  Scenario: I try to update a staff with invalid information twice
+    Given I am on the view staff page
+    When I follow "Update Info"
+    And I fill in "First Name" with ""
+    And I press "Update Staff"
+    And I press "Update Staff"
+    Then I should see "First Name can't be blank"
 
   Scenario: I remove a staff
+    Given I am on the view staff page
+    When I follow "Remove"
+    And I press "Remove Staff"
+    Then I should see "Staff was successfully removed."

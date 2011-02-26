@@ -8,10 +8,10 @@ Feature: Faculty can rank admits
     Given I am registered as a "Faculty" in "Computer Science"
     And I am signed in
     And the following "Admits" have been added:
-      | first_name  | last_name  | email            | phone      | area1                      | area2                | division              |
-      | Aaa         | Aaa        | email1@email.com | 1234567891 | Artificial Intelligence    | Physical Electronics | Electrical Engineering|
-      | Bbb         | Bbb        | email2@email.com | 1234567892 | Graphics                   | Programming Systems  | Computer Science      |
-      | Ccc         | Ccc        | email3@email.com | 1234567893 | Human-Computer Interaction | Education            | Computer Science      |
+      | first_name  | last_name  | email            | phone      | area1                      | area2                | division               |
+      | Aaa         | Aaa        | email1@email.com | 1234567891 | Artificial Intelligence    | Physical Electronics | Electrical Engineering |
+      | Bbb         | Bbb        | email2@email.com | 1234567892 | Graphics                   | Programming Systems  | Computer Science       |
+      | Ccc         | Ccc        | email3@email.com | 1234567893 | Human-Computer Interaction | Education            | Computer Science       |
 
   Scenario: I can view my admit rankings
     Given I am on the faculty dashboard page

@@ -5,7 +5,20 @@ Feature: Staff can manage faculty
   I want to add faculty to the app
 
   Background: I am signed in as a staff
-    Given I am registered as a "Staff"
+    Given the following "Faculty" have been added:
+      | ldap_id | first_name  | last_name  | email            | area     | division               |
+      | ID1     | First1      | Last1      | email1@email.com | Theory   | Computer Science       |
+      | ID2     | First2      | Last2      | email2@email.com | Energy   | Electrical Engineering |
+      | ID3     | First3      | Last3      | email3@email.com | Graphics | Computer Science       |
+    And "Computer Science" has the following meeting times:
+      | begin           | end              |
+      | 1/1/2011 9:00AM | 1/1/2011 11:00AM |
+      | 1/1/2011 2:00PM | 1/1/2011 02:45PM |
+    Given "Electrical Engineering" has the following meeting times:
+      | begin           | end              |
+      | 1/1/2011 9:00AM | 1/1/2011 11:00AM |
+      | 1/1/2011 2:00PM | 1/1/2011 02:45PM |
+    And I am registered as a "Staff"
     And I am signed in
 
   Scenario: I can manage faculty
@@ -14,11 +27,6 @@ Feature: Staff can manage faculty
     Then I should be on the view faculty page
 
   Scenario: I view a list of all faculty
-    Given the following "Faculty" have been added:
-      | ldap_id | first_name  | last_name  | email            | area     | division               |
-      | ID1     | First1      | Last1      | email1@email.com | Theory   | Computer Science       |
-      | ID2     | First2      | Last2      | email2@email.com | Energy   | Electrical Engineering |
-      | ID3     | First3      | Last3      | email3@email.com | Graphics | Computer Science       |
     When I go to the view faculty page
     And I should see "First1"
     And I should see "Last1"
@@ -48,8 +56,10 @@ Feature: Staff can manage faculty
       | ID2     | First      | Last      | email@email.com | Electrical Engineering | Communications & Networking | Faculty was successfully added. |
 
     Scenarios: with invalid information
-      | ldap_id | first_name | last_name | email           | division               | area                    | result                               |
-      | ID1     | First      | Last      | invalid_email   | Computer Science       | Artificial Intelligence | Email is invalid                     |
+      | ldap_id | first_name | last_name | email           | division               | area                    | result                              |
+      | ID1     |            | Last      | email@email.com | Computer Science       | Artificial Intelligence | First Name can't be blank           |
+      | ID1     | First      |           | email@email.com | Computer Science       | Artificial Intelligence | Last Name can't be blank            |
+      | ID1     | First      | Last      | invalid_email   | Computer Science       | Artificial Intelligence | Email is invalid                    |
 
   Scenario: I add faculty by importing a CSV with valid data
     Given I am on the view faculty page
@@ -71,9 +81,57 @@ Feature: Staff can manage faculty
     And I should see "Division is not included in the list"
 
   Scenario: I update a faculty's information
+    Given I am on the view faculty page
+    When I follow "Update Info"
+    And I fill in "Email" with "new_email@email.com"
+    And I press "Update Faculty"
+    Then I should see "Faculty was successfully updated."
 
-  Scenario: I update a faculty's schedule
+  Scenario: I try to update a faculty with invalid information
+    Given I am on the view faculty page
+    When I follow "Update Info"
+    And I fill in "First Name" with ""
+    And I press "Update Faculty"
+    Then I should see "First Name can't be blank"
 
-  Scenario: I update a faculty's admit rankings and preferences
+  Scenario: I try to update a faculty with invalid information twice
+    Given I am on the view faculty page
+    When I follow "Update Info"
+    And I fill in "First Name" with ""
+    And I press "Update Faculty"
+    And I press "Update Faculty"
+    Then I should see "First Name can't be blank"
+
+  Scenario: I update a faculty's availability
+    Given I am on the view faculty page
+    When I follow "Update Availability"
+    And I fill in "Default room" with "373 Soda"
+    And I fill in "Max admits per meeting" with "4"
+    And I flag the "1/1/2011 9:00AM" to "1/1/2011 9:15AM" slot as available
+    And I flag the "1/1/2011 10:00AM" to "1/1/2011 10:15AM" slot as available
+    And I press "Update Availability"
+    Then I should see "Faculty was successfully updated"
+    And I should be on the update faculty availability page
+
+  Scenario: I update a faculty's admit rankings
+    Given the following "Admits" have been added:
+      | first_name  | last_name  | email            | phone      | area1                      | area2                |
+      | Aaa         | Aaa        | email1@email.com | 1234567891 | Artificial Intelligence    | Physical Electronics |
+      | Bbb         | Bbb        | email2@email.com | 1234567892 | Graphics                   | Programming Systems  |
+      | Ccc         | Ccc        | email3@email.com | 1234567893 | Human-Computer Interaction | Education            |
+    And I am on the view faculty page
+    When I follow "Update Rankings"
+    And I follow "Add Admits to Rankings"
+    And I check "Aaa Aaa"
+    And I check "Bbb Bbb"
+    And I press "Rank Admits"
+    And I rank the "first" admit "2"
+    And I rank the "second" admit "1"
+    And I press "Update Rankings"
+    Then I should see "Faculty was successfully updated."
 
   Scenario: I remove a faculty
+    Given I am on the view faculty page
+    When I follow "Remove"
+    And I press "Remove Faculty"
+    Then I should see "Faculty was successfully removed."

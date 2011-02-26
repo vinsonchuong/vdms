@@ -26,7 +26,3 @@ Feature: Staff can manage peer advisors
     And I should see "Last2"
     And I should see "First3"
     And I should see "Last3"
-
-  Scenario: I update a peer advisor's information
-
-  Scenario: I remove a peer advisor

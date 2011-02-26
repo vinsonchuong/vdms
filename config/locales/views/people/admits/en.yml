@@ -37,7 +37,7 @@ en:
       short_title: "Update Rankings"
       errors: "Errors"
       faculty_rankings: "Faculty Rankings"
-      add_faculty: "Add Faculty"
+      add_faculty: "Add Faculty to Rankings"
       remove: "Remove"
       submit: "Update Rankings"
     select_faculty:

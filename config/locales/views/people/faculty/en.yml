@@ -57,7 +57,7 @@ en:
                                    \"Time Slot\", we will attempt to allocate a contiguous block of time. If you flag an
                                    Admit as \"1-On-1\", we will attempt to allocate a time slot only for that Admit. To
                                    add admits to your rankings, follow this link:"
-      add_admits: "Add Admits"
+      add_admits: "Add Admits to Rankings"
       remove: "Remove"
       submit: "Update Rankings"
     select_admits:
