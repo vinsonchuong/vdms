@@ -274,13 +274,6 @@ module MeetingsScheduler
       
       @fitness
     end
-
-    def chromosome_level_fitness
-      @reduced_meeting_solution.inject(0) do |chrom_level_fitness, nucleotide|
-        chrom_level_fitness += one_on_one_score(nucleotide) + 
-          consecutive_timeslots_score(nucleotide)
-      end
-    end
     
     # Definition: Decides with probabilities defined in factors_to_consider HOW to mutate a chromosome, and calls the appropriate mutation method
     # @params: 
@@ -294,7 +287,7 @@ module MeetingsScheduler
         which_mutation = rand
         case which_mutation
         when 0...@@factors_to_consider[:chromosomal_inversion_probability]            
-          index1, index2 = [rand(chromosome.length), rand(chromosome.length)].sort
+          index1, index2 = pick_two_random_indexes
           Chromosome.chromosomal_inversion(chromosome, index1, index2)        
         when @@factors_to_consider[:chromosomal_inversion_probability]...
             (@@factors_to_consider[:chromosomal_inversion_probability] + @@factors_to_consider[:point_mutation_probability])
@@ -316,7 +309,7 @@ module MeetingsScheduler
     # @return: only ONE new Chromosome object with the appropriate reproduction operation performed
     def self.reproduce(parent1, parent2)
       if rand < @@factors_to_consider[:double_crossover_probability]
-        splice_index1, splice_index2 = [rand(parent1.length - 1), rand(parent1.length - 1)].sort
+        splice_index1, splice_index2 = pick_two_random_indexes
         Chromosome.double_crossover(parent1, parent2, splice_index1, splice_index2)
       else
         splice_index = rand(parent1.length - 2)+1
@@ -362,6 +355,13 @@ module MeetingsScheduler
     #####################################
     # Chromosome Fitness Helper Methods #
     #####################################
+    
+    def chromosome_level_fitness
+      @reduced_meeting_solution.inject(0) do |chrom_level_fitness, nucleotide|
+        chrom_level_fitness += one_on_one_score(nucleotide) + 
+          consecutive_timeslots_score(nucleotide)
+      end
+    end
     
     def one_on_one_score(nucleotide)
       if nucleotide.one_on_one_meeting_requested?
@@ -469,6 +469,20 @@ module MeetingsScheduler
     def self.double_crossover(parent1, parent2, splice_index1, splice_index2)
       Chromosome.new(parent1[0...splice_index1] + parent2[splice_index1...splice_index2] + parent1[splice_index2..-1])
     end
+
+    
+    #########################
+    # MISCELLANEOUS METHODS #
+    #########################
+
+    def pick_two_random_indexes
+      index1 = index2 = rand(@meeting_solution.length - 5) + 1
+      while index2 <= index1+1
+        index2 = rand(@meeting_solution.length - 2) + 1
+      end
+      [index1, index2]
+    end
+
   end
   
 
@@ -518,17 +532,17 @@ module MeetingsScheduler
     end
 
     def get_faculty_ranking
-      @admit? ? @admit[:rankings].find{ |ranking| ranking[:faculty_id] == @faculty[:id] } : nil
+      @admit ? @admit[:rankings].find{ |ranking| ranking[:faculty_id] == @faculty[:id] } : nil
     end
     
     def get_admit_ranking
-      @admit? ? @faculty[:rankings].find{ |ranking| ranking[:admit_id] == @admit[:id] } : nil
+      @admit ? @faculty[:rankings].find{ |ranking| ranking[:admit_id] == @admit[:id] } : nil
     end
 
     def is_meeting_possible?
       if @admit
         faculty_timeslot = @faculty[:schedule][@schedule_index][:time_slot]      
-        @admit[:avaiElable_times].contain_set?(RangeSet.new([faculty_timeslot]))
+        @admit[:available_times].contain_set?(RangeSet.new([faculty_timeslot]))
       else
         false
       end
