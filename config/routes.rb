@@ -23,14 +23,14 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :faculty, :singular => 'faculty_instance', :path_prefix => '/people',
     :except => [:show],
     :collection => {:upload => :get, :import => :post},
-    :member => {:schedule => :get, :delete => :get, :rank_admits => :get, :select_admits => :get}
+    :member => {:edit_availability => :get, :rank_admits => :get, :select_admits => :get, :delete => :get}
   map.resources :faculty, :path_prefix => '/people' do |faculty|
     faculty.resources :meetings, :only => :index
   end
   map.resources :admits, :path_prefix => '/people',
     :except => [:show],
     :collection => {:upload => :get, :import => :post},
-    :member => {:schedule => :get, :rank_faculty => :get, :select_faculty => :get, :delete => :get}
+    :member => {:edit_availability => :get, :rank_faculty => :get, :select_faculty => :get, :delete => :get}
   map.resources :admits, :path_prefix => '/people' do |admit|
     admit.resources :meetings, :only => :index
   end

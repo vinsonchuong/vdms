@@ -1,4 +1,4 @@
-Feature: Peer advisor can update admit availability
+Feature: Peer advisor can specify admit availability
 
   So that I can specify the meeting availability for my admits
   As a peer advisor
@@ -27,3 +27,4 @@ Feature: Peer advisor can update admit availability
     And I flag the "1/1/2011 12:00PM" to "1/1/2011 12:15PM" slot as available
     And I press "Update Availability"
     Then I should see "Admit was successfully updated"
+    And I should be on the update admit availability page

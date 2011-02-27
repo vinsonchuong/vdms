@@ -20,9 +20,9 @@ describe AdmitsController do
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
 
-      it 'assigns to @admits a list of all the Admits' do
+      it 'assigns to @admits a list of all the Admits sorted by last and first name' do
         admits = Array.new(3) {Admit.new}
-        Admit.stub(:find).and_return(admits)
+        Admit.stub(:by_name).and_return(admits)
         get :index
         assigns[:admits].should == admits
       end
@@ -239,11 +239,11 @@ describe AdmitsController do
     end
   end
 
-  describe 'GET schedule' do
+  describe 'GET edit_availability' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
-        get :schedule, :id => @admit.id
-        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(schedule_admit_url(@admit.id))}")
+        get :edit_availability, :id => @admit.id
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(edit_availability_admit_url(@admit.id))}")
       end
     end
 
@@ -255,29 +255,29 @@ describe AdmitsController do
       end
 
       it 'assigns to @admit the given Admit' do
-        get :schedule, :id => @admit.id
+        get :edit_availability, :id => @admit.id
         assigns[:admit].should == @admit
       end
 
       it 'sets the error redirect to the schedule action' do
-        get :schedule, :id => @admit.id
-        assigns[:origin_action].should == 'schedule'
+        get :edit_availability, :id => @admit.id
+        assigns[:origin_action].should == 'edit_availability'
       end
 
       it 'sets the success redirect to the schedule action' do
-        get :schedule, :id => @admit.id
-        assigns[:redirect_action].should == 'schedule'
+        get :edit_availability, :id => @admit.id
+        assigns[:redirect_action].should == 'edit_availability'
       end
 
       it 'builds a list of possible meeting slots' do
         Admit.stub(:find).and_return(@admit)
         @admit.should_receive(:build_available_times)
-        get :schedule, :id => @admit.id
+        get :edit_availability, :id => @admit.id
       end
 
       it 'renders the schedule template' do
-        get :schedule, :id => @admit.id
-        response.should render_template('schedule')
+        get :edit_availability, :id => @admit.id
+        response.should render_template('edit_availability')
       end
     end
 
@@ -288,7 +288,7 @@ describe AdmitsController do
       end
 
       it 'redirects to the New Peer Advisor page' do
-        get :schedule, :id => @admit.id
+        get :edit_availability, :id => @admit.id
         response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
       end
     end
@@ -302,7 +302,7 @@ describe AdmitsController do
       end
 
       it 'redirects to the New Faculty page' do
-        get :schedule, :id => @admit.id
+        get :edit_availability, :id => @admit.id
         response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end

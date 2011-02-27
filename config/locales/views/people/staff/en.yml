@@ -17,7 +17,7 @@ en:
       data_description: "Faculty can be quickly registered by importing a CSV (comma-separated values) file. The
                          required columns and data formats are as follows. Unrecognized columns will be ignored. Note
                          that column names and data are case-sensitive and must obey the formatting constraints
-                         exactly:"
+                         exactly. No data will be saved if any errors are found:"
       required: "required"
       ldap_id_requirement: "Must be the exact UID for the person as listed in the %{calnet_directory}."
       email_requirement: "Must be a valid email address (e.g. email@email.com)."

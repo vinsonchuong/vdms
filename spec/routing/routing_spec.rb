@@ -182,8 +182,8 @@ describe 'Routes' do
       end
 
       context 'Update Faculty Availability' do
-        it 'routes GET /people/faculty/1/schedule to Faculty#schedule' do
-          {:get => '/people/faculty/1/schedule'}.should route_to(:controller => 'faculty', :action => 'schedule', :id => '1')
+        it 'routes GET /people/faculty/1/edit_availability to Faculty#edit_availability' do
+          {:get => '/people/faculty/1/edit_availability'}.should route_to(:controller => 'faculty', :action => 'edit_availability', :id => '1')
         end
       end
 
@@ -252,8 +252,8 @@ describe 'Routes' do
       end
 
       context 'Update Admit Availability' do
-        it 'routes GET /people/admits/1/schedule to Admits#schedule' do
-          {:get => '/people/admits/1/schedule'}.should route_to(:controller => 'admits', :action => 'schedule', :id => '1')
+        it 'routes GET /people/admits/1/edit_availability to Admits#edit_availability' do
+          {:get => '/people/admits/1/edit_availability'}.should route_to(:controller => 'admits', :action => 'edit_availability', :id => '1')
         end
       end
 

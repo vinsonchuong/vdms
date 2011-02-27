@@ -19,7 +19,7 @@ en:
       data_description: "Faculty can be quickly registered by importing a CSV (comma-separated values) file. The
                          required columns and data formats are as follows. Unrecognized columns will be ignored. Note
                          that column names and data are case-sensitive and must obey the formatting constraints
-                         exactly:"
+                         exactly. No data will be saved if any errors are found:"
       required: "required"
       ldap_id_requirement: "Must be the exact UID for the person as listed in the %{calnet_directory}."
       email_requirement: "Must be a valid email address (e.g. email@email.com)."
@@ -38,7 +38,7 @@ en:
                             be found at the %{calnet_directory}."
       submit: "Update Faculty"
       alt_submit: "Update Registration"
-    schedule:
+    edit_availability:
       title: "Update Faculty's Availability"
       short_title: "Update Availability"
       alt_title: "Update My Availability"
@@ -57,7 +57,7 @@ en:
                                    \"Time Slot\", we will attempt to allocate a contiguous block of time. If you flag an
                                    Admit as \"1-On-1\", we will attempt to allocate a time slot only for that Admit. To
                                    add admits to your rankings, follow this link:"
-      add_admits: "Add Admits"
+      add_admits: "Add Admits to Rankings"
       remove: "Remove"
       submit: "Update Rankings"
     select_admits:

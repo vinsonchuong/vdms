@@ -1,14 +1,13 @@
 class AdmitsController < PeopleController
   before_filter :get_areas_and_divisions, :only => [:new, :edit, :create, :update, :view_meetings]
 
-  # GET /people/admits/1/schedule
-  def schedule
+  # GET /people/admits/1/edit_availability
+  def edit_availability
     @admit = Admit.find(params[:id])
-    @origin_action = 'schedule'
-    @redirect_action = 'schedule'
-
     settings = Settings.instance
     @admit.build_available_times(settings.divisions.map(&:available_times).flatten, settings.meeting_length, settings.meeting_gap)
+    @origin_action = 'edit_availability'
+    @redirect_action = 'edit_availability'
   end
 
   # GET /people/admits/1/rank_faculty

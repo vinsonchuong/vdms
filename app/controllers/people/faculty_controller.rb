@@ -6,13 +6,13 @@ class FacultyController < PeopleController
     @faculty_instance = (@current_user.new_record?) ? @current_user : Faculty.new
   end
 
-  # GET /people/faculty/1/schedule
-  def schedule
+  # GET /people/faculty/1/edit_availability
+  def edit_availability
     settings = Settings.instance
     @faculty_instance = Faculty.find(params[:id])
     @faculty_instance.build_available_times(settings.meeting_times(@faculty_instance.division), settings.meeting_length, settings.meeting_gap)
-    @origin_action = 'schedule'
-    @redirect_action = 'schedule'
+    @origin_action = 'edit_availability'
+    @redirect_action = 'edit_availability'
   end
 
   # GET /people/faculty/1/rank_admits
