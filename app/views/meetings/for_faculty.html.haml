@@ -1,0 +1,21 @@
+- content_for :title, t('.title')
+%table
+  %thead
+    %tr
+      %th{:scope => 'col'} Time
+      %th{:scope => 'col'} 
+      %th{:scope => 'col'} Admit(s)
+  %tbody
+    - @faculty_meetings.each do |meeting|
+      %tr
+        %td!= meeting.time.strftime('%l:%M')
+        %td!= room_if_not_default(meeting,@faculty)
+        %td.meeting
+          != meeting.admits.map { |a| link_to(a.full_name, admit_meetings_path(a)) }.join(', ')
+
+
+
+
+
+
+
