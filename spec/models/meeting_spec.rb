@@ -68,9 +68,9 @@ describe Meeting do
         @ranking = Factory.create(:admit_ranking, :faculty => @faculty, :one_on_one => true)
         @meeting.admits = [@ranking.admit]
         @meeting.save!
-        @new = Factory.create(:meeting, :time => @time, :faculty => Factory.create(:faculty))
+        @new = Factory.create(:meeting, :time => @time, :faculty => @faculty, :admits => [Factory.create(:admit)])
         @new.should_not be_valid
-        @new.errors.full_messages.should include("#{@faculty.full_name} has a 1-on-1 meeting with #{@meeting.admit.full_name} at 11:00.")
+        @new.errors.full_messages.should include("#{@faculty.full_name} has a 1-on-1 meeting with #{@meeting.admits.first.full_name} at 11:00.")
       end
       it 'occurs if faculty has max number of admits scheduled during same time slot'
       it 'occurs if faculty is unavailable during that time slot'

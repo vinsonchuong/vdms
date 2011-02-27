@@ -30,7 +30,7 @@ class Meeting < ActiveRecord::Base
   end
 
   def other_meetings_this_timeslot
-    faculty.meetings.find_all_by_time(self.time, :include => :admits)
+    faculty.meetings.find(:all, :conditions => ['id != ? AND time = ?', self.id, self.time])
   end
 
   def one_on_one_meeting?
