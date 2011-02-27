@@ -40,6 +40,14 @@ class Admit < Person
     :conditions => ['area1 IN(?) or area2 IN(?)', areas, areas],
     :order => 'last_name, first_name'
   }}
+
+  def meeting_at_time(time)
+    meetings.find_by_time(time)
+  end
+
+  def available_at?(time)
+    available_times.map(&:begin).include?(time)
+  end
   
   def self.attending_admits
     Admit.all.select {|admit| admit.available_times.select {|available_time| available_time.available?}.count > 0 }

@@ -59,7 +59,9 @@ class Faculty < Person
     end
   end
   
-  
+  def available_at?(time)
+    available_times.map(&:begin).include?(time)
+  end
   
   def self.attending_faculties
     Faculty.all.select {|faculty| faculty.available_times.select {|available_time| available_time.available?}.count > 0 }

@@ -6,8 +6,8 @@ class Meeting < ActiveRecord::Base
   validates_presence_of :room
   validates_existence_of :faculty
 
-  validate :does_not_conflict, :if => Proc.new { |m| m.faculty && !m.admits.blank? }
-
+  validate :no_conflicts, :if => Proc.new { |m| m.faculty && !m.admits.blank? }
+  
   def self.generate
     puts "GA initialize..."
     MeetingsScheduler::GeneticAlgorithm.initialize(self.factors_to_consider, self.fitness_scores_table)
@@ -18,21 +18,25 @@ class Meeting < ActiveRecord::Base
   
   private unless Rails.env == "test"
   
-  def does_not_conflict
+  def no_conflicts
     fn = faculty.full_name
     tm = time.strftime('%l:%M')
     if (meeting = conflicts_with_one_on_one)
       errors.add_to_base "#{fn} has a 1-on-1 meeting with #{meeting.admits.first.full_name} at #{tm}."
-    elsif exceeds_max_admits_per_meeting
-      errors.add_to_base "#{fn} is already seeing #{@faculty.max_admits_per_meeting} people at #{tm}, which is his/her maximum."
-    elsif faculty_unavailable
-      errors.add_to_base "#{fn} is not available at #{tm}."
+    end
+    errors.add_to_base "#{fn} is already seeing #{@faculty.max_admits_per_meeting} people at #{tm}, which is his/her maximum." if exceeds_max_admits_per_meeting
+    errors.add_to_base "#{fn} is not available at #{tm}." unless faculty.available_at?(time)
+    admits.each do |admit|
+      errors.add_to_base "#{admit.full_name} is not available at #{tm}." unless admit.available_at?(time)
+      if (m = admit.meeting_at_time(time)) && m != self
+        errors.add_to_base "#{admit.full_name} is already meeting with #{m.faculty.full_name} at #{tm}."
+      end
     end
   end
 
   def conflicts_with_one_on_one
     # conflicts if faculty has a meeting at this same time with a "1 on 1" ranked candidate
-    self.other_meetings_this_timeslot.detect { |m| m.one_on_one_meeting? }
+    other_meetings_this_timeslot.detect { |m| m.one_on_one_meeting? }
   end
 
   def exceeds_max_admits_per_meeting
@@ -40,8 +44,10 @@ class Meeting < ActiveRecord::Base
     self.admits.length + total_admits_this_timeslot > faculty.max_admits_per_meeting
   end
     
-  def faculty_unavailable
-    !(faculty.available_times.map(&:begin).include?(self.time))
+  def admit_unavailable(admit)
+    unless 
+      errors.add_to_base("#{admit.full_name} is not available at #{time.strftime('%l:%M')}.")
+    end
   end
   
   def other_meetings_this_timeslot

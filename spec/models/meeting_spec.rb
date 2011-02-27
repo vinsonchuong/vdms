@@ -61,43 +61,69 @@ describe Meeting do
       meeting.admits = [admit]
       meeting.save!
     end
+    before(:each) do
+      @faculty = Factory.create(:faculty, :first_name => 'Ras', :last_name => 'Bodik')
+      @time = Time.parse('1/1/11 11:00') ;  @tm = @time.strftime('%l:%M')
+      @faculty.available_times = [Factory.create(:available_time, :begin => @time, :end => @time+20.minutes)]
+      @meeting = Factory.create(:meeting, :faculty => @faculty, :time => @time)
+    end
     context 'for faculty' do
-      before(:each) do
-        @faculty = Factory.create(:faculty) ; @fn = @faculty.full_name
-        @time = Time.parse("1/1/11 11:00") ;  @tm = @time.strftime('%l:%M')
-        @faculty.available_times = [Factory.create(:available_time, :begin => @time, :end => @time+20.minutes)]
-        @meeting = Factory.create(:meeting, :faculty => @faculty, :time => @time)
-      end
       it 'occurs if faculty already has a 1-on-1 meeting during same time slot' do
-        @special_admit = Factory.create(:admit, :first_name => 'Mary', :last_name => 'Marvelous')
-        make_one_on_one_meeting(@meeting, @special_admit)
+        mary = Factory.create(:admit, :first_name => 'Mary', :last_name => 'Marvel')
+        mary.stub!(:available_at?).and_return(true)
+        make_one_on_one_meeting(@meeting, mary)
+        some_admit = Factory.create(:admit)
+        some_admit.stub!(:available_at?).and_return(true)
         @new = Factory.create(:meeting, :time => @time, :faculty => @faculty,
-          :admits => [Factory.create(:admit)])
+          :admits => [some_admit])
         @new.should_not be_valid
-        @new.errors.full_messages.should include(
-          "#{@faculty.full_name} has a 1-on-1 meeting with #{@special_admit.full_name} at 11:00.")
+        @new.errors.full_messages.should include('Ras Bodik has a 1-on-1 meeting with Mary Marvel at 11:00.')
       end
       it 'occurs if faculty has max number of admits scheduled during same time slot' do
         @faculty.update_attribute(:max_admits_per_meeting, 3)
-        @meeting.admits = [Factory.create(:admit), Factory.create(:admit)]
+        admits = Array.new(4) do |i|
+          a = Factory.create(:admit)
+          a.stub!(:available_at?).and_return(true)
+          a
+        end
+        @meeting.admits = admits[0..1]
         @meeting.save!
-        @new = Factory.create(:meeting, :time => @time, :faculty => @faculty,
-          :admits => [Factory.create(:admit),Factory.create(:admit)])
+        @new = Factory.create(:meeting, :time => @time, :faculty => @faculty,:admits => admits[2..3])
         @new.should_not be_valid
         @new.errors.full_messages.should include(
-          "#{@fn} is already seeing 3 people at #{@tm}, which is his/her maximum.")
+          "Ras Bodik is already seeing 3 people at #{@tm}, which is his/her maximum.")
       end
       it 'occurs if faculty is unavailable during that time slot' do
-        @meeting.update_attribute(:time, Time.parse("10:00"))
+        @meeting.update_attribute(:time, Time.parse('10:00'))
         @meeting.admits = [Factory.create(:admit)]
         @meeting.should_not be_valid
-        @meeting.errors.full_messages.should include("#{@fn} is not available at 10:00.")
+        @meeting.errors.full_messages.should include('Ras Bodik is not available at 10:00.')
       end
-      
+      it 'does not occur otherwise' do
+        admit = Factory.create(:admit)
+        admit.stub!(:available_at?).and_return(true)
+        @meeting.admits = [admit]
+        @meeting.should be_valid
+      end
     end
     context 'for admit' do
-      it 'occurs if admit is already scheduled with another faculty during same time slot'
-      it 'occurs if admit is unavailable during time slot'
+      before(:each) do
+        @admit = Factory.create(:admit, :first_name => 'Alan', :last_name => 'Admit')
+      end
+      it 'occurs if admit is already scheduled with another faculty during same time slot' do
+        @admit.stub!(:available_at?).and_return(true)
+        @meeting.admits = [@admit]
+        @meeting.save!
+        @new = Factory.create(:meeting, :time => @meeting.time, :faculty => Factory.create(:faculty))
+        @new.admits = [@admit]
+        @new.should_not be_valid
+        @new.errors.full_messages.should include('Alan Admit is already meeting with Ras Bodik at 11:00.')
+      end
+      it 'occurs if admit is unavailable during time slot' do
+        @meeting.admits = [@admit]
+        @meeting.should_not be_valid
+        @meeting.errors.full_messages.should include('Alan Admit is not available at 11:00.')
+      end
     end
     it 'occurs if time slot has not been marked as Available by staff'
     it 'does not occur if there is no conflict with staff times, with faculty, or with admit'
