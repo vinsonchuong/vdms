@@ -1,7 +1,7 @@
 - if @current_user.class == Faculty
   - content_for :title, t('.alt_title')
 - else
-  - content_for :title, t('.title')
+  - content_for :title, t('.title', :name => @faculty_instance.full_name)
 - form_for @faculty_instance, :url => {:action => 'update'} do |faculty_form|
   - if @faculty_instance.errors.any?
     #errors

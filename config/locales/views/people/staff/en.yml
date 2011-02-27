@@ -24,7 +24,7 @@ en:
       csv_file: "CSV File"
       submit: "Import Staff"
     edit:
-      title: "Update Staff"
+      title: "Update Staff (%{name})"
       short_title: "Update Info"
       alt_title: "Update My Info"
       errors: "Errors"
@@ -33,6 +33,6 @@ en:
                             be found at the %{calnet_directory}."
       submit: "Update Staff"
     delete:
-      title: "Remove Staff"
+      title: "Remove Staff (%{name})"
       short_title: "Remove"
       submit: "Remove Staff"

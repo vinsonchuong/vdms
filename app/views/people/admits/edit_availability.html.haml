@@ -1,4 +1,4 @@
-- content_for :title, t('.title')
+- content_for :title, t('.title', :name => @admit.full_name)
 - form_for @admit, :url => {:action => 'update'}, :html => {:name => 'availability_form'} do |admit_form|
   != admit_form.error_messages
   %fieldset

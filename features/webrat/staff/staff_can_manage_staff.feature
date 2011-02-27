@@ -47,6 +47,11 @@ Feature: Staff can manage staff
       | ldap_id | First      |           | email@email.com | Last Name can't be blank      |
       | ldap_id | First      | Last      | invalid_email   | Email is invalid              |
 
+  Scenario: I see the staff's name while updating his information
+    Given I am on the view staff page
+    When I follow "Update Info"
+    Then I should see "First1 Last1"
+
   Scenario: I update a staff's information
     Given I am on the view staff page
     When I follow "Update Info"
@@ -68,6 +73,11 @@ Feature: Staff can manage staff
     And I press "Update Staff"
     And I press "Update Staff"
     Then I should see "First Name can't be blank"
+
+  Scenario: I see the staff's name while removing him
+    Given I am on the view staff page
+    When I follow "Remove"
+    Then I should see "First1 Last1"
 
   Scenario: I remove a staff
     Given I am on the view staff page

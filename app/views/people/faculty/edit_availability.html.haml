@@ -1,4 +1,4 @@
-- content_for :title, t('.title')
+- content_for :title, t('.title', :name => @faculty_instance.full_name)
 - form_for @faculty_instance, :url => {:action => 'update'}, :html => {:name => 'availability_form'} do |faculty_form|
   != faculty_form.error_messages
   %fieldset

@@ -29,7 +29,7 @@ en:
       csv_file: "CSV File"
       submit: "Import Faculty"
     edit:
-      title: "Update Faculty"
+      title: "Update Faculty (%{name})"
       short_title: "Update Info"
       alt_title: "Update My Info"
       errors: "Errors"
@@ -39,7 +39,7 @@ en:
       submit: "Update Faculty"
       alt_submit: "Update Registration"
     edit_availability:
-      title: "Update Faculty's Availability"
+      title: "Update Faculty's (%{name}) Availability"
       short_title: "Update Availability"
       alt_title: "Update My Availability"
       preferences: "Preferences"
@@ -48,7 +48,7 @@ en:
       unselect_all: "Uncheck All Time Slots"
       submit: "Update Availability"
     rank_admits:
-      title: "Update Faculty's Admit Rankings"
+      title: "Update Faculty's (%{name}) Admit Rankings"
       short_title: "Update Rankings"
       alt_title: "Update My Admit Rankings"
       errors: "Errors"
@@ -75,6 +75,6 @@ en:
       admits: "Admits"
       select_submit: "Rank Admits"
     delete:
-      title: "Remove Faculty"
+      title: "Remove Faculty (%{name})"
       short_title: "Remove"
       submit: "Remove Faculty"

@@ -13,6 +13,11 @@ Feature: Peer advisor can update admit information
       | First2      | Last2      | email2@email.com | 1234567892 | Computer Science       | Human-Computer Interaction | Graphics |
       | First3      | Last3      | email3@email.com | 1234567893 | Electrical Engineering | Physical Electronics       | Energy   |
 
+  Scenario: I see the admit's name
+    Given I am on the view admits page
+    When I follow "Update Info" for the first admit
+    Then I should see "First1 Last1"
+
   Scenario: I update the information of one of my admits
     Given I am on the view admits page
     When I follow "Update Info"
