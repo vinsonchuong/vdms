@@ -32,27 +32,36 @@ function in_ee(id){
 
 function select_cs(form){
   count = form.elements.length;
-    for (i = 0; i < count; i++){
-      if(form.elements[i].checked == 0 && in_cs(form.elements[i].id)){
-        form.elements[i].checked = 1; 
-      }
+  for (i = 0; i < count; i++){
+    if(form.elements[i].checked == 0 && in_cs(form.elements[i].id)){
+      form.elements[i].checked = 1;
     }
+  }
 }
 
 function select_ee(form){
   count = form.elements.length;
-    for (i = 0; i < count; i++){
-      if(form.elements[i].checked == 0 && in_ee(form.elements[i].id)){
-        form.elements[i].checked = 1; 
-      }
+  for (i = 0; i < count; i++){
+    if(form.elements[i].checked == 0 && in_ee(form.elements[i].id)){
+      form.elements[i].checked = 1;
     }
+  }
+}
+
+function select_all(form){
+  count = form.elements.length;
+  for (i = 0; i < count; i++){
+    if(form.elements[i].checked == 0){
+      form.elements[i].checked = 1;
+    }
+  }
 }
 
 function unselect_all(form){
   count = form.elements.length;
-    for (i = 0; i < count; i++){
-      if(form.elements[i].checked == 1){
-        form.elements[i].checked = 0; 
-      }
+  for (i = 0; i < count; i++){
+    if(form.elements[i].checked == 1){
+      form.elements[i].checked = 0;
     }
+  }
 }

@@ -32,6 +32,8 @@ en:
       title: "Update Admit's Availability"
       short_title: "Update Availability"
       availability: "Availability"
+      select_all: "Check All Time Slots"
+      unselect_all: "Uncheck All Time Slots"
       submit: "Update Availability"
     rank_faculty:
       title: "Update Admit's Faculty Rankings"

@@ -44,6 +44,8 @@ en:
       alt_title: "Update My Availability"
       preferences: "Preferences"
       availability: "Availability"
+      select_all: "Check All Time Slots"
+      unselect_all: "Uncheck All Time Slots"
       submit: "Update Availability"
     rank_admits:
       title: "Update Faculty's Admit Rankings"
@@ -66,6 +68,7 @@ en:
       by_area: "By Area"
       select_cs: "Select All CS Areas"
       select_ee: "Select All EE Areas"
+      select_all: "Select All Areas"
       unselect_all: "Unselect All Areas"
       filter_submit: "Filter Admits"
       select_admits: "Select Admits"

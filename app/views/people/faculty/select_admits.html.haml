@@ -1,12 +1,13 @@
 - content_for :title, t('.title')
 #admit_filter
   %h3!= t('.filter_admits')
-  - form_for :filter, :html => {:method => :get, :id => 'filter_form'} do |filter_form|
+  - form_for :filter, :html => {:method => :get, :name => 'filter_form'} do |filter_form|
     %fieldset
       %h4!= t('.by_area')
       %ul
         %li!= link_to_function(t('.select_cs'), 'select_cs(filter_form)')
         %li!= link_to_function(t('.select_ee'), 'select_ee(filter_form)')
+        %li!= link_to_function(t('.select_all'), 'select_all(filter_form)')
         %li!= link_to_function(t('.unselect_all'), 'unselect_all(filter_form)')
       %ul
         - settings = Settings.instance

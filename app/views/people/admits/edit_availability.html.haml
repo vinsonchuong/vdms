@@ -1,8 +1,11 @@
 - content_for :title, t('.title')
-- form_for @admit, :url => {:action => 'update'} do |admit_form|
+- form_for @admit, :url => {:action => 'update'}, :html => {:name => 'availability_form'} do |admit_form|
   != admit_form.error_messages
   %fieldset
     %h3!= t('.availability')
+    %ul
+      %li!= link_to_function(t('.select_all'), 'select_all(availability_form)')
+      %li!= link_to_function(t('.unselect_all'), 'unselect_all(availability_form)')
     %table
       %thead
         %tr
