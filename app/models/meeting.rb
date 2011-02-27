@@ -19,8 +19,14 @@ class Meeting < ActiveRecord::Base
   private unless Rails.env == "test"
   
   def does_not_conflict
+    fn = faculty.full_name
+    tm = time.strftime('%l:%M')
     if (meeting = conflicts_with_one_on_one)
-      self.errors.add_to_base "#{faculty.full_name} has a 1-on-1 meeting with #{meeting.admits.first.full_name} at #{time.strftime('%l:%M')}."
+      errors.add_to_base "#{fn} has a 1-on-1 meeting with #{meeting.admits.first.full_name} at #{tm}."
+    elsif exceeds_max_admits_per_meeting
+      errors.add_to_base "#{fn} is already seeing #{@faculty.max_admits_per_meeting} people at #{tm}, which is his/her maximum."
+    elsif faculty_unavailable
+      errors.add_to_base "#{fn} is not available at #{tm}."
     end
   end
 
@@ -29,12 +35,21 @@ class Meeting < ActiveRecord::Base
     self.other_meetings_this_timeslot.detect { |m| m.one_on_one_meeting? }
   end
 
+  def exceeds_max_admits_per_meeting
+    total_admits_this_timeslot = other_meetings_this_timeslot.inject(0) { |t,mtg| t + mtg.admits.length }
+    self.admits.length + total_admits_this_timeslot > faculty.max_admits_per_meeting
+  end
+    
+  def faculty_unavailable
+    !(faculty.available_times.map(&:begin).include?(self.time))
+  end
+  
   def other_meetings_this_timeslot
     faculty.meetings.find(:all, :conditions => ['id != ? AND time = ?', self.id, self.time])
   end
 
   def one_on_one_meeting?
-    self.admits & self.faculty.ranked_one_on_one_admits
+    !(self.admits & self.faculty.ranked_one_on_one_admits).empty?
   end
   
   def self.fitness_scores_table
