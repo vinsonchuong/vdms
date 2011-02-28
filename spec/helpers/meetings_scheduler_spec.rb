@@ -246,9 +246,8 @@ describe MeetingsScheduler do
         end
       end
     end
-
+=begin
     describe "Class Methods:" do  
-=begin      
       describe 'mutate' do
         before(:each) do 
           @solution_string = create_valid_solution_string(@factors_to_consider)
@@ -343,7 +342,7 @@ describe MeetingsScheduler do
           end
         end
       end
-=end
+
       describe 'mutate helper methods' do
         before(:each) do
           @solution_string = create_valid_solution_string(@factors_to_consider)
@@ -575,7 +574,7 @@ describe MeetingsScheduler do
           end        
         end      
       
-=begin        describe 'class method: only_one_admit_in_meeting' do
+        describe 'class method: only_one_admit_in_meeting' do
           before(:each) do
             @admit = { :id => 1 }
           end
@@ -594,11 +593,11 @@ describe MeetingsScheduler do
             @admits_in_meeting = (Array.new(19) + [2]).shuffle.shuffle
             MeetingsScheduler::Chromosome.only_one_admit_in_meeting(@admits_in_meeting, @admit).should == false
           end
-        end      
-=end      
+        end            
         
       end
     end
+=end
 
   end
 
