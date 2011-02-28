@@ -5,6 +5,8 @@
       %th{:scope => 'col'}!= Admit.human_attribute_name(:full_name)
       %th{:scope => 'col'}!= Admit.human_attribute_name(:email)
       %th{:scope => 'col'}!= Admit.human_attribute_name(:phone)
+      %th{:scope => 'col'}!= t('.available_times')
+      %th{:scope => 'col'}!= t('.faculty_rankings')
       %th{:scope => 'col'}!= t('.actions')
   %tbody
     - @settings = Settings.instance
@@ -13,6 +15,8 @@
         %td= admit.full_name
         %td= admit.email
         %td= admit.phone
+        %td= admit.available_times.count
+        %td= admit.faculty_rankings.count
         %td
           %ul
             %li!= link_to t('admits.edit.short_title'), edit_admit_path(admit)
