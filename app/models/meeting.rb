@@ -59,19 +59,21 @@ class Meeting < ActiveRecord::Base
   end
   
   def self.fitness_scores_table
-    { :is_meeting_possible_score       => 50000,
-      :is_meeting_possible_penalty     => -50000,
-      :faculty_ranking_weight_score => 739,
-      :faculty_ranking_default      => 0,
-      :admit_ranking_weight_score   => 523,
-      :admit_ranking_default        => 0,
-      :area_match_score             => 1532,
-      :area_match_default           => 0,
-      :one_on_one_score             => 50000,
-      :one_on_one_penalty           => 0,
-      :one_on_one_default           => 0,
-      :mandatory_score              => 50000,
-      :mandatory_default            => 0
+    { :is_meeting_possible_score          => 50000,
+      :is_meeting_possible_penalty        => -50000,
+      :faculty_ranking_weight_score       => 739,
+      :faculty_ranking_default            => 0,
+      :admit_ranking_weight_score         => 523,
+      :admit_ranking_default              => 0,
+      :area_match_score                   => 1532,
+      :area_match_default                 => 0,
+      :one_on_one_score                   => 50000,
+      :one_on_one_penalty                 => 0,
+      :one_on_one_default                 => 0,
+      :mandatory_score                    => 50000,
+      :mandatory_default                  => 0,
+      :consecutive_timeslots_default      => 0,
+      :consecutive_timeslots_weight_score => 10000
     }
   end
     

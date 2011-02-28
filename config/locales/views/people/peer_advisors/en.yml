@@ -26,7 +26,7 @@ en:
       csv_file: "CSV File"
       submit: "Import Peer Advisors"
     edit:
-      title: "Update Peer Advisor"
+      title: "Update Peer Advisor (%{name})"
       short_title: "Update Info"
       alt_title: "Update My Info"
       errors: "Errors"
@@ -36,6 +36,6 @@ en:
       submit: "Update Peer Advisor"
       alt_submit: "Update Registration"
     delete:
-      title: "Remove Peer Advisor"
+      title: "Remove Peer Advisor (%{name})"
       short_title: "Remove"
       submit: "Remove Peer Advisor"

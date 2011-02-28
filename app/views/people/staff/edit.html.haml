@@ -1,4 +1,4 @@
-- content_for :title, t('.title')
+- content_for :title, t('.title', :name => @staff_instance.full_name)
 - form_for @staff_instance, :url => {:action => 'update'} do |staff_form|
   - if @staff_instance.errors.any?
     #errors

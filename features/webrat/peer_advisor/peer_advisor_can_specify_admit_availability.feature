@@ -28,3 +28,8 @@ Feature: Peer advisor can specify admit availability
     And I press "Update Availability"
     Then I should see "Admit was successfully updated"
     And I should be on the update admit availability page
+
+  Scenario: I see the admit's name
+    Given I am on the view admits page
+    When I follow "Update Availability" for the first admit
+    Then I should see "First1 Last1"

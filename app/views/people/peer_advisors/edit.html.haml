@@ -1,4 +1,4 @@
-- content_for :title, t('.title')
+- content_for :title, t('.title', :name => @peer_advisor.full_name)
 - form_for @peer_advisor, :url => {:action => 'update'} do |peer_advisor_form|
   - if @peer_advisor.errors.any?
     #errors

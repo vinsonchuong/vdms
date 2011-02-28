@@ -1,5 +1,5 @@
-- content_for :title, t('.title')
-- form_for @faculty_instance, :url => {:action => 'update'} do |faculty_form|
+- content_for :title, t('.title', :name => @faculty_instance.full_name)
+- form_for @faculty_instance, :url => {:action => 'update'}, :html => {:name => 'availability_form'} do |faculty_form|
   != faculty_form.error_messages
   %fieldset
     %h3!= t('.preferences')
@@ -12,6 +12,9 @@
         != faculty_form.text_field :max_admits_per_meeting
   %fieldset
     %h3!= t('.availability')
+    %ul
+      %li!= link_to_function(t('.select_all'), 'select_all(availability_form)')
+      %li!= link_to_function(t('.unselect_all'), 'unselect_all(availability_form)')
     %table
       %thead
         %tr

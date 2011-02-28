@@ -82,6 +82,11 @@ Feature: Staff can manage admits
     And I press "Import"
     And I should see "Area 1 is not included in the list"
 
+  Scenario: I see the admit's name while updating his information
+    Given I am on the view admits page
+    When I follow "Update Info"
+    Then I should see "First1 Last1"
+
   Scenario: I update an admit's information
     Given I am on the view admits page
     When I follow "Update Info"
@@ -104,6 +109,11 @@ Feature: Staff can manage admits
     And I press "Update Admit"
     Then I should see "First Name can't be blank"
 
+  Scenario: I see the admit's name while updating his availability
+    Given I am on the view admits page
+    When I follow "Update Availability"
+    Then I should see "First1 Last1"
+
   Scenario: I update an admit's availability
     Given I am on the view admits page
     When I follow "Update Availability"
@@ -112,6 +122,11 @@ Feature: Staff can manage admits
     And I press "Update Availability"
     Then I should see "Admit was successfully updated"
     And I should be on the update admit availability page
+
+  Scenario: I see the admit's name while updating his faculty rankings
+    Given I am on the view admits page
+    When I follow "Update Rankings"
+    Then I should see "First1 Last1"
 
   Scenario: I update an admit's faculty rankings
     Given the following "Faculty" have been added:
@@ -129,6 +144,11 @@ Feature: Staff can manage admits
     And I rank the "second" faculty "1"
     And I press "Update Rankings"
     Then I should see "Admit was successfully updated."
+
+  Scenario: I see the admit's name while removing him
+    Given I am on the view admits page
+    When I follow "Remove"
+    Then I should see "First1 Last1"
 
   Scenario: I remove an admit
     Given I am on the view admits page

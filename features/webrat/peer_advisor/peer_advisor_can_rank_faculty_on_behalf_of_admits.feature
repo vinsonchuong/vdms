@@ -23,6 +23,11 @@ Feature: Peer advisor can rank faculty on behalf of admits
     When I follow "Update Rankings"
     Then I should be on the rank faculty page
 
+  Scenario: I see the admit's name
+    Given I am on the view admits page
+    When I follow "Update Rankings"
+    Then I should see "First1 Last1"
+
   Scenario: I select faculty to rank
     Given I am on the rank faculty page
     When I follow "Add Faculty"

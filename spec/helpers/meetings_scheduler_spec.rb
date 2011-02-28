@@ -1,3 +1,4 @@
+
 require 'spec_helper'
 
 describe MeetingsScheduler do
@@ -137,7 +138,7 @@ describe MeetingsScheduler do
         @solution_string = create_valid_solution_string(@factors_to_consider)
         @chromosome = MeetingsScheduler::Chromosome.new(@solution_string)
       end
-          
+      
       describe "meeting_solution" do
         ['', '='].each do |val|
           it "should respond to meeting_solution#{val}" do
@@ -164,8 +165,10 @@ describe MeetingsScheduler do
         
     describe "Instance Methods:" do
       before(:each) do 
-        @sol_string = create_valid_solution_string(@factors_to_consider)
-        @chromosome = MeetingsScheduler::Chromosome.new(@sol_string)
+        @solution_string = create_valid_solution_string(@factors_to_consider)
+        # DO NOT DELETE SOLUTION_STRING_COPY, BECAUSE CHROMOSOME.INITIALIZE MUTATES SOLUTION_STRING BY SLOWLY SLICING ALL ELEMENTS OUT!!!
+        @solution_string_copy = Array.new(@solution_string)
+        @chromosome = MeetingsScheduler::Chromosome.new(@solution_string)
       end
       
       describe "solution_string" do
@@ -174,9 +177,7 @@ describe MeetingsScheduler do
         end
         
         it 'should return an Array encoding a solution of admit_id\'s' do
-          pending
-          @chromosome = MeetingsScheduler::Chromosome.new(@sol_string)
-          @chromosome.solution_string.should == @sol_string
+          @chromosome.solution_string.should == @solution_string_copy
         end
       end
       
@@ -185,8 +186,7 @@ describe MeetingsScheduler do
           @chromosome.should respond_to(:[])
         end
        
-        it 'should be able to use chromosome as an array and the return values should match that of the input solutiong_string array' do  
-          pending 
+        it 'should be able to use chromosome as an array and the return values should match that of the input solutiong_string array' do   
           @solution_string.each_with_index do |admit_id, index|
             @chromosome[index].should == admit_id
           end
@@ -208,51 +208,47 @@ describe MeetingsScheduler do
           @chromosome.should respond_to(:==)
         end
         
-        it 'should be able to compare the solution_strings (array of admit_id\'s) of each chromosome' do
-          pending
-          @copy_of_solution_string = Array.new(@solution_string)
-            
-          @chromosome2 = MeetingsScheduler::Chromosome.new(@solution_string)    
+        it 'should return true if two chromosomes have equivalent fitness values' do
+          @chromosome2 = MeetingsScheduler::Chromosome.new(@solution_string_copy)
+          @chromosome.stub!(:fitness).and_return(@fitness = rand(100))
+          @chromosome2.stub!(:fitness).and_return(@fitness)
           @chromosome.==(@chromosome2).should == true
-          
-          #make sure they differ by the first admit_id
-          @solution_string[0] = 1
-          @copy_of_solution_string[0] = 0
-          @chromosome2 = MeetingsScheduler::Chromosome.new(@solution_string)
-          @chromosome3 = MeetingsScheduler::Chromosome.new(@copy_of_solution_string)
+        end
 
-          @chromosome2.==(@chromosome3).should == false
-          
+        it 'should return false if two chromosomes have nonequivalent fitness values' do
+          @chromosome2 = MeetingsScheduler::Chromosome.new(@solution_string_copy)
+          @chromosome.stub!(:fitness).and_return(rand(100))
+          @chromosome2.stub!(:fitness).and_return(rand(100)+100)
+          @chromosome.==(@chromosome2).should == false
         end
       end
     
       describe 'instance method: fitness' do
+        before(:each) do
+          @nucleotide_fitness = rand(1000)
+          MeetingsScheduler::Chromosome.stub!(:reduced_meeting_solution).and_return(@chromosome.meeting_solution)
+          @chromosome.meeting_solution.each{ |n| n.stub!(:fitness).and_return(@nucleotide_fitness) }
+          @chromosome.stub!(:chromosome_level_fitness).and_return(@chromosome_level_fitness = rand(1000))
+        end
+        
         it 'should respond to fitness' do
           @chromosome.should respond_to(:fitness)
         end
-
+        
         it 'should first remove duplicates before evaluating fitness' do
-          pending
-          MeetingsScheduler::Chromosome.stub!(:remove_duplicates).and_return(@chromosome.meeting_solution)
-          MeetingsScheduler::Chromosome.stub!(:fitness_of_nucleotide).and_return(0)
-          MeetingsScheduler::Chromosome.should_receive(:remove_duplicates).once
+          @chromosome.should_receive(:reduced_meeting_solution).once.and_return(@chromosome.meeting_solution)
           @chromosome.fitness
         end
 
-        it 'should return the sum of the fitness scores of each nucleotide, nil or not' do          
-          pending
-          @fitness = 500
-          MeetingsScheduler::Chromosome.stub!(:remove_duplicates).and_return(@chromosome.meeting_solution)
-          MeetingsScheduler::Chromosome.stub!(:fitness_of_nucleotide).and_return(@fitness)
-          MeetingsScheduler::Chromosome.should_receive(:fitness_of_nucleotide).exactly(@solution_string.count).times
-          @chromosome.fitness.should == @solution_string.count * @fitness
+        it 'should return the sum of the fitness scores of each nucleotide, nil or not, plus the chromosome-level fitness' do
+          @chromosome.should_receive(:chromosome_level_fitness)
+          @chromosome.fitness.should == @chromosome.meeting_solution.length * @nucleotide_fitness + @chromosome_level_fitness
         end
       end
     end
 
-=begin
     describe "Class Methods:" do  
-        
+=begin      
       describe 'mutate' do
         before(:each) do 
           @solution_string = create_valid_solution_string(@factors_to_consider)
@@ -347,7 +343,7 @@ describe MeetingsScheduler do
           end
         end
       end
-
+=end
       describe 'mutate helper methods' do
         before(:each) do
           @solution_string = create_valid_solution_string(@factors_to_consider)
@@ -380,7 +376,7 @@ describe MeetingsScheduler do
 
         describe 'class method: chromosomal_inversion' do
           it 'should return a new chromosome with proper inversion, given a chromosome where the indexes are chosen at random' do
-            @index1, @index2 = MeetingsScheduler::Chromosome.pick_two_random_indexes(@chromosome)
+            @index1, @index2 = @chromosome.pick_two_random_indexes
             @mutant = MeetingsScheduler::Chromosome.chromosomal_inversion(@chromosome, @index1, @index2)
             @mutant.class.should == MeetingsScheduler::Chromosome
             @mutant.solution_string.should == @chromosome[0...@index1] + @chromosome[@index1..@index2].reverse + @chromosome[@index2+1..-1]
@@ -418,7 +414,7 @@ describe MeetingsScheduler do
             @normalized_fitness, @random = rand, rand
             @chromosome.normalized_fitness = @normalized_fitness
             MeetingsScheduler::Chromosome.stub!(:random).and_return @random
-            MeetingsScheduler::Chromosome.ok_to_mutate(@chromosome).should == (@random < ((1 - @chromosome.normalized_fitness) * 0.3)) ? true : false
+            @chromosome.ok_to_mutate.should == (@random < ((1 - @chromosome.normalized_fitness) * 0.3)) ? true : false
           end
         end
       
@@ -426,7 +422,7 @@ describe MeetingsScheduler do
           before(:each) do
             @length = rand(100)
             @chromosome = mock('MeetingsScheduler::Chromosome', :length => @length)
-            @index1, @index2 = MeetingsScheduler::Chromosome.pick_two_random_indexes(@chromosome)
+            @index1, @index2 = @chromosome.pick_two_random_indexes
           end
           it 'should have the second integer be larger than the first' do 
             @index2.should > @index1+1 
@@ -482,7 +478,7 @@ describe MeetingsScheduler do
         end
 
         it 'should choose to double crossover #{@double_crossover_probability*100.0}% of the time' do
-          @rand_index1, @rand_index2 = MeetingsScheduler::Chromosome.pick_two_random_indexes(@parent1)
+          @rand_index1, @rand_index2 = @chromosome.pick_two_random_indexes
           MeetingsScheduler::Chromosome.stub!(:rand).and_return(rand(100*@double_crossover_probability)/100.0)
           MeetingsScheduler::Chromosome.stub!(:pick_two_random_indexes).and_return [@rand_index1, @rand_index2]
           MeetingsScheduler::Chromosome.stub!(:double_crossover)
@@ -573,12 +569,13 @@ describe MeetingsScheduler do
             
             @meeting_solution.each do |nucleotide_one|         
               MeetingsScheduler::Chromosome.find_admits_in_meeting(@meeting_solution, nucleotide_one.faculty, nucleotide_one.schedule_index).sort.should ==
-              @meeting_solution.find_all{ |nucleotide_two| nucleotide_two.faculty_id == nucleotide_one.faculty_id and nucleotide_two.schedule_index == nucleotide_one.schedule_index }.collect{ |nucleotide| nucleotide.admit_id }.sort
+              @meeting_solution.find_all{ |nucleotide_two| nucleotide_two.faculty_id == nucleotide_one.faculty_id and
+                nucleotide_two.schedule_index == nucleotide_one.schedule_index }.collect{ |nucleotide| nucleotide.admit_id }.sort
             end
           end        
         end      
       
-        describe 'class method: only_one_admit_in_meeting' do
+=begin        describe 'class method: only_one_admit_in_meeting' do
           before(:each) do
             @admit = { :id => 1 }
           end
@@ -598,19 +595,10 @@ describe MeetingsScheduler do
             MeetingsScheduler::Chromosome.only_one_admit_in_meeting(@admits_in_meeting, @admit).should == false
           end
         end      
-      
-        describe 'class method: mandatory_meeting_score' do
-          [true, false].each do |val|
-            it "should return the appropriate points for whether a FACULTY\'s admit ranking is marked #{val}" do
-              @ranking = { :mandatory => val }
-              score = val ? @fitness_scores_table[:mandatory_score] : @fitness_scores_table[:mandatory_default]
-              MeetingsScheduler::Chromosome.mandatory_meeting_score(@ranking).should == score
-            end
-          end
-        end
+=end      
+        
       end
     end
-=end
 
   end
 
@@ -682,6 +670,10 @@ describe MeetingsScheduler do
     end
 
     describe 'instance method: get_faculty_ranking' do
+      it 'should return nil if nucleotide contains nil admit' do
+        MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), nil).get_faculty_ranking.should == nil
+      end
+
       it 'should return the ADMIT\'s ranking that contains the faculty' do
         @faculty = { :id => (@faculty_id = rand(100)) }
         @ranking = { :faculty_id  => @faculty_id }
@@ -691,6 +683,10 @@ describe MeetingsScheduler do
     end
 
     describe 'instance method: get_admit_ranking' do
+      it 'should return nil if nucleotide contains nil admit' do
+        MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), nil).get_admit_ranking.should == nil
+      end
+
       it 'should return the FACULTY\'s ranking that contains the admit' do
         @admit = { :id => (@admit_id = rand(100)) }
         @ranking = { :admit_id  => @admit_id }
@@ -703,6 +699,10 @@ describe MeetingsScheduler do
       before(:each) do  
         @admit = create_valid_admit_hash(rand(100))
         @faculty = create_valid_faculty_hash(rand(100))
+      end
+
+      it 'should return false if nucleotide contains nil admit' do
+        MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), nil).is_meeting_possible?.should == false
       end
       
       it 'should return true if nucleotide encodes for a physically possible meeting' do
@@ -729,6 +729,40 @@ describe MeetingsScheduler do
           @nucleotide = MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
           @nucleotide.stub!(:get_admit_ranking).and_return(nil)
           @nucleotide.mandatory?.should == false
+      end
+    end
+
+    describe 'instance method: one_on_one_meeting_requested?' do
+      before(:each) do
+        @nucleotide = MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
+      end
+      
+      it 'should return false if nucleotide contains nil admit' do
+        @nucleotide.stub!(:get_admit_ranking).and_return(nil)
+        @nucleotide.one_on_one_meeting_requested?.should == false
+      end
+
+      [true, false].each do |val|
+        it "should return #{val} if the ranking's one_on_one request is #(val}" do
+          @nucleotide.stub!(:get_admit_ranking).and_return({:one_on_one => val})
+          @nucleotide.one_on_one_meeting_requested?.should == val
+        end
+      end
+    end
+    
+    describe 'instance method: num_timeslots_requested' do
+      before(:each) do
+        @nucleotide = MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
+      end
+      
+      it 'should return 0 if nucleotide contains nil admit or no admit_ranking exists' do
+        @nucleotide.stub!(:get_admit_ranking).and_return(nil)
+        @nucleotide.num_timeslots_requested.should == 0
+      end
+
+      it 'should return the number of timeslots requested' do
+        @nucleotide.stub!(:get_admit_ranking).and_return({:time_slots => (@time_slots = rand(100)) })
+        @nucleotide.num_timeslots_requested.should == @time_slots
       end
     end
 

@@ -80,6 +80,11 @@ Feature: Staff can manage faculty
     And I should see "Area is not included in the list"
     And I should see "Division is not included in the list"
 
+  Scenario: I see the faculty's name while updating his information
+    Given I am on the view faculty page
+    When I follow "Update Info"
+    Then I should see "First1 Last1"
+
   Scenario: I update a faculty's information
     Given I am on the view faculty page
     When I follow "Update Info"
@@ -102,6 +107,11 @@ Feature: Staff can manage faculty
     And I press "Update Faculty"
     Then I should see "First Name can't be blank"
 
+  Scenario: I see the faculty's name while updating his availability
+    Given I am on the view faculty page
+    When I follow "Update Availability"
+    Then I should see "First1 Last1"
+
   Scenario: I update a faculty's availability
     Given I am on the view faculty page
     When I follow "Update Availability"
@@ -112,6 +122,11 @@ Feature: Staff can manage faculty
     And I press "Update Availability"
     Then I should see "Faculty was successfully updated"
     And I should be on the update faculty availability page
+
+  Scenario: I see the faculty's name while updating his admit rankings
+    Given I am on the view faculty page
+    When I follow "Update Rankings"
+    Then I should see "First1 Last1"
 
   Scenario: I update a faculty's admit rankings
     Given the following "Admits" have been added:
@@ -129,6 +144,11 @@ Feature: Staff can manage faculty
     And I rank the "second" admit "1"
     And I press "Update Rankings"
     Then I should see "Faculty was successfully updated."
+
+  Scenario: I see the faculty's name while removing him
+    Given I am on the view faculty page
+    When I follow "Remove"
+    Then I should see "First1 Last1"
 
   Scenario: I remove a faculty
     Given I am on the view faculty page
