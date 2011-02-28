@@ -20,3 +20,6 @@ Background: I am signed in as staff and a faculty member's schedule has been gen
     | faculty        | time_0        | time_1   | time_2 | time_3        |
     | Jitendra Malik | Frances Allen | Jim Gray |        | Donald Norman |
     |                | Alan Turing   |          |        |               |
+  And the "max admits per meeting" for Faculty "Jitendra Malik" is 3
+  And I am on the tweak faculty schedule page for "Jitendra Malik"
+  Then show me the page

@@ -37,6 +37,7 @@ module NavigationHelpers
     when /the admit_ranking page/ then rank_admits_faculty_instance_path(@faculty)   
     when /the view faculty meeting schedule page$/ then faculty_meetings_path(@faculty)
     when /the view faculty meeting schedule page for "(.*) (.*)"/ then faculty_meetings_path(Faculty.find_by_first_name_and_last_name($1,$2))
+    when /the tweak faculty schedule page for "(.*) (.*)"/ then tweak_faculty_meetings_path(Faculty.find_by_first_name_and_last_name($1,$2))
 
     when /the view admits page/ then admits_path
     when /the new admit page/ then new_admit_path

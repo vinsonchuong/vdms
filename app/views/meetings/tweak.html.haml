@@ -1,10 +1,21 @@
 - content_for :title, t('.title', :name => @faculty.full_name)
 
 - form_tag :action => 'apply_tweaks' do |f|
-  %table
-    %tr
-      %th Time
-      %th
-      - 1.upto(@faculty.max_admits_per_meeting) do |i|
-        %th Admit #{i}
+  %table#faculty_schedule
+    %thead
+      %tr
+        %th Time
+        %th Alt. Room
+        - 1.upto(@max_admits) do |i|
+          %th Admit #{i}
+    %tbody
+      - @meetings.each do |meeting|
+        %tr
+          %td= meeting.time.strftime('%l:%M')
+          %td.room= room_if_not_default(meeting)
+          - meeting.admits.each_with_index do |admit,index|
+            %td!= render :partial => 'slot_with_admit', :locals => {:admit => admit, :index => index}
+          - (meeting.admits.length + 1).upto(@max_admits) do |index|
+            %td!= render :partial => 'open_slot', :locals => {:index => index}
 
+            

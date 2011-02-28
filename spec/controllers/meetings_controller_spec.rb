@@ -1,23 +1,24 @@
 require 'spec_helper'
 
 describe MeetingsController do
+  def fake_login(role)
+    CASClient::Frameworks::Rails::Filter.fake(Factory.create(role).ldap_id)
+  end
   describe "generating the schedule" do
     it "should be forbidden for Faculty users" do
-      CASClient::Frameworks::Rails::Filter.fake(Factory.create(:faculty).ldap_id)
+      fake_login(:faculty)
       Meeting.should_not_receive(:generate)
       post :create_all
       response.should redirect_to(home_path)
     end
     it "should be forbidden for Peer Advisor users" do
-      CASClient::Frameworks::Rails::Filter.fake(Factory.create(:peer_advisor).ldap_id)
+      fake_login(:peer_advisor)
       Meeting.should_not_receive(:generate)
       post :create_all
       response.should redirect_to(home_path)
     end
     context "for staff users" do
-      before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(Factory.create(:staff).ldap_id)
-      end
+      before(:each) { fake_login(:staff) }
       it "should be allowed" do
         Meeting.should_receive(:generate)
         post :create_all
@@ -29,11 +30,29 @@ describe MeetingsController do
       end
     end
   end
-  context "when logged in as any valid user" do
-    before(:each) do
-      @current_user = Factory.create(:peer_advisor)
-      CASClient::Frameworks::Rails::Filter.fake(@current_user.ldap_id)
+  describe 'tweaking faculty schedule' do
+    it 'should be allowed for staff' do
+      fake_login(:staff)
+      Faculty.stub!(:find).and_return(Factory.create(:faculty))
+      get :tweak, :faculty_id => 1
+      response.should render_template(:tweak)
     end
+    it 'should be forbidden for peer advisors' do
+      fake_login(:peer_advisor)
+      get :tweak, :faculty_id => 1
+      response.should redirect_to(home_path)
+      flash[:notice].should == 'Only Staff users may perform this action.'
+    end
+    it 'should be forbidden for faculty' do
+      fake_login(:faculty)
+      get :tweak, :faculty_id => 1
+      response.should redirect_to(home_path)
+      flash[:notice].should == 'Only Staff users may perform this action.'
+    end
+  end
+  
+  context "when logged in as any valid user" do
+    before(:each) { fake_login(:peer_advisor) }
     describe "index" do
       it "should list meetings for faculty if given faculty_id" do
         controller.should_receive(:for_faculty).with('3')

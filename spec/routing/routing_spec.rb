@@ -287,6 +287,12 @@ describe 'Routes' do
       it 'can view the master schedule' do
         {:get => '/meetings/master'}.should route_to(:controller => 'meetings', :action => 'master')
       end
+      it 'can tweak meeting schedule for a faculty member' do
+        {:get => '/people/faculty/1/meetings/tweak'}.should route_to(:controller => 'meetings', :action => 'tweak', :faculty_id => '1')
+      end
+      it 'can apply tweaks to a faculty meeting schedule' do
+        {:post => '/people/faculty/1/meetings/apply_tweaks'}.should route_to(:controller => 'meetings', :action => 'apply_tweaks', :faculty_id => '1')
+      end
     end
   end
 end

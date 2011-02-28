@@ -16,7 +16,7 @@ Given /^the following (\d+)-minute meetings are scheduled starting at (.*):$/ do
   meetings.hashes.each do |meeting|
     faculty = Faculty.find_by_first_name_and_last_name(*(meeting[:faculty].split(/ /))) unless
       meeting[:faculty].blank?
-    (0..2).each do |timeslot|
+    (0..meetings.column_names.length-2).each do |timeslot|
       time = base_time + slot_length * timeslot
       admit_name = meeting["time_#{timeslot}".to_sym]
       if !admit_name.blank?

@@ -6,4 +6,5 @@ en:
       title: "Faculty Meetings for %{name}"
     for_admit:
       title: "Admit Meetings for %{name}"
-                      
+    tweak:
+      title: "Tweak Schedule for %{name}"                      
