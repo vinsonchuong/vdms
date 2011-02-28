@@ -1,0 +1,9 @@
+en:
+  meetings:
+    master:
+      title: "Master Meeting Schedule"
+    for_faculty:
+      title: "Faculty Meetings for %{name}"
+    for_admit:
+      title: "Admit Meetings for %{name}"
+                      

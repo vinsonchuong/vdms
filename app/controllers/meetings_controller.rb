@@ -29,12 +29,14 @@ class MeetingsController < ApplicationController
 
   def for_admit(admit_id)
     @admit = Admit.find(admit_id)
+    @name = @admit.full_name
     @admit_meetings = @admit.meetings.sort_by(&:time)
     render :action => 'for_admit'
   end
 
   def for_faculty(faculty_id)
     @faculty = Faculty.find(faculty_id)
+    @name = @faculty.full_name
     @faculty_meetings = @faculty.meetings.sort_by(&:time)
     render :action => 'for_faculty'
   end

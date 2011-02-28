@@ -63,6 +63,7 @@ describe Meeting do
     end
     before(:each) do
       @faculty = Factory.create(:faculty, :first_name => 'Ras', :last_name => 'Bodik')
+      @admit = Factory.create(:admit, :first_name => 'Alan', :last_name => 'Admit')
       @time = Time.parse('1/1/11 11:00') ;  @tm = @time.strftime('%l:%M')
       @faculty.available_times = [Factory.create(:available_time, :begin => @time, :end => @time+20.minutes)]
       @meeting = Factory.create(:meeting, :faculty => @faculty, :time => @time)
@@ -107,25 +108,25 @@ describe Meeting do
       end
     end
     context 'for admit' do
-      before(:each) do
-        @admit = Factory.create(:admit, :first_name => 'Alan', :last_name => 'Admit')
+      before(:each) do ;  @meeting.admits = [@admit] ; end
+      it 'occurs if admit is unavailable during time slot' do
+        @meeting.should_not be_valid
+        @meeting.errors.full_messages.should include('Alan Admit is not available at 11:00.')
       end
       it 'occurs if admit is already scheduled with another faculty during same time slot' do
         @admit.stub!(:available_at?).and_return(true)
-        @meeting.admits = [@admit]
         @meeting.save!
         @new = Factory.create(:meeting, :time => @meeting.time, :faculty => Factory.create(:faculty))
         @new.admits = [@admit]
         @new.should_not be_valid
         @new.errors.full_messages.should include('Alan Admit is already meeting with Ras Bodik at 11:00.')
       end
-      it 'occurs if admit is unavailable during time slot' do
-        @meeting.admits = [@admit]
-        @meeting.should_not be_valid
-        @meeting.errors.full_messages.should include('Alan Admit is not available at 11:00.')
-      end
     end
     it 'occurs if time slot has not been marked as Available by staff'
-    it 'does not occur if there is no conflict with staff times, with faculty, or with admit'
+    it 'does not occur if there is no conflict with staff times, with faculty, or with admit' do
+      @admit.stub!(:available_at?).and_return(true)
+      @meeting.admits = [@admit]
+      @meeting.should be_valid
+    end
   end
 end

@@ -1,0 +1,10 @@
+- content_for :title, t('.title', :name => @faculty.full_name)
+
+- form_tag :action => 'apply_tweaks' do |f|
+  %table
+    %tr
+      %th Time
+      %th
+      - 1.upto(@faculty.max_admits_per_meeting) do |i|
+        %th Admit #{i}
+
