@@ -15,7 +15,10 @@ class Meeting < ActiveRecord::Base
     MeetingsScheduler::GeneticAlgorithm.run(10, 1) 
   end
   
-  
+  def to_s
+    "Time: #{time.to_formatted_s(:long)}, faculty: #{faculty.full_name if faculty}, " <<
+      "admits: #{admits.map { |a| a.full_name } if admits}"
+  end
   private unless Rails.env == "test"
   
   def no_conflicts

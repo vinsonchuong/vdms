@@ -18,7 +18,7 @@ Feature: Staff can view master meeting schedule
        | 56 | Jitendra   | Malik     | email1@email.com | Computer Science       | Theory                         |
        | 57 | Kris       | Pister    | email2@email.com | Electrical Engineering | Integrated Circuits            |
        | 58 | Armando    | Fox       | fox@email.com    | Computer Science       | Operating Systems & Networking |
-     And xxxthe following 20-minute meetings are scheduled starting at 10:00:
+     And the following 20-minute meetings are scheduled starting at 10:00:
        | faculty        | time_0        | time_1        | time_2        |
        | Jitendra Malik | Frances Allen | Jim Gray      | Donald Norman |
        |                | Alan Turing   |               |               |
