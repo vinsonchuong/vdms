@@ -14,7 +14,7 @@
             - meetings.select { |m| m.time == time }.each do |meeting|
               - meeting.admits.each do |admit|
                 %span
-                  != link_to  admit.full_name, admit_meetings_path(admit), {:title => room_if_not_default(meeting, faculty)}
+                  != link_to  admit.full_name, admit_meetings_path(admit), {:title => room_if_not_default(meeting)}
               %br
 
             

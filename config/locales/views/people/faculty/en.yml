@@ -2,6 +2,8 @@ en:
   faculty:
     index:
       title: "Manage Faculty"
+      available_times: "# Time Slots Available"
+      admit_rankings: "# Admits Ranked"
       actions: "Actions"
     new:
       title: "Add Faculty"
@@ -62,6 +64,9 @@ en:
       add_admits: "Add Admits to Rankings"
       remove: "Remove"
       submit: "Update Rankings"
+    view_schedule:
+      title: "Schedule for %{name}"
+      alt_title: "View My Schedule"
     select_admits:
       title: "Select Admits to Rank"
       filter_admits: "Filter Admits"

@@ -31,8 +31,9 @@ class RangeSet
 
   def -(other)
     result = @ranges.dup
-    @ranges.each do |r|
-      other.ranges.each do |s|
+    working = result.dup
+    other.ranges.each do |s|
+      working.each do |r|
         if r.overlap?(s) && r.begin != s.end && r.end != s.begin
           result.delete(r)
           if r.begin >= s.begin and r.end <= s.end
@@ -47,6 +48,7 @@ class RangeSet
           end
         end
       end
+      working = result.dup
     end
     return RangeSet.new(result)
   end

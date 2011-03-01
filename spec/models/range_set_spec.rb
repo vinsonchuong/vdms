@@ -152,6 +152,10 @@ describe RangeSet do
     it 'returns RangeSet [1, 2] U [3, 4] U [6, 7] U [8, 9] given RangeSets [1, 4] U [6, 9] - [2, 3] U [7, 8]' do
       (RangeSet.new([1..4, 6..9]) - RangeSet.new([2..3, 7..8])).to_a.should == [1..2, 3..4, 6..7, 8..9]
     end
+
+    it 'returns RangeSet [320, 340] given RangeSets [300, 360] - [300, 320] U [340, 360]' do
+      (RangeSet.new([300..360]) - RangeSet.new([300..320, 340..360])).to_a.should == [320..340]
+    end
   end
 
   context 'when determining containment' do

@@ -26,6 +26,12 @@ Feature: Staff can view master meeting schedule
        | Kris Pister    | Jim Gray      | Alan Turing   |               |
        |                | Donald Norman |               |               |
 
+  Scenario: follow link to master schedule
+    Given I am on the staff dashboard page
+    Then I should see "View Master Schedule"
+    When I follow "View Master Schedule"
+    Then I should be on the master meetings page
+
   Scenario: view master schedule
     When I go to the master meetings page
     Then I should see "Jitendra Malik"

@@ -64,7 +64,7 @@ describe Meeting do
     before(:each) do
       @faculty = Factory.create(:faculty, :first_name => 'Ras', :last_name => 'Bodik')
       @admit = Factory.create(:admit, :first_name => 'Alan', :last_name => 'Admit')
-      @time = Time.parse('1/1/11 11:00') ;  @tm = @time.strftime('%l:%M')
+      @time = Time.zone.parse('1/1/11 11:00') ;  @tm = @time.strftime('%l:%M')
       @faculty.available_times = [Factory.create(:available_time, :begin => @time, :end => @time+20.minutes)]
       @meeting = Factory.create(:meeting, :faculty => @faculty, :time => @time)
     end
@@ -95,7 +95,7 @@ describe Meeting do
           "Ras Bodik is already seeing 3 people at #{@tm}, which is his/her maximum.")
       end
       it 'occurs if faculty is unavailable during that time slot' do
-        @meeting.update_attribute(:time, Time.parse('10:00'))
+        @meeting.update_attribute(:time, Time.zone.parse('10:00'))
         @meeting.admits = [Factory.create(:admit)]
         @meeting.should_not be_valid
         @meeting.errors.full_messages.should include('Ras Bodik is not available at 10:00.')

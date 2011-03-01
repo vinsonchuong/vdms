@@ -2,9 +2,13 @@ en:
   meetings:
     master:
       title: "Master Meeting Schedule"
+      if_empty: "The master schedule has not been generated yet."
     for_faculty:
       title: "Faculty Meetings for %{name}"
+      short_title: "View Meeting Schedule"
     for_admit:
       title: "Admit Meetings for %{name}"
+      short_title: "View Meeting Schedule"
     tweak:
       title: "Tweak Schedule for %{name}"                      
+      short_title: "Tweak Schedule"

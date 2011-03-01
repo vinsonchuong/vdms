@@ -1,6 +1,7 @@
 class MeetingsController < ApplicationController
 
   before_filter :current_user_is_staff?, :only => [:tweak, :apply_tweaks, :create_all]
+  before_filter :schedule_empty?
 
   # GET /meetings/
   # If called with a faculty_id, show that faculty's meetings
@@ -64,4 +65,10 @@ class MeetingsController < ApplicationController
     end
   end
 
+  def schedule_empty?
+    if Meeting.count.zero?
+      flash[:notice] = t('meetings.master.if_empty')
+    end
+    true
+  end
 end

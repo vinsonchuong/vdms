@@ -67,7 +67,47 @@ module MeetingsScheduler
 #population_size: an int specifying the population size of the GA algorithm
 #
 #total_generation: an int specifying the number of generation the GA algorithm will run/iterate   
-        
+
+  def self.delete_old_meetings!
+    Meeting.all.each{ |m| m.destroy! }
+  end
+
+  def save_all_meetings_to_database!(all_meetings)
+    @all_meetings.each{ |m| m.save! }
+  end
+
+  def self.create_meetings!(best_chromosome)
+    @all_meetings = initialize_all_meetings
+    fill_up_meetings_with_best_chromosome!(best_chromosome)
+    save_all_meetings_to_database!(all_meetings)
+  end
+
+  def self.initialize_all_meetings
+    @all_meetings = Faculty.all.collect do |faculty|
+      faculty.available_times.collect { |available_time| faculty.meetings.new(:time => available_time.begin, :room => available_time.room) }
+    end
+    @all_meetings.flatten!
+  end
+  
+  def self.fill_up_meetings_with_best_chromosome!(best_chromosome)
+    best_chromosome.reduced_meeting_solution.each do |nucleotide|      
+      fill_up_meeting_with_nucleotide(nucleotide) if nucleotide.admit_id
+    end
+  end
+  
+  def self.fill_up_meeting_with_nucleotide!(nucleotide)
+    meeting = find_meeting_object_by_nucleotide(nucleotide)
+    meeting.admits << Admit.find(nucleotide.admit_id)
+  end
+
+  def find_meeting_object_by_nucleotide(nucleotide)
+    admit, schedule, faculty = nucleotide.extract
+    @all_meetings.find{ |m| m.faculty_id == faculty[:id] and m.time == schedule[:timeslot].begin }
+  end
+
+  
+
+  
   class GeneticAlgorithm
     
     # Definition: initializes the Chromosome class variables. This must be called before calling ＧＡrun.
@@ -510,7 +550,7 @@ module MeetingsScheduler
     end
 
     def extract
-      [@faculty, @schedule_index, @admit]
+      [@faculty, @faculty[:schedule][@schedule_index], @admit]
     end
 
     def ==(other)
