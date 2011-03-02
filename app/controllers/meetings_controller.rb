@@ -90,7 +90,6 @@ class MeetingsController < ApplicationController
 
   def add_meetings(keys)
     messages = []
-    messages
   end
 
   def current_user_is_staff?

@@ -1,5 +1,12 @@
 en:
   meetings:
+    create_all:
+      title: "Generate Schedule"
+      warning: >
+        Generating a new schedule will ERASE all current meetings, 
+        both automatically-generated and hand-modified.  Once this
+        happens the old schedule cannot be automatically restored.
+        Are you sure you want to proceed?
     master:
       title: "Master Meeting Schedule"
       if_empty: "The master schedule has not been generated yet."

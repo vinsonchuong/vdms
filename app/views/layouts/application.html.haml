@@ -30,6 +30,7 @@
               %li!= link_to t('admits.new.title'), new_admit_path
               %li!= link_to t('admits.upload.title'), upload_admits_path
           %li!= link_to t('meetings.master.title'), master_meetings_path
+          %li.dangerous!= link_to t('meetings.create_all.title'), create_all_meetings_path, :confirm => t('meetings.create_all.warning'), :method => :post
       - elsif @current_user.class == PeerAdvisor && !@current_user.new_record?
         %ul
           %li!= link_to t('peer_advisors.edit.alt_title'), edit_peer_advisor_path(@current_user)
