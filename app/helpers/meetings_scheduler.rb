@@ -69,7 +69,7 @@ module MeetingsScheduler
 #total_generation: an int specifying the number of generation the GA algorithm will run/iterate   
 
   def self.delete_old_meetings!
-    Meeting.all.each{ |m| m.destroy! }
+    Meeting.all.each{ |m| m.destroy }
   end
 
   def save_all_meetings_to_database!(all_meetings)
