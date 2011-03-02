@@ -43,6 +43,7 @@ class MeetingsController < ApplicationController
     @faculty = Faculty.find(params[:faculty_id])
     @max_admits = @faculty.max_admits_per_meeting
     @meetings = @faculty.meetings.sort_by(&:time)
+    @all_admits = Admit.all.sort_by(&:last_name)
   end
 
   # Save the tweaks to a faculty meeting schedule - for staff only

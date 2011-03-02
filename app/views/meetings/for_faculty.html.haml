@@ -1,9 +1,9 @@
 - content_for :title, t('.title', :name => @faculty.full_name)
-%table
+%table.schedule
   %thead
     %tr
       %th{:scope => 'col'} Time
-      %th{:scope => 'col'} 
+      %th{:scope => 'col'} Room
       %th{:scope => 'col'} Admit(s)
   %tbody
     - @faculty_meetings.each do |meeting|

@@ -1,11 +1,19 @@
 - content_for :title, t('.title', :name => @faculty.full_name)
 
-- form_tag :action => 'apply_tweaks' do |f|
-  %table#faculty_schedule
+%p
+  Edit #{@faculty.first_name}'s 
+  != link_to 'Availability', edit_availability_faculty_instance_path(@faculty)
+  or
+  != link_to 'Profile', edit_faculty_instance_path(@faculty)
+
+%p.instructions!= t('.instructions')
+
+- form_tag({:action => 'apply_tweaks'}, {:id => 'apply_tweaks'}) do |f|
+  %table.schedule
     %thead
       %tr
         %th Time
-        %th Alt. Room
+        %th Room
         - 1.upto(@max_admits) do |i|
           %th Admit #{i}
     %tbody
@@ -14,8 +22,10 @@
           %td= meeting.time.strftime('%l:%M')
           %td.room= room_if_not_default(meeting)
           - meeting.admits.each_with_index do |admit,index|
-            %td!= render :partial => 'slot_with_admit', :locals => {:admit => admit, :index => index}
+            %td!= render :partial => 'slot_with_admit', :locals => {:admit => admit, :meeting => meeting}
           - (meeting.admits.length + 1).upto(@max_admits) do |index|
-            %td!= render :partial => 'open_slot', :locals => {:index => index}
+            %td!= render :partial => 'open_slot', :locals => {:meeting => meeting}
+
+  != submit_tag 'Save Changes'
 
             

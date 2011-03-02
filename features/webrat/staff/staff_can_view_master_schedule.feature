@@ -28,8 +28,8 @@ Feature: Staff can view master meeting schedule
 
   Scenario: follow link to master schedule
     Given I am on the staff dashboard page
-    Then I should see "View Master Schedule"
-    When I follow "View Master Schedule"
+    Then I should see "Master Meeting"
+    When I follow "Master Meeting Schedule"
     Then I should be on the master meetings page
 
   Scenario: view master schedule

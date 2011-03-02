@@ -12,3 +12,9 @@ en:
     tweak:
       title: "Tweak Schedule for %{name}"                      
       short_title: "Tweak Schedule"
+      instructions: >
+        To remove an admit from a slot, check box next to admit's name.
+        (Mandatory meetings are in bold, one-on-one are in red.)
+        To add an admit, select admit name from menu.
+        Be sure to click Save Changes to apply your changes!
+        

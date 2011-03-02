@@ -204,17 +204,18 @@ h1 a {
     background-color: yellow;
 }
 
-table#master {
+table.schedule {
 	border-style: solid;
 	border-color: #ccc;
 }
 
-table#master td {
+table.schedule td {
 	vertical-align: top;
 	border-style: dotted;
 	border-color: gray;
 }
 
-table#master a {
+table.schedule a {
 	text-decoration: none;
 }
+

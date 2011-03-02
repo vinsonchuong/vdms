@@ -22,4 +22,12 @@ Background: I am signed in as staff and a faculty member's schedule has been gen
     |                | Alan Turing   |          |        |               |
   And the "max admits per meeting" for Faculty "Jitendra Malik" is 3
   And I am on the tweak faculty schedule page for "Jitendra Malik"
-  Then show me the page
+
+Scenario: mandatory meetings appear in bold
+
+Scenario: one-on-one meetings appear in red
+
+Scenario: staff can remove an admit from a meeting
+
+Scenario: staff can add an admit to a meeting with an open slot
+
