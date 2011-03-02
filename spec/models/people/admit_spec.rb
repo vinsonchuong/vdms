@@ -290,6 +290,16 @@ describe Admit do
       end
     end
 
+    it 'is valid with overlapping Available Times that are marked for destruction' do
+      time1 = AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011'))
+      time2 = AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
+      time3 = AvailableTime.new(:begin => Time.zone.parse('1/7/2011'), :end => Time.zone.parse('1/9/2011'))
+      @admit.available_times = [time1, time2, time3]
+      time1.mark_for_destruction
+      time2.mark_for_destruction
+      @admit.should be_valid
+    end
+
     it 'is not valid with non-unique Faculty Ranking ranks' do
       faculty_rankings = [
         FacultyRanking.new(:rank => 1, :faculty => Factory.create(:faculty)),
@@ -297,6 +307,18 @@ describe Admit do
       ]
       @admit.faculty_rankings = faculty_rankings
       @admit.should_not be_valid
+    end
+
+    it 'is valid with non-unique Faculty Rankings that are marked for destruction' do
+      faculty_rankings = [
+        FacultyRanking.new(:rank => 1, :faculty => Factory.create(:faculty)),
+        FacultyRanking.new(:rank => 1, :faculty => Factory.create(:faculty)),
+        FacultyRanking.new(:rank => 1, :faculty => Factory.create(:faculty))
+      ]
+      faculty_rankings[0].mark_for_destruction
+      faculty_rankings[1].mark_for_destruction
+      @admit.faculty_rankings = faculty_rankings
+      @admit.should be_valid
     end
   end
 

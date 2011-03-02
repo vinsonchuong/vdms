@@ -53,7 +53,7 @@ class Faculty < Person
   validates_presence_of :max_additional_admits
   validates_numericality_of :max_additional_admits, :only_integer => true, :greater_than_or_equal_to => 0
   validate do |record| # uniqueness of ranks in admit_rankings
-    ranks = record.admit_rankings.map(&:rank)
+    ranks = record.admit_rankings.reject(&:marked_for_destruction?).map(&:rank)
     if ranks.count != ranks.uniq.count
       record.errors.add_to_base('Ranks must be unique')
     end

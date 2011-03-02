@@ -30,7 +30,7 @@ class Admit < Person
   validates_inclusion_of :area1, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
   validates_inclusion_of :area2, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
   validate do |record| # uniqueness of ranks in faculty_rankings
-    ranks = record.faculty_rankings.map(&:rank)
+    ranks = record.faculty_rankings.reject(&:marked_for_destruction?).map(&:rank)
     if ranks.count != ranks.uniq.count
       record.errors.add_to_base('Ranks must be unique')
     end

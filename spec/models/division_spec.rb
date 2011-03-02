@@ -132,6 +132,16 @@ describe Division do
       end
     end
 
+    it 'is valid with overlapping Available Times that are marked for destruction' do
+      time1 = AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011'))
+      time2 = AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
+      time3 = AvailableTime.new(:begin => Time.zone.parse('1/7/2011'), :end => Time.zone.parse('1/9/2011'))
+      @division.available_times = [time1, time2, time3]
+      time1.mark_for_destruction
+      time2.mark_for_destruction
+      @division.should be_valid
+    end
+
     it 'is not valid if it is not owned by a Settings' do
       @division.settings = nil
       @division.should_not be_valid
