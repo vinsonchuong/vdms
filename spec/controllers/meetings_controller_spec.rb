@@ -4,6 +4,15 @@ describe MeetingsController do
   def fake_login(role)
     CASClient::Frameworks::Rails::Filter.fake(Factory.create(role).ldap_id)
   end
+  def schedule!(meeting,admits)
+    meeting.faculty.stub!(:available_at?).and_return(true)
+    meeting.faculty.available_times.create!(:begin => meeting.time, :end => meeting.time+60)
+    meeting.faculty.max_admits_per_meeting = admits.length
+    meeting.admits = admits
+    admits.each { |admit|  admit.stub!(:available_at?).and_return(true) }
+    meeting.faculty.save!
+    meeting.save!
+  end
   describe "generating the schedule" do
     it "should be forbidden for Faculty users" do
       fake_login(:faculty)
@@ -50,7 +59,21 @@ describe MeetingsController do
       flash[:notice].should == 'Only Staff users may perform this action.'
     end
   end
-  
+  describe 'manually deleting' do
+    before(:each) do
+      fake_login(:staff)
+    end
+    it 'should delete the meeting' do
+      admit1 = Factory.create(:admit)
+      admit2 = Factory.create(:admit)
+      meeting = Factory.create(:meeting)
+      schedule!(meeting, [admit1, admit2])
+      meeting.admits.should_receive(:delete).with(admit1.id)
+      params  = {"remove_#{admit1.id}_#{meeting.id}" => '1'}
+      pending "POST cant' find the right route??"
+      post :apply_tweaks, params
+    end
+  end
   context "when logged in as any valid user" do
     before(:each) { fake_login(:peer_advisor) }
     describe "index" do

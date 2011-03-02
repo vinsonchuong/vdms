@@ -1,5 +1,5 @@
 class MeetingsController < ApplicationController
-
+  
   before_filter :current_user_is_staff?, :only => [:tweak, :apply_tweaks, :create_all]
   before_filter :schedule_empty?
 
@@ -48,16 +48,50 @@ class MeetingsController < ApplicationController
 
   # Save the tweaks to a faculty meeting schedule - for staff only
   def apply_tweaks
+    flash[:notice] = ''
+    params.delete_if { |k,v| v.blank? }
+    messages = delete_meetings(params.keys)
+    messages += add_meetings(params.keys)
+    flash[:notice] = messages.join('<br/>')
+    redirect_to master_meetings_path
   end
   
   # Run the scheduler
   # POST /meetings/create_all
   def create_all
-    Meeting.generate()
+    begin
+      Meeting.generate()
+      flash[:notice] = "New schedule successfully generated."
+    rescue Exception => e
+      flash[:notice] = "New schedule could NOT be generated: #{e.message}"
+    end
     redirect_to master_meetings_path
   end
 
   private
+
+  def delete_meetings(keys)
+    messages = []
+    keys.each do |key|
+      if key =~ /^remove_(\d+)_(\d+)$/
+        begin
+          admit = Admit.find($1)
+          meeting = Meeting.find($2)
+          meeting.admits -= [admit]
+          meeting.save!
+          messages << "#{admit.full_name} removed from #{meeting.time.strftime('%l:%M')} meeting."
+        rescue Exception => e
+          messages << "Can't remove admit #{admit.full_name} from meeting #{meeting}: #{e.message}"
+        end
+      end
+    end
+    messages
+  end
+
+  def add_meetings(keys)
+    messages = []
+    messages
+  end
 
   def current_user_is_staff?
     unless @current_user && @current_user.class.name == 'Staff'

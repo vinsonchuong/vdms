@@ -9,6 +9,7 @@ class Meeting < ActiveRecord::Base
   validate :no_conflicts, :if => Proc.new { |m| m.faculty && !m.admits.blank? }
   
   def self.generate
+    MeetingsScheduler.delete_old_meetings!
     puts "GA initialize..."
     MeetingsScheduler::GeneticAlgorithm.initialize(self.factors_to_consider, self.fitness_scores_table)
     puts "GA running..."

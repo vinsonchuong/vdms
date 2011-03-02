@@ -28,6 +28,11 @@ Scenario: mandatory meetings appear in bold
 Scenario: one-on-one meetings appear in red
 
 Scenario: staff can remove an admit from a meeting
+  When I check the remove box for admit "Jim Gray" at 10:20
+  And I press "Save Changes"
+  Then I should be on the master meetings page
+  And I should see "Jim Gray removed from 10:20 meeting"
+  And I should not have a meeting with "Jim Gray" at 10:20
 
 Scenario: staff can add an admit to a meeting with an open slot
 

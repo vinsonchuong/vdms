@@ -34,3 +34,22 @@ Given /^the following (\d+)-minute meetings are scheduled starting at (.*):$/ do
     end
   end
 end
+
+When /^I check the remove box for admit "(.*) (.*)" at (.*)/ do |first,last,time|
+  @admit = Admit.find_by_first_name_and_last_name(first,last)
+  @time = Time.zone.parse(time)
+  @meeting = Meeting.find_all_by_time(@time).detect { |m| m.admits.include?(@admit) }
+  When %Q{I check "remove_#{@admit.id}_#{@meeting.id}"}
+end
+
+Then /^I should (not |)?have a meeting with "(.*) (.*)" at (.*)/ do |neg,first,last,time|
+  @admit = Admit.find_by_first_name_and_last_name(first,last)
+  @time = Time.zone.parse(time)
+  meeting = Meeting.find_all_by_time(@time).detect { |m| m.admits.include?(@admit) }
+  if neg =~ /not/
+    meeting.should be_nil
+  else
+    meeting.should_not be_nil
+  end
+end
+
