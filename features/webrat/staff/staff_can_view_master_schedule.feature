@@ -51,7 +51,6 @@ Feature: Staff can view master meeting schedule
   Scenario: follow link from master schedule to faculty's schedule
     When I go to the master meetings page
     And  I follow "Armando Fox"
-    Then I should be on the view faculty meeting schedule page for "Armando Fox"
+    Then I should be on the tweak faculty schedule page for "Armando Fox"
     And  I should see "Frances Allen"
-    But  I should not see "Jim Gray"
 

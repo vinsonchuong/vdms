@@ -13,6 +13,7 @@ Background: I am signed in as staff and a faculty member's schedule has been gen
     | 35 | Donald     | Norman    | email2@email.com | 1234567892 | Computer Science | Human-Computer Interaction  | Graphics            |
     | 36 | Alan       | Turing    | alan@turing.com  | 1234567893 | Computer Science | Theory                      | Graphics            |
     | 37 | Jim        | Gray      | jim@gray.com     | 1234567894 | Computer Science | Database Management Systems | Programming Systems |
+    | 38 | Velvel     | Kahan     | vk@berkeley.edu  | 1234567895 | Computer Science | Theory                      | Programming Systems |
   And the following "Faculty" have been added:
     | id | first_name | last_name | email            | division         | area   |
     | 56 | Jitendra   | Malik     | email1@email.com | Computer Science | Theory |
@@ -35,4 +36,8 @@ Scenario: staff can remove an admit from a meeting
   And I should not have a meeting with "Jim Gray" at 10:20
 
 Scenario: staff can add an admit to a meeting with an open slot
-
+  When I select "Velvel Kahan" from the menu for the 10:20 meeting with "Jitendra Malik"
+  And I press "Save Changes"
+  Then I should be on the master meetings page
+  And I should see "Velvel Kahan added to 10:20 meeting."
+  And I should have a meeting with "Velvel Kahan" at 10:20

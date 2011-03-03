@@ -129,4 +129,49 @@ describe Meeting do
       @meeting.should be_valid
     end
   end
+  describe 'Deleting admit from a meeting' do
+    before(:each) do
+      @admit = Factory.create(:admit)
+      @admit.stub!(:available_at?).and_return(true)
+      @meeting.faculty.stub!(:available_at?).and_return(true)
+    end
+    it 'should delete if admit is attending meeting' do
+      @meeting.admits = [@admit]
+      @meeting.save!
+      @meeting.remove_admit!(@admit)
+      @meeting.admits.should_not include(@admit)
+    end
+    it 'should be silent if admit is not part of the meeting' do
+      lambda { @meeting.remove_admit!(@admit) }.should_not raise_error
+    end
+  end
+  describe 'Adding admit to existing meeting' do
+    before(:each) do
+      @admit1 = Factory.create(:admit)
+      @admit2 = Factory.create(:admit)
+      @admit1.stub!(:available_at?).and_return(true)
+      @admit2.stub!(:available_at?).and_return(true)
+      @meeting.faculty.stub!(:available_at?).and_return(true)
+      @meeting.admits << @admit1
+      @meeting.save!
+    end
+    it 'should raise error if meeting already has max number of admits for that faculty member' do
+      @meeting.faculty.update_attribute(:max_admits_per_meeting, 1)
+      @meeting.admits << @admit2
+      lambda { @meeting.save! }.should raise_error(ActiveRecord::RecordInvalid)
+      @meeting.errors.full_messages.should include("#{@meeting.faculty.full_name} is already seeing 1 people at #{@meeting.time.strftime('%l:%M')}, which is his/her maximum.")
+    end
+    it 'should raise error if admit is not available at that time' do
+      @admit2.stub!(:available_at?).with(@meeting.time).and_return(nil)
+      @meeting.admits << @admit2
+      lambda { @meeting.save! }.should raise_error(ActiveRecord::RecordInvalid)
+      @meeting.errors.full_messages.should include("#{@admit2.full_name} is not available at #{@meeting.time.strftime('%l:%M')}.")
+    end
+    it 'should succeed if admit is available and there is room' do
+      @meeting.faculty.update_attribute(:max_admits_per_meeting, 2)
+      @meeting.admits << @admit2
+      lambda { @meeting.save! }.should_not raise_error
+      @meeting.admits.should include(@admit2)
+    end
+  end
 end

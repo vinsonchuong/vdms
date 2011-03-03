@@ -67,7 +67,7 @@ module MeetingsScheduler
 #population_size: an int specifying the population size of the GA algorithm
 #
 #total_generation: an int specifying the number of generation the GA algorithm will run/iterate   
-
+  
   def self.delete_old_meetings!
     Meeting.all.each{ |m| m.destroy }
   end
@@ -91,7 +91,7 @@ module MeetingsScheduler
   
   def self.fill_up_meetings_with_best_chromosome!(best_chromosome)
     best_chromosome.reduced_meeting_solution.each do |nucleotide|      
-      fill_up_meeting_with_nucleotide(nucleotide) if nucleotide.admit_id
+      fill_up_meeting_with_nucleotide(nucleotide) if nucleotide.is_meeting_possible?
     end
   end
   
@@ -262,7 +262,7 @@ module MeetingsScheduler
         end
       end
     end
-   
+    
     def self.set_factors_to_consider(factors_to_consider)
       @@factors_to_consider = factors_to_consider
     end
@@ -309,6 +309,7 @@ module MeetingsScheduler
       return @fitness if @fitness
 
       # CURRENTLY, reduced_meeting_solution sets @reduced_meeting_solution TO @meeting_solution AND RETURNS IT
+      # NO NEED to check if nucleotide contains nil admit because nucleotide.fitness checks for it
       @fitness = reduced_meeting_solution.inject(0){ |fitness, nucleotide| fitness += nucleotide.fitness } +
         chromosome_level_fitness        
       
@@ -326,7 +327,7 @@ module MeetingsScheduler
         puts "about to mutate"
         which_mutation = rand
         case which_mutation
-        when 0...@@factors_to_consider[:chromosomal_inversion_probability]            
+        when 0...@@factors_to_consider[:chromosomal_inversion_probability]
           index1, index2 = pick_two_random_indexes
           Chromosome.chromosomal_inversion(chromosome, index1, index2)        
         when @@factors_to_consider[:chromosomal_inversion_probability]...
@@ -371,7 +372,7 @@ module MeetingsScheduler
       
       solution_string = Array.new(total_number_of_seats)
       admit_ids = (attending_admits.keys * number_of_spots_per_admit)
-      
+
       if admit_ids.length < total_number_of_seats
         remaining_empty_seats = total_number_of_seats - admit_ids.length
         admit_ids += remaining_empty_seats.times.collect{ admit_ids.sample }
@@ -395,6 +396,8 @@ module MeetingsScheduler
     #####################################
     # Chromosome Fitness Helper Methods #
     #####################################
+
+    # ALL METHODS HERE ARE PROTECTED FROM NIL ADMIT CORNER CASES!!!
     
     def chromosome_level_fitness
       @reduced_meeting_solution.inject(0) do |chrom_level_fitness, nucleotide|
@@ -434,7 +437,7 @@ module MeetingsScheduler
     end
 
     def calculate_consecutive_timeslots_score(meetings)
-      # Codepath guarantees at least ONE nucleotide in meetings
+      # Codepath guarantees at least ONE nucleotide in meetings before this method is run
       consecutive_timeslots = meetings.length.times.collect.reverse.collect do |sublength|
         count_consecutive_timeslots( meetings.last(sublength), meetings.last(sublength)[0].schedule_index )
       end
@@ -475,15 +478,16 @@ module MeetingsScheduler
       Chromosome.new(new_solution_string)
     end
     
-    # Definition: Performs a point mutation on one sequence in a Chromosome
+    # Definition: Performs a point mutation on one sequence in a Chromosome,
+    # by either changing it to an admit_id or nil
     # @params: 
     # => a Chromosome
     # @return: 
     # => a new Chromosome
     def self.point_mutation(chromosome, index)
-      admit_id = @@factors_to_consider[:attending_admits].keys.shuffle.shuffle.fetch(0)
       mutated_solution_string = chromosome.solution_string
-      mutated_solution_string[index] = admit_id
+      admit_id = @@factors_to_consider[:attending_admits].keys.shuffle.shuffle.fetch(0)
+      mutated_solution_string[index] = (rand < 0.5) ? admit_id : nil
       Chromosome.new(mutated_solution_string)
     end
 
