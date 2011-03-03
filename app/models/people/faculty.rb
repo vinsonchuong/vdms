@@ -23,7 +23,6 @@ class Faculty < Person
       self.max_additional_admits ||= 100
     end
   end
-  
   after_validation do |record| # Map Area and Division to their canonical forms
     settings = Settings.instance
     areas = settings.areas.invert
@@ -31,10 +30,6 @@ class Faculty < Person
     settings.divisions.each {|d| divisions[d.long_name] = d.name}
     record.area = areas[record.area] unless record.area.nil? || areas[record.area].nil?
     record.division = divisions[record.division] unless record.division.nil? || divisions[record.division].nil?
-  end
-
-  after_validation do |record| # destroy available_times not flagged as available
-    record.available_times.each {|t| t.destroy unless t.available}
   end
 
   has_many :admit_rankings, :order => 'rank ASC', :dependent => :destroy

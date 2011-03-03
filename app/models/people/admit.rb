@@ -18,10 +18,6 @@ class Admit < Person
     record.area2 = areas[record.area2] unless record.area2.nil? || areas[record.area2].nil?
   end
 
-  after_validation do |record| # destroy available_times not flagged as available
-    record.available_times.each {|t| t.destroy unless t.available}
-  end
-
   has_many :faculty_rankings, :order => 'rank ASC', :dependent => :destroy
   has_many :admit_rankings, :dependent => :destroy
   accepts_nested_attributes_for :faculty_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true

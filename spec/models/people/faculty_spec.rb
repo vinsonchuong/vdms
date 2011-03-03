@@ -381,17 +381,6 @@ describe Faculty do
       @faculty.valid?
       @faculty.division.should == nil
     end
-
-    it 'destroys all AvailableTimes which are not flagged as available' do
-      time1 = @faculty.available_times.create(:available => true, :begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011'))
-      time2 = @faculty.available_times.create(:available => false, :begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011'))
-      time3 = @faculty.available_times.create(:available => false, :begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/6/2011'))
-      @faculty.available_times = [time1, time2, time3]
-      time1.should_not_receive(:destroy)
-      time2.should_receive(:destroy)
-      time3.should_receive(:destroy)
-      @faculty.save
-    end
   end
 
   context 'when destroying' do
