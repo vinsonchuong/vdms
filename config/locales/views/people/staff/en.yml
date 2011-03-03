@@ -3,6 +3,9 @@ en:
     index:
       title: "Manage Staff"
       actions: "Actions"
+    delete_all:
+      title: "Remove All Staff"
+      submit: "Remove All Staff"
     new:
       title: "Add Staff"
       errors: "Errors"

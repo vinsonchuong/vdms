@@ -14,22 +14,22 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :staff, :singular => 'staff_instance', :path_prefix => '/people',
     :except => [:show],
-    :collection => {:upload => :get, :import => :post},
+    :collection => {:upload => :get, :delete_all => :get, :import => :post, :destroy_all => :delete},
     :member => {:delete => :get}
   map.resources :peer_advisors, :path_prefix => '/people',
     :except => [:show],
-    :collection => {:upload => :get, :import => :post},
+    :collection => {:upload => :get, :delete_all => :get, :import => :post, :destroy_all => :delete},
     :member => {:delete => :get}
   map.resources :faculty, :singular => 'faculty_instance', :path_prefix => '/people',
     :except => [:show],
-    :collection => {:upload => :get, :import => :post},
+    :collection => {:upload => :get, :delete_all => :get, :import => :post, :destroy_all => :delete},
     :member => {:edit_availability => :get, :rank_admits => :get, :select_admits => :get, :delete => :get}
   map.resources :faculty, :path_prefix => '/people' do |faculty|
     faculty.resources :meetings, :only => :index, :collection => {:tweak => :get, :apply_tweaks => :post}
   end
   map.resources :admits, :path_prefix => '/people',
     :except => [:show],
-    :collection => {:upload => :get, :import => :post},
+    :collection => {:upload => :get, :delete_all => :get, :import => :post, :destroy_all => :delete},
     :member => {:edit_availability => :get, :rank_faculty => :get, :select_faculty => :get, :delete => :get}
   map.resources :admits, :path_prefix => '/people' do |admit|
     admit.resources :meetings, :only => :index

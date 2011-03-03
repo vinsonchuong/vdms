@@ -55,6 +55,16 @@ describe 'Routes' do
         end
       end
 
+      context 'Remove All Staff' do
+        it 'routes GET /people/staff/delete_all to Staff#delete_all' do
+          {:get => '/people/staff/delete_all'}.should route_to(:controller => 'staff', :action => 'delete_all')
+        end
+
+        it 'routes DELETE /people/staff/destroy_all to Staff#destroy_all' do
+          {:delete => '/people/staff/destroy_all'}.should route_to(:controller => 'staff', :action => 'destroy_all')
+        end
+      end
+
       context 'Add Staff' do
         it 'routes GET /people/staff/new to Staff#new' do
           {:get => '/people/staff/new'}.should route_to(:controller => 'staff', :action => 'new')
@@ -103,6 +113,16 @@ describe 'Routes' do
         end
       end
 
+      context 'Remove All Peer Advisors' do
+        it 'routes GET /people/peer_advisors/delete_all to PeerAdvisors#delete_all' do
+          {:get => '/people/peer_advisors/delete_all'}.should route_to(:controller => 'peer_advisors', :action => 'delete_all')
+        end
+
+        it 'routes DELETE /people/peer_advisors/destroy_all to PeerAdvisors#destroy_all' do
+          {:delete => '/people/peer_advisors/destroy_all'}.should route_to(:controller => 'peer_advisors', :action => 'destroy_all')
+        end
+      end
+
       context 'Add Peer Advisors' do
         it 'routes GET /people/peer_advisors/new to PeerAdvisors#new' do
           {:get => '/people/peer_advisors/new'}.should route_to(:controller => 'peer_advisors', :action => 'new')
@@ -148,6 +168,16 @@ describe 'Routes' do
       context 'View Faculty' do
         it 'routes GET /people/faculty to Faculty#index' do
           {:get => '/people/faculty'}.should route_to(:controller => 'faculty', :action => 'index')
+        end
+      end
+
+      context 'Remove All Faculty' do
+        it 'routes GET /people/faculty/delete_all to Faculty#delete_all' do
+          {:get => '/people/faculty/delete_all'}.should route_to(:controller => 'faculty', :action => 'delete_all')
+        end
+
+        it 'routes DELETE /people/faculty/destroy_all to Faculty#destroy_all' do
+          {:delete => '/people/faculty/destroy_all'}.should route_to(:controller => 'faculty', :action => 'destroy_all')
         end
       end
 
@@ -218,6 +248,16 @@ describe 'Routes' do
       context 'View Admits' do
         it 'routes GET /people/admits to Admits#index' do
           {:get => '/people/admits'}.should route_to(:controller => 'admits', :action => 'index')
+        end
+      end
+
+      context 'Remove All Admits' do
+        it 'routes GET /people/admits/delete_all to Admits#delete_all' do
+          {:get => '/people/admits/delete_all'}.should route_to(:controller => 'admits', :action => 'delete_all')
+        end
+
+        it 'routes DELETE /people/admits/destroy_all to Admits#destroy_all' do
+          {:delete => '/people/admits/destroy_all'}.should route_to(:controller => 'admits', :action => 'destroy_all')
         end
       end
 

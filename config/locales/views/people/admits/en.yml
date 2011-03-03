@@ -5,6 +5,9 @@ en:
       available_times: "# Time Slots Available"
       faculty_rankings: "# Faculty Ranked"
       actions: "Actions"
+    delete_all:
+      title: "Remove All Admits"
+      submit: "Remove All Admits"
     new:
       title: "Add Admit"
       errors: "Errors"

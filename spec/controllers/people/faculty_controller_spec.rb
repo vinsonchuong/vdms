@@ -61,6 +61,54 @@ describe FacultyController do
     end
   end
 
+  describe 'GET delete_all' do
+    context 'when not signed in' do
+      it 'redirects to the CalNet sign in page' do
+        get :delete_all
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(delete_all_faculty_url)}")
+      end
+    end
+
+    context 'when signed in as a Staff' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
+      end
+
+      it 'renders the delete_all template' do
+        get :delete_all
+        response.should render_template('delete_all')
+      end
+    end
+
+    context 'when signed in as a registered Peer Advisor'
+
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
+      end
+
+      it 'redirects to the New Peer Advisor page' do
+        get :delete_all
+        response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
+      end
+    end
+
+    context 'when signed in as a registered Faculty'
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        get :delete_all
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
+      end
+    end
+  end
+
   describe 'GET new' do
     context 'when not signed in' do
       it 'redirects to the CalNet sign in page' do
@@ -902,6 +950,66 @@ describe FacultyController do
 
       it 'redirects to the New Faculty page' do
         delete :destroy, :id => @faculty_instance.id
+        response.should redirect_to(:controller => 'faculty', :action => 'new')
+      end
+    end
+  end
+
+  describe 'DELETE destroy_all' do
+    context 'when not signed in' do
+      it 'redirects to the CalNet sign in page' do
+        delete :destroy_all
+        response.should redirect_to("#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI.escape(destroy_all_faculty_url)}")
+      end
+    end
+
+    context 'when signed in as a Staff' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
+      end
+
+      it 'destroys all Faculty records' do
+        faculty = Array.new(3) {Faculty.new}
+        faculty.each {|f| f.should_receive(:destroy)}
+        Faculty.stub(:find).and_return(faculty)
+        delete :destroy_all
+      end
+
+      it 'sets a flash[:notice] message' do
+        delete :destroy_all
+        flash[:notice].should == 'Faculty were all successfully removed.'
+      end
+
+      it 'redirects to the View Faculty page' do
+        delete :destroy_all
+        response.should redirect_to(:action => 'index')
+      end
+    end
+
+    context 'when signed in as a registered Peer Advisor'
+
+    context 'when signed in as an unregistered Peer Advisor' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(PeerAdvisor.new)
+      end
+
+      it 'redirects to the New Peer Advisor page' do
+        delete :destroy_all
+        response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
+      end
+    end
+
+    context 'when signed in as a registered Faculty'
+
+    context 'when signed in as an unregistered Faculty' do
+      before(:each) do
+        CASClient::Frameworks::Rails::Filter.fake('12345')
+        Person.stub(:find).and_return(Faculty.new)
+      end
+
+      it 'redirects to the New Faculty page' do
+        delete :destroy_all
         response.should redirect_to(:controller => 'faculty', :action => 'new')
       end
     end

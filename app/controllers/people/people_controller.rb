@@ -6,6 +6,10 @@ class PeopleController < ApplicationController
     self.instance_variable_set("@#{@collection}", @model.by_name)
   end
 
+  # GET /people/PEOPLE/delete_all
+  def delete_all
+  end
+
   # GET /people/PEOPLE/new
   def new
     self.instance_variable_set("@#{@instance}", @model.new)
@@ -77,5 +81,11 @@ class PeopleController < ApplicationController
   def destroy
     self.instance_variable_set("@#{@instance}", @model.find(params[:id])).destroy
     redirect_to(self.send("#{@collection}_url".to_sym), :notice => t(:success, :scope => [:people, @model.name.tableize, :destroy]))
+  end
+
+  # DELETE /people/PEOPLE/destroy_all
+  def destroy_all
+    @model.destroy_all
+    redirect_to(self.send("#{@collection}_url".to_sym), :notice => t(:success, :scope => [:people, @model.name.tableize, :destroy_all]))
   end
 end

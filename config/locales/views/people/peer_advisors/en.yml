@@ -3,6 +3,9 @@ en:
     index:
       title: "Manage Peer Advisors"
       actions: "Actions"
+    delete_all:
+      title: "Remove All Peer Advisors"
+      submit: "Remove All Peer Advisors"
     new:
       title: "Add Peer Advisor"
       alt_title: "Register As A Peer Advisor"
