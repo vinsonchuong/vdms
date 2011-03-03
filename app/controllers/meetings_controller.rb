@@ -93,7 +93,7 @@ class MeetingsController < ApplicationController
   def add_meetings(params)
     messages = []
     params.each_pair do |menu_name,admit|
-      if menu_name =~ /^add_(\d+)$/
+      if menu_name =~ /^add_(\d+)_\d+$/
         begin
           meeting = Meeting.find($1)
           admit = Admit.find(admit)

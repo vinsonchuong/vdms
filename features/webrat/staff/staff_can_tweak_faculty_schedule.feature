@@ -36,6 +36,7 @@ Scenario: staff can remove an admit from a meeting
   And I should not have a meeting with "Jim Gray" at 10:20
 
 Scenario: staff can add an admit to a meeting with an open slot
+  Given "Velvel Kahan" is available at 10:20
   When I select "Velvel Kahan" from the menu for the 10:20 meeting with "Jitendra Malik"
   And I press "Save Changes"
   Then I should be on the master meetings page

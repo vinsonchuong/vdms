@@ -71,7 +71,7 @@ describe MeetingsController do
       schedule!(meeting, [admit1, admit2])
       meeting.admits.should_receive(:delete).with(admit1.id)
       params  = {"remove_#{admit1.id}_#{meeting.id}" => '1'}
-      pending "POST cant' find the right route??"
+      pending "POST cant find the right route??"
       post :apply_tweaks, params
     end
   end

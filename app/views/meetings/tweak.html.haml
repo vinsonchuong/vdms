@@ -24,7 +24,7 @@
           - meeting.admits.each_with_index do |admit,index|
             %td!= render :partial => 'slot_with_admit', :locals => {:admit => admit, :meeting => meeting}
           - (meeting.admits.length + 1).upto(@max_admits) do |index|
-            %td!= render :partial => 'open_slot', :locals => {:meeting => meeting}
+            %td!= render :partial => 'open_slot', :locals => {:meeting => meeting, :index => index}
 
   != submit_tag 'Save Changes'
 
