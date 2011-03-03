@@ -51,7 +51,7 @@ class MeetingsController < ApplicationController
     flash[:notice] = ''
     params.delete_if { |k,v| v.blank? }
     messages = delete_meetings(params.keys)
-    messages += add_meetings(params.keys)
+    messages += add_meetings(params)
     flash[:notice] = messages.join('<br/>')
     redirect_to master_meetings_path
   end
@@ -59,6 +59,9 @@ class MeetingsController < ApplicationController
   # Run the scheduler
   # POST /meetings/create_all
   def create_all
+    flash[:notice] = "The automatic scheduler hasn't been deployed yet."
+    redirect_to master_meetings_path and return
+    
     begin
       Meeting.generate()
       flash[:notice] = "New schedule successfully generated."
@@ -75,21 +78,34 @@ class MeetingsController < ApplicationController
     keys.each do |key|
       if key =~ /^remove_(\d+)_(\d+)$/
         begin
-          admit = Admit.find($1)
           meeting = Meeting.find($2)
-          meeting.admits -= [admit]
-          meeting.save!
+          admit = Admit.find($1)
+          meeting.remove_admit!(admit)
           messages << "#{admit.full_name} removed from #{meeting.time.strftime('%l:%M')} meeting."
         rescue Exception => e
-          messages << "Can't remove admit #{admit.full_name} from meeting #{meeting}: #{e.message}"
+          messages << "Can't remove admit #{admit} from meeting #{meeting}: #{e.message}"
         end
       end
     end
     messages
   end
 
-  def add_meetings(keys)
+  def add_meetings(params)
     messages = []
+    params.each_pair do |menu_name,admit|
+      if menu_name =~ /^add_(\d+)$/
+        begin
+          meeting = Meeting.find($1)
+          admit = Admit.find(admit)
+          meeting.admits << admit
+          meeting.save!
+          messages << "#{admit.full_name} added to #{meeting.time.strftime('%l:%M')} meeting."
+        rescue Exception => e
+          messages << "#{admit.full_name if admit} NOT added to #{meeting.time.strftime('%l:%M')} meeting: #{e.message}"
+        end
+      end
+    end
+    messages
   end
 
   def current_user_is_staff?

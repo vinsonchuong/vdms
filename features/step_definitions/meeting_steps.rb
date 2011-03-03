@@ -42,6 +42,13 @@ When /^I check the remove box for admit "(.*) (.*)" at (.*)/ do |first,last,time
   When %Q{I check "remove_#{@admit.id}_#{@meeting.id}"}
 end
 
+When /^I select "(.*)" from the menu for the (.*) meeting with "(.*) (.*)"$/ do |admit,time,fac_first,fac_last|
+  @time = Time.zone.parse(time)
+  @faculty = Faculty.find_by_first_name_and_last_name(fac_first,fac_last)
+  meeting = @faculty.meetings.find_by_time(@time)
+  select(admit, :from => "add_#{meeting.id}")
+end
+
 Then /^I should (not |)?have a meeting with "(.*) (.*)" at (.*)/ do |neg,first,last,time|
   @admit = Admit.find_by_first_name_and_last_name(first,last)
   @time = Time.zone.parse(time)

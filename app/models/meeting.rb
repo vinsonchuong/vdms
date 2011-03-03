@@ -20,6 +20,16 @@ class Meeting < ActiveRecord::Base
     "Time: #{time.to_formatted_s(:long)}, faculty: #{faculty.full_name if faculty}, " <<
       "admits: #{admits.map { |a| a.full_name } if admits}"
   end
+
+  def one_on_one_meeting?
+    !(self.admits & self.faculty.ranked_one_on_one_admits).empty?
+  end
+  
+  def remove_admit!(admit)
+    self.admits -= [admit]
+    self.save!
+  end
+
   private unless Rails.env == "test"
   
   def no_conflicts
@@ -58,10 +68,6 @@ class Meeting < ActiveRecord::Base
     faculty.meetings.find(:all, :conditions => ['id != ? AND time = ?', self.id, self.time])
   end
 
-  def one_on_one_meeting?
-    !(self.admits & self.faculty.ranked_one_on_one_admits).empty?
-  end
-  
   def self.fitness_scores_table
     { :is_meeting_possible_score          => 50000,
       :is_meeting_possible_penalty        => -50000,
