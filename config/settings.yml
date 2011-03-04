@@ -26,6 +26,6 @@ areas:
   sec: Security
   sp: Signal Processing
   thy: Theory
-meeting_length: 900
-meeting_gap: 300
+meeting_length: 1200
+meeting_gap: 0
 
