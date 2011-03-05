@@ -13,7 +13,7 @@
     %h3!= t('.admit_rankings')
     %p!= t('.admit_rankings_description')
     %ul
-      %li!= link_to t('.add_admits'), select_admits_faculty_instance_path(@faculty_instance)
+      %li{:class => 'button'}!= link_to t('.add_admits'), select_admits_faculty_instance_path(@faculty_instance)
     %table
       %thead
         %tr

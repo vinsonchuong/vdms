@@ -9,7 +9,7 @@
   %fieldset
     %h3!= t('.faculty_rankings')
     %ul
-      %li!= link_to t('.add_faculty'), select_faculty_admit_path(@admit)
+      %li{:class => 'button'}!= link_to t('.add_faculty'), select_faculty_admit_path(@admit)
     %table
       %thead
         %tr
