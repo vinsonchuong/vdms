@@ -242,3 +242,13 @@ table.schedule a {
 	text-decoration: none;
 }
 
+#footer {
+  margin: 0 auto;
+  padding-top: 20px;
+  width: 800px;
+  text-align: center;
+  color: #4c8bd3;
+}
+#footer p {
+  padding-top: 2px;
+}

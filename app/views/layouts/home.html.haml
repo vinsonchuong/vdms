@@ -6,8 +6,10 @@
     != stylesheet_link_tag 'home'
     != stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Droid+Sans'
   %body
-    %h1!= yield :title
-    != yield
-  %footer
-    %p By Vinson Chuong, Benson Ma, and Jacky Wu, alumni of Prof. Armando Fox's Software Engineering course at UC Berkeley.
-    %p Visual design by Amber Feng.
+    #content
+      %h1!= yield :title
+      != yield
+    #footer
+      %p By Vinson Chuong, Benson Ma, and Jacky Wu, alumni of Prof. Armando Fox's Software Engineering course at UC Berkeley.
+      %p Visual design by Amber Feng.
+      %p Updated 3/5/2011 at 12:35PM - Commit 379235745a8d0b2f1cb1
