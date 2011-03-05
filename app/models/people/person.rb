@@ -14,7 +14,7 @@ class Person < ActiveRecord::Base
     :email => :string
   }
 
-  validates_presence_of :ldap_id, :unless => Proc.new {|person| person.class == Admit}
+  validates_presence_of :ldap_id, :unless => Proc.new {|person| person.class == Admit || person.class == Faculty}
   validates_presence_of :first_name
   validates_presence_of :last_name
 

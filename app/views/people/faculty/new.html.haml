@@ -13,7 +13,7 @@
     %h3!= t('.info')
     %ul
       - unless @current_user.new_record?
-        %li.field.required
+        %li.field
           != faculty_form.label :ldap_id
           %p!= t('.ldap_id_description', :calnet_directory => link_to('CalNet Directory', 'https://calnet.berkeley.edu/directory/'))
           != faculty_form.text_field :ldap_id

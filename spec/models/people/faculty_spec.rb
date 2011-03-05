@@ -217,11 +217,6 @@ describe Faculty do
       @faculty.should be_valid
     end
 
-    it 'is not valid without an LDAP ID' do
-      @faculty.ldap_id = ''
-      @faculty.should_not be_valid
-    end
-
     it 'is not valid without a First Name' do
       @faculty.first_name = ''
       @faculty.should_not be_valid
