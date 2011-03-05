@@ -8,7 +8,7 @@
   %tbody
     - @admit_meetings.each do |meeting|
       %tr
-        %td!= meeting.time
+        %td!= meeting.time.strftime('%I:%M%p')
         %td!= meeting.faculty.full_name
         %td!= meeting.room
 

@@ -32,7 +32,7 @@ Scenario: staff can remove an admit from a meeting
   When I check the remove box for admit "Jim Gray" at 10:20
   And I press "Save Changes"
   Then I should be on the master meetings page
-  And I should see "Jim Gray removed from 10:20 meeting"
+  And I should see "Jim Gray removed from 10:20AM meeting"
   And I should not have a meeting with "Jim Gray" at 10:20
 
 Scenario: staff can add an admit to a meeting with an open slot
@@ -40,5 +40,5 @@ Scenario: staff can add an admit to a meeting with an open slot
   When I select "Velvel Kahan" from the menu for the 10:20 meeting with "Jitendra Malik"
   And I press "Save Changes"
   Then I should be on the master meetings page
-  And I should see "Velvel Kahan added to 10:20 meeting."
+  And I should see "Velvel Kahan added to 10:20AM meeting."
   And I should have a meeting with "Velvel Kahan" at 10:20

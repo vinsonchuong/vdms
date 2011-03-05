@@ -34,7 +34,7 @@ class Meeting < ActiveRecord::Base
   
   def no_conflicts
     fn = faculty.full_name
-    tm = time.strftime('%l:%M')
+    tm = time.strftime('%I:%M%p')
     if (meeting = conflicts_with_one_on_one)
       errors.add_to_base "#{fn} has a 1-on-1 meeting with #{meeting.admits.first.full_name} at #{tm}."
     end
@@ -60,7 +60,7 @@ class Meeting < ActiveRecord::Base
     
   def admit_unavailable(admit)
     unless 
-      errors.add_to_base("#{admit.full_name} is not available at #{time.strftime('%l:%M')}.")
+      errors.add_to_base("#{admit.full_name} is not available at #{time.strftime('%I:%M%p')}.")
     end
   end
   

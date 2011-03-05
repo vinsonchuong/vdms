@@ -8,7 +8,7 @@
   %tbody
     - @faculty_meetings.each do |meeting|
       %tr
-        %td!= meeting.time.strftime('%l:%M')
+        %td!= meeting.time.strftime('%I:%M%p')
         %td!= room_if_not_default(meeting)
         %td.meeting
           != meeting.admits.map { |a| link_to(a.full_name, admit_meetings_path(a)) }.join(', ')

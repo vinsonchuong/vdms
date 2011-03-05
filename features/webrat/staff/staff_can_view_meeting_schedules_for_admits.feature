@@ -37,5 +37,5 @@ Feature: Staff can view meeting schedules for admits
      And I should see "bar"
      And I should see "soda"
      And I should see "cory"
-     And I should see "12:00"
-     And I should see "13:00"
+     And I should see "12:00PM"
+     And I should see "1:00PM"

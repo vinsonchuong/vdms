@@ -81,7 +81,7 @@ class MeetingsController < ApplicationController
           meeting = Meeting.find($2)
           admit = Admit.find($1)
           meeting.remove_admit!(admit)
-          messages << "#{admit.full_name} removed from #{meeting.time.strftime('%l:%M')} meeting."
+          messages << "#{admit.full_name} removed from #{meeting.time.strftime('%I:%M%p')} meeting."
         rescue Exception => e
           messages << "Can't remove admit #{admit} from meeting #{meeting}: #{e.message}"
         end
@@ -99,9 +99,9 @@ class MeetingsController < ApplicationController
           admit = Admit.find(admit)
           meeting.admits << admit
           meeting.save!
-          messages << "#{admit.full_name} added to #{meeting.time.strftime('%l:%M')} meeting."
+          messages << "#{admit.full_name} added to #{meeting.time.strftime('%I:%M%p')} meeting."
         rescue Exception => e
-          messages << "#{admit.full_name if admit} NOT added to #{meeting.time.strftime('%l:%M')} meeting: #{e.message}"
+          messages << "#{admit.full_name if admit} NOT added to #{meeting.time.strftime('%I:%M%p')} meeting: #{e.message}"
         end
       end
     end
