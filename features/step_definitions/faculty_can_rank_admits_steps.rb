@@ -1,4 +1,4 @@
-Given /^I have the following admit rankings:$/ do |admit_rankings|
+Given /^(?:I have|my faculty has) the following admit rankings:$/ do |admit_rankings|
   admit_rankings.hashes.each do |admit_ranking|
     @faculty.admit_rankings.create(
       :rank => admit_ranking['rank'].to_i,

@@ -372,11 +372,6 @@ describe FacultyController do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
-
-      it 'renders the rank_admits template' do
-        get :rank_admits, :id => @faculty_instance.id
-        response.should render_template('rank_admits')
-      end
     end
 
     context 'when signed in as a registered Peer Advisor'
@@ -405,9 +400,43 @@ describe FacultyController do
         assigns[:faculty_instance].should == @faculty_instance
       end
 
-      context 'when given new Admits to rank' do
+      context 'when the Faculty has not ranked or selected any Admits' do
+        it 'does redirects to select_admits' do
+          get :rank_admits, :id => @faculty_instance.id
+          response.should redirect_to(:action => 'select_admits')
+        end
+      end
+
+      context 'when the Faculty has ranked but not selected any Admits' do
+        before(:each) do
+          Factory.create(:admit_ranking, :faculty => @faculty_instance)
+        end
+
+        it 'sets the error redirect to the rank_admits action' do
+          get :rank_admits, :id => @faculty_instance.id
+          assigns[:origin_action].should == 'rank_admits'
+        end
+
+        it 'sets the success redirect to the rank_admits action' do
+          get :rank_admits, :id => @faculty_instance.id
+          assigns[:redirect_action].should == 'rank_admits'
+        end
+
+        it 'does not redirect to select_admits' do
+          get :rank_admits, :id => @faculty_instance.id
+          response.should_not redirect_to(:action => 'select_admits')
+        end
+
+        it 'renders the select_admits template' do
+          get :rank_admits, :id => @faculty_instance.id
+          response.should render_template('rank_admits')
+        end
+      end
+
+      context 'when the Faculty has selected some Admits to rank' do
         before(:each) do
           @admits = Array.new(3) {Admit.new}
+          Admit.stub(:find).and_return(@admits)
         end
 
         it 'finds the given Admits' do
@@ -417,25 +446,29 @@ describe FacultyController do
 
         it 'builds a new AdmitRanking for each given Admit' do
           Faculty.stub(:find).and_return(@faculty_instance)
-          Admit.stub(:find).and_return(@admits)
           get :rank_admits, :id => @faculty_instance.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
           @faculty_instance.admit_rankings.map(&:admit).should == @admits
         end
-      end
 
-      it 'sets the error redirect to the rank_admits action' do
-        get :rank_admits, :id => @faculty_instance.id
-        assigns[:origin_action].should == 'rank_admits'
-      end
+        it 'sets the error redirect to the rank_admits action' do
+          get :rank_admits, :id => @faculty_instance.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
+          assigns[:origin_action].should == 'rank_admits'
+        end
 
-      it 'sets the success redirect to the rank_admits action' do
-        get :rank_admits, :id => @faculty_instance.id
-        assigns[:redirect_action].should == 'rank_admits'
-      end
+        it 'sets the success redirect to the rank_admits action' do
+          get :rank_admits, :id => @faculty_instance.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
+          assigns[:redirect_action].should == 'rank_admits'
+        end
 
-      it 'renders the select_admits template' do
-        get :rank_admits, :id => @faculty_instance.id
-        response.should render_template('rank_admits')
+        it 'does not redirect to select_admits' do
+          get :rank_admits, :id => @faculty_instance.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
+          response.should_not redirect_to(:action => 'select_admits')
+        end
+
+        it 'renders the select_admits template' do
+          get :rank_admits, :id => @faculty_instance.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
+          response.should render_template('rank_admits')
+        end
       end
     end
 

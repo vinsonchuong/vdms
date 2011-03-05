@@ -18,6 +18,7 @@ class AdmitsController < PeopleController
       new_faculty = Faculty.find(params[:select].select {|f, checked| checked.to_b}.map(&:first))
       new_faculty.each {|f| @admit.faculty_rankings.build(:faculty => f, :rank => 1)}
     end
+    redirect_to(select_faculty_admit_url(@admit)) && return if @admit.faculty_rankings.empty?
 
     @origin_action = 'rank_faculty'
     @redirect_action = 'rank_faculty'

@@ -124,7 +124,15 @@ Feature: Staff can manage admits
     And I should be on the update admit availability page
 
   Scenario: I see the admit's name while updating his faculty rankings
-    Given I am on the view admits page
+    Given the following "Faculty" have been added:
+      | ldap_id | first_name  | last_name  | email            | division               | area                       |
+      | ID1     | Aaa         | Aaa        | email1@email.com | Electrical Engineering | Artificial Intelligence    |
+      | ID2     | Bbb         | Bbb        | email2@email.com | Computer Science       | Graphics                   |
+      | ID3     | Ccc         | Ccc        | email3@email.com | Computer Science       | Human-Computer Interaction |
+    And my admit has the following faculty rankings:
+      | rank | faculty |
+      | 1    | Aaa Aaa |
+    And I am on the view admits page
     When I follow "Update Rankings"
     Then I should see "First1 Last1"
 
@@ -136,7 +144,6 @@ Feature: Staff can manage admits
       | ID3     | Ccc         | Ccc        | email3@email.com | Computer Science       | Human-Computer Interaction |
     And I am on the view admits page
     When I follow "Update Rankings"
-    And I follow "Add Faculty to Rankings"
     And I check "Aaa Aaa"
     And I check "Bbb Bbb"
     And I press "Rank Faculty"

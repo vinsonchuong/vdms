@@ -18,19 +18,14 @@ Feature: Peer advisor can rank faculty on behalf of admits
       | Faculty     | Cccc      | email2@email.com | Electrical Engineering | Integrated Circuits |
       | Faculty     | Bbbb      | email3@email.com | Computer Science       | Graphics            |
 
-  Scenario: I can view an admit's rankings
+  Scenario: If the admit does not have any rankings entered, I am asked to select faculty to rank
     Given I am on the view admits page
     When I follow "Update Rankings"
-    Then I should be on the rank faculty page
+    Then I should be on the select faculty page
 
-  Scenario: I see the admit's name
+  Scenario: I select new faculty to rank
     Given I am on the view admits page
     When I follow "Update Rankings"
-    Then I should see "First1 Last1"
-
-  Scenario: I select faculty to rank
-    Given I am on the rank faculty page
-    When I follow "Add Faculty"
     And I check "Faculty Aaaa"
     And I check "Faculty Cccc"
     And I press "Rank Faculty"
@@ -38,9 +33,9 @@ Feature: Peer advisor can rank faculty on behalf of admits
     And I should see "Faculty Aaaa"
     And I should see "Faculty Cccc"
 
-  Scenario: I rank some faculty
-    Given I am on the rank faculty page
-    When I follow "Add Faculty"
+  Scenario: I rank some new faculty
+    Given I am on the view admits page
+    When I follow "Update Rankings"
     And I check "Faculty Aaaa"
     And I check "Faculty Cccc"
     And I press "Rank Faculty"
@@ -51,8 +46,8 @@ Feature: Peer advisor can rank faculty on behalf of admits
     And I should be on the rank faculty page
 
   Scenario: I give two faculty duplicate ranks
-    Given I am on the rank faculty page
-    When I follow "Add Faculty"
+    Given I am on the view admits page
+    When I follow "Update Rankings"
     And I check "Faculty Aaaa"
     And I check "Faculty Bbbb"
     And I press "Rank Faculty"
@@ -64,8 +59,8 @@ Feature: Peer advisor can rank faculty on behalf of admits
     And I should see "Faculty Bbbb"
 
   Scenario: I give two faculty duplicate ranks twice
-    Given I am on the rank faculty page
-    When I follow "Add Faculty"
+    Given I am on the view admits page
+    When I follow "Update Rankings"
     And I check "Faculty Aaaa"
     And I check "Faculty Bbbb"
     And I press "Rank Faculty"
@@ -76,6 +71,43 @@ Feature: Peer advisor can rank faculty on behalf of admits
     Then I should see "Ranks must be unique"
     And I should see "Faculty Aaaa"
     And I should see "Faculty Bbbb"
+
+  Scenario: I can view an admit's rankings
+    Given my admit has the following faculty rankings:
+      | rank | faculty      |
+      | 1    | Faculty Aaaa |
+      | 2    | Faculty Bbbb |
+      | 3    | Faculty Cccc |
+    And I am on the view admits page
+    When I follow "Update Rankings"
+    Then I should be on the rank faculty page
+    And I should see "Faculty Aaaa"
+    And I should see "Faculty Bbbb"
+    And I should see "Faculty Cccc"
+
+  Scenario: I see the admit's name
+    Given my admit has the following faculty rankings:
+      | rank | faculty      |
+      | 1    | Faculty Aaaa |
+      | 2    | Faculty Bbbb |
+      | 3    | Faculty Cccc |
+    And I am on the view admits page
+    When I follow "Update Rankings"
+    Then I should see "First1 Last1"
+
+  Scenario: I add additional faculty rankings
+    Given my admit has the following faculty rankings:
+      | rank | faculty      |
+      | 1    | Faculty Aaaa |
+    And I am on the rank faculty page
+    And I follow "Add Faculty"
+    And I check "Faculty Cccc"
+    And I press "Rank Faculty"
+    And I rank the "first" faculty "2"
+    And I rank the "second" faculty "1"
+    And I press "Update Rankings"
+    Then I should see "Admit was successfully updated."
+    And I should be on the rank faculty page
 
   Scenario: I change an admit's faculty rankings
     Given my admit has the following faculty rankings:

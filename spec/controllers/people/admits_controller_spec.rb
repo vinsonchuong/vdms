@@ -374,9 +374,43 @@ describe AdmitsController do
         assigns[:admit].should == @admit
       end
 
-      context 'when given new Faculty to rank' do
+      context 'when no Faculty have been ranked or selected' do
+        it 'does redirects to select_faculty' do
+          get :rank_faculty, :id => @admit.id
+          response.should redirect_to(:action => 'select_faculty')
+        end
+      end
+
+      context 'when some Faculty have been ranked but none have been selected' do
+        before(:each) do
+          Factory.create(:faculty_ranking, :admit => @admit)
+        end
+
+        it 'sets the error redirect to the rank_faculty action' do
+          get :rank_faculty, :id => @admit.id
+          assigns[:origin_action].should == 'rank_faculty'
+        end
+
+        it 'sets the success redirect to the rank_faculty action' do
+          get :rank_faculty, :id => @admit.id
+          assigns[:redirect_action].should == 'rank_faculty'
+        end
+
+        it 'does not redirect to select_faculty' do
+          get :rank_faculty, :id => @admit.id
+          response.should_not redirect_to(:action => 'select_faculty')
+        end
+
+        it 'renders the rank_faculty template' do
+          get :rank_faculty, :id => @admit.id
+          response.should render_template('rank_faculty')
+        end
+      end
+
+      context 'when some Faculty have been selected to rank' do
         before(:each) do
           @faculty = Array.new(3) {Faculty.new}
+          Faculty.stub(:find).and_return(@faculty)
         end
 
         it 'finds the given Faculty' do
@@ -386,25 +420,29 @@ describe AdmitsController do
 
         it 'builds a new FacultyRanking for each given Faculty' do
           Admit.stub(:find).and_return(@admit)
-          Faculty.stub(:find).and_return(@faculty)
           get :rank_faculty, :id => @admit.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
           @admit.faculty_rankings.map(&:faculty).should == @faculty
         end
-      end
 
-      it 'sets the error redirect to the rank_faculty action' do
-        get :rank_faculty, :id => @admit.id
-        assigns[:origin_action].should == 'rank_faculty'
-      end
+        it 'sets the error redirect to the rank_faculty action' do
+          get :rank_faculty, :id => @admit.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
+          assigns[:origin_action].should == 'rank_faculty'
+        end
 
-      it 'sets the success redirect to the rank_faculty action' do
-        get :rank_faculty, :id => @admit.id
-        assigns[:redirect_action].should == 'rank_faculty'
-      end
+        it 'sets the success redirect to the rank_faculty action' do
+          get :rank_faculty, :id => @admit.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
+          assigns[:redirect_action].should == 'rank_faculty'
+        end
 
-      it 'renders the rank_faculty template' do
-        get :rank_faculty, :id => @admit.id
-        response.should render_template('rank_faculty')
+        it 'does not redirect to select_faculty' do
+          get :rank_faculty, :id => @admit.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
+          response.should_not redirect_to(:action => 'select_faculty')
+        end
+
+        it 'renders the rank_faculty template' do
+          get :rank_faculty, :id => @admit.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
+          response.should render_template('rank_faculty')
+        end
       end
     end
 

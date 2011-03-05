@@ -31,4 +31,4 @@
         != faculty_form.select :area, @areas
     != hidden_field_tag :origin_action, @origin_action
     != hidden_field_tag :redirect_action, @redirect_action
-    != faculty_form.submit ((@current_user.class == Faculty) ? t('.alt_submit') : t('.submit'))
+    != faculty_form.submit((@current_user.class == Faculty) ? t('.alt_submit') : t('.submit'))

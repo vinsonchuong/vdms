@@ -59,9 +59,6 @@ class MeetingsController < ApplicationController
   # Run the scheduler
   # POST /meetings/create_all
   def create_all
-    flash[:notice] = "The automatic scheduler hasn't been deployed yet."
-    redirect_to master_meetings_path and return
-    
     begin
       Meeting.generate()
       flash[:notice] = "New schedule successfully generated."
