@@ -7,6 +7,6 @@ class Division < ActiveRecord::Base
   validates_existence_of :settings
 
   def long_name
-    STATIC_SETTINGS['divisions'][self.name]
+    STATIC_SETTINGS['divisions'][self.name.downcase]
   end
 end

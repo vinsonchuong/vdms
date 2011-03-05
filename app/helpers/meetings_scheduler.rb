@@ -69,29 +69,32 @@ module MeetingsScheduler
 #total_generation: an int specifying the number of generation the GA algorithm will run/iterate   
   
   def self.delete_old_meetings!
-    Meeting.all.each{ |m| m.destroy }
+    # Meeting.all.each{ |m| m.destroy }
+    Meeting.delete_all
   end
 
-  def save_all_meetings_to_database!(all_meetings)
-    @all_meetings.each{ |m| m.save! }
+  # ROUNDABOUT HACK TO BYPASS STRICT REGULATIONGS
+  def self.save_all_created_meetings_to_database!
+    @all_meetings.each{ |m| m.save(false) }
   end
 
   def self.create_meetings!(best_chromosome)
     @all_meetings = initialize_all_meetings
     fill_up_meetings_with_best_chromosome!(best_chromosome)
-    save_all_meetings_to_database!(all_meetings)
+    save_all_created_meetings_to_database!
   end
 
   def self.initialize_all_meetings
-    @all_meetings = Faculty.all.collect do |faculty|
-      faculty.available_times.collect { |available_time| faculty.meetings.new(:time => available_time.begin, :room => available_time.room) }
+    @all_meetings = Faculty.attending_faculties.collect do |faculty|
+      faculty.available_times.collect{ |available_time| faculty.meetings.new(:time => available_time.begin,
+                                                                             :room => available_time.room.blank? ? faculty.default_room : available_time.room) }
     end
     @all_meetings.flatten!
   end
   
   def self.fill_up_meetings_with_best_chromosome!(best_chromosome)
     best_chromosome.reduced_meeting_solution.each do |nucleotide|      
-      fill_up_meeting_with_nucleotide(nucleotide) if nucleotide.is_meeting_possible?
+      fill_up_meeting_with_nucleotide!(nucleotide) if nucleotide.is_meeting_possible?
     end
   end
   
@@ -100,9 +103,9 @@ module MeetingsScheduler
     meeting.admits << Admit.find(nucleotide.admit_id)
   end
 
-  def find_meeting_object_by_nucleotide(nucleotide)
-    admit, schedule, faculty = nucleotide.extract
-    @all_meetings.find{ |m| m.faculty_id == faculty[:id] and m.time == schedule[:timeslot].begin }
+  def self.find_meeting_object_by_nucleotide(nucleotide)
+    faculty, schedule, admit = nucleotide.extract
+    @all_meetings.find{ |m| m.faculty_id == faculty[:id] and m.time == schedule[:time_slot].begin }
   end
 
   
@@ -284,6 +287,10 @@ module MeetingsScheduler
       self.solution_string[index]
     end
 
+    def []=(index, new_nucleotide)
+      @meeting_solution[index] =  new_nucleotide
+    end
+
     def <=>(other)
       self.fitness <=> other.fitness
     end
@@ -293,11 +300,30 @@ module MeetingsScheduler
     end
 
     def reduced_meeting_solution
-      # CURRENTLY A METHOD STUB !!!
-      @reduced_meeting_solution = @meeting_solution
+      # CURRENTLY DOES NOT HAVE ALL FEATURES YET !!!
+      @reduced_meeting_solution = Chromosome.new(solution_string).duplicates_per_single_meeting_removed!.meeting_solution
       @reduced_meeting_solution
     end
-    
+
+    # METHOD IS USED ON CHROMOSOME COPIES ONLY, NOT THE ORIGINAL CHROMOSOME
+    # FOR USE WITH REDUCED_MEETING_SOLUTION
+    def duplicates_per_single_meeting_removed!
+      @meeting_solution.each_with_index do |nucleotide, index|
+        if duplicates_in_single_meeting?(nucleotide)
+          @meeting_solution[index] =  Nucleotide.new(nucleotide.faculty, nucleotide.schedule_index, nil)
+        end
+      end
+      self
+    end
+
+    def duplicates_in_single_meeting?(nucleotide)
+      return false if nucleotide.admit_id.nil?
+      nucleotides = @meeting_solution.find_all{ |n| n.faculty_id == nucleotide.faculty_id and n.schedule_index == nucleotide.schedule_index }
+      admit_ids = nucleotides.collect{ |n| n.admit_id }
+      duplicate_ids = admit_ids.inject({}) {|h,v| h[v]=h[v].to_i+1; h}.reject{|k,v| v==1}.keys
+      duplicate_ids.include? nucleotide.admit_id
+    end
+
     # Definition: A utility/heuristic value function that evaluates how good a particular solution is
     # @params: NA
     # @return: a fitness value as a Float
@@ -328,7 +354,7 @@ module MeetingsScheduler
         which_mutation = rand
         case which_mutation
         when 0...@@factors_to_consider[:chromosomal_inversion_probability]
-          index1, index2 = pick_two_random_indexes
+          index1, index2 = chromosome.pick_two_random_indexes
           Chromosome.chromosomal_inversion(chromosome, index1, index2)        
         when @@factors_to_consider[:chromosomal_inversion_probability]...
             (@@factors_to_consider[:chromosomal_inversion_probability] + @@factors_to_consider[:point_mutation_probability])
@@ -350,7 +376,7 @@ module MeetingsScheduler
     # @return: only ONE new Chromosome object with the appropriate reproduction operation performed
     def self.reproduce(parent1, parent2)
       if rand < @@factors_to_consider[:double_crossover_probability]
-        splice_index1, splice_index2 = pick_two_random_indexes
+        splice_index1, splice_index2 = parent1.pick_two_random_indexes
         Chromosome.double_crossover(parent1, parent2, splice_index1, splice_index2)
       else
         splice_index = rand(parent1.length - 2)+1
@@ -358,8 +384,30 @@ module MeetingsScheduler
       end
     end
     
-    
-            
+    # Definition: Determines whether a chromosome is 'unfit enough' for a mutation
+    # @params:
+    # => a Chromosome
+    # @return:
+    # => true or false
+    def ok_to_mutate?
+      #chromosome.normalized_fitness && rand < ((1 - chromosome.normalized_fitness) * 0.3)
+      true
+    end
+
+    #########################
+    # MISCELLANEOUS METHODS #
+    #########################
+
+    def pick_two_random_indexes
+      index1 = index2 = rand(@meeting_solution.length - 5) + 1
+      while index2 <= index1+1
+        index2 = rand(@meeting_solution.length - 2) + 1
+      end
+      [index1, index2]
+    end
+
+
+
     private unless Rails.env == 'test'
     
     # Definition: Helper method to create a nucleotide sequence 
@@ -380,18 +428,8 @@ module MeetingsScheduler
       
       solution_string[0...solution_string.length] = admit_ids.shuffle.shuffle[0...solution_string.length] if total_number_of_seats > 0
       solution_string    
-    end    
-    
-    # Definition: Determines whether a chromosome is 'unfit enough' for a mutation
-    # @params: 
-    # => a Chromosome
-    # @return: 
-    # => true or false
-    def ok_to_mutate?
-      #chromosome.normalized_fitness && rand < ((1 - chromosome.normalized_fitness) * 0.3)
-      true
     end
-        
+
     
     #####################################
     # Chromosome Fitness Helper Methods #
@@ -513,20 +551,6 @@ module MeetingsScheduler
     def self.double_crossover(parent1, parent2, splice_index1, splice_index2)
       Chromosome.new(parent1[0...splice_index1] + parent2[splice_index1...splice_index2] + parent1[splice_index2..-1])
     end
-
-    
-    #########################
-    # MISCELLANEOUS METHODS #
-    #########################
-
-    def pick_two_random_indexes
-      index1 = index2 = rand(@meeting_solution.length - 5) + 1
-      while index2 <= index1+1
-        index2 = rand(@meeting_solution.length - 2) + 1
-      end
-      [index1, index2]
-    end
-
   end
   
 
@@ -553,8 +577,12 @@ module MeetingsScheduler
       @faculty[:id]
     end
 
+    def schedule
+      @faculty[:schedule][@schedule_index]
+    end
+
     def extract
-      [@faculty, @faculty[:schedule][@schedule_index], @admit]
+      [@faculty, schedule, @admit]
     end
 
     def ==(other)

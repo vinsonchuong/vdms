@@ -13,7 +13,8 @@ class Meeting < ActiveRecord::Base
     puts "GA initialize..."
     MeetingsScheduler::GeneticAlgorithm.initialize(self.factors_to_consider, self.fitness_scores_table)
     puts "GA running..."
-    MeetingsScheduler::GeneticAlgorithm.run(10, 1) 
+    best_chromosome = MeetingsScheduler::GeneticAlgorithm.run(10, 1)
+    MeetingsScheduler.create_meetings!(best_chromosome)
   end
   
   def to_s
@@ -117,7 +118,7 @@ class Meeting < ActiveRecord::Base
             :one_on_one => admit_ranking.one_on_one,
             :time_slots => admit_ranking.time_slots }},
           :schedule => faculty.available_times.all.select{ |available_time| available_time.available? }.collect {|available_time| { 
-            :room => available_time.room,
+            :room => available_time.room.blank? ? faculty.default_room : available_time.room,
             :time_slot => available_time.begin..available_time.end}}}})}
   end
   
