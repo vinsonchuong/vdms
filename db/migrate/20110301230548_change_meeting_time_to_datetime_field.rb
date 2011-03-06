@@ -1,9 +1,11 @@
 class ChangeMeetingTimeToDatetimeField < ActiveRecord::Migration
   def self.up
-    change_column :meetings, :time, :datetime
+    remove_column :meetings, :time
+    add_column :meetings, :time, :datetime
   end
 
   def self.down
-    change_column :meetings, :datetime, :time
+    remove_column :meetings, :time
+    add_column :meetings, :time, :time
   end
 end
