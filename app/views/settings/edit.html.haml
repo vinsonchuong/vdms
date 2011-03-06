@@ -7,6 +7,16 @@
         - @settings.errors.full_messages.each do |message|
           %li!= message
   %fieldset
+    %h3!= t('.data_entry_permissions')
+    %p!= t('.data_entry_permissions_description')
+    %ul
+      %li.field
+        != settings_form.label :disable_peer_advisors
+        != settings_form.check_box :disable_peer_advisors
+      %li.field
+        != settings_form.label :disable_faculty
+        != settings_form.check_box :disable_faculty
+  %fieldset
     - numbers = []
     - 121.times {|i| numbers[i] = i}
     %h3!= t('.scheduler_settings')
@@ -49,4 +59,4 @@
                     %li
                       != available_time_fields.check_box :_destroy
                       != available_time_fields.label :_destroy, t('.remove')
-    != settings_form.submit
+    != settings_form.submit t('.submit')

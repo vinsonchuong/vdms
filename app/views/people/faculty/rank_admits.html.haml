@@ -13,7 +13,10 @@
     %h3!= t('.admit_rankings')
     %p!= t('.admit_rankings_description')
     %ul
-      %li{:class => 'button'}!= link_to t('.add_admits'), select_admits_faculty_instance_path(@faculty_instance)
+      - if Settings.instance.disable_faculty && @current_user.class == Faculty
+        %li{:class => 'button'}!= link_to t('.add_admits'), rank_admits_faculty_instance_path(@faculty_instance)
+      - else
+        %li{:class => 'button'}!= link_to t('.add_admits'), select_admits_faculty_instance_path(@faculty_instance)
     %table
       %thead
         %tr
@@ -40,4 +43,4 @@
             != admit_ranking_fields.hidden_field :admit_id
   != hidden_field_tag :origin_action, @origin_action
   != hidden_field_tag :redirect_action, @redirect_action
-  != faculty_form.submit t('.submit')
+  != faculty_form.submit t('.submit'), :disabled => (Settings.instance.disable_faculty && @current_user.class == Faculty)

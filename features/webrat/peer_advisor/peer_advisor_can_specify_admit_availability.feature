@@ -33,3 +33,9 @@ Feature: Peer advisor can specify admit availability
     Given I am on the view admits page
     When I follow "Update Availability" for the first admit
     Then I should see "First1 Last1"
+
+  Scenario: The staff have disabled making further changes
+    Given the staff have disabled peer advisors from making further changes
+    And I am on the view admits page
+    When I follow "Update Availability" for the first admit
+    Then I should see "The Staff have disabled making further changes."

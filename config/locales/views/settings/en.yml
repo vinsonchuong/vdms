@@ -3,6 +3,8 @@ en:
     edit:
       title: "Update Settings"
       errors: "Errors"
+      data_entry_permissions: "Data Entry Permissions"
+      data_entry_permissions_description: "Prevents the checked roles from updating availability and rankings."
       scheduler_settings: "Scheduler Settings"
       scheduler_settings_description: "Numbers and weights which allow for customization of the meeting scheduler's
                                        priorities."
@@ -19,3 +21,4 @@ en:
       minutes: "Minutes"
       time_intervals_for: "Time Intervals for"
       remove: "Remove"
+      submit: "Update Settings"

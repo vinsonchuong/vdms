@@ -48,3 +48,8 @@ Feature: Faculty can specify availability
     And I press "Update Availability"
     Then I should see "Faculty was successfully updated"
     And I should be on the update faculty availability page
+
+  Scenario: The staff have disabled making further changes
+    Given the staff have disabled faculty from making further changes
+    When I go to the rank admits page
+    Then I should see "The Staff have disabled making further changes."

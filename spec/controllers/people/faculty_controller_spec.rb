@@ -318,6 +318,19 @@ describe FacultyController do
         Faculty.stub(:find).and_return(@faculty_instance)
       end
 
+      context 'when the Staff have disabled Faculty from making further changes' do
+        before(:each) do
+          settings = Settings.instance
+          settings.disable_faculty = true
+          settings.save
+        end
+
+        it 'sets a flash[:alert] message' do
+          get :edit_availability, :id => @faculty_instance.id
+          flash[:alert].should == I18n.t('people.faculty.edit_availability.disabled')
+        end
+      end
+
       it 'assigns to @faculty_instance the given Faculty' do
         get :edit_availability, :id => @faculty_instance.id
         assigns[:faculty_instance].should == @faculty_instance
@@ -398,6 +411,29 @@ describe FacultyController do
         Faculty.stub(:find).and_return(@faculty_instance)
         get :rank_admits, :id => @faculty_instance.id
         assigns[:faculty_instance].should == @faculty_instance
+      end
+
+      context 'when the Staff have disabled Faculty from making further changes' do
+        before(:each) do
+          settings = Settings.instance
+          settings.disable_faculty = true
+          settings.save
+        end
+
+        it 'sets a flash[:alert] message' do
+          get :rank_admits, :id => @faculty_instance.id
+          flash[:alert].should == I18n.t('people.faculty.rank_admits.disabled')
+        end
+
+        it 'does not redirect to select_admits' do
+          get :rank_admits, :id => @faculty_instance.id
+          response.should_not redirect_to(:action => 'select_admits')
+        end
+
+        it 'renders the select_admits template' do
+          get :rank_admits, :id => @faculty_instance.id
+          response.should render_template('rank_admits')
+        end
       end
 
       context 'when the Faculty has not ranked or selected any Admits' do

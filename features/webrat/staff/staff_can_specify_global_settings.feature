@@ -17,7 +17,7 @@ Feature: Staff can specify global settings
     Given I am on the update settings page
     When I add "January 1, 2011 10:00AM" to "12:00PM" to the meeting times for "Computer Science"
     And I add "January 1, 2011 10:00AM" to "12:00PM" to the meeting times for "Electrical Engineering"
-    And I press "Save changes"
+    And I press "Update Settings"
     Then I should see "Settings were successfully updated."
 
   Scenario: I remove a meeting time range
@@ -27,13 +27,20 @@ Feature: Staff can specify global settings
       | 1/1/2000 2:00PM | 1/1/2000 3:00PM  |
     And I am on the update settings page
     When I remove the "Computer Science" meeting time beginning with "1/1/2000 9:00AM"
-    And I press "Save changes"
+    And I press "Update Settings"
     Then I should see "Settings were successfully updated."
     And "Computer Science" should not have a meeting time beginning with "1/1/2000 9:00AM"
 
   Scenario: I specify the threshold number of meetings for an admit to be unsatisfied
     Given I am on the update settings page
     When I fill in "Unsatisfied Admit Threshold" with "5"
-    And I press "Save changes"
+    And I press "Update Settings"
     Then I should see "Settings were successfully updated."
     And the "Unsatisfied Admit Threshold" field should contain "5"
+
+  Scenario: I prevent faculty and peer advisors from making further changes to availabilities and rankings
+    Given I am on the update settings page
+    When I check "Prevent Peer Advisors from changing Admits' availability and rankings"
+    And I check "Prevent Faculty from changing their availability and rankings"
+    And I press "Update Settings"
+    Then I should see "Settings were successfully updated."

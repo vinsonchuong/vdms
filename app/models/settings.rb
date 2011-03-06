@@ -4,6 +4,8 @@ class Settings < ActiveRecord::Base
   def after_initialize
     if self.new_record?
       self.unsatisfied_admit_threshold ||= 0
+      self.disable_faculty ||= false
+      self.disable_peer_advisors ||= false
     end
   end
   after_save do |record|
@@ -17,6 +19,8 @@ class Settings < ActiveRecord::Base
 
   validates_presence_of :unsatisfied_admit_threshold
   validates_numericality_of :unsatisfied_admit_threshold, :only_integer => true, :greater_than_or_equal_to => 0
+  validates_inclusion_of :disable_faculty, :in => [true, false]
+  validates_inclusion_of :disable_peer_advisors, :in => [true, false]
 
   def self.instance
     self.find(:all).first || self.send(:create)

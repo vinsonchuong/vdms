@@ -140,3 +140,8 @@ Feature: Faculty can rank admits
     And I should see "Aaa Aaa"
     But I should not see "Bbb Bbb"
     And I should not see "Ccc Ccc"
+
+  Scenario: The staff have disabled making further changes
+    Given the staff have disabled faculty from making further changes
+    When I go to the rank admits page
+    Then I should see "The Staff have disabled making further changes."

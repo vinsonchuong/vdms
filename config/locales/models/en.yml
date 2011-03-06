@@ -46,6 +46,8 @@ en:
         meeting_length: "Meeting Length"
         meeting_gap: "Inter-Meeting Gap"
         unsatisfied_admit_threshold: "Unsatisfied Admit Threshold"
+        disable_peer_advisors: "Prevent Peer Advisors from changing Admits' availability and rankings"
+        disable_faculty: "Prevent Faculty from changing their availability and rankings"
       division:
         name: "Abbreviation"
         long_name: "Name"

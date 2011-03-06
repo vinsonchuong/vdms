@@ -11,6 +11,11 @@ class FacultyController < PeopleController
     settings = Settings.instance
     @faculty_instance = Faculty.find(params[:id])
     @faculty_instance.build_available_times(settings.meeting_times(@faculty_instance.division), settings.meeting_length, settings.meeting_gap)
+
+    if Settings.instance.disable_faculty && @current_user.class == Faculty
+      flash[:alert] = t('people.faculty.edit_availability.disabled')
+    end
+
     @origin_action = 'edit_availability'
     @redirect_action = 'edit_availability'
   end
@@ -23,7 +28,13 @@ class FacultyController < PeopleController
       new_admits = Admit.find(params[:select].select {|admit, checked| checked.to_b}.map(&:first))
       new_admits.each {|a| @faculty_instance.admit_rankings.build(:admit => a, :rank => 1)}
     end
-    redirect_to(select_admits_faculty_instance_url(@faculty_instance)) && return if @faculty_instance.admit_rankings.empty?
+
+    if Settings.instance.disable_faculty && @current_user.class == Faculty
+      flash[:alert] = t('people.faculty.rank_admits.disabled')
+    elsif @faculty_instance.admit_rankings.empty?
+      redirect_to(select_admits_faculty_instance_url(@faculty_instance))
+      return
+    end
 
     @origin_action = 'rank_admits'
     @redirect_action = 'rank_admits'

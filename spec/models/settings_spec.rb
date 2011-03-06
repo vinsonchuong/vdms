@@ -7,9 +7,19 @@ describe Settings do
   end
 
   describe 'Attributes' do
-    it 'has an Unsatisfied Admit Threshold' do
+    it 'has an Unsatisfied Admit Threshold (unsatisfied_admit_threshold)' do
       @settings.should respond_to(:unsatisfied_admit_threshold)
       @settings.should respond_to(:unsatisfied_admit_threshold=)
+    end
+
+    it 'has a Disable Faculty From Making Changes flag (disable_faculty)' do
+      @settings.should respond_to(:disable_faculty)
+      @settings.should respond_to(:disable_faculty=)
+    end
+
+    it 'has a Disable Peer Advisors From Making Changes flag (disable_peer_advisors)' do
+      @settings.should respond_to(:disable_peer_advisors)
+      @settings.should respond_to(:disable_peer_advisors=)
     end
   end
 
@@ -58,6 +68,14 @@ describe Settings do
     it 'by default has an Unsatisfied Admit Threshold of 0' do
       @settings.unsatisfied_admit_threshold.should == 0
     end
+
+    it 'by default has a Disable Faculty From Making Changes flag of false' do
+      @settings.disable_faculty.should be_false
+    end
+
+    it 'by default has a Disable Peer Advisors From Making Changes flag of false' do
+      @settings.disable_peer_advisors.should be_false
+    end
   end
 
   context 'when validating' do
@@ -70,6 +88,16 @@ describe Settings do
         @settings.unsatisfied_admit_threshold = invalid_threshold
         @settings.should_not be_valid
       end
+    end
+
+    it 'is not valid without a Disable Faculty From Making Changes flag' do
+      @settings.disable_faculty = nil
+      @settings.should_not be_valid
+    end
+
+    it 'is not valid without a Disable Peer Advisors From Making Changes flag' do
+      @settings.disable_peer_advisors = nil
+      @settings.should_not be_valid
     end
   end
 

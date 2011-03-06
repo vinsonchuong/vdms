@@ -136,3 +136,8 @@ Feature: Peer advisor can rank faculty on behalf of admits
     And I should see "Faculty Aaa"
     But I should not see "Faculty Bbb"
     And I should not see "Faculty Ccc"
+
+  Scenario: The staff have disabled making further changes
+    Given the staff have disabled peer advisors from making further changes
+    When I go to the rank faculty page
+    Then I should see "The Staff have disabled making further changes."

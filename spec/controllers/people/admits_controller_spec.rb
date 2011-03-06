@@ -299,7 +299,20 @@ describe AdmitsController do
 
     context 'when signed in as a registered Peer Advisor' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@admit.ldap_id)
+        CASClient::Frameworks::Rails::Filter.fake(@peer_advisor.ldap_id)
+      end
+
+      context 'when the Staff have disabled Peer Advisors from making further changes' do
+        before(:each) do
+          settings = Settings.instance
+          settings.disable_peer_advisors = true
+          settings.save
+        end
+
+        it 'sets a flash[:alert] message' do
+          get :edit_availability, :id => @admit.id
+          flash[:alert].should == I18n.t('people.admits.edit_availability.disabled')
+        end
       end
 
       it 'assigns to @admit the given Admit' do
@@ -366,12 +379,35 @@ describe AdmitsController do
 
     context 'when signed in as a registered Peer Advisor' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@admit.ldap_id)
+        CASClient::Frameworks::Rails::Filter.fake(@peer_advisor.ldap_id)
       end
 
       it 'assigns to @admit the given Admit' do
         get :rank_faculty, :id => @admit.id
         assigns[:admit].should == @admit
+      end
+
+      context 'when the Staff have disabled Peer Advisors from making further changes' do
+        before(:each) do
+          settings = Settings.instance
+          settings.disable_peer_advisors = true
+          settings.save
+        end
+
+        it 'sets a flash[:alert] message' do
+          get :rank_faculty, :id => @admit.id
+          flash[:alert].should == I18n.t('people.admits.rank_faculty.disabled')
+        end
+
+        it 'does not redirect to select_faculty' do
+          get :rank_faculty, :id => @admit.id
+          response.should_not redirect_to(:action => 'select_faculty')
+        end
+
+        it 'renders the rank_faculty template' do
+          get :rank_faculty, :id => @admit.id
+          response.should render_template('rank_faculty')
+        end
       end
 
       context 'when no Faculty have been ranked or selected' do
@@ -394,6 +430,11 @@ describe AdmitsController do
         it 'sets the success redirect to the rank_faculty action' do
           get :rank_faculty, :id => @admit.id
           assigns[:redirect_action].should == 'rank_faculty'
+        end
+
+        it 'does not redirect to select_faculty' do
+          get :rank_faculty, :id => @admit.id
+          response.should_not redirect_to(:action => 'select_faculty')
         end
 
         it 'does not redirect to select_faculty' do

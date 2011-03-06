@@ -9,7 +9,10 @@
   %fieldset
     %h3!= t('.faculty_rankings')
     %ul
-      %li{:class => 'button'}!= link_to t('.add_faculty'), select_faculty_admit_path(@admit)
+      - if Settings.instance.disable_peer_advisors && @current_user.class == PeerAdvisor
+        %li{:class => 'button'}!= link_to t('.add_faculty'), rank_faculty_admit_path(@admit)
+      - else
+        %li{:class => 'button'}!= link_to t('.add_faculty'), select_faculty_admit_path(@admit)
     %table
       %thead
         %tr
@@ -28,4 +31,4 @@
             != faculty_ranking_fields.hidden_field :faculty_id
   != hidden_field_tag :origin_action, @origin_action
   != hidden_field_tag :redirect_action, @redirect_action
-  != admit_form.submit t('.submit')
+  != admit_form.submit t('.submit'), :disabled => (Settings.instance.disable_peer_advisors && @current_user.class == PeerAdvisor)
