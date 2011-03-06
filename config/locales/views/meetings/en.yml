@@ -4,9 +4,11 @@ en:
       title: "Generate Schedule"
       warning: >
         Generating a new schedule will ERASE all current meetings, 
-        both automatically-generated and hand-modified.  Once this
-        happens the old schedule cannot be automatically restored.
-        Are you sure you want to proceed?
+        both automatically-generated and hand-modified. Once this
+        happens, the old schedule cannot be automatically restored.
+        Also, generating a new schedule will take 2-5 minutes, during
+        which, the site will become unresponsive. Are you sure you
+        want to proceed?
     master:
       title: "Master Meeting Schedule"
       if_empty: "The master schedule has not been generated yet."
@@ -24,4 +26,3 @@ en:
         (Mandatory meetings are in bold, one-on-one are in red.)
         To add an admit, select admit name from menu.
         Be sure to click Save Changes to apply your changes!
-        

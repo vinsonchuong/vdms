@@ -46,7 +46,6 @@ Feature: Staff can view master meeting schedule
     Then I should be on the view admit meeting schedule page for "Jim Gray"
     And  I should see "Jitendra Malik"
     And  I should see "Kris Pister"
-    But  I should not see "Armando Fox"
 
   Scenario: follow link from master schedule to faculty's schedule
     When I go to the master meetings page

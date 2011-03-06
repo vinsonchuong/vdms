@@ -41,9 +41,9 @@ h1 a {
 }
 
 #navigation {
-  margin-top: 33px;
   width: 180px;
-  float: left;
+  position: absolute;
+  top: 193px;
 }
 #navigation ul li a {
   display: block;
@@ -91,8 +91,11 @@ h1 a {
 }
 
 #content {
+  float: left;
   margin: 10px 0 0 210px;
   padding: 20px;
+  min-height: 480px;
+  min-width: 660px;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -122,6 +125,16 @@ h1 a {
   border: #4ad34f 1px solid;
   background-color: #effbef;
   color: #4ad34f;
+}
+#content p#alerts {
+  margin: 0 -10px;
+  padding: 10px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border: #d3934a 1px solid;
+  background-color: #fbf5ef;
+  color: #d3934a;
 }
 
 #content table {
@@ -230,6 +243,7 @@ h1 a {
 table.schedule {
 	border-style: solid;
 	border-color: #ccc;
+    white-space: nowrap;
 }
 
 table.schedule td {
@@ -243,6 +257,7 @@ table.schedule a {
 }
 
 #footer {
+  clear: both;
   margin: 0 auto;
   padding-top: 20px;
   width: 800px;

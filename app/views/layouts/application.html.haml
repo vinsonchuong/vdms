@@ -8,6 +8,13 @@
     != javascript_include_tag :defaults
   %body
     %h1!= link_to 'Visit Day', home_path
+    #content
+      %h2!= yield :title
+      - unless flash[:notice].nil?
+        %p#messages!= flash[:notice]
+      - unless flash[:alert].nil?
+        %p#alerts!= flash[:alert]
+      != yield
     #navigation
       - if @current_user.class == Staff
         %ul
@@ -41,11 +48,6 @@
           %li!= link_to t('faculty.edit_availability.alt_title'), edit_availability_faculty_instance_path(@current_user)
           %li!= link_to t('faculty.rank_admits.alt_title'), rank_admits_faculty_instance_path(@current_user)
           %li!= link_to t('faculty.view_schedule.alt_title'), faculty_meetings_path(@current_user)
-    #content
-      %h2!= yield :title
-      - unless flash[:notice].nil?
-        %p#messages!= flash[:notice]
-      != yield
     #footer
       %p By Vinson Chuong, Benson Ma, and Jacky Wu, alumni of Prof. Armando Fox's Software Engineering course at UC Berkeley.
       %p Visual design by Amber Feng.

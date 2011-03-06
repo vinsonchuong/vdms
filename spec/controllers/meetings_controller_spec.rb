@@ -51,13 +51,13 @@ describe MeetingsController do
       fake_login(:peer_advisor)
       get :tweak, :faculty_id => 1
       response.should redirect_to(home_path)
-      flash[:notice].should == 'Only Staff users may perform this action.'
+      flash[:alert].should == 'Only Staff users may perform this action.'
     end
     it 'should be forbidden for faculty' do
       fake_login(:faculty)
       get :tweak, :faculty_id => 1
       response.should redirect_to(home_path)
-      flash[:notice].should == 'Only Staff users may perform this action.'
+      flash[:alert].should == 'Only Staff users may perform this action.'
     end
   end
   describe 'manually deleting' do

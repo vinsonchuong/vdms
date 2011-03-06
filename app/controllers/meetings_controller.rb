@@ -48,11 +48,11 @@ class MeetingsController < ApplicationController
 
   # Save the tweaks to a faculty meeting schedule - for staff only
   def apply_tweaks
-    flash[:notice] = ''
+    flash[:alert] = ''
     params.delete_if { |k,v| v.blank? }
     messages = delete_meetings(params.keys)
     messages += add_meetings(params)
-    flash[:notice] = messages.join('<br/>')
+    flash[:alert] = messages.join('<br/>')
     redirect_to master_meetings_path
   end
   
@@ -63,7 +63,7 @@ class MeetingsController < ApplicationController
       Meeting.generate()
       flash[:notice] = "New schedule successfully generated."
     rescue Exception => e
-      flash[:notice] = "New schedule could NOT be generated: #{e.message}"
+      flash[:alert] = "New schedule could NOT be generated: #{e.message}"
     end
     redirect_to master_meetings_path
   end
@@ -107,14 +107,14 @@ class MeetingsController < ApplicationController
 
   def current_user_is_staff?
     unless @current_user && @current_user.class.name == 'Staff'
-      flash[:notice] = 'Only Staff users may perform this action.'
+      flash[:alert] = 'Only Staff users may perform this action.'
       redirect_to home_path
     end
   end
 
   def schedule_empty?
     if Meeting.count.zero?
-      flash[:notice] = t('meetings.master.if_empty')
+      flash[:alert] = t('meetings.master.if_empty')
     end
     true
   end

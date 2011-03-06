@@ -9,7 +9,7 @@
     - @faculty_meetings.each do |meeting|
       %tr
         %td!= meeting.time.strftime('%I:%M%p')
-        %td!= meeting.faculty.full_name
+        %td!= meeting.room
         %td.meeting
           != meeting.admits.map { |a| link_to(a.full_name, admit_meetings_path(a)) }.join(', ')
 
