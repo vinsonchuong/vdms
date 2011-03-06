@@ -13,7 +13,7 @@ class Meeting < ActiveRecord::Base
     puts "GA initialize..."
     MeetingsScheduler::GeneticAlgorithm.initialize(self.factors_to_consider, self.fitness_scores_table)
     puts "GA running..."
-    best_chromosome = MeetingsScheduler::GeneticAlgorithm.run(10, 1)
+    best_chromosome = MeetingsScheduler::GeneticAlgorithm.run(20, 10)
     MeetingsScheduler.create_meetings!(best_chromosome)
   end
   

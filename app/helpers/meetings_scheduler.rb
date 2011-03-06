@@ -69,19 +69,25 @@ module MeetingsScheduler
 #total_generation: an int specifying the number of generation the GA algorithm will run/iterate   
   
   def self.delete_old_meetings!
-    # Meeting.all.each{ |m| m.destroy }
+    puts "Deleting all old Meetings..."
     Meeting.delete_all
   end
 
-  # ROUNDABOUT HACK TO BYPASS STRICT REGULATIONGS
-  def self.save_all_created_meetings_to_database!
-    @all_meetings.each{ |m| m.save(false) }
+  def self.create_meetings!(best_chromosome)
+      puts "Initializing all Meeting objects for ATTENDING faculties..."
+      @all_meetings = initialize_all_meetings
+      fill_up_meetings_with_best_chromosome!(best_chromosome)
+      save_all_created_meetings_to_database!
   end
 
-  def self.create_meetings!(best_chromosome)
-    @all_meetings = initialize_all_meetings
-    fill_up_meetings_with_best_chromosome!(best_chromosome)
-    save_all_created_meetings_to_database!
+
+  private unless Rails.env == 'test'
+
+  # ROUNDABOUT VALIDATIONS HACK TO BYPASS STRICT ONE-ON-ONE REQUIREMENT
+  def self.save_all_created_meetings_to_database!
+    puts "Saving all new Meetings to database - this may take a while..."
+    @all_meetings.each{ |m| m.save(false) }
+    puts "Finished."
   end
 
   def self.initialize_all_meetings
@@ -138,13 +144,14 @@ module MeetingsScheduler
       population_size.times { population << Chromosome.seed }
       
       puts "GA casting natural selection and genetic recombination..."    
-      total_generations.times do
+      total_generations.times do |generation_num|
+        puts "At generation #{generation_num+1} of #{total_generations}"
         parents = GeneticAlgorithm.selection(population)
         offsprings = GeneticAlgorithm.reproduction(parents)
         population = GeneticAlgorithm.mutate_all_population(population)
         population = GeneticAlgorithm.replace_worst_ranked(population, offsprings) 
       end
-      #puts population.inspect
+      puts "GA finished."
       best_chromosome = GeneticAlgorithm.select_best_chromosome(population)
     end
 
@@ -299,49 +306,49 @@ module MeetingsScheduler
       @meeting_solution.length
     end
 
-    def reduced_meeting_solution
-      # CURRENTLY DOES NOT HAVE ALL FEATURES YET !!!
-      @reduced_meeting_solution = Chromosome.new(solution_string).duplicates_per_single_meeting_removed!.meeting_solution
-      @reduced_meeting_solution
+    # Definition: A utility/heuristic value function that evaluates how good a particular solution is
+    # @params: NA
+    # @return: a fitness value as a Float
+    def fitness
+      return @fitness if @fitness
+
+      # NO NEED to check if nucleotide contains nil admit because nucleotide.fitness checks for it
+      @fitness = reduced_meeting_solution.inject(0){ |fitness, nucleotide| fitness += nucleotide.fitness } +
+        chromosome_level_fitness
     end
 
+    def reduced_meeting_solution
+      # CURRENTLY DOES NOT HAVE ALL FEATURES YET !!!
+      @reduced_meeting_solution = Chromosome.new(solution_string).
+          duplicates_per_single_meeting_removed!.
+          conflicting_meetings_per_admit_resolved!.meeting_solution
+    end
+
+    ###########################################
+    # REDUCED MEETING SOLUTION PUBLIC HELPERS #
+    ###########################################
     # METHOD IS USED ON CHROMOSOME COPIES ONLY, NOT THE ORIGINAL CHROMOSOME
-    # FOR USE WITH REDUCED_MEETING_SOLUTION
+
+    # FOR THE CASE IN WHICH AN ADMIT IS SCHEDULED TO MEET WITH THE *SAME FACULTY* AT THE *SAME TIME* MORE THAN ONCE
     def duplicates_per_single_meeting_removed!
       @meeting_solution.each_with_index do |nucleotide, index|
         if duplicates_in_single_meeting?(nucleotide)
-          @meeting_solution[index] =  Nucleotide.new(nucleotide.faculty, nucleotide.schedule_index, nil)
+          @meeting_solution[index].admit = nil
         end
       end
       self
     end
 
-    def duplicates_in_single_meeting?(nucleotide)
-      return false if nucleotide.admit_id.nil?
-      nucleotides = @meeting_solution.find_all{ |n| n.faculty_id == nucleotide.faculty_id and n.schedule_index == nucleotide.schedule_index }
-      admit_ids = nucleotides.collect{ |n| n.admit_id }
-      duplicate_ids = admit_ids.inject({}) {|h,v| h[v]=h[v].to_i+1; h}.reject{|k,v| v==1}.keys
-      duplicate_ids.include? nucleotide.admit_id
+    # FOR THE CASE IN WHICH AN ADMIT IS SCHEDULED TO MEET WITH TWO FACULTIES AT THE SAME TIME
+    def conflicting_meetings_per_admit_resolved!
+      @meeting_solution.each do |nucleotide|
+        if (conflicting_nucleotides = conflicts_with_other_meetings(nucleotide))
+          resolve_conflicting_meetings!(conflicting_nucleotides)
+        end
+      end
+      self
     end
 
-    # Definition: A utility/heuristic value function that evaluates how good a particular solution is
-    # @params: NA
-    # @return: a fitness value as a Float
-    def fitness
-      # To simplify everything:
-      # Instead of actively removing duplicates before feeding them to solution, the algorithm will award points for
-      # requests for multiple time slots that are granted, and the staff will manually remove all other duplicates
-      
-      return @fitness if @fitness
-
-      # CURRENTLY, reduced_meeting_solution sets @reduced_meeting_solution TO @meeting_solution AND RETURNS IT
-      # NO NEED to check if nucleotide contains nil admit because nucleotide.fitness checks for it
-      @fitness = reduced_meeting_solution.inject(0){ |fitness, nucleotide| fitness += nucleotide.fitness } +
-        chromosome_level_fitness        
-      
-      @fitness
-    end
-    
     # Definition: Decides with probabilities defined in factors_to_consider HOW to mutate a chromosome, and calls the appropriate mutation method
     # @params: 
     # => a chromosome
@@ -350,7 +357,6 @@ module MeetingsScheduler
     # => the old chromosome if it has good fitness value
     def self.mutate(chromosome)       
       if chromosome.ok_to_mutate?
-        puts "about to mutate"
         which_mutation = rand
         case which_mutation
         when 0...@@factors_to_consider[:chromosomal_inversion_probability]
@@ -365,7 +371,6 @@ module MeetingsScheduler
           Chromosome.reverse_two_adjacent_sequences(chromosome, index)
         end
       else
-        puts "did not mutate"
         chromosome
       end
     end
@@ -430,13 +435,41 @@ module MeetingsScheduler
       solution_string    
     end
 
+
+    ###########################################
+    # Reduced Meeting Solution Helper Methods #
+    ###########################################
+    # ALL METHODS HERE ARE PROTECTED FROM NIL ADMIT CORNER CASES!!!
     
+    def duplicates_in_single_meeting?(nucleotide)
+      return false if nucleotide.admit.nil?
+      # CANNOT CALL find_all_nucleotides_for_one_timeslot_and_faculty,
+      # because code is in meeting_solution space, NOT reduced_meeting_solution space
+      nucleotides = @meeting_solution.find_all{ |n| n.faculty_id == nucleotide.faculty_id and n.schedule_index == nucleotide.schedule_index }
+      duplicate_ids = nucleotides.collect{ |n| n.admit_id }.inject({}) {|h,v| h[v]=h[v].to_i+1; h}.reject{|k,v| v==1}.keys
+      duplicate_ids.include? nucleotide.admit_id
+    end
+
+    def conflicts_with_other_meetings(nucleotide)
+      return nil if nucleotide.admit.nil?
+      conflicting_nucleotides = @meeting_solution.find_all do |n|
+        n.admit_id == nucleotide.admit_id and
+            n.schedule[:time_slot].begin == nucleotide.schedule[:time_slot].begin
+      end
+      conflicting_nucleotides.count > 1 ? conflicting_nucleotides : nil
+    end
+
+    def resolve_conflicting_meetings!(conflicting_nucleotides)
+      best_nucleotide = conflicting_nucleotides.max_by{ |n| n.fitness }
+      conflicting_nucleotides.each{ |n| n.admit = nil if n != best_nucleotide }
+    end
+
+
     #####################################
     # Chromosome Fitness Helper Methods #
     #####################################
-
     # ALL METHODS HERE ARE PROTECTED FROM NIL ADMIT CORNER CASES!!!
-    
+
     def chromosome_level_fitness
       @reduced_meeting_solution.inject(0) do |chrom_level_fitness, nucleotide|
         chrom_level_fitness += one_on_one_score(nucleotide) + 
@@ -590,7 +623,7 @@ module MeetingsScheduler
         @schedule_index == other.schedule_index and
         @admit.inspect == other.admit.inspect
     end
-    
+
     def fitness
       if @admit
         (not is_meeting_possible?) ? is_meeting_possible_score :

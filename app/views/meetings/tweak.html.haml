@@ -19,8 +19,8 @@
     %tbody
       - @meetings.each do |meeting|
         %tr
-          %td= meeting.time.strftime('%l:%M')
-          %td.room= room_if_not_default(meeting)
+          %td= meeting.time.strftime('%I:%M%p')
+          %td.room= meeting.room
           - meeting.admits.each_with_index do |admit,index|
             %td!= render :partial => 'slot_with_admit', :locals => {:admit => admit, :meeting => meeting}
           - (meeting.admits.length + 1).upto(@max_admits) do |index|

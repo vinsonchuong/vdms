@@ -4,7 +4,7 @@
     %tr
       %th Faculty Name
       - @times.each do |time|
-        %th.time= time.strftime('%l:%M')
+        %th.time= time.strftime('%I:%M%p')
   %tbody
     - @meetings_by_faculty.each_pair do |faculty,meetings|
       %tr

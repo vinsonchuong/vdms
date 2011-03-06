@@ -228,6 +228,7 @@ describe MeetingsScheduler do
           @nucleotide_fitness = rand(1000)
           MeetingsScheduler::Chromosome.stub!(:reduced_meeting_solution).and_return(@chromosome.meeting_solution)
           @chromosome.meeting_solution.each{ |n| n.stub!(:fitness).and_return(@nucleotide_fitness) }
+          @chromosome.stub!(:reduced_meeting_solution).and_return(@chromosome.meeting_solution)
           @chromosome.stub!(:chromosome_level_fitness).and_return(@chromosome_level_fitness = rand(1000))
         end
         
@@ -236,7 +237,7 @@ describe MeetingsScheduler do
         end
         
         it 'should first remove duplicates before evaluating fitness' do
-          @chromosome.should_receive(:reduced_meeting_solution).once.and_return(@chromosome.meeting_solution)
+          @chromosome.should_receive(:reduced_meeting_solution).once
           @chromosome.fitness
         end
 
