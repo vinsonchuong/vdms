@@ -18,6 +18,7 @@
     #navigation
       - if @current_user.class == Staff
         %ul
+          %li.highlight!= link_to t('root.sign_out.title'), sign_out_path
           %li!= link_to t('settings.edit.title'), edit_settings_path
           %li
             != link_to t('staff.index.title'), staff_path
@@ -40,14 +41,19 @@
           %li.dangerous!= link_to t('meetings.create_all.title'), create_all_meetings_path, :confirm => t('meetings.create_all.warning'), :method => :post
       - elsif @current_user.class == PeerAdvisor && !@current_user.new_record?
         %ul
+          %li.highlight!= link_to t('root.sign_out.title'), sign_out_path
           %li!= link_to t('peer_advisors.edit.alt_title'), edit_peer_advisor_path(@current_user)
           %li!= link_to t('admits.index.title'), admits_path
       - elsif @current_user.class == Faculty && !@current_user.new_record?
         %ul
+          %li.highlight!= link_to t('root.sign_out.title'), sign_out_path
           %li!= link_to t('faculty.edit.alt_title'), edit_faculty_instance_path(@current_user)
           %li!= link_to t('faculty.edit_availability.alt_title'), edit_availability_faculty_instance_path(@current_user)
           %li!= link_to t('faculty.rank_admits.alt_title'), rank_admits_faculty_instance_path(@current_user)
           %li!= link_to t('faculty.view_schedule.alt_title'), faculty_meetings_path(@current_user)
+      - else
+        %ul
+          %li.highlight!= link_to t('root.sign_out.title'), sign_out_path
     #footer
       %p By Vinson Chuong, Benson Ma, and Jacky Wu, alumni of Prof. Armando Fox's Software Engineering course at UC Berkeley.
       %p Visual design by Amber Feng.

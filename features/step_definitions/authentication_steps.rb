@@ -49,5 +49,13 @@ Then /^I should be (?:unable to access ([^"]*?)|asked to sign in)$/ do |page_nam
   unless page_name.nil?
     visit path_to(page_name)
   end
+  puts current_url
   URI.parse(current_url).host.should == URI.parse(CASClient::Frameworks::Rails::Filter.config[:login_url]).host
+end
+
+When /^I sign out$/ do
+  CASClient::Frameworks::Rails::Filter.fake(nil)
+  visit '/sign_out'
+  visit home_path
+  puts current_url
 end
