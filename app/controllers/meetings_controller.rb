@@ -1,7 +1,7 @@
 class MeetingsController < ApplicationController
   
   before_filter :current_user_is_staff?, :only => [:tweak, :apply_tweaks, :create_all]
-  before_filter :schedule_empty?
+  before_filter :schedule_empty?, :except => :create_all
 
   # GET /meetings/
   # If called with a faculty_id, show that faculty's meetings
