@@ -512,7 +512,8 @@ module MeetingsScheduler
       consecutive_timeslots = meetings.length.times.collect[1..-1].reverse.collect do |sublength|
         count_consecutive_timeslots( meetings.last(sublength), meetings.last(sublength)[0].schedule_index )
       end
-      consecutive_timeslots.max * @@fitness_scores_table[:consecutive_timeslots_weight_score]
+      consecutive_timeslots.empty? ? 0 :
+          consecutive_timeslots.max * @@fitness_scores_table[:consecutive_timeslots_weight_score]
     end
 
     def count_consecutive_timeslots(meetings, schedule_index)
