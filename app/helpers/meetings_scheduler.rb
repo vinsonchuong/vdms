@@ -509,7 +509,7 @@ module MeetingsScheduler
 
     def calculate_consecutive_timeslots_score(meetings)
       # Codepath guarantees at least ONE nucleotide in meetings before this method is run
-      consecutive_timeslots = meetings.length.times.collect.reverse.collect do |sublength|
+      consecutive_timeslots = meetings.length.times.collect[1..-1].reverse.collect do |sublength|
         count_consecutive_timeslots( meetings.last(sublength), meetings.last(sublength)[0].schedule_index )
       end
       consecutive_timeslots.max * @@fitness_scores_table[:consecutive_timeslots_weight_score]
