@@ -21,12 +21,21 @@ class SchedulerFactorsTable < ActiveRecord::Base
                         :number_of_spots_per_admit,
                         :chromosomal_inversion_probability,
                         :point_mutation_probability,
-                        :double_crossover_probability
+                        :double_crossover_probability,
+                        :population_size,
+                        :total_generations
 
   [:chromosomal_inversion_probability,
    :point_mutation_probability,
    :double_crossover_probability].each{ |var| validates_inclusion_of var, :within => 0...1 }
+
   validates_inclusion_of :number_of_spots_per_admit, :within => 1..5
+
+  [:population_size, :total_generations].each do |var|
+    validates_each var do |record, attr, value|
+      record.errors.add attr, 'should be a minimum of 1' if value and value <= 0
+    end
+  end
 
   def fitness_scores_table
     {
@@ -44,7 +53,7 @@ class SchedulerFactorsTable < ActiveRecord::Base
       :mandatory_score => mandatory_score,
       :mandatory_default => mandatory_default,
       :consecutive_timeslots_default => consecutive_timeslots_default,
-      :consecutive_timeslots_weight_score => consecutive_timeslots_weight_score
+      :consecutive_timeslots_weight_score => consecutive_timeslots_weight_score,
     }
   end
 

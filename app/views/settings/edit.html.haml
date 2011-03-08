@@ -87,6 +87,12 @@
           %li
             != scheduler_fields.text_field :double_crossover_probability
             != scheduler_fields.label :double_crossover_probability
+          %li
+            != scheduler_fields.text_field :population_size
+            != scheduler_fields.label :population_size
+          %li
+            != scheduler_fields.text_field :total_generations
+            != scheduler_fields.label :total_generations
 
   %fieldset
     - sec_to_min = []

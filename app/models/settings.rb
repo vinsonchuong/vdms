@@ -14,9 +14,13 @@ class Settings < ActiveRecord::Base
     end
 
     if record.scheduler_factors_table.nil?
-      keys = STATIC_SETTINGS['scheduler_scores'].each_key.collect{ |key| key.to_sym }
       values = {}
+      keys = STATIC_SETTINGS['scheduler_scores'].each_key.collect{ |key| key.to_sym }
       STATIC_SETTINGS['scheduler_scores'].each_value.collect{ |val| val.to_f }.zip(keys) do |val, key|
+        values[key] = val
+      end
+      keys = STATIC_SETTINGS['genetic_algorithm_parameters'].each_key.collect{ |key| key.to_sym }
+      STATIC_SETTINGS['genetic_algorithm_parameters'].each_value.collect{ |val| val.to_i }.zip(keys) do |val, key|
         values[key] = val
       end
       record.scheduler_factors_table = SchedulerFactorsTable.create(values)

@@ -48,3 +48,6 @@ scheduler_scores:
   chromosomal_inversion_probability: 0.5
   point_mutation_probability: 0.3
   double_crossover_probability: 0.2
+genetic_algorithm_parameters:
+  population_size: 20
+  total_generations: 10
