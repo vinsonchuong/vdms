@@ -12,9 +12,20 @@ class Settings < ActiveRecord::Base
     if record.divisions.empty?
       STATIC_SETTINGS['divisions'].each_key {|name| record.divisions.create(:name => name)}
     end
+
+    if record.scheduler_factors_table.nil?
+      keys = STATIC_SETTINGS['scheduler_scores'].each_key.collect{ |key| key.to_sym }
+      values = {}
+      STATIC_SETTINGS['scheduler_scores'].each_value.collect{ |val| val.to_f }.zip(keys) do |val, key|
+        values[key] = val
+      end
+      record.scheduler_factors_table = SchedulerFactorsTable.create(values)
+    end
   end
 
   has_many :divisions, :order => 'name ASC', :dependent => :destroy
+  has_one :scheduler_factors_table, :dependent => :destroy
+  accepts_nested_attributes_for :scheduler_factors_table
   accepts_nested_attributes_for :divisions
 
   validates_presence_of :unsatisfied_admit_threshold
