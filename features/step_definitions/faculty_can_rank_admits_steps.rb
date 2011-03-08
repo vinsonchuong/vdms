@@ -1,8 +1,11 @@
-Given /^(?:I have|my faculty has) the following admit rankings:$/ do |admit_rankings|
+Given /^(?:I have|my faculty has|"([^"]*)" has) the following admit rankings:$/ do |name, admit_rankings|
+  faculty = name.blank? ? @faculty : Faculty.all.detect {|f| f.full_name == name}
   admit_rankings.hashes.each do |admit_ranking|
-    @faculty.admit_rankings.create(
+    faculty.admit_rankings.create(
       :rank => admit_ranking['rank'].to_i,
-      :admit => Admit.all.find {|p| "#{p.first_name} #{p.last_name}" == admit_ranking['admit']}
+      :admit => Admit.all.find {|p| "#{p.first_name} #{p.last_name}" == admit_ranking['admit']},
+      :mandatory => admit_ranking['mandatory'].to_b,
+      :one_on_one => admit_ranking['one_on_one'].to_b
     )
   end
 end

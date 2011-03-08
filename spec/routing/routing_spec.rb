@@ -333,6 +333,9 @@ describe 'Routes' do
       it 'can apply tweaks to a faculty meeting schedule' do
         {:post => '/people/faculty/1/meetings/apply_tweaks'}.should route_to(:controller => 'meetings', :action => 'apply_tweaks', :faculty_id => '1')
       end
+      it 'can view meeting statistics' do
+        {:get => '/meetings/statistics'}.should route_to(:controller => 'meetings', :action => 'statistics')
+      end
     end
   end
 end

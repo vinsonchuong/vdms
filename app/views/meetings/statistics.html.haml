@@ -1,0 +1,27 @@
+- content_for :title, 'Meeting Statistics'
+%h3 Faculty with Unfulfilled Mandatory Meetings
+%table
+  %thead
+    %tr
+      %th{:scope => 'col'} Faculty
+      %th{:scope => 'col'} Admits
+  %tbody
+    - @unsatisfied_faculty.each do |faculty, admits|
+      %tr
+        %td!= faculty.full_name
+        %td
+          %ul
+            - admits.each do |admit|
+              %li!= admit.full_name
+%h3 Unsatisfied Admits
+%p!= "Admits with fewer than #{Settings.instance.unsatisfied_admit_threshold} meetings"
+%table
+  %thead
+    %tr
+      %th{:scope => 'col'} Admit
+      %th{:scope => 'col'} # Meetings
+  %tbody
+    - @unsatisfied_admits.each do |admit|
+      %tr
+        %td!= admit.full_name
+        %td!= admit.meetings.count

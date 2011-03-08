@@ -21,6 +21,14 @@ class MeetingsController < ApplicationController
     @times = meetings.map(&:time).uniq.sort
   end
 
+  # Show meetings statistics
+  # GET /meetings/statistics
+  def statistics
+    settings = Settings.instance
+    @unsatisfied_admits = Admit.by_name.select {|a| a.meetings.count < settings.unsatisfied_admit_threshold}
+    @unsatisfied_faculty = Faculty.by_name.map {|f| [f, f.mandatory_admits - f.meetings.map(&:admits).flatten]}.reject {|f, a| a.empty?}
+  end
+
   # Show schedule for admit
   # GET /people/admits/1/meetings
 
