@@ -1,0 +1,18 @@
+- content_for :title, 'Print Faculty Schedules'
+- @faculty.each do |faculty|
+  %h3!= faculty.full_name
+  %table.schedule
+    %thead
+      %tr
+        %th{:scope => 'col'} Time
+        %th{:scope => 'col'} Room
+        %th{:scope => 'col'} Admits
+    %tbody
+      - faculty.meetings.sort_by {|m| m.time}.each do |meeting|
+        %tr
+          %td!= meeting.time.strftime('%I:%M%p')
+          %td!= meeting.room
+          %td
+            %ul
+              - meeting.admits.each do |admit|
+                %li!= admit.full_name

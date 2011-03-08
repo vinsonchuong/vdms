@@ -29,9 +29,20 @@ class MeetingsController < ApplicationController
     @unsatisfied_faculty = Faculty.by_name.map {|f| [f, f.mandatory_admits - f.meetings.map(&:admits).flatten]}.reject {|f, a| a.empty?}
   end
 
+  # Show the admit schedule
+  # GET /meetings/print_admits
+  def print_admits
+    @admits = Admit.by_name
+  end
+
+  # Show the faculty schedule
+  # GET /meetings/print_faculty
+  def print_faculty
+    @faculty = Faculty.by_name
+  end
+
   # Show schedule for admit
   # GET /people/admits/1/meetings
-
   def for_admit(admit_id)
     @admit = Admit.find(admit_id)
     @admit_meetings = @admit.meetings.sort_by(&:time)

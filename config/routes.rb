@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resource :settings, :only => [:edit, :update]
 
-  map.resources :meetings, :collection => {:create_all => :post, :master => :get, :statistics => :get}
+  map.resources :meetings, :collection => {:create_all => :post, :master => :get, :statistics => :get, :print_admits => :get, :print_faculty => :get}
 
   map.resources :staff, :singular => 'staff_instance', :path_prefix => '/people',
     :except => [:show],

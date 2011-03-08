@@ -1,0 +1,15 @@
+- content_for :title, 'Print Admit Schedules'
+- @admits.each do |admit|
+  %h3!= admit.full_name
+  %table.schedule
+    %thead
+      %tr
+        %th{:scope => 'col'} Time
+        %th{:scope => 'col'} Faculty Name
+        %th{:scope => 'col'} Room
+    %tbody
+      - admit.meetings.sort_by {|m| m.time}.each do |meeting|
+        %tr
+          %td!= meeting.time.strftime('%I:%M%p')
+          %td!= meeting.faculty.full_name
+          %td!= meeting.room
