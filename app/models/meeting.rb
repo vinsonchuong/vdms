@@ -13,7 +13,9 @@ class Meeting < ActiveRecord::Base
     puts "GA initialize..."
     MeetingsScheduler::GeneticAlgorithm.initialize(self.factors_to_consider, self.fitness_scores_table)
     puts "GA running..."
-    best_chromosome = MeetingsScheduler::GeneticAlgorithm.run(20, 10)
+    population_size = Settings.instance.scheduler_factors_table.population_size
+    total_generations = Settings.instance.scheduler_factors_table.total_generations
+    best_chromosome = MeetingsScheduler::GeneticAlgorithm.run(population_size, total_generations)
     MeetingsScheduler.create_meetings!(best_chromosome)
   end
 
@@ -70,33 +72,14 @@ class Meeting < ActiveRecord::Base
   end
 
   def self.fitness_scores_table
-    { :is_meeting_possible_score          => 50000,
-      :is_meeting_possible_penalty        => -50000,
-      :faculty_ranking_weight_score       => 739,
-      :faculty_ranking_default            => 0,
-      :admit_ranking_weight_score         => 523,
-      :admit_ranking_default              => 0,
-      :area_match_score                   => 1532,
-      :area_match_default                 => 0,
-      :one_on_one_score                   => 50000,
-      :one_on_one_penalty                 => 0,
-      :one_on_one_default                 => 0,
-      :mandatory_score                    => 50000,
-      :mandatory_default                  => 0,
-      :consecutive_timeslots_default      => 0,
-      :consecutive_timeslots_weight_score => 10000
-    }
+    Settings.instance.scheduler_factors_table.fitness_scores_table
   end
 
   def self.factors_to_consider
     { :attending_admits => self.attending_admits_hash,
       :faculties => self.faculties_hash,
-      :total_number_of_seats => self.total_number_of_seats,
-      :number_of_spots_per_admit => 1,
-      :chromosomal_inversion_probability => 0.5,
-      :point_mutation_probability => 0.3,
-      :double_crossover_probability =>  0.2
-    }
+      :total_number_of_seats => self.total_number_of_seats
+    }.merge(Settings.instance.scheduler_factors_table.other_factors)
   end
 
   def self.total_number_of_seats
