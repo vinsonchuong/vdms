@@ -132,20 +132,23 @@ describe MeetingsController do
       before(:each) do
         @nine_am = Time.parse("9:00am")
         @ten_am = Time.parse("10:00am")
+        @faculty1 = Factory.create(:faculty)
+        @faculty2 = Factory.create(:faculty)
+        @faculty3 = Factory.create(:faculty)
         @all_meetings = [
-          @m1 = mock('meeting1', :faculty => 3, :time => @nine_am),
-          @m2 = mock('meeting2', :faculty => 3, :time => @ten_am),
-          @m3 = mock('meeting3', :faculty => 2, :time => @ten_am)
+          @m1 = mock('meeting1', :faculty => @faculty3, :time => @nine_am),
+          @m2 = mock('meeting2', :faculty => @faculty3, :time => @ten_am),
+          @m3 = mock('meeting3', :faculty => @faculty2, :time => @ten_am)
         ]
         Meeting.stub!(:all).and_return(@all_meetings)
       end
       it "should include all meetings sorted by faculty" do
         get :master
         sorted = assigns[:meetings_by_faculty]
-        sorted.should be_a_kind_of(Hash)
-        sorted[3].should include(@m1)
-        sorted[3].should include(@m2)
-        sorted[2].should include(@m3)
+        sorted.should be_a_kind_of(Array)
+        sorted.detect {|f, m| f == @faculty3}[1].should include(@m1)
+        sorted.detect {|f, m| f == @faculty3}[1].should include(@m2)
+        sorted.detect {|f, m| f == @faculty2}[1].should include(@m3)
         end
       it "should enumerate the times without duplicates" do
         get :master

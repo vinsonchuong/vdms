@@ -6,7 +6,7 @@
       - @times.each do |time|
         %th.time= time.strftime('%I:%M%p')
   %tbody
-    - @meetings_by_faculty.each_pair do |faculty,meetings|
+    - @meetings_by_faculty.each do |faculty,meetings|
       %tr
         %td!= link_to faculty.full_name, (@current_user.class == Staff ? tweak_faculty_meetings_path(faculty) : faculty_meetings_path(faculty))
         - @times.each do |time|

@@ -17,7 +17,7 @@ class MeetingsController < ApplicationController
   # GET /meetings/master
   def master
     meetings = Meeting.all
-    @meetings_by_faculty = meetings.group_by(&:faculty)
+    @meetings_by_faculty = meetings.group_by(&:faculty).to_a.sort_by {|f, m| [f.last_name, f.first_name]}
     @times = meetings.map(&:time).uniq.sort
   end
 
@@ -32,13 +32,15 @@ class MeetingsController < ApplicationController
   # Show the admit schedule
   # GET /meetings/print_admits
   def print_admits
-    @admits = Admit.by_name
+    @admits = Admit.by_name.reject {|a| a.meetings.empty?}
+    @one_per_page = params['one_per_page'].to_b
   end
 
   # Show the faculty schedule
   # GET /meetings/print_faculty
   def print_faculty
-    @faculty = Faculty.by_name
+    @faculty = Faculty.by_name.reject {|f| f.meetings.empty?}
+    @one_per_page = params['one_per_page'].to_b
   end
 
   # Show schedule for admit

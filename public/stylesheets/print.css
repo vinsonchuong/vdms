@@ -81,7 +81,6 @@ table {
 	margin: 1px;
 	text-align: left;
     width: 100%;
-    page-break-after: always;
 }
 td {
 	border-bottom: 1px solid #333;

@@ -42,7 +42,9 @@
             != link_to t('meetings.master.title'), master_meetings_path
             %ul
               %li!= link_to 'Print Admit Schedules', print_admits_meetings_path
+              %li!= link_to 'Print Admit Schedules (One Per Page)', print_admits_meetings_path(:one_per_page => 'true')
               %li!= link_to 'Print Faculty Schedules', print_faculty_meetings_path
+              %li!= link_to 'Print Faculty Schedules (One Per Page)', print_faculty_meetings_path(:one_per_page => 'true')
               %li!= link_to 'Meeting Statistics', statistics_meetings_path
               %li.dangerous!= link_to t('meetings.create_all.title'), create_all_meetings_path, :confirm => t('meetings.create_all.warning'), :method => :post
       - elsif @current_user.class == PeerAdvisor && !@current_user.new_record?

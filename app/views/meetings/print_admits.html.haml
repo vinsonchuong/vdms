@@ -1,7 +1,7 @@
 - content_for :title, 'Print Admit Schedules'
 - @admits.each do |admit|
   %h3!= admit.full_name
-  %table.schedule
+  %table{:style => @one_per_page ? 'page-break-after: always;' : '', :class => 'schedule'}
     %thead
       %tr
         %th{:scope => 'col'} Time
