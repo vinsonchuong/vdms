@@ -109,7 +109,7 @@ module MeetingsScheduler
     num_consecutive_meetings = ranking.time_slots? ? ranking.time_slots : 1
     faculty_meetings.select {|m| m.faculty.available_times.detect {|t| t.begin == m.time}.available}.sort_by{|m| m.time}.each_cons(num_consecutive_meetings) do |sub_meetings|
       sub_meetings.each{ |m| m.admits << ranking.admit unless m.admits.include?(ranking.admit) }
-      if sub_meetings.collect{ |m| m.valid? }.include?(false)
+      if sub_meetings.collect{ |m| m.valid? }.include?(false) || sub_meetings.any? {|m| m.one_on_one_meeting? && m.admits.count > 1}
         sub_meetings.each{ |m| m.admits.delete(ranking.admit) }
       else
         sub_meetings.each {|m| m.save!}
