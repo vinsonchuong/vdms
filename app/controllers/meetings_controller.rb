@@ -86,17 +86,6 @@ class MeetingsController < ApplicationController
   def create_all
     begin
       Meeting.generate()
-
-      # Post-Processing - Remove assignments with no mutual interest (rankings)
-      Meeting.all.each do |meeting|
-        faculty = meeting.faculty
-        admits_to_remove = meeting.admits.reject do |admit|
-          faculty.ranked_admits.include?(admit) || admit.ranked_faculty.include?(faculty)
-        end
-        meeting.admits -= admits_to_remove
-        meeting.save
-      end
-
       flash[:notice] = "New schedule successfully generated."
     rescue Exception => e
       flash[:alert] = "New schedule could NOT be generated: #{e.message}"
