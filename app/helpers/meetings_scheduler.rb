@@ -73,20 +73,64 @@ module MeetingsScheduler
     Meeting.delete_all
   end
 
-  def self.create_meetings!(best_chromosome)
-      puts "Initializing all Meeting objects for ATTENDING faculties..."
-      @all_meetings = initialize_all_meetings
-      fill_up_meetings_with_best_chromosome!(best_chromosome)
-      save_all_created_meetings_to_database!
+  def self.create_meetings_from_ranking_scores!
+    puts "Initializing all Meeting objects for ATTENDING faculties..."
+    @all_meetings = initialize_all_meetings
+    puts "Initialization complete.  Now populating meetings..."
+    fill_up_meetings_from_rankings!(Ranking.by_rank)
+    puts "Finished populating meetings.  Now saving all meetings to database..."
+    save_all_created_meetings_to_database!
+  end
+
+  def self.create_meetings_from_chromosome!(best_chromosome)
+    puts "Initializing all Meeting objects for ATTENDING faculties..."
+    @all_meetings = initialize_all_meetings
+    fill_up_meetings_with_best_chromosome!(best_chromosome)
+    save_all_created_meetings_to_database!
+  end
+
+  # For debugging purposes
+  def self.all_meetings
+    @all_meetings
   end
 
 
   private unless Rails.env == 'test'
 
+  def self.fill_up_meetings_from_rankings!(sorted_rankings)
+    sorted_rankings.each do |ranking|
+      faculty_meetings = get_all_meeting_spots_for_faculty(ranking)
+      try_fit_ranking_to_timeslots!(faculty_meetings, ranking)
+    end
+  end
+
+  def self.try_fit_ranking_to_timeslots!(faculty_meetings, ranking)
+    num_consecutive_meetings = ranking.time_slots? ? ranking.time_slots : 1
+    faculty_meetings.sort_by{|m| m.time}.each_cons(num_consecutive_meetings) do |sub_meetings|
+      sub_meetings.each{ |m| m.admits << ranking.admit }
+      if sub_meetings.collect{ |m| m.valid? }.include?(false)
+        sub_meetings.each{ |m| m.admits.delete(ranking.admit) }
+      else
+        break
+      end
+    end
+  end
+
+  def self.get_all_meeting_spots_for_faculty(ranking)
+    @all_meetings.find_all{ |m| m.faculty == ranking.faculty }
+  end
+
+  ##########################################################
+  # HELPER METHODS FOR GENERATING MEETINGS FROM CHROMOSOME #
+  ##########################################################
+
   # ROUNDABOUT VALIDATIONS HACK TO BYPASS STRICT ONE-ON-ONE REQUIREMENT
   def self.save_all_created_meetings_to_database!
     puts "Saving all new Meetings to database - this may take a while..."
-    @all_meetings.each{ |m| m.save(false) }
+    @all_meetings.each_with_index do |m, i|
+      m.save(false)
+      puts "##{i} finished"
+    end
     puts "Finished."
   end
 
@@ -97,7 +141,7 @@ module MeetingsScheduler
     end
     @all_meetings.flatten!
   end
-  
+
   def self.fill_up_meetings_with_best_chromosome!(best_chromosome)
     best_chromosome.reduced_meeting_solution.each do |nucleotide|      
       fill_up_meeting_with_nucleotide!(nucleotide) if nucleotide.is_meeting_possible?

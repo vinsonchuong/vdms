@@ -10,14 +10,18 @@ class Meeting < ActiveRecord::Base
 
   def self.generate
     MeetingsScheduler.delete_old_meetings!
+    MeetingsScheduler.create_meetings_from_ranking_scores!
+=begin
+    # GA VERSION
     puts "GA initialize..."
     MeetingsScheduler::GeneticAlgorithm.initialize(self.factors_to_consider, self.fitness_scores_table)
     puts "GA running..."
     population_size = Settings.instance.scheduler_factors_table.population_size
     total_generations = Settings.instance.scheduler_factors_table.total_generations
     best_chromosome = MeetingsScheduler::GeneticAlgorithm.run(population_size, total_generations)
-    MeetingsScheduler.create_meetings!(best_chromosome)
-  end
+    MeetingsScheduler.create_meetings_from_chromosome!(best_chromosome)
+=end
+end
 
   def to_s
     "Time: #{time.to_formatted_s(:long)}, faculty: #{faculty.full_name if faculty}, " <<
