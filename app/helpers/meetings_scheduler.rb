@@ -111,6 +111,7 @@ module MeetingsScheduler
       if sub_meetings.collect{ |m| m.valid? }.include?(false)
         sub_meetings.each{ |m| m.admits.delete(ranking.admit) }
       else
+        sub_meetings.each {|m| m.save}
         break
       end
     end
