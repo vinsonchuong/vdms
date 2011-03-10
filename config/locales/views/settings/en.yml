@@ -7,7 +7,10 @@ en:
       data_entry_permissions_description: "Prevents the checked roles from updating availability and rankings."
       scheduler_settings: "Scheduler Settings"
       scheduler_settings_description: "Numbers and weights which allow for customization of the meeting scheduler's
-                                       priorities."
+                                       priorities. A high Faculty Weight relative to a low Admit Weight gives heavy
+                                       priority to the Faculty's preferences. A high Mandatory Weight relative to a low
+                                       Rank weight prioritizes satisfying rankings with the Mandatory flag set. A weight
+                                       of 0 means ignore that information."
       unsatisfied_admit_threshold_description: "Admits assigned to fewer than this number of meetings are considered
                                                 unsatisfied."
       meetings: "Meetings"

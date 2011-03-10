@@ -5,4 +5,9 @@ class FacultyRanking < Ranking
   validates_existence_of :admit
   validates_existence_of :faculty
   validates_uniqueness_of :faculty_id, :scope => :admit_id
+
+  def score
+    s = Settings.instance
+    s.admit_weight.to_f * (s.rank_weight.to_f/self.rank.to_f)
+  end
 end

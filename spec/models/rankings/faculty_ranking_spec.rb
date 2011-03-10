@@ -52,4 +52,22 @@ describe FacultyRanking do
       new_faculty_ranking.should_not be_valid
     end
   end
+
+  context 'when ordering by score' do
+    before(:each) do
+      @settings = Settings.instance
+      Settings.stub(:instance).and_return(@settings)
+      @settings.stub(:faculty_weight).and_return(10)
+      @settings.stub(:admit_weight).and_return(1)
+      @settings.stub(:rank_weight).and_return(1)
+      @settings.stub(:mandatory_weight).and_return(10)
+    end
+
+    it 'has a score' do
+      [1, 2, 3].each do |rank|
+        @faculty_ranking.rank = rank
+        @faculty_ranking.score.should == 1.0/rank.to_f
+      end
+    end
+  end
 end

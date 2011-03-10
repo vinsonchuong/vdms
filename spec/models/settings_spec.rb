@@ -69,6 +69,22 @@ describe Settings do
       @settings.unsatisfied_admit_threshold.should == 0
     end
 
+    it 'by default has a Faculty Weight of 1' do
+      @settings.faculty_weight.should == 1
+    end
+
+    it 'by default has an Admit Weight of 1' do
+      @settings.admit_weight.should == 1
+    end
+
+    it 'by default has a Rank Weight of 1' do
+      @settings.rank_weight.should == 1
+    end
+
+    it 'by default has a Mandatory Weight of 1' do
+      @settings.mandatory_weight.should == 1
+    end
+
     it 'by default has a Disable Faculty From Making Changes flag of false' do
       @settings.disable_faculty.should be_false
     end
@@ -86,6 +102,34 @@ describe Settings do
     it 'is not valid with an invalid Unsatisfied Admit Threshold' do
       ['', -1, 'foobar'].each do |invalid_threshold|
         @settings.unsatisfied_admit_threshold = invalid_threshold
+        @settings.should_not be_valid
+      end
+    end
+
+    it 'is not valid with an invalid Faculty Weight' do
+      ['', -1, 'foobar'].each do |invalid_weight|
+        @settings.faculty_weight = invalid_weight
+        @settings.should_not be_valid
+      end
+    end
+
+    it 'is not valid with an invalid Admit Weight' do
+      ['', -1, 'foobar'].each do |invalid_weight|
+        @settings.admit_weight = invalid_weight
+        @settings.should_not be_valid
+      end
+    end
+
+    it 'is not valid with an invalid Rank Weight' do
+      ['', -1, 'foobar'].each do |invalid_weight|
+        @settings.rank_weight = invalid_weight
+        @settings.should_not be_valid
+      end
+    end
+
+    it 'is not valid with an invalid Mandatory Weight' do
+      ['', -1, 'foobar'].each do |invalid_weight|
+        @settings.mandatory_weight = invalid_weight
         @settings.should_not be_valid
       end
     end

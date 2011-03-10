@@ -44,3 +44,12 @@ Feature: Staff can specify global settings
     And I check "Prevent Faculty from changing their availability and rankings"
     And I press "Update Settings"
     Then I should see "Settings were successfully updated."
+
+  Scenario: I update the scheduler weights
+    Given I am on the update settings page
+    When I select "20" from "Faculty Weight"
+    And I select "5" from "Admit Weight"
+    And I select "10" from "Rank Weight"
+    And I select "20" from "Mandatory Weight"
+    And I press "Update Settings"
+    Then I should see "Settings were successfully updated."

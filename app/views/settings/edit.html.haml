@@ -18,82 +18,32 @@
         != settings_form.check_box :disable_faculty
   %fieldset
     - numbers = []
-    - 121.times {|i| numbers[i] = i}
+    - 101.times {|i| numbers[i] = i}
     %h3!= t('.scheduler_settings')
     %p!= t('.scheduler_settings_description')
+    %ul
+      %li.field
+        != settings_form.label :faculty_weight
+        != settings_form.select :faculty_weight, numbers
+      %li.field
+        != settings_form.label :admit_weight
+        != settings_form.select :admit_weight, numbers
+      %li.field
+        != settings_form.label :rank_weight
+        != settings_form.select :rank_weight, numbers
+      %li.field
+        != settings_form.label :mandatory_weight
+        != settings_form.select :mandatory_weight, numbers
+  %fieldset
+    - numbers = []
+    - 121.times {|i| numbers[i] = i}
+    %h3 Meeting Statistics Settings
     %ul
       %li.field
         != settings_form.label :unsatisfied_admit_threshold
         %p!= t('.unsatisfied_admit_threshold_description')
         != settings_form.select :unsatisfied_admit_threshold, numbers
         %span.units!= t('.meetings')
-      %li.field
-        != settings_form.label :scheduler_scores_table
-        - settings_form.fields_for :scheduler_factors_table do |scheduler_fields|
-          %li
-            != scheduler_fields.text_field :is_meeting_possible_score
-            != scheduler_fields.label :is_meeting_possible_score
-          %li
-            != scheduler_fields.text_field :is_meeting_possible_penalty
-            != scheduler_fields.label :is_meeting_possible_penalty
-          %li
-            != scheduler_fields.text_field :faculty_ranking_weight_score
-            != scheduler_fields.label :faculty_ranking_weight_score
-          %li
-            != scheduler_fields.text_field :faculty_ranking_default
-            != scheduler_fields.label :faculty_ranking_default
-          %li
-            != scheduler_fields.text_field :admit_ranking_weight_score
-            != scheduler_fields.label :admit_ranking_weight_score
-          %li
-            != scheduler_fields.text_field :admit_ranking_default
-            != scheduler_fields.label :admit_ranking_default
-          %li
-            != scheduler_fields.text_field :area_match_score
-            != scheduler_fields.label :area_match_score
-          %li
-            != scheduler_fields.text_field :area_match_default
-            != scheduler_fields.label :area_match_default
-          %li
-            != scheduler_fields.text_field :one_on_one_score
-            != scheduler_fields.label :one_on_one_score
-          %li
-            != scheduler_fields.text_field :one_on_one_penalty
-            != scheduler_fields.label :one_on_one_penalty
-          %li
-            != scheduler_fields.text_field :one_on_one_default
-            != scheduler_fields.label :one_on_one_default
-          %li
-            != scheduler_fields.text_field :mandatory_score
-            != scheduler_fields.label :mandatory_score
-          %li
-            != scheduler_fields.text_field :mandatory_default
-            != scheduler_fields.label :mandatory_default
-          %li
-            != scheduler_fields.text_field :consecutive_timeslots_default
-            != scheduler_fields.label :consecutive_timeslots_default
-          %li
-            != scheduler_fields.text_field :consecutive_timeslots_weight_score
-            != scheduler_fields.label :consecutive_timeslots_weight_score
-          %li
-            != scheduler_fields.text_field :number_of_spots_per_admit
-            != scheduler_fields.label :number_of_spots_per_admit
-          %li
-            != scheduler_fields.text_field :chromosomal_inversion_probability
-            != scheduler_fields.label :chromosomal_inversion_probability
-          %li
-            != scheduler_fields.text_field :point_mutation_probability
-            != scheduler_fields.label :point_mutation_probability
-          %li
-            != scheduler_fields.text_field :double_crossover_probability
-            != scheduler_fields.label :double_crossover_probability
-          %li
-            != scheduler_fields.text_field :population_size
-            != scheduler_fields.label :population_size
-          %li
-            != scheduler_fields.text_field :total_generations
-            != scheduler_fields.label :total_generations
-
   %fieldset
     - sec_to_min = []
     - 121.times {|i| sec_to_min[i] = [i, i * 60]}

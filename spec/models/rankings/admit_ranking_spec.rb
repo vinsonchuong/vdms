@@ -106,4 +106,23 @@ describe AdmitRanking do
       new_admit_ranking.should_not be_valid
     end
   end
+
+  context 'when ordering by score' do
+    before(:each) do
+      @settings = Settings.instance
+      Settings.stub(:instance).and_return(@settings)
+      @settings.stub(:faculty_weight).and_return(10)
+      @settings.stub(:admit_weight).and_return(1)
+      @settings.stub(:rank_weight).and_return(1)
+      @settings.stub(:mandatory_weight).and_return(10)
+    end
+
+    it 'has a score' do
+      [[1, true], [2, true], [3, true], [1, false], [2, false], [3, false]].each do |rank, mandatory|
+        @admit_ranking.rank = rank
+        @admit_ranking.mandatory = mandatory
+        @admit_ranking.score.should == 10.0 * (1.0/rank.to_f + 10*(mandatory ? 1 : 0))
+      end
+    end
+  end
 end
