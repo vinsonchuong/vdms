@@ -25,3 +25,31 @@
       %tr
         %td!= admit.full_name
         %td!= admit.meetings.count
+%h3 Faculty with Unsatisfied Rankings
+%table
+  %thead
+    %tr
+      %th{:scope => 'col'} Faculty
+      %th{:scope => 'col'} Admits
+  %tbody
+    - @faculty_with_unsatisfied_rankings.each do |faculty, admits|
+      %tr
+        %td!= faculty.full_name
+        %td
+          %ul
+            - admits.each do |admit|
+              %li!= admit.full_name
+%h3 Admits with Unsatisfied Rankings
+%table
+  %thead
+    %tr
+      %th{:scope => 'col'} Admit
+      %th{:scope => 'col'} Faculty
+  %tbody
+    - @admits_with_unsatisfied_rankings.each do |admit, faculty|
+      %tr
+        %td!= admit.full_name
+        %td
+          %ul
+            - faculty.each do |faculty|
+              %li!= faculty.full_name

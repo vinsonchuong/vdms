@@ -33,7 +33,7 @@ class Faculty < Person
   end
 
   has_many :admit_rankings, :order => 'rank ASC', :dependent => :destroy
-  has_many :ranked_admits, :source => :admit, :through => :admit_rankings
+  has_many :ranked_admits, :source => :admit, :through => :admit_rankings, :order => 'rank ASC'
   has_many :ranked_one_on_one_admits, :source => :admit, :through => :admit_rankings, :conditions => ['rankings.one_on_one = ?', true]
   has_many :mandatory_admits, :source => :admit, :through => :admit_rankings, :conditions => ['rankings.mandatory = ?', true]
   has_many :faculty_rankings, :dependent => :destroy

@@ -19,7 +19,7 @@ class Admit < Person
   end
 
   has_many :faculty_rankings, :order => 'rank ASC', :dependent => :destroy
-  has_many :ranked_faculty, :source => :faculty, :through => :faculty_rankings
+  has_many :ranked_faculty, :source => :faculty, :through => :faculty_rankings, :order => 'rank ASC'
   has_many :admit_rankings, :dependent => :destroy
   accepts_nested_attributes_for :faculty_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
   has_and_belongs_to_many :meetings, :uniq => true

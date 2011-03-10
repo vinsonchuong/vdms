@@ -25,8 +25,12 @@ class MeetingsController < ApplicationController
   # GET /meetings/statistics
   def statistics
     settings = Settings.instance
-    @unsatisfied_admits = Admit.by_name.select {|a| a.meetings.count < settings.unsatisfied_admit_threshold}
-    @unsatisfied_faculty = Faculty.by_name.map {|f| [f, f.mandatory_admits - f.meetings.map(&:admits).flatten]}.reject {|f, a| a.empty?}
+    @admits = Admit.by_name
+    @faculty = Faculty.by_name
+    @unsatisfied_admits = @admits.select {|a| a.meetings.count < settings.unsatisfied_admit_threshold}
+    @unsatisfied_faculty = @faculty.map {|f| [f, f.mandatory_admits - f.meetings.map(&:admits).flatten]}.reject {|f, a| a.empty?}
+    @admits_with_unsatisfied_rankings = @admits.map {|a| [a, a.ranked_faculty - a.meetings.map(&:faculty)]}.reject {|a, f| f.empty?}
+    @faculty_with_unsatisfied_rankings = @faculty.map {|f| [f, f.ranked_admits - f.meetings.map(&:admits).flatten]}.reject {|f, a| a.empty?}
   end
 
   # Show the admit schedule
