@@ -107,7 +107,7 @@ module MeetingsScheduler
   def self.try_fit_ranking_to_timeslots!(faculty_meetings, ranking)
     num_consecutive_meetings = ranking.time_slots? ? ranking.time_slots : 1
     faculty_meetings.sort_by{|m| m.time}.each_cons(num_consecutive_meetings) do |sub_meetings|
-      sub_meetings.each{ |m| m.admits << ranking.admit }
+      sub_meetings.each{ |m| m.admits << ranking.admit unless m.admits.include?(ranking.admit) }
       if sub_meetings.collect{ |m| m.valid? }.include?(false)
         sub_meetings.each{ |m| m.admits.delete(ranking.admit) }
       else
