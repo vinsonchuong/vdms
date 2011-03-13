@@ -32,7 +32,7 @@ Given /^the following (\d+)-minute meetings are scheduled starting at (.*):$/ do
       # if already a meeting at this time, add the admit to it; else create new mtg
       m = @faculty.meetings.find_by_time(time) ||
         @faculty.meetings.create!(:time => time, :room => 'Default')
-      m.admits << admit
+      m.add_admit!(admit)
       # make sure faculty's max admits/slot is bumped up to allow this
       @faculty.max_admits_per_meeting = 1 + m.admits.length
       @faculty.save!
@@ -55,10 +55,11 @@ When /^I select "(.*)" from the menu for the (.*) meeting with "(.*) (.*)"$/ do 
   select(admit, :from => "add_#{meeting.id}_#{@faculty.max_admits_per_meeting}")
 end
 
-Then /^I should (not |)?have a meeting with "(.*) (.*)" at (.*)/ do |neg,first,last,time|
+Then /^faculty "(.*) (.*)" should (not |)?have a meeting with "(.*) (.*)" at (.*)/ do |fac_first,fac_last,neg,first,last,time|
+  @faculty = Faculty.find_by_first_name_and_last_name(fac_first,fac_last)
   @admit = Admit.find_by_first_name_and_last_name(first,last)
   @time = Time.zone.parse(time)
-  meeting = Meeting.find_all_by_time(@time).detect { |m| m.admits.include?(@admit) }
+  meeting = @faculty.meetings.find_all_by_time(@time).detect { |m| m.admits.include?(@admit) }
   if neg =~ /not/
     meeting.should be_nil
   else

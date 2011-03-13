@@ -145,33 +145,54 @@ describe Meeting do
       lambda { @meeting.remove_admit!(@admit) }.should_not raise_error
     end
   end
-  describe 'Adding admit to existing meeting' do
+  describe 'Adding admit' do
     before(:each) do
       @admit1 = Factory.create(:admit)
-      @admit2 = Factory.create(:admit)
+      @new_admit = Factory.create(:admit)
       @admit1.stub!(:available_at?).and_return(true)
-      @admit2.stub!(:available_at?).and_return(true)
+      @new_admit.stub!(:available_at?).and_return(true)
       @meeting.faculty.stub!(:available_at?).and_return(true)
-      @meeting.admits << @admit1
-      @meeting.save!
+      @meeting.add_admit!(@admit1)
     end
-    it 'should raise error if meeting already has max number of admits for that faculty member' do
-      @meeting.faculty.update_attribute(:max_admits_per_meeting, 1)
-      @meeting.admits << @admit2
-      lambda { @meeting.save! }.should raise_error(ActiveRecord::RecordInvalid)
-      @meeting.errors.full_messages.should include("#{@meeting.faculty.full_name} is already seeing 1 people at #{@meeting.time.strftime('%I:%M%p')}, which is his/her maximum.")
+    describe 'when disallowed', :shared => true do
+      it 'should not add the admit to the meeting' do
+        @meeting.add_admit!(@new_admit) rescue nil
+        @meeting.admits.should_not include(@new_admit)
+      end
     end
-    it 'should raise error if admit is not available at that time' do
-      @admit2.stub!(:available_at?).with(@meeting.time).and_return(nil)
-      @meeting.admits << @admit2
-      lambda { @meeting.save! }.should raise_error(ActiveRecord::RecordInvalid)
-      @meeting.errors.full_messages.should include("#{@admit2.full_name} is not available at #{@meeting.time.strftime('%I:%M%p')}.")
+    context 'if meeting already has max number of admits' do
+      before(:each) do
+        @meeting.faculty.update_attribute(:max_admits_per_meeting, 1)
+      end
+      it_should_behave_like 'when disallowed'
+      it 'should raise error' do
+        lambda { @meeting.add_admit!(@new_admit) }.should raise_error(ActiveRecord::RecordInvalid)
+      end
+      it 'should provide descriptive error message' do
+        @meeting.add_admit!(@new_admit) rescue nil
+        @meeting.errors.full_messages.should include("#{@meeting.faculty.full_name} is already seeing 1 people at #{@meeting.time.strftime('%I:%M%p')}, which is his/her maximum.")
+      end
+    end
+    context 'if admit is not available at start time' do
+      before(:each) do
+        @new_admit.stub!(:available_at?).with(@meeting.time).and_return(nil)
+      end
+      it_should_behave_like 'when disallowed'
+      it 'should raise error' do
+        lambda { @meeting.add_admit!(@new_admit) }.
+          should raise_error(ActiveRecord::RecordInvalid)
+      end
+      it 'should provide a descriptive error message' do
+        @meeting.add_admit!(@new_admit) rescue nil
+        @meeting.errors.full_messages.
+          should include("#{@new_admit.full_name} is not available at #{@meeting.time.strftime('%I:%M%p')}.")
+      end
     end
     it 'should succeed if admit is available and there is room' do
       @meeting.faculty.update_attribute(:max_admits_per_meeting, 2)
-      @meeting.admits << @admit2
+      @meeting.add_admit!(@new_admit)
       lambda { @meeting.save! }.should_not raise_error
-      @meeting.admits.should include(@admit2)
+      @meeting.admits.should include(@new_admit)
     end
   end
 end

@@ -6,7 +6,7 @@ class Meeting < ActiveRecord::Base
   validates_presence_of :room
   validates_existence_of :faculty
 
-  validate :no_conflicts, :if => Proc.new { |m| m.faculty && !m.admits.blank? }
+  validate :no_conflicts, :if => Proc.new { |m|  !m.admits.blank? }
 
   def self.generate
     MeetingsScheduler.delete_old_meetings!
@@ -32,6 +32,16 @@ end
     !(self.admits & self.faculty.ranked_one_on_one_admits).empty?
   end
 
+  def add_admit!(admit)
+    begin
+      self.admits << admit
+      self.save!
+    rescue 
+      self.admits -= [admit]
+      raise
+    end
+  end
+
   def remove_admit!(admit)
     self.admits -= [admit]
     self.save!
@@ -47,10 +57,12 @@ end
     end
     errors.add_to_base "#{fn} is already seeing #{@faculty.max_admits_per_meeting} people at #{tm}, which is his/her maximum." if exceeds_max_admits_per_meeting
     errors.add_to_base "#{fn} is not available at #{tm}." unless faculty.available_at?(time)
-    admits.each do |admit|
-      errors.add_to_base "#{admit.full_name} is not available at #{tm}." unless admit.available_at?(time)
-      if (m = admit.meeting_at_time(time)) && m != self
-        errors.add_to_base "#{admit.full_name} is already meeting with #{m.faculty.full_name} at #{tm}."
+    unless admits.nil?
+      admits.each do |admit|
+        errors.add_to_base "#{admit.full_name} is not available at #{tm}." unless admit.available_at?(time)
+        if (m = admit.meeting_at_time(time)) && m != self
+          errors.add_to_base "#{admit.full_name} is already meeting with #{m.faculty.full_name} at #{tm}."
+        end
       end
     end
   end

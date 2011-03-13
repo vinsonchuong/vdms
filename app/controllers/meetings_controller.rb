@@ -119,8 +119,7 @@ class MeetingsController < ApplicationController
         begin
           meeting = Meeting.find($1)
           admit = Admit.find(admit)
-          meeting.admits << admit
-          meeting.save!
+          meeting.add_admit!(admit)
           messages << "#{admit.full_name} added to #{meeting.time.strftime('%I:%M%p')} meeting."
         rescue Exception => e
           messages << "#{admit.full_name if admit} NOT added to #{meeting.time.strftime('%I:%M%p')} meeting: #{e.message}"
