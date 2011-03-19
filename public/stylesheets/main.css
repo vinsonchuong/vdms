@@ -153,6 +153,10 @@ h1 a {
   padding: 6px 4px;
   border-bottom: 1px solid #eeeeee;
 }
+#content table td dl dt {
+  float: left;
+  margin-right: 15px;
+}
 #content #errors table th {
   border-bottom-color: #d34f4a;
   color: #d34f4a;
