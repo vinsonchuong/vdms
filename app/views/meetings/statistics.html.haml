@@ -32,13 +32,14 @@
       %th{:scope => 'col'} Faculty
       %th{:scope => 'col'} Admits
   %tbody
-    - @faculty_with_unsatisfied_rankings.each do |faculty, admits|
+    - @faculty_with_unsatisfied_rankings.each do |faculty, admit_rankings|
       %tr
         %td!= faculty.full_name
         %td
-          %ul
-            - admits.each do |admit|
-              %li!= admit.full_name
+          %dl
+            - admit_rankings.each do |admit_ranking|
+              %dt!= admit_ranking.rank
+              %dd!= admit_ranking.admit.full_name
 %h3 Admits with Unsatisfied Rankings
 %table
   %thead
@@ -46,10 +47,11 @@
       %th{:scope => 'col'} Admit
       %th{:scope => 'col'} Faculty
   %tbody
-    - @admits_with_unsatisfied_rankings.each do |admit, faculty|
+    - @admits_with_unsatisfied_rankings.each do |admit, faculty_rankings|
       %tr
         %td!= admit.full_name
         %td
           %ul
-            - faculty.each do |faculty|
-              %li!= faculty.full_name
+            - faculty_rankings.each do |faculty_ranking|
+              %dt!= faculty_ranking.rank
+              %dd!= faculty_ranking.faculty.full_name
