@@ -378,6 +378,50 @@ describe Faculty do
     end
   end
 
+  context 'before saving' do
+    it 'destroys Meetings at times at which it is no longer available' do
+      time1 = Time.zone.now
+      time2 = Time.zone.now + 3600
+      available1 = @faculty.available_times.create(:begin => time1, :end => (time1 + 900), :room => 'Room', :available => true)
+      available2 = @faculty.available_times.create(:begin => time2, :end => (time2 + 900), :room => 'Room', :available => false)
+      meeting1 = @faculty.meetings.create(:time => time1, :room => 'Room')
+      meeting2 = @faculty.meetings.create(:time => time2, :room => 'Room')
+      meetings = [meeting1, meeting2]
+      meetings.stub(:reload).and_return(meetings)
+      @faculty.stub(:meetings).and_return(meetings)
+
+      meeting1.should_not_receive(:destroy)
+      meeting2.should_receive(:destroy)
+      available2.save
+      @faculty.save
+    end
+
+    it 'creates new Meetings for newly available time slots' do
+      @faculty.meetings.should be_empty
+      time1 = Time.zone.now
+      time2 = Time.zone.now + 3600
+      @faculty.available_times.create(:begin => time1, :end => (time1 + 900), :room => 'Room', :available => true)
+      @faculty.available_times.create(:begin => time2, :end => (time2 + 900), :room => 'Room', :available => false)
+      @faculty.save
+      meeting_times = @faculty.meetings.map {|m| m.time.to_s}
+      meeting_times.should include(time1.to_s)
+      meeting_times.should_not include(time2.to_s)
+    end
+
+    it 'ensures room consistency between AvailableTimes and Meetings' do
+      time = Time.zone.now
+      available = @faculty.available_times.create(:begin => time, :end => (time + 900), :room => 'Room', :available => true)
+      @faculty.available_times.reload
+      @faculty.save
+      @faculty.meetings.first.room.should == 'Room'
+      available.room = 'New Room'
+      available.save
+      @faculty.available_times.reload
+      @faculty.save
+      @faculty.meetings.first.room.should == 'New Room'
+    end
+  end
+
   context 'when destroying' do
     it 'destroys its Available Times' do
       available_times = Array.new(3) do |i|
@@ -518,6 +562,21 @@ describe Faculty do
         [0, 3].each {|i| @faculty.available_times[i].should_not be_a_new_record}
         [1, 2, 4].each {|i| @faculty.available_times[i].should be_a_new_record}
       end
+    end
+  end
+
+  context 'when finding the designated room for a given time slot' do
+    it 'returns the time-slot-specific room if it is specified' do
+      time = Time.zone.now
+      @faculty.available_times.create(:begin => time, :end => time + 900, :room => 'Room')
+      @faculty.room_for(time).should == 'Room'
+    end
+
+    it 'returns the default room if the time-slot-specific room has not been specified' do
+      @faculty.stub(:default_room).and_return('Default')
+      time = Time.zone.now
+      @faculty.available_times.create(:begin => time, :end => time + 900, :room => '')
+      @faculty.room_for(time).should == 'Default'
     end
   end
 end

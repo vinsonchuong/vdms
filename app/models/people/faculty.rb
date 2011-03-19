@@ -31,6 +31,15 @@ class Faculty < Person
     record.area = areas[record.area] unless record.area.nil? || areas[record.area].nil?
     record.division = divisions[record.division] unless record.division.nil? || divisions[record.division].nil?
   end
+  before_save do |record| # Maintain correspondence between available time slots and meeting slots
+    available_times = record.available_times.select(&:available).map(&:begin)
+    meeting_times = record.meetings.map(&:time)
+    record.meetings.reject {|m| available_times.include?(m.time)}.each(&:destroy)
+    (available_times - meeting_times).each do |time|
+      record.meetings.create(:time => time, :room => record.room_for(time))
+    end
+    record.meetings.reload.each {|m| m.update_attributes(:room => record.room_for(m.time))}
+  end
 
   has_many :admit_rankings, :order => 'rank ASC', :dependent => :destroy
   has_many :ranked_admits, :source => :admit, :through => :admit_rankings, :order => 'rank ASC'
@@ -59,10 +68,15 @@ class Faculty < Person
   def available_at?(time)
     available_times.map(&:begin).include?(time)
   end
-  
-  def self.attending_faculties
-    Faculty.all.select {|faculty| faculty.available_times.select {|available_time| available_time.available?}.count > 0 }
+
+  def room_for(time)
+    available_time = available_times.detect {|t| t.begin == time}
+    available_time.nil? ? default_room :
+    available_time.room.blank? ? default_room :
+    available_time.room
   end
   
-  
+  def self.attending_faculties
+    Faculty.all.select {|faculty| faculty.available_times.select {|available_time| available_time.available?}.count > 0}
+  end
 end

@@ -76,7 +76,6 @@ module MeetingsScheduler
   def self.create_meetings_from_ranking_scores!
     puts "Initializing all Meeting objects for ATTENDING faculties..."
     @all_meetings = initialize_all_meetings
-    @all_meetings.each {|m| m.save!}
     puts "Initialization complete.  Now populating meetings..."
     fill_up_meetings_from_rankings!(Ranking.by_rank)
     puts "Finished populating meetings.  Now saving all meetings to database..."
@@ -130,16 +129,15 @@ module MeetingsScheduler
   def self.save_all_created_meetings_to_database!
     puts "Saving all new Meetings to database - this may take a while..."
     @all_meetings.each_with_index do |m, i|
-      m.save(false)
       puts "##{i} finished"
     end
     puts "Finished."
   end
 
   def self.initialize_all_meetings
-    @all_meetings = Faculty.attending_faculties.collect do |faculty|
-      faculty.available_times.collect{ |available_time| faculty.meetings.new(:time => available_time.begin,
-                                                                             :room => available_time.room.blank? ? faculty.default_room : available_time.room) }
+    @all_meetings = Faculty.all.collect do |faculty|
+      faculty.available_times.select(&:available).collect{ |available_time| faculty.meetings.new(:time => available_time.begin,
+                                                                                                 :room => faculty.room_for(available_time.time))}
     end
     @all_meetings.flatten!
   end

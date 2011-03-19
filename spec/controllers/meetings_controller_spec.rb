@@ -29,7 +29,6 @@ describe MeetingsController do
     context "for staff users" do
       before(:each) { fake_login(:staff) }
       it "should be allowed" do
-        pending "Scheduler not implemented yet"
         Meeting.should_receive(:generate)
         post :create_all
       end
@@ -51,11 +50,11 @@ describe MeetingsController do
       it 'assigns to @unsatisfied_admits a list of unsatisfied Admits' do
         @settings.stub(:unsatisfied_admit_threshold).and_return(3)
         admit1 = Admit.new
-        admit1.stub_chain(:meetings, :count).and_return(2)
+        admit1.meetings.stub(:count).and_return(2)
         admit2 = Admit.new
-        admit2.stub_chain(:meetings, :count).and_return(3)
+        admit2.meetings.stub(:count).and_return(3)
         admit3 = Admit.new
-        admit3.stub_chain(:meetings, :count).and_return(4)
+        admit3.meetings.stub(:count).and_return(4)
         Admit.stub(:find).and_return([admit1, admit2, admit3])
         get :statistics
         assigns[:unsatisfied_admits].should == [admit1]
@@ -70,6 +69,32 @@ describe MeetingsController do
         Faculty.stub(:find).and_return([faculty1, faculty2])
         get :statistics
         assigns[:unsatisfied_faculty].should == [[faculty1, [admit1]]]
+      end
+      it 'assigns to @admits_with_unsatisfied_rankings a list of admits with unsatisfied rankings' do
+        admit1 = Factory.create(:admit)
+        admit2 = Factory.create(:admit)
+        faculty21 = Factory.create(:faculty)
+        Factory.create(:faculty_ranking, :admit => admit2, :faculty => faculty21)
+        Factory.create(:meeting, :faculty => faculty21).admits << admit2
+        admit3 = Factory.create(:admit)
+        faculty31 = Factory.create(:faculty)
+        Factory.create(:faculty_ranking, :admit => admit3, :faculty => faculty31)
+        Admit.stub(:find).and_return([admit1, admit2, admit3])
+        get :statistics
+        assigns[:admits_with_unsatisfied_rankings].should == [[admit3, [faculty31]]]
+      end
+      it 'assigns to @faculty_with_unsatisfied_rankings a list of faculty with unsatisfied rankings' do
+        faculty1 = Factory.create(:faculty)
+        faculty2 = Factory.create(:faculty)
+        admit21 = Factory.create(:admit)
+        Factory.create(:admit_ranking, :faculty => faculty2, :admit => admit21)
+        Factory.create(:meeting, :faculty => faculty2).admits << admit21
+        faculty3 = Factory.create(:faculty)
+        admit31 = Factory.create(:admit)
+        Factory.create(:admit_ranking, :faculty => faculty3, :admit => admit31)
+        Faculty.stub(:find).and_return([faculty1, faculty2, faculty3])
+        get :statistics
+        assigns[:faculty_with_unsatisfied_rankings].should == [[faculty3, [admit31]]]
       end
       it 'renders the statistics template' do
         get :statistics
@@ -102,13 +127,13 @@ describe MeetingsController do
       fake_login(:staff)
     end
     it 'should delete the meeting' do
+      pending
       admit1 = Factory.create(:admit)
       admit2 = Factory.create(:admit)
       meeting = Factory.create(:meeting)
       schedule!(meeting, [admit1, admit2])
       meeting.admits.should_receive(:delete).with(admit1.id)
-      params  = {"remove_#{admit1.id}_#{meeting.id}" => '1'}
-      pending "POST cant find the right route??"
+      params  = {:faculty_id => 1, "remove_#{admit1.id}_#{meeting.id}" => '1'}
       post :apply_tweaks, params
     end
   end
