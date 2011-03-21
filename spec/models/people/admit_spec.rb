@@ -407,6 +407,30 @@ describe Admit do
       end
     end
 
+    it 'also allows Faculty Rankings to be specified' do
+      faculty1 = Factory.create(:faculty, :first_name => 'First1', :last_name => 'Last1')
+      faculty2 = Factory.create(:faculty, :first_name => 'First2', :last_name => 'Last2')
+      faculty3 = Factory.create(:faculty, :first_name => 'First3', :last_name => 'Last3')
+      csv_text = <<-EOF.gsub(/^ {8}/, '')
+        First Name,Last Name,Email,Phone,Area 1,Area 2,Faculty 1,Faculty 2,Faculty 3
+        First0,Last0,email0@email.com,1234567890,Area 10,Area 20,First1 Last1,First2 Last2,First3 Last3
+        First1,Last1,email1@email.com,1234567891,Area 11,Area 21,First2 Last2,First3 Last3,First1 Last1
+        First2,Last2,email2@email.com,1234567892,Area 12,Area 22,First3 Last3,First1 Last1,First2 Last2
+      EOF
+      Admit.new_from_csv(csv_text).should == @admits
+      @admits.each_with_index do |admit, i|
+        admit.first_name.should == "First#{i}"
+        admit.last_name.should == "Last#{i}"
+        admit.email.should == "email#{i}@email.com"
+        admit.phone.should == "123456789#{i}"
+        admit.area1.should == "Area 1#{i}"
+        admit.area2.should == "Area 2#{i}"
+        admit.faculty_rankings.detect {|r| r.rank == 1}.faculty.full_name.should == "First#{(i%3)+1} Last#{(i%3)+1}"
+        admit.faculty_rankings.detect {|r| r.rank == 2}.faculty.full_name.should == "First#{((i+1)%3)+1} Last#{((i+1)%3)+1}"
+        admit.faculty_rankings.detect {|r| r.rank == 3}.faculty.full_name.should == "First#{((i+2)%3)+1} Last#{((i+2)%3)+1}"
+      end
+    end
+
     it 'ignores extraneous attributes' do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
         Baz,First Name,Last Name,Email,Phone,Area 1,Area 2,Foo,Bar

@@ -10,6 +10,20 @@ module Importable
   
     def convert_attributes(csv_row)
       attributes = csv_row.to_hash
+      faculty_rankings = []
+      attributes.delete_if do |col, value|
+        if col =~ /^Faculty (\d+)$/
+          ranking_attributes = {:rank => $1.to_i}
+          if value =~ /(\w+)\s+(\w+)/
+            faculty = Faculty.find_by_first_name_and_last_name($1, $2)
+            ranking_attributes[:faculty] = faculty
+          end
+          faculty_rankings << ranking_attributes
+          true
+        else
+          false
+        end
+      end
       attributes.update_keys {|col| self::ATTRIBUTES[col]}
       attributes.delete_if {|accessor, value| accessor.nil?}
       attributes.update_each do |accessor, value|
@@ -20,7 +34,11 @@ module Importable
         end
         {accessor, value.send(conversion)}
       end
-      attributes
+      unless faculty_rankings.empty?
+        attributes.merge({:faculty_rankings_attributes => faculty_rankings})
+      else
+        attributes
+      end
     end
   end
 
