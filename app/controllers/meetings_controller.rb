@@ -16,9 +16,8 @@ class MeetingsController < ApplicationController
   # Show the master schedule
   # GET /meetings/master
   def master
-    meetings = Meeting.all
-    @meetings_by_faculty = meetings.group_by(&:faculty).to_a.sort_by {|f, m| [f.last_name, f.first_name]}
-    @times = meetings.map(&:time).uniq.sort
+    @meetings_by_faculty = Faculty.by_name.map {|f| [f, f.available_times.map {|t| f.meeting_for(t.begin)}]}
+    @times = AvailableTime.all.map(&:begin).uniq.sort!
   end
 
   # Show meetings statistics
@@ -42,6 +41,7 @@ class MeetingsController < ApplicationController
   # Show the admit schedule
   # GET /meetings/print_admits
   def print_admits
+    @times = AvailableTime.all.map(&:begin).uniq.sort!
     @admits = Admit.by_name.reject {|a| a.meetings.empty?}
     @one_per_page = params['one_per_page'].to_b
   end
@@ -49,6 +49,7 @@ class MeetingsController < ApplicationController
   # Show the faculty schedule
   # GET /meetings/print_faculty
   def print_faculty
+    @times = AvailableTime.all.map(&:begin).uniq.sort!
     @faculty = Faculty.by_name.reject {|f| f.meetings.empty?}
     @one_per_page = params['one_per_page'].to_b
   end
@@ -57,7 +58,7 @@ class MeetingsController < ApplicationController
   # GET /people/admits/1/meetings
   def for_admit(admit_id)
     @admit = Admit.find(admit_id)
-    @admit_meetings = @admit.meetings.sort_by(&:time)
+    @times = AvailableTime.all.map(&:begin).uniq.sort!
     render :action => 'for_admit'
   end
 
@@ -65,12 +66,13 @@ class MeetingsController < ApplicationController
   # GET /people/faculty/1/meetings
   def for_faculty(faculty_id)
     @faculty = Faculty.find(faculty_id)
-    @faculty_meetings = @faculty.meetings.sort_by(&:time)
+    @times = AvailableTime.all.map(&:begin).uniq.sort!
     render :action => 'for_faculty'
   end
 
   # Tweak the schedule for faculty (ie, show editable view) - for staff only
   def tweak
+    @times = AvailableTime.all.map(&:begin).uniq.sort!
     @faculty = Faculty.find(params[:faculty_id])
     @max_admits = @faculty.max_admits_per_meeting
     @meetings = @faculty.meetings.sort_by(&:time)

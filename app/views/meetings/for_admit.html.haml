@@ -6,15 +6,13 @@
       %th{:scope => 'col'} Faculty Name
       %th{:scope => 'col'} Room
   %tbody
-    - @admit_meetings.each do |meeting|
-      %tr
-        %td!= meeting.time.strftime('%I:%M%p')
-        %td!= meeting.faculty.full_name
-        %td!= meeting.room
-
-
-
-
-
-
-
+    - @times.each do |time|
+      - meeting = @admit.meeting_at_time(time)
+      %tr{:class => (meeting.nil? ? 'unavailable' : nil)}
+        %td!= time.strftime('%I:%M%p')
+        - unless meeting.nil?
+          %td!= meeting.faculty.full_name
+          %td!= meeting.room
+        - else
+          %td
+          %td

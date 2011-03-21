@@ -22,29 +22,5 @@ Feature: Peer advisor can view meeting schedules for admits
   Scenario: I view the meeting schedules of all my admits given no schedules have been generated
 
   Scenario: I view the meeting schedule of one of my admits given a schedule has been generated
-    Given I am on the view admits page
-    And my first admit has the following meeting schedule:
-      | time  | room | faculty_id |
-      | 12:00 | soda | 36         |
-      | 13:00 | cory | 37         |
-    When I follow "View Meeting Schedule" for the first admit
-    Then I should see "Time"
-    And I should see "Faculty Name"
-    And I should see "Room"
-    And I should see "test1"
-    And I should see "test2"
-    And I should see "foo"
-    And I should see "bar"
-    And I should see "soda"
-    And I should see "cory"
-    And I should see "12:00PM"
-    And I should see "01:00PM"
-  
-  
 
   Scenario: I view the meeting schedule of one of my admits given no schedule has been generated
-    Given I am on the view admits page
-    When I follow "View Meeting Schedule" for the second admit
-    Then I should see "Time"
-    And I should see "Faculty Name"
-    And I should see "Room"

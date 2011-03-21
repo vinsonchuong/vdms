@@ -137,7 +137,7 @@ module MeetingsScheduler
   def self.initialize_all_meetings
     @all_meetings = Faculty.all.collect do |faculty|
       faculty.available_times.select(&:available).collect{ |available_time| faculty.meetings.new(:time => available_time.begin,
-                                                                                                 :room => faculty.room_for(available_time.time))}
+                                                                                                 :room => faculty.room_for(available_time.begin))}
     end
     @all_meetings.flatten!
   end

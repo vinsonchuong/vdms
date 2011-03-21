@@ -17,15 +17,18 @@
         - 1.upto(@max_admits) do |i|
           %th Admit #{i}
     %tbody
-      - @meetings.each do |meeting|
+      - @times.each do |time|
+        - meeting = @faculty.meeting_for(time)
         %tr
-          %td= meeting.time.strftime('%I:%M%p')
-          %td.room= meeting.room
-          - meeting.admits.each_with_index do |admit,index|
-            %td!= render :partial => 'slot_with_admit', :locals => {:admit => admit, :meeting => meeting}
-          - (meeting.admits.length + 1).upto(@max_admits) do |index|
-            %td!= render :partial => 'open_slot', :locals => {:meeting => meeting, :index => index}
-
+          %td= time.strftime('%I:%M%p')
+          %td.room= @faculty.room_for(time)
+          - unless meeting.nil?
+            - meeting.admits.each_with_index do |admit,index|
+              %td!= render :partial => 'slot_with_admit', :locals => {:admit => admit, :meeting => meeting}
+            - (meeting.admits.length + 1).upto(@max_admits) do |index|
+              %td!= render :partial => 'open_slot', :locals => {:meeting => meeting, :index => index}
+          - else
+            %td.room
+            - 1.upto(@max_admits) do |i|
+              %td
   != submit_tag 'Save Changes'
-
-            

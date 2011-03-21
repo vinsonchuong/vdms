@@ -75,6 +75,10 @@ class Faculty < Person
     available_time.room.blank? ? default_room :
     available_time.room
   end
+
+  def meeting_for(time)
+    meetings.detect {|m| m.time == time}
+  end
   
   def self.attending_faculties
     Faculty.all.select {|faculty| faculty.available_times.select {|available_time| available_time.available?}.count > 0}

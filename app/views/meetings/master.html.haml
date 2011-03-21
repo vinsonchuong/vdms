@@ -11,7 +11,7 @@
         %td!= link_to faculty.full_name, (@current_user.class == Staff ? tweak_faculty_meetings_path(faculty) : faculty_meetings_path(faculty))
         - @times.each do |time|
           %td.meeting
-            - meetings.select { |m| m.time == time }.each do |meeting|
+            - meetings.select { |m| !m.nil? && m.time == time }.each do |meeting|
               - meeting.admits.each do |admit|
                 %span
                   != link_to  admit.full_name, admit_meetings_path(admit), {:title => room_if_not_default(meeting)}

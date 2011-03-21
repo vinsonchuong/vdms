@@ -6,16 +6,11 @@
       %th{:scope => 'col'} Room
       %th{:scope => 'col'} Admit(s)
   %tbody
-    - @faculty_meetings.each do |meeting|
-      %tr
-        %td!= meeting.time.strftime('%I:%M%p')
-        %td!= meeting.room
+    - @times.each do |time|
+      - meeting = @faculty.meeting_for(time)
+      %tr{:class => (meeting.nil? ? 'unavailable' : nil)}
+        %td!= time.strftime('%I:%M%p')
+        %td!= @faculty.room_for(time)
         %td.meeting
-          != meeting.admits.map { |a| link_to(a.full_name, admit_meetings_path(a)) }.join(', ')
-
-
-
-
-
-
-
+          - unless meeting.nil?
+            != meeting.admits.map { |a| link_to(a.full_name, admit_meetings_path(a)) }.join(', ')
