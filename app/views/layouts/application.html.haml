@@ -17,6 +17,7 @@
         %p#alerts!= flash[:alert]
       != yield
     #navigation
+      - faculty_instance = Faculty.find_by_ldap_id(session[:cas_user])
       - if @current_user.class == Staff
         %ul
           %li.highlight!= link_to t('root.sign_out.title'), sign_out_path
@@ -28,9 +29,15 @@
               %li!= link_to t('staff.new.title'), new_staff_instance_path
           %li
             != link_to t('peer_advisors.index.title'), peer_advisors_path
+            %ul
+              %li!= link_to t('peer_advisors.new.title'), new_peer_advisor_path
           %li
             != link_to t('faculty.index.title'), faculty_path
             %ul
+              - unless faculty_instance.nil?
+                %li!= link_to 'Update My Faculty Info', edit_faculty_instance_path(faculty_instance)
+                %li!= link_to t('faculty.edit_availability.alt_title'), edit_availability_faculty_instance_path(faculty_instance)
+                %li!= link_to t('faculty.rank_admits.alt_title'), rank_admits_faculty_instance_path(faculty_instance)
               %li!= link_to t('faculty.new.title'), new_faculty_instance_path
               %li!= link_to t('faculty.upload.title'), upload_faculty_path
           %li
@@ -52,6 +59,10 @@
           %li.highlight!= link_to t('root.sign_out.title'), sign_out_path
           %li!= link_to t('peer_advisors.edit.alt_title'), edit_peer_advisor_path(@current_user)
           %li!= link_to t('admits.index.title'), admits_path
+          - unless faculty_instance.nil?
+            %li!= link_to 'Update My Faculty Info', edit_faculty_instance_path(faculty_instance)
+            %li!= link_to t('faculty.edit_availability.alt_title'), edit_availability_faculty_instance_path(faculty_instance)
+            %li!= link_to t('faculty.rank_admits.alt_title'), rank_admits_faculty_instance_path(faculty_instance)
       - elsif @current_user.class == Faculty && !@current_user.new_record?
         %ul
           %li.highlight!= link_to t('root.sign_out.title'), sign_out_path

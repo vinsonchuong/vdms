@@ -14,7 +14,9 @@ class ApplicationController < ActionController::Base
   private
 
   def get_current_user
-    person = Person.find_by_ldap_id(session[:cas_user])
+    person = Staff.find_by_ldap_id(session[:cas_user]) ||
+             PeerAdvisor.find_by_ldap_id(session[:cas_user]) ||
+             Faculty.find_by_ldap_id(session[:cas_user])
     (@current_user = person) && return unless person.nil?
 
     entry = LDAP.find_person(session[:cas_user])

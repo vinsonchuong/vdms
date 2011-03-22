@@ -46,7 +46,8 @@ describe SettingsController do
     context 'when signed in as an unregistered Peer Advisor' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(PeerAdvisor.new)
+        #Person.stub(:find).and_return(PeerAdvisor.new)
+        PeerAdvisor.stub(:find).and_return(PeerAdvisor.new)
       end
 
       it 'redirects to the New Peer Advisor page' do
@@ -70,7 +71,8 @@ describe SettingsController do
     context 'when signed in as an unregistered Faculty' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(Faculty.new)
+        #Person.stub(:find).and_return(Faculty.new)
+        Faculty.stub(:find).and_return(Faculty.new)
       end
 
       it 'redirects to the New Faculty page' do
@@ -153,7 +155,8 @@ describe SettingsController do
     context 'when signed in as an unregistered Faculty' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(Faculty.new)
+        #Person.stub(:find).and_return(Faculty.new)
+        Faculty.stub(:find).and_return(Faculty.new)
       end
 
       it 'redirects to the New Faculty page' do

@@ -524,7 +524,8 @@ describe AdmitsController do
 
     context 'when signed in as a registered Peer Advisor' do
       before(:each) do
-        CASClient::Frameworks::Rails::Filter.fake(@admit.ldap_id)
+        CASClient::Frameworks::Rails::Filter.fake(@peer_advisor.ldap_id)
+        PeerAdvisor.stub(:find).and_return(@peer_advisor)
       end
 
       it 'assigns to @admit the given Admit' do
