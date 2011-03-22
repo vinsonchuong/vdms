@@ -11,7 +11,7 @@
       %tr{:class => (available_time.available ? nil : 'unavailable')}
         %td!= available_time.begin.strftime('%I:%M%p')
         - unless meeting.nil?
-          %td!= meeting.faculty.full_name
+          %td!= link_to meeting.faculty.full_name, (@current_user.class == Staff ? tweak_faculty_meetings_path(meeting.faculty) : faculty_meetings_path(meeting.faculty))
           %td!= meeting.room
         - else
           %td

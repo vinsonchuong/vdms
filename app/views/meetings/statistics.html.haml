@@ -8,11 +8,11 @@
   %tbody
     - @unsatisfied_faculty.each do |faculty, admits|
       %tr
-        %td!= faculty.full_name
+        %td!= link_to faculty.full_name, (@current_user.class == Staff ? tweak_faculty_meetings_path(faculty) : faculty_meetings_path(faculty))
         %td
           %ul
             - admits.each do |admit|
-              %li!= admit.full_name
+              %li!= link_to admit.full_name, admit_meetings_path(admit)
 %h3 Unsatisfied Admits
 %p!= "Admits with fewer than #{Settings.instance.unsatisfied_admit_threshold} meetings"
 %table
@@ -23,7 +23,7 @@
   %tbody
     - @unsatisfied_admits.each do |admit|
       %tr
-        %td!= admit.full_name
+        %td!= link_to admit.full_name, admit_meetings_path(admit)
         %td!= admit.meetings.count
 %h3 Faculty with Unsatisfied Rankings
 %table
@@ -34,12 +34,12 @@
   %tbody
     - @faculty_with_unsatisfied_rankings.each do |faculty, admit_rankings|
       %tr
-        %td!= faculty.full_name
+        %td!= link_to faculty.full_name, (@current_user.class == Staff ? tweak_faculty_meetings_path(faculty) : faculty_meetings_path(faculty))
         %td
           %dl
             - admit_rankings.each do |admit_ranking|
               %dt!= admit_ranking.rank
-              %dd!= admit_ranking.admit.full_name
+              %dd!= link_to admit_ranking.admit.full_name, admit_meetings_path(admit_ranking.admit)
 %h3 Admits with Unsatisfied Rankings
 %table
   %thead
@@ -49,9 +49,9 @@
   %tbody
     - @admits_with_unsatisfied_rankings.each do |admit, faculty_rankings|
       %tr
-        %td!= admit.full_name
+        %td!= link_to admit.full_name, admit_meetings_path(admit)
         %td
           %dl
             - faculty_rankings.each do |faculty_ranking|
               %dt!= faculty_ranking.rank
-              %dd!= faculty_ranking.faculty.full_name
+              %dd!= link_to faculty_ranking.faculty.full_name, (@current_user.class == Staff ? tweak_faculty_meetings_path(faculty_ranking.faculty) : faculty_meetings_path(faculty_ranking.faculty))
