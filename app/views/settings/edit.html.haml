@@ -23,6 +23,9 @@
     %p!= t('.scheduler_settings_description')
     %ul
       %li.field
+        != settings_form.label :disable_scheduler
+        != settings_form.check_box :disable_scheduler
+      %li.field
         != settings_form.label :faculty_weight
         != settings_form.select :faculty_weight, numbers
       %li.field

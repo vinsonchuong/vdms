@@ -52,6 +52,7 @@ en:
         mandatory_weight: "Mandatory Weight"
         disable_peer_advisors: "Prevent Peer Advisors from changing Admits' availability and rankings"
         disable_faculty: "Prevent Faculty from changing their availability and rankings"
+        disable_scheduler: "Disable the \"Generate Schedule\" button"
       division:
         name: "Abbreviation"
         long_name: "Name"

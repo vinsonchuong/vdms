@@ -90,6 +90,11 @@ class MeetingsController < ApplicationController
   # Run the scheduler
   # POST /meetings/create_all
   def create_all
+    if Settings.instance.disable_scheduler
+      flash[:alert] = "The staff have disabled automatic scheduler generation."
+      redirect_to master_meetings_path
+      return
+    end
     begin
       Meeting.generate()
       flash[:notice] = "New schedule successfully generated."
