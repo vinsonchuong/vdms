@@ -101,6 +101,9 @@ thead {
 tr {
 	page-break-inside: avoid;
 }
+tr.unavailable {
+  text-decoration: line-through;
+}
 
 /**
  * Hide

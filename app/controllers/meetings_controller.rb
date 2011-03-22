@@ -41,7 +41,6 @@ class MeetingsController < ApplicationController
   # Show the admit schedule
   # GET /meetings/print_admits
   def print_admits
-    @times = AvailableTime.all.map(&:begin).uniq.sort!
     @admits = Admit.by_name.reject {|a| a.meetings.empty?}
     @one_per_page = params['one_per_page'].to_b
   end
@@ -58,7 +57,6 @@ class MeetingsController < ApplicationController
   # GET /people/admits/1/meetings
   def for_admit(admit_id)
     @admit = Admit.find(admit_id)
-    @times = AvailableTime.all.map(&:begin).uniq.sort!
     render :action => 'for_admit'
   end
 
