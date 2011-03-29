@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
         :email => entry[:email]
       }
       @current_user = (entry[:role] == :faculty) ? Faculty.new(attributes) :
-                      (entry[:role] == :grad) ? PeerAdvisor.new(attributes) :
+                      (entry[:role] == :grad) ? Faculty.new(attributes) :
                       nil
     end
   end
