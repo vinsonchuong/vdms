@@ -11,6 +11,7 @@
             %th{:scope => 'col'}!= Admit.human_attribute_name(:phone)
             %th{:scope => 'col'}!= Admit.human_attribute_name(:area1)
             %th{:scope => 'col'}!= Admit.human_attribute_name(:area2)
+            %th{:scope => 'col'}!= Admit.human_attribute_name(:area3)
             %th{:scope => 'col'}!= t('.errors')
         %tbody
           - @admits.select(&:invalid?).each do |admit|
@@ -21,6 +22,7 @@
               %td{:class => (errors[:phone].nil? ? nil : 'error')}= admit.phone
               %td{:class => (errors[:area1].nil? ? nil : 'error')}= admit.area1
               %td{:class => (errors[:area2].nil? ? nil : 'error')}= admit.area2
+              %td{:class => (errors[:area3].nil? ? nil : 'error')}= admit.area3
               %td
                 %ul
                   - admit.errors.full_messages.each do |error|
@@ -46,6 +48,9 @@
           != " - #{t('.area_requirement', :areas => link_to('EECS Research Areas', 'http://www.eecs.berkeley.edu/Research/Areas/'))}"
         %li
           %em Area 2
+          != " - #{t('.area_requirement', :areas => link_to('EECS Research Areas', 'http://www.eecs.berkeley.edu/Research/Areas/'))}"
+        %li
+          %em Area 3
           != " - #{t('.area_requirement', :areas => link_to('EECS Research Areas', 'http://www.eecs.berkeley.edu/Research/Areas/'))}"
     %ul
       %li.field.required

@@ -9,7 +9,9 @@
           %th{:scope => 'col'}!= Faculty.human_attribute_name(:full_name)
           %th{:scope => 'col'}!= Faculty.human_attribute_name(:email)
           %th{:scope => 'col'}!= Faculty.human_attribute_name(:division)
-          %th{:scope => 'col'}!= Faculty.human_attribute_name(:area)
+          %th{:scope => 'col'}!= Faculty.human_attribute_name(:area1)
+          %th{:scope => 'col'}!= Faculty.human_attribute_name(:area2)
+          %th{:scope => 'col'}!= Faculty.human_attribute_name(:area3)
           %th{:scope => 'col'}!= t('.errors')
         %tbody
           - @faculty.select(&:invalid?).each do |faculty_instance|
@@ -18,7 +20,9 @@
               %td{:class => (errors[:first_name].nil? && errors[:first_name].nil? ? nil : 'error')}= faculty_instance.full_name
               %td{:class => (errors[:email].nil? ? nil : 'error')}= faculty_instance.email
               %td{:class => (errors[:division].nil? ? nil : 'error')}= faculty_instance.division
-              %td{:class => (errors[:area].nil? ? nil : 'error')}= faculty_instance.area
+              %td{:class => (errors[:area1].nil? ? nil : 'error')}= faculty_instance.area1
+              %td{:class => (errors[:area2].nil? ? nil : 'error')}= faculty_instance.area2
+              %td{:class => (errors[:area3].nil? ? nil : 'error')}= faculty_instance.area3
               %td
                 %ul
                   - faculty_instance.errors.full_messages.each do |error|
@@ -30,7 +34,6 @@
       %ul
         %li
           %em LDAP ID
-          != "(#{t('.required')})"
           != " - #{t('.ldap_id_requirement', :calnet_directory => link_to('CalNet Directory', 'https://calnet.berkeley.edu/directory/'))}"
         %li
           %em First Name
@@ -47,8 +50,13 @@
           != "(#{t('.required')})"
           != " - #{t('.division_requirement')}"
         %li
-          %em Area
-          != "(#{t('.required')})"
+          %em Area 1
+          != " - #{t('.area_requirement', :areas => link_to('EECS Research Areas', 'http://www.eecs.berkeley.edu/Research/Areas/'))}"
+        %li
+          %em Area 2
+          != " - #{t('.area_requirement', :areas => link_to('EECS Research Areas', 'http://www.eecs.berkeley.edu/Research/Areas/'))}"
+        %li
+          %em Area 3
           != " - #{t('.area_requirement', :areas => link_to('EECS Research Areas', 'http://www.eecs.berkeley.edu/Research/Areas/'))}"
     %ul
       %li.field.required

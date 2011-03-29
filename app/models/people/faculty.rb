@@ -2,14 +2,18 @@ class Faculty < Person
   include Schedulable
 
   ATTRIBUTES = Person::ATTRIBUTES.merge({
-    'Area' => :area,
+    'Area 1' => :area1,
+    'Area 2' => :area2,
+    'Area 3' => :area3,
     'Division' => :division,
     'Default Room' => :default_room,
     'Max Admits Per Meeting' => :max_admits_per_meeting,
     'Max Additional Admits' => :max_additional_admits
   })
   ATTRIBUTE_TYPES = Person::ATTRIBUTE_TYPES.merge({
-    :area => :string,
+    :area1 => :string,
+    :area2 => :string,
+    :area3 => :string,
     :division => :string,
     :default_room => :string,
     :max_admits_per_meeting => :integer,
@@ -28,7 +32,9 @@ class Faculty < Person
     areas = settings.areas.invert
     divisions = {}
     settings.divisions.each {|d| divisions[d.long_name] = d.name}
-    record.area = areas[record.area] unless record.area.nil? || areas[record.area].nil?
+    record.area1 = areas[record.area1] unless record.area1.nil? || areas[record.area1].nil?
+    record.area2 = areas[record.area2] unless record.area2.nil? || areas[record.area2].nil?
+    record.area3 = areas[record.area3] unless record.area3.nil? || areas[record.area3].nil?
     record.division = divisions[record.division] unless record.division.nil? || divisions[record.division].nil?
   end
   before_save do |record| # Maintain correspondence between available time slots and meeting slots
@@ -52,7 +58,9 @@ class Faculty < Person
   validates_presence_of :email
   validates_format_of :email, :with => /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
   validates_inclusion_of :division, :in => (Settings.instance.divisions.map(&:name) + Settings.instance.divisions.map(&:long_name))
-  validates_inclusion_of :area, :in => Settings.instance.areas.to_a.flatten
+  validates_inclusion_of :area1, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
+  validates_inclusion_of :area2, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
+  validates_inclusion_of :area3, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
   validates_presence_of :default_room
   validates_presence_of :max_admits_per_meeting
   validates_numericality_of :max_admits_per_meeting, :only_integer => true, :greater_than => 0
@@ -63,6 +71,14 @@ class Faculty < Person
     if ranks.count != ranks.uniq.count
       record.errors.add_to_base('Ranks must be unique')
     end
+  end
+
+  def area
+    self.area1
+  end
+
+  def area=(new_area)
+    self.area1 = new_area
   end
   
   def available_at?(time)

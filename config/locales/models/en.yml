@@ -22,13 +22,16 @@ en:
         email: "Email"
       faculty:
         division: "Division"
-        area: "Area"
+        area1: "Area 1"
+        area2: "Area 2"
+        area3: "Area 3"
         max_admits_per_meeting: "Max Admits Per Meeting"
         max_additional_admits: "Max Unranked Admits to Allow Meetings With"
       admit:
         phone: "Phone Number"
         area1: "Area 1"
         area2: "Area 2"
+        area3: "Area 3"
       ranking:
         rank: "Rank"
       admit_ranking:
