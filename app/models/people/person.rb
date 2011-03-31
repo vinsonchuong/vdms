@@ -22,5 +22,9 @@ class Person < ActiveRecord::Base
     "#{self.first_name} #{self.last_name}"
   end
 
+  def areas
+    [self.area1, self.area2, self.area3]
+  end
+
   named_scope :by_name, :order => 'last_name, first_name'
 end

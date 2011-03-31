@@ -51,6 +51,10 @@ class Admit < Person
   end
   
   def self.attending_admits
-    Admit.all.select {|admit| admit.available_times.select {|available_time| available_time.available?}.count > 0 }
+    Admit.all.select{ |admit| admit.available_times.select {|available_time| available_time.available?}.count > 0 }
+  end
+
+  def self.unsatisfied_admits
+    Admit.all.select{ |a| a.meetings.count < Settings.instance.unsatisfied_admit_threshold }
   end
 end

@@ -5,6 +5,14 @@ module MeetingsScheduler
   module GeneticAlgorithm
 
     def self.create_meetings_from_chromosome!(best_chromosome)
+      puts "GA initialize..."
+      GA.initialize(self.factors_to_consider, self.fitness_scores_table)
+      population_size = Settings.instance.scheduler_factors_table.population_size
+      total_generations = Settings.instance.scheduler_factors_table.total_generations
+
+      puts "GA running..."
+      best_chromosome = MeetingsScheduler::GeneticAlgorithm.run(population_size, total_generations)
+
       puts "Initializing all Meeting objects for ATTENDING faculties..."
       @all_meetings = initialize_all_meetings
       fill_up_meetings_with_best_chromosome!(best_chromosome)
@@ -84,13 +92,13 @@ module MeetingsScheduler
         puts "GA casting natural selection and genetic recombination..."
         total_generations.times do |generation_num|
           puts "At generation #{generation_num+1} of #{total_generations}"
-          parents = GeneticAlgorithm.selection(population)
-          offsprings = GeneticAlgorithm.reproduction(parents)
-          population = GeneticAlgorithm.mutate_all_population(population)
-          population = GeneticAlgorithm.replace_worst_ranked(population, offsprings)
+          parents = GA.selection(population)
+          offsprings = GA.reproduction(parents)
+          population = GA.mutate_all_population(population)
+          population = GA.replace_worst_ranked(population, offsprings)
         end
         puts "GA finished."
-        best_chromosome = GeneticAlgorithm.select_best_chromosome(population)
+        best_chromosome = GA.select_best_chromosome(population)
       end
 
       # Definition:
