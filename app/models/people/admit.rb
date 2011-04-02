@@ -49,12 +49,17 @@ class Admit < Person
   def available_at?(time)
     available_times.map(&:begin).include?(time)
   end
+
+  def unsatisfied?
+    meetings.count < Settings.instance.unsatisfied_admit_threshold
+  end
   
   def self.attending_admits
     Admit.all.select{ |admit| admit.available_times.select {|available_time| available_time.available?}.count > 0 }
   end
 
   def self.unsatisfied_admits
-    Admit.all.select{ |a| a.meetings.count < Settings.instance.unsatisfied_admit_threshold }
+    # Also sort them by least meetings count first
+    Admit.attending_admits.select{ |admit| admit.unsatisfied? }.sort_by{ |admit| admit.meetings.count }
   end
 end

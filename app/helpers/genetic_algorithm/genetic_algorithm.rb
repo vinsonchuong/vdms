@@ -1,5 +1,5 @@
-require 'meetings_scheduler_chromosome'
-require 'meetings_scheduler_nucleotide'
+require 'chromosome'
+require 'nucleotide'
 
 module MeetingsScheduler
   module GeneticAlgorithm
@@ -25,7 +25,7 @@ module MeetingsScheduler
     end
 
 
-    private unless Rails.env == 'test'
+    #private unless Rails.env == 'test'
 
     # ROUNDABOUT VALIDATIONS HACK TO BYPASS STRICT ONE-ON-ONE REQUIREMENT
     def self.save_all_created_meetings_to_database!
@@ -175,7 +175,7 @@ module MeetingsScheduler
       end
 
 
-      private unless Rails.env == 'test'
+      #private unless Rails.env == 'test'
 
       # Definition: given a population of chromosomes, and accumulated_normalized_fitness value of the individuals in the population,
       #            this method will select and return a random chromosome from the population
@@ -196,7 +196,6 @@ module MeetingsScheduler
     end
   end
 end
-
 #factors_to_consider: a hash that contains all the necessary information to compute optimum meeting arrangement.
 #                    The structure of factors_to_consider looks like:
 #                    {:attending_admits => a hash of admits attending Visit Day,

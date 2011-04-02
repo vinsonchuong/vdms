@@ -83,7 +83,7 @@ module MeetingsScheduler
       end
 
 
-      private unless Rails.env == 'test'
+      #private unless Rails.env == 'test'
 
       def is_meeting_possible_score
         is_meeting_possible? ? @@fitness_scores_table[:is_meeting_possible_score] :

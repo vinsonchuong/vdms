@@ -164,7 +164,7 @@ module MeetingsScheduler
 
 
 
-      private unless Rails.env == 'test'
+      #private unless Rails.env == 'test'
 
       # Definition: Helper method to create a nucleotide sequence
       # @params: NA

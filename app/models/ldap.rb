@@ -14,7 +14,8 @@ module LDAP
       :last_name => entry.last_name.to_s.humanize.gsub(/\b('?[a-z])/) { $1.capitalize },
       :email => entry.email.to_s,
       :phone => entry.phone.to_s,
-      :department => (org = entry.org_node).nil? ? '' : org.description.first.to_s
+      :department => (org = entry.org_node).nil? ? '' : org.description.first.to_s,
+      :default_room => entry.street.empty? ? nil : entry.street.first.to_s
     }
   end
 

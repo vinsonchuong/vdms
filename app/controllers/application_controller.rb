@@ -25,7 +25,8 @@ class ApplicationController < ActionController::Base
         :ldap_id => entry[:uid],
         :first_name => entry[:first_name],
         :last_name => entry[:last_name],
-        :email => entry[:email]
+        :email => entry[:email],
+        :default_room => entry[:default_room]
       }
       @current_user = (entry[:role] == :faculty) ? Faculty.new(attributes) :
                       (entry[:role] == :grad) ? Faculty.new(attributes) :
