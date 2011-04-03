@@ -13,6 +13,7 @@ en:
                                        of 0 means ignore that information."
       unsatisfied_admit_threshold_description: "Admits assigned to fewer than this number of meetings are considered
                                                 unsatisfied."
+      maximum_number_of_meetings_per_admit: "Admits will have no more than this number of meetings."
       meetings: "Meetings"
       meeting_times: "Meeting Times"
       meeting_times_description: "Settings which define the time slots and ranges over which meetings can be scheduled.

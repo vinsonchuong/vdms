@@ -51,7 +51,11 @@ class Admit < Person
   end
 
   def unsatisfied?
-    meetings.count < Settings.instance.unsatisfied_admit_threshold
+    meetings.collect{ |m| m.faculty_id }.uniq.count < Settings.instance.unsatisfied_admit_threshold
+  end
+
+  def maxed_out_number_of_meetings?
+    meetings.collect{ |m| m.faculty_id }.uniq.count >= Settings.instance.max_meetings_per_admit
   end
   
   def self.attending_admits

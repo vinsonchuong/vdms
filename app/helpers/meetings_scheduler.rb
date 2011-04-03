@@ -17,10 +17,10 @@ module MeetingsScheduler
       puts 'Initialization complete.  Now populating and saving meetings by rank...'
       fill_up_meetings_from_rankings!(Ranking.by_rank)
 
-      puts 'Initial meeting generation complete.  Now adding more meetings for unsatisfied admits (This will take a lot longer time)...'
-      give_more_meetings_to_unsatisfied_admits!
+      #puts 'Initial meeting generation complete.  Now adding more meetings for unsatisfied admits (This will take a lot longer time)...'
+      #give_more_meetings_to_unsatisfied_admits!
       puts 'All meeting generation complete.'
-      puts "Meetings scheduling took #{(Time.now-start_time)/60} minutes to complete."
+      puts "Total algorithm runtime was #{(Time.now-start_time)/60} minutes."
     end
 
     # For debugging purposes
@@ -68,6 +68,8 @@ module MeetingsScheduler
     end
 
     def try_add_admit_to_consecutive_meetings!(admit, sub_meetings)
+      return true if admit.maxed_out_number_of_meetings?
+
       sub_meetings.each{ |m| m.admits << admit unless m.admits.include?(admit) }
       if sub_meetings.collect{ |m| m.valid? }.include?(false)
         sub_meetings.each{ |m| m.admits.delete(admit) }

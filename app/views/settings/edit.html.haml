@@ -47,6 +47,12 @@
         %p!= t('.unsatisfied_admit_threshold_description')
         != settings_form.select :unsatisfied_admit_threshold, numbers
         %span.units!= t('.meetings')
+      %li.field
+        != settings_form.label :maximum_number_of_meetings_per_admit
+        %p!= t('.maximum_number_of_meetings_per_admit')
+        != settings_form.select :max_meetings_per_admit, numbers
+        %span.units!= t('.meetings')
+
   %fieldset
     - sec_to_min = []
     - 121.times {|i| sec_to_min[i] = [i, i * 60]}
