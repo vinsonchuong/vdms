@@ -23,7 +23,7 @@
       it 'should return a meeting_solution, which is an array of nucleotides' do
         @chromosome.meeting_solution.class.should == Array
         @chromosome.meeting_solution.each do |nucleotide|
-          nucleotide.class.should == MeetingsScheduler::Nucleotide
+          nucleotide.class.should == MeetingsScheduler::GeneticAlgorithm::Nucleotide
         end
       end
     end
@@ -407,7 +407,7 @@
           @admit = create_valid_admit_hash(1)
           @faculty = create_valid_faculty_hash(1)
           @schedule_index = 0 #some arbitrary number because it does not affect the faculty_preference_score function
-          @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit)
+          @nucleotide = MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(@faculty, @schedule_index, @admit)
           @meeting_solution = mock('meeting_solution')
           @admit_in_meeting = mock('admit_in_meeting')
           MeetingsScheduler::Chromosome.stub!(:find_admits_in_meeting).and_return(@admit_in_meeting)

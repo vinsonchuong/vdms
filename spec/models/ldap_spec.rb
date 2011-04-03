@@ -12,7 +12,8 @@ describe LDAP do
       :berkeleyedustuid => 12345678,
       :berkeleyedustuugcode => nil,
       :employee_academic? => false,
-      :employee_staff? => false
+      :employee_staff? => false,
+      :default_room => ['101 Soda']
     )
   end
 
@@ -34,7 +35,8 @@ describe LDAP do
         :last_name => 'Bar',
         :email => 'foo.bar@berkeley.edu',
         :phone => '1234567890',
-        :department => 'Department'
+        :department => 'Department',
+        :default_room => ['101 Soda']
       }
     end
 
@@ -47,7 +49,8 @@ describe LDAP do
         :last_name => 'Bar',
         :email => 'foo.bar@berkeley.edu',
         :phone => '',
-        :department => 'Department'
+        :department => 'Department',
+        :default_room => ['101 Soda']
       }
     end
 
@@ -60,7 +63,22 @@ describe LDAP do
         :last_name => 'Bar',
         :email => 'foo.bar@berkeley.edu',
         :phone => '1234567890',
-        :department => ''
+        :department => '',
+        :default_room => ['101 Soda']
+      }
+    end
+
+    it 'returns a hash containing a blank :default_room value when the entry lacks a street' do
+      @entry.stub(:default_room).and_return(nil)
+      LDAP.get_attributes(@entry).should == {
+        :uid => '12345',
+        :calnet_id => '12345678',
+        :first_name => 'Foo B',
+        :last_name => 'Bar',
+        :email => 'foo.bar@berkeley.edu',
+        :phone => '1234567890',
+        :department => 'Department',
+        :default_room => nil
       }
     end
   end

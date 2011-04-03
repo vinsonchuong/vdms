@@ -1,6 +1,3 @@
-require 'chromosome'
-require 'nucleotide'
-
 module MeetingsScheduler
   module GeneticAlgorithm
 

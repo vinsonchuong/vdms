@@ -17,8 +17,8 @@ module MeetingsScheduler
       puts 'Initialization complete.  Now populating and saving meetings by rank...'
       fill_up_meetings_from_rankings!(Ranking.by_rank)
 
-      #puts 'Initial meeting generation complete.  Now adding more meetings for unsatisfied admits (This will take a lot longer time)...'
-      #give_more_meetings_to_unsatisfied_admits!
+      puts 'Initial meeting generation complete.  Now adding more meetings for unsatisfied admits (This will take a lot longer time)...'
+      give_more_meetings_to_unsatisfied_admits!
       puts 'All meeting generation complete.'
       puts "Total algorithm runtime was #{(Time.now-start_time)/60} minutes."
     end

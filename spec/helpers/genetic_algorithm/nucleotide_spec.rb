@@ -4,14 +4,14 @@ require 'spec_helper'
 describe MeetingsScheduler::GeneticAlgorithm::Nucleotide do
   before(:each) do
     @fitness_scores_table = create_valid_fitness_scores_table
-    MeetingsScheduler::Nucleotide.set_fitness_scores_table(@fitness_scores_table)
+    MeetingsScheduler::GeneticAlgorithm::Nucleotide.set_fitness_scores_table(@fitness_scores_table)
   end
 
   describe 'Nucleotide attributes' do
     before(:each) do
       @faculty_hash = create_valid_faculty_hash(@faculty_id = rand(100))
       @admit_hash = create_valid_admit_hash(@admit_id = rand(100))
-      @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty_hash, @schedule_index = 5, @admit_hash)
+      @nucleotide = MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(@faculty_hash, @schedule_index = 5, @admit_hash)
     end
 
     it 'has a schedule_index' do
@@ -43,14 +43,14 @@ describe MeetingsScheduler::GeneticAlgorithm::Nucleotide do
     end
 
     it 'is comparable to another nucleotide' do
-      @nucleotide.==(MeetingsScheduler::Nucleotide.new(@faculty_hash, @schedule_index, @admit_hash)).should == true
+      @nucleotide.==(MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(@faculty_hash, @schedule_index, @admit_hash)).should == true
     end
   end
 
   describe 'instance method: fitness' do
     before(:each) do
       @faculty_hash, @admit_hash, @schedule_index = mock('faculty'), mock('admit'), rand(100)
-      @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty_hash, @schedule_index, @admit_hash)
+      @nucleotide = MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(@faculty_hash, @schedule_index, @admit_hash)
       @nucleotide.stub!(:is_meeting_possible_score).and_return(@is_meeting_possible_score = rand(100))
     end
     it 'should calculate nucleotide-scale scores if meeting is physically possible' do
@@ -69,27 +69,27 @@ describe MeetingsScheduler::GeneticAlgorithm::Nucleotide do
 
   describe 'instance method: get_faculty_ranking' do
     it 'should return nil if nucleotide contains nil admit' do
-      MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), nil).get_faculty_ranking.should == nil
+      MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(mock('faculty'), rand(100), nil).get_faculty_ranking.should == nil
     end
 
     it 'should return the ADMIT\'s ranking that contains the faculty' do
       @faculty = { :id => (@faculty_id = rand(100)) }
       @ranking = { :faculty_id  => @faculty_id }
       @admit = { :rankings => (rand(20).times.collect{ |id| { :faculty_id => "Non-id #{id}" }} + [@ranking]).shuffle.shuffle }
-      MeetingsScheduler::Nucleotide.new(@faculty,rand(100),@admit).get_faculty_ranking.inspect.should == @ranking.inspect
+      MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(@faculty,rand(100),@admit).get_faculty_ranking.inspect.should == @ranking.inspect
     end
   end
 
   describe 'instance method: get_admit_ranking' do
     it 'should return nil if nucleotide contains nil admit' do
-      MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), nil).get_admit_ranking.should == nil
+      MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(mock('faculty'), rand(100), nil).get_admit_ranking.should == nil
     end
 
     it 'should return the FACULTY\'s ranking that contains the admit' do
       @admit = { :id => (@admit_id = rand(100)) }
       @ranking = { :admit_id  => @admit_id }
       @faculty = { :rankings => (rand(20).times.collect{ |id| { :admit_id => "Non-id #{id}" }} + [@ranking]).shuffle.shuffle }
-      MeetingsScheduler::Nucleotide.new(@faculty,rand(100),@admit).get_admit_ranking.inspect.should == @ranking.inspect
+      MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(@faculty,rand(100),@admit).get_admit_ranking.inspect.should == @ranking.inspect
     end
   end
 
@@ -100,31 +100,31 @@ describe MeetingsScheduler::GeneticAlgorithm::Nucleotide do
     end
 
     it 'should return false if nucleotide contains nil admit' do
-      MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), nil).is_meeting_possible?.should == false
+      MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(mock('faculty'), rand(100), nil).is_meeting_possible?.should == false
     end
 
     it 'should return true if nucleotide encodes for a physically possible meeting' do
       @schedule_index = 1
-      MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit).is_meeting_possible?.should == true
+      MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(@faculty, @schedule_index, @admit).is_meeting_possible?.should == true
     end
 
     it 'should return false if nucleotide encodes for a physically impossible meeting' do
       @schedule_index = 0
-      MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit).is_meeting_possible?.should == false
+      MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(@faculty, @schedule_index, @admit).is_meeting_possible?.should == false
     end
   end
 
   describe 'instance method: mandatory?' do
     [true, false].each do |val|
       it "should return #{val} if the faculty\'s admit ranking\'s mandatory attribute is #{val}" do
-        @nucleotide = MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
+        @nucleotide = MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
         @nucleotide.stub!(:get_admit_ranking).and_return({ :mandatory => val })
         @nucleotide.mandatory?.should == val
       end
     end
 
     it 'should return false if faculty has no ranking for the admit' do
-        @nucleotide = MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
+        @nucleotide = MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
         @nucleotide.stub!(:get_admit_ranking).and_return(nil)
         @nucleotide.mandatory?.should == false
     end
@@ -132,7 +132,7 @@ describe MeetingsScheduler::GeneticAlgorithm::Nucleotide do
 
   describe 'instance method: one_on_one_meeting_requested?' do
     before(:each) do
-      @nucleotide = MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
+      @nucleotide = MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
     end
 
     it 'should return false if nucleotide contains nil admit' do
@@ -150,7 +150,7 @@ describe MeetingsScheduler::GeneticAlgorithm::Nucleotide do
 
   describe 'instance method: num_timeslots_requested' do
     before(:each) do
-      @nucleotide = MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
+      @nucleotide = MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
     end
 
     it 'should return 0 if nucleotide contains nil admit or no admit_ranking exists' do
@@ -171,14 +171,14 @@ describe MeetingsScheduler::GeneticAlgorithm::Nucleotide do
 
     it 'should return a score if a meeting arrangement defined by a single nucleotide is physically possible' do
       @schedule_index = 1
-      @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit)
+      @nucleotide = MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(@faculty, @schedule_index, @admit)
       @nucleotide.stub!(:is_meeting_possible?).and_return(true)
       @nucleotide.is_meeting_possible_score.should == @fitness_scores_table[:is_meeting_possible_score]
     end
 
     it 'should return a penalty if a meeting arrangement defined by a single nucleotide is physically impossible' do
       @schedule_index = 0
-      @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, @schedule_index, @admit)
+      @nucleotide = MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(@faculty, @schedule_index, @admit)
       @nucleotide.stub!(:is_meeting_possible?).and_return(false)
       @nucleotide.is_meeting_possible_score.should == @fitness_scores_table[:is_meeting_possible_penalty]
     end
@@ -188,14 +188,14 @@ describe MeetingsScheduler::GeneticAlgorithm::Nucleotide do
     it 'should return the appropriate points when a faculty\'s areas of research matches one of an admit\'s areas of interest' do
       @admit, @faculty = create_valid_admit_hash(1), create_valid_faculty_hash(1)
       @faculty[:area], @admit[:area1], @admit[:area2] = 'subjectA', 'subjectA', 'subjectC'
-      @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, rand(100), @admit)
+      @nucleotide = MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(@faculty, rand(100), @admit)
       @nucleotide.area_match_score.should == @fitness_scores_table[:area_match_score]
     end
 
     it 'should return the appropriate default when a faculty\'s areas of research does not match any one of an admit\'s areas of interest' do
       @admit, @faculty = create_valid_admit_hash(1), create_valid_faculty_hash(1)
       @faculty[:area], @admit[:area1], @admit[:area2] = 'subjectA', 'subjectB', 'subjectC'
-      @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, rand(100), @admit)
+      @nucleotide = MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(@faculty, rand(100), @admit)
       @nucleotide.area_match_score.should == @fitness_scores_table[:area_match_default]
     end
   end
@@ -204,7 +204,7 @@ describe MeetingsScheduler::GeneticAlgorithm::Nucleotide do
     before(:each) do
       @admit, @faculty = create_valid_admit_hash(1), create_valid_faculty_hash(1)
       @faculty[:rankings] = (@ranking = { :rank => rand(100) })
-      @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, rand(100), @admit)
+      @nucleotide = MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(@faculty, rand(100), @admit)
     end
 
     it 'should compute a rank-weighted score if an admit is among a FACULTY\'s ranking' do
@@ -224,7 +224,7 @@ describe MeetingsScheduler::GeneticAlgorithm::Nucleotide do
     before(:each) do
       @admit, @faculty = create_valid_admit_hash(1), create_valid_faculty_hash(1)
       @admit[:rankings] = (@ranking = { :rank => rand(100) })
-      @nucleotide = MeetingsScheduler::Nucleotide.new(@faculty, rand(100), @admit)
+      @nucleotide = MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(@faculty, rand(100), @admit)
     end
 
     it 'should compute a rank-weighted score if an admit is among a FACULTY\'s ranking' do
@@ -243,7 +243,7 @@ describe MeetingsScheduler::GeneticAlgorithm::Nucleotide do
     [true, false].each do |val|
       it "should return the appropriate points for whether a FACULTY\'s admit ranking is marked #{val}" do
         score = val ? @fitness_scores_table[:mandatory_score] : @fitness_scores_table[:mandatory_default]
-        @nucleotide = MeetingsScheduler::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
+        @nucleotide = MeetingsScheduler::GeneticAlgorithm::Nucleotide.new(mock('faculty'), rand(100), mock('admit'))
         @nucleotide.stub!(:mandatory?).and_return(val)
         @nucleotide.mandatory_meeting_score.should == score
       end
