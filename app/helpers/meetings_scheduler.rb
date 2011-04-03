@@ -88,12 +88,10 @@ module MeetingsScheduler
       puts 'Finished caching the matching faculties\' meetings for each admit.'
 
       while not unsatisfied_admits.empty?
-        puts unsatisfied_admits.count
         unsatisfied_admits.each do |admit|
           if try_fit_admit_to_one_more_meeting!(admit, unsatisfied_admits_meetings[admit.id]) or !admit.unsatisfied?
             unsatisfied_admits_meetings[admit.id] = nil
             unsatisfied_admits -= [admit]
-            puts "removed one unsatisfied admit from list"
           end
         end
       end
