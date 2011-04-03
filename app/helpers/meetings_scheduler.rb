@@ -1,6 +1,3 @@
-# uncomment this line for using the genetic algorithm
-# require 'genetic_algorithm/meetings_scheduler_genetic_algorithm'
-
 module MeetingsScheduler
   class << self
 

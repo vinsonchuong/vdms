@@ -47,7 +47,9 @@ class Admit < Person
   end
 
   def available_at?(time)
-    available_times.map(&:begin).include?(time)
+    available_times.any?{ |at| at.begin == time and at.available? }
+    # incorrect code
+    # available_times.map(&:begin).include?(time)
   end
 
   def unsatisfied?
