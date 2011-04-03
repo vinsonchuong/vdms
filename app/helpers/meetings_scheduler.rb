@@ -88,11 +88,12 @@ module MeetingsScheduler
       puts 'Finished caching the matching faculties\' meetings for each admit.'
 
       while not unsatisfied_admits.empty?
-        # Dynamically re-sort unsatisfied admits, similar to the algorithm behind the SRTF queue
+        puts unsatisfied_admits.count
         unsatisfied_admits.each do |admit|
           if try_fit_admit_to_one_more_meeting!(admit, unsatisfied_admits_meetings[admit.id]) or !admit.unsatisfied?
             unsatisfied_admits_meetings[admit.id] = nil
             unsatisfied_admits -= [admit]
+            puts "removed one unsatisfied admit from list"
           end
         end
       end
@@ -120,15 +121,18 @@ module MeetingsScheduler
 
     def try_fit_admit_to_one_more_meeting!(admit, all_matching_faculty_meetings)
       all_matching_faculty_meetings.each do |meeting|
-        meeting.admits << admit unless meeting.admits.include?(admit)
-        unless meeting.valid?
+        # DO NOT REMOVE THE IF CLAUSE OR CONDITIONAL INFINITE LOOPING WILL OCCUR
+        if !meeting.admits.include?(admit)
+          meeting.admits << admit
+          if meeting.valid?
+            meeting.save!
+            return false
+          else
             meeting.admits.delete(admit)
-        else
-          meeting.save!
-          return true
+          end
         end
       end
-      return false
+      true
     end
 
     def chunks_of_consecutive_meetings(faculty_meetings)
