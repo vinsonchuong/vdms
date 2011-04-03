@@ -113,7 +113,12 @@ module MeetingsScheduler
     end
 
     def matching_faculties_meetings(admit)
-      matching_faculties_for_admit(admit).collect{ |faculty| get_all_meeting_spots_for_faculty(faculty) }.flatten
+      # cache this in first for later use in delete_if
+      non_uniq_faculty_ids = admit.meetings.collect{ |m| m.faculty_id }
+      uniq_matching_faculties = matching_faculties_for_admit(admit).delete_if do |faculty|
+        non_uniq_faculty_ids.include? faculty.id
+      end
+      uniq_matching_faculties.collect{ |faculty| get_all_meeting_spots_for_faculty(faculty) }.flatten
     end
 
     def try_fit_admit_to_one_more_meeting!(admit, all_matching_faculty_meetings)
