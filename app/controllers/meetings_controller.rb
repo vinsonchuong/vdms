@@ -16,7 +16,9 @@ class MeetingsController < ApplicationController
   # Show the master schedule
   # GET /meetings/master
   def master
-    @meetings_by_faculty = Faculty.by_name.map {|f| [f, f.available_times.map {|t| f.meeting_for(t.begin)}]}
+    available_faculty = Faculty.all.select {|f| f.available_times.select(&:available).count > 0}
+    sorted_faculty = available_faculty.sort_by {|f| [-f.available_times.select(&:available).count, f.last_name, f.first_name]}
+    @meetings_by_faculty = sorted_faculty.map {|f| [f, f.available_times.map {|t| f.meeting_for(t.begin)}]}
     @times = AvailableTime.all.map(&:begin).uniq.sort!
   end
 

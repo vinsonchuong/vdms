@@ -1,6 +1,11 @@
 class FacultyController < PeopleController
   before_filter :get_areas_and_divisions, :only => [:new, :edit, :create, :update]
 
+  # GET /people/faculty
+  def index
+    @faculty = Faculty.all.sort_by {|f| [-f.available_times.select(&:available).count, f.last_name, f.first_name]}
+  end
+
   # GET /people/faculty/1/new
   def new
     @faculty_instance = (@current_user.new_record?) ? @current_user : Faculty.new
