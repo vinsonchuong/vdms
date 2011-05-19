@@ -85,19 +85,23 @@ describe MeetingsController do
         assigns[:admits_with_unsatisfied_rankings].should == [[admit3, [ranking31]]]
       end
       it 'assigns to @faculty_with_unsatisfied_rankings a list of faculty with unsatisfied admit rankings' do
-        pending
+        time = Time.zone.now
         faculty1 = Factory.create(:faculty)
         faculty2 = Factory.create(:faculty)
         admit21 = Factory.create(:admit)
-        ranking21 = Factory.create(:admit_ranking, :faculty => faculty2, :admit => admit21)
-        time = Time.zone.now
-        faculty2.available_time.create(:begin => time, :end => (time + 900), :room => 'Room')
-        faculty2.save
-        faculty2.meetings.first << admit21
+        admit21.available_times.create(:begin => time, :end => time + 20.minutes, :available => true)
+        Factory.create(:admit_ranking, :faculty => faculty2, :admit => admit21)
+        faculty2.available_times.create(:begin => time, :end => time + 20.minutes, :available => true)
+        meeting = Factory.create(:meeting, :time => time, :faculty => faculty2)
+        meeting.add_admit!(admit21)
         faculty3 = Factory.create(:faculty)
         admit31 = Factory.create(:admit)
         ranking31 = Factory.create(:admit_ranking, :faculty => faculty3, :admit => admit31)
         Faculty.stub(:find).and_return([faculty1, faculty2, faculty3])
+        [faculty1, faculty2, faculty3].each do |f|
+          f.admit_rankings.reload
+          f.meetings.reload
+        end
         get :statistics
         assigns[:faculty_with_unsatisfied_rankings].should == [[faculty3, [ranking31]]]
       end
@@ -132,14 +136,13 @@ describe MeetingsController do
       fake_login(:staff)
     end
     it 'should delete the meeting' do
-      pending
       admit1 = Factory.create(:admit)
       admit2 = Factory.create(:admit)
       meeting = Factory.create(:meeting)
       schedule!(meeting, [admit1, admit2])
-      meeting.admits.should_receive(:delete).with(admit1.id)
       params  = {:faculty_id => 1, "remove_#{admit1.id}_#{meeting.id}" => '1'}
       post :apply_tweaks, params
+      meeting.admits.reload.should_not include(admit1)
     end
   end
   context "when logged in as any valid user" do
@@ -160,20 +163,20 @@ describe MeetingsController do
     end
     describe "master schedule" do
       before(:each) do
-        @nine_am = Time.parse("9:00am")
-        @ten_am = Time.parse("10:00am")
+        @nine_am = Time.zone.parse("9:00am")
+        @ten_am = Time.zone.parse("10:00am")
         @faculty1 = Factory.create(:faculty)
         @faculty2 = Factory.create(:faculty)
+        @faculty2.available_times.create(:begin => @ten_am, :end => @ten_am + 20.minutes, :available => true)
         @faculty3 = Factory.create(:faculty)
-        @all_meetings = [
-          @m1 = mock('meeting1', :faculty => @faculty3, :time => @nine_am),
-          @m2 = mock('meeting2', :faculty => @faculty3, :time => @ten_am),
-          @m3 = mock('meeting3', :faculty => @faculty2, :time => @ten_am)
-        ]
-        Meeting.stub!(:all).and_return(@all_meetings)
+        @faculty3.available_times.create(:begin => @nine_am, :end => @nine_am + 20.minutes, :available => true)
+        @faculty3.available_times.create(:begin => @ten_am, :end => @ten_am + 20.minutes, :available => true)
+        @m1 = Factory.create(:meeting, :faculty => @faculty3, :time => @nine_am)
+        @m2 = Factory.create(:meeting, :faculty => @faculty3, :time => @ten_am)
+        @m3 = Factory.create(:meeting, :faculty => @faculty2, :time => @ten_am)
+        [@faculty1, @faculty2, @faculty3].each {|f| f.meetings.reload}
       end
       it "should include all meetings sorted by faculty" do
-        pending
         get :master
         sorted = assigns[:meetings_by_faculty]
         sorted.should be_a_kind_of(Array)
@@ -182,7 +185,6 @@ describe MeetingsController do
         sorted.detect {|f, m| f == @faculty2}[1].should include(@m3)
         end
       it "should enumerate the times without duplicates" do
-        pending
         get :master
         assigns[:times].should == [@nine_am, @ten_am]
       end

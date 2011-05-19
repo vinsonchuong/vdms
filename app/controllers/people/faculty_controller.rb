@@ -3,7 +3,7 @@ class FacultyController < PeopleController
 
   # GET /people/faculty
   def index
-    @faculty = Faculty.all.sort_by {|f| [-f.available_times.select(&:available).count, f.last_name, f.first_name]}
+    @faculty = Faculty.by_name
   end
 
   # GET /people/faculty/1/new

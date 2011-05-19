@@ -44,6 +44,7 @@ Factory.define :available_time do |t|
   t.begin {Time.zone.parse('1/1/2011')}
   t.end {Time.zone.parse('1/2/2011')}
   t.room 'Room'
+  t.available false
   t.association :schedulable, :factory => :admit
   t.association :schedulable, :factory => :faculty
 end

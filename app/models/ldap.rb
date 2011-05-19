@@ -15,7 +15,7 @@ module LDAP
       :email => entry.email.to_s,
       :phone => entry.phone.to_s,
       :department => (org = entry.org_node).nil? ? '' : org.description.first.to_s,
-      :default_room => entry.street.empty? ? nil : entry.street.first.to_s
+      :default_room => entry.street.empty? ? '' : entry.street.first.to_s
     }
   end
 

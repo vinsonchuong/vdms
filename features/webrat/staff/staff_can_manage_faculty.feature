@@ -77,7 +77,7 @@ Feature: Staff can manage faculty
     And I attach the file "features/assets/invalid_faculty.csv" to "CSV File"
     And I press "Import"
     Then I should see "Email can't be blank"
-    And I should see "Area is not included in the list"
+    And I should see "Area 1 is not included in the list"
     And I should see "Division is not included in the list"
 
   Scenario: I see the faculty's name while updating his information

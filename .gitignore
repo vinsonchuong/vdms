@@ -9,4 +9,9 @@
 Gemfile.lock
 .project
 TAGS
+/.generators
+/.rakeTasks
+/VDMS-Code.iml
+/VDMS-Code.ipr
+/VDMS-Code.iws
 

@@ -1,4 +1,4 @@
-LDAP ID,First Name,Last Name,Email,Area,Division
+LDAP ID,First Name,Last Name,Email,Area 1,Division
 LDAP ID,First1,Last1,,Artificial Intelligence,Computer Science
-LDAP ID,First2,Last2,email2@email.com,,Electrical Engineering
+LDAP ID,First2,Last2,email2@email.com,Foo,Electrical Engineering
 LDAP ID,First3,Last3,email3@email.com,Artificial Intelligence,

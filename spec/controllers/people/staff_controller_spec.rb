@@ -519,25 +519,22 @@ describe StaffController do
     context 'when signed in as some other registered Staff' do
       before(:each) do
         @other_staff_instance = Factory.create(:staff)
-        Person.stub(:find).and_return(@other_staff_instance)
         CASClient::Frameworks::Rails::Filter.fake(@other_staff_instance.ldap_id)
-        Staff.stub(:find).and_return(@staff_instance)
       end
 
       it 'assigns to @staff_instance the given Staff' do
-        pending
-        Staff.should_receive(:find).with(@staff_instance.id.to_s).and_return(@staff_instance)
         put :update, :id => @staff_instance.id
-        assigns[:staff_instance].should equal(@staff_instance)
+        assigns[:staff_instance].should == @staff_instance
       end
 
       it 'updates the Staff' do
-        pending
+        Staff.stub(:find).and_return(@staff_instance)
         @staff_instance.should_receive(:update_attributes).with('foo' => 'bar')
         put :update, :id => @staff_instance.id, :staff => {'foo' => 'bar'}
       end
 
       context 'when the Staff is successfully updated' do
+        pending
         before(:each) do
           @staff_instance.stub(:update_attributes).and_return(true)
         end
@@ -549,7 +546,6 @@ describe StaffController do
         end
 
         it 'redirects to the given success redirect action' do
-          pending
           put :update, :id => @staff_instance.id, :redirect_action => 'index'
           response.should redirect_to(:action => 'index')
         end

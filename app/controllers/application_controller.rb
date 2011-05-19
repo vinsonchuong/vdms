@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
         :default_room => entry[:default_room]
       }
       @current_user = (entry[:role] == :faculty) ? Faculty.new(attributes) :
-                      (entry[:role] == :grad) ? Faculty.new(attributes) :
+                      (entry[:role] == :grad) ? PeerAdvisor.new(attributes) :
                       nil
     end
   end
