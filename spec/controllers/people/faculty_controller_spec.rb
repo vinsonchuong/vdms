@@ -427,7 +427,7 @@ describe FacultyController do
 
         it 'does not redirect to select_admits' do
           get :rank_admits, :id => @faculty_instance.id
-          response.should_not redirect_to(:action => 'select_admits')
+          response.should_not redirect_to(:controller => 'faculty', :action => 'select_admits')
         end
 
         it 'renders the select_admits template' do
@@ -439,7 +439,7 @@ describe FacultyController do
       context 'when the Faculty has not ranked or selected any Admits' do
         it 'does redirects to select_admits' do
           get :rank_admits, :id => @faculty_instance.id
-          response.should redirect_to(:action => 'select_admits')
+          response.should redirect_to(:controller => 'faculty', :action => 'select_admits')
         end
       end
 
@@ -460,7 +460,7 @@ describe FacultyController do
 
         it 'does not redirect to select_admits' do
           get :rank_admits, :id => @faculty_instance.id
-          response.should_not redirect_to(:action => 'select_admits')
+          response.should_not redirect_to(:controller => 'faculty', :action => 'select_admits')
         end
 
         it 'renders the select_admits template' do
@@ -498,7 +498,7 @@ describe FacultyController do
 
         it 'does not redirect to select_admits' do
           get :rank_admits, :id => @faculty_instance.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
-          response.should_not redirect_to(:action => 'select_admits')
+          response.should_not redirect_to(:controller => 'faculty', :action => 'select_admits')
         end
 
         it 'renders the select_admits template' do
@@ -717,7 +717,7 @@ describe FacultyController do
 
         it 'redirects to the View Faculty page' do
           post :create
-          response.should redirect_to(:action => 'index')
+          response.should redirect_to(:controller => 'faculty', :action => 'index')
         end
       end
 
@@ -810,7 +810,7 @@ describe FacultyController do
 
         it 'redirects to the View Faculty page' do
           post :import, :csv_file => @csv_text
-          response.should redirect_to(:action => 'index')
+          response.should redirect_to(:controller => 'faculty', :action => 'index')
         end
       end
 
@@ -891,8 +891,9 @@ describe FacultyController do
         end
 
         it 'redirects to the given success redirect action' do
+          pending
           put :update, :id => @faculty_instance.id, :redirect_action => 'index'
-          response.should redirect_to(:action => 'index')
+          response.should redirect_to(:controller => 'faculty', :action => 'index')
         end
       end
 
@@ -991,7 +992,7 @@ describe FacultyController do
 
       it 'redirects to the View Faculty page' do
         delete :destroy, :id => @faculty_instance.id
-        response.should redirect_to(:action => 'index')
+        response.should redirect_to(:controller => 'faculty', :action => 'index')
       end
     end
 
@@ -1051,7 +1052,7 @@ describe FacultyController do
 
       it 'redirects to the View Faculty page' do
         delete :destroy_all
-        response.should redirect_to(:action => 'index')
+        response.should redirect_to(:controller => 'faculty', :action => 'index')
       end
     end
 

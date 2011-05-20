@@ -7,10 +7,6 @@ class ApplicationController < ActionController::Base
 
   self.allow_forgery_protection = false
 
-  def get_referrer_action
-    request.env['HTTP_REFERER'].gsub(/.*?\/([\w]*?)$/, '\1')
-  end
-
   private
 
   def get_current_user

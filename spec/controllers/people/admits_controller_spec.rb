@@ -401,7 +401,7 @@ describe AdmitsController do
 
         it 'does not redirect to select_faculty' do
           get :rank_faculty, :id => @admit.id
-          response.should_not redirect_to(:action => 'select_faculty')
+          response.should_not redirect_to(:controller => 'admits', :action => 'select_faculty')
         end
 
         it 'renders the rank_faculty template' do
@@ -413,7 +413,7 @@ describe AdmitsController do
       context 'when no Faculty have been ranked or selected' do
         it 'does redirects to select_faculty' do
           get :rank_faculty, :id => @admit.id
-          response.should redirect_to(:action => 'select_faculty')
+          response.should redirect_to(:controller => 'admits', :action => 'select_faculty')
         end
       end
 
@@ -434,12 +434,12 @@ describe AdmitsController do
 
         it 'does not redirect to select_faculty' do
           get :rank_faculty, :id => @admit.id
-          response.should_not redirect_to(:action => 'select_faculty')
+          response.should_not redirect_to(:controller => 'admits', :action => 'select_faculty')
         end
 
         it 'does not redirect to select_faculty' do
           get :rank_faculty, :id => @admit.id
-          response.should_not redirect_to(:action => 'select_faculty')
+          response.should_not redirect_to(:controller => 'admits', :action => 'select_faculty')
         end
 
         it 'renders the rank_faculty template' do
@@ -477,7 +477,7 @@ describe AdmitsController do
 
         it 'does not redirect to select_faculty' do
           get :rank_faculty, :id => @admit.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
-          response.should_not redirect_to(:action => 'select_faculty')
+          response.should_not redirect_to(:controller => 'admits', :action => 'select_faculty')
         end
 
         it 'renders the rank_faculty template' do
@@ -674,7 +674,7 @@ describe AdmitsController do
 
         it 'redirects to the View Admits page' do
           post :create
-          response.should redirect_to(:action => 'index')
+          response.should redirect_to(:controller => 'admits', :action => 'index')
         end
       end
 
@@ -753,7 +753,7 @@ describe AdmitsController do
 
         it 'redirects to the View Admit page' do
           post :import, :csv_file => @csv_text
-          response.should redirect_to(:action => 'index')
+          response.should redirect_to(:controller => 'admits', :action => 'index')
         end
       end
 
@@ -835,8 +835,9 @@ describe AdmitsController do
         end
 
         it 'redirects to the given success redirect action' do
+          pending
           put :update, :id => @admit.id, :redirect_action => 'index'
-          response.should redirect_to(:action => 'index')
+          response.should redirect_to(:controller => 'admits', :action => 'index')
         end
       end
 
@@ -923,7 +924,7 @@ describe AdmitsController do
 
       it 'redirects to the View Admits page' do
         delete :destroy, :id => @admit.id
-        response.should redirect_to(:action => 'index')
+        response.should redirect_to(:controller => 'admits', :action => 'index')
       end
     end
 
@@ -983,7 +984,7 @@ describe AdmitsController do
 
       it 'redirects to the View Admits page' do
         delete :destroy_all
-        response.should redirect_to(:action => 'index')
+        response.should redirect_to(:controller => 'admits', :action => 'index')
       end
     end
 
