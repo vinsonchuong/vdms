@@ -534,7 +534,6 @@ describe StaffController do
       end
 
       context 'when the Staff is successfully updated' do
-        pending
         before(:each) do
           @staff_instance.stub(:update_attributes).and_return(true)
         end
