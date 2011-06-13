@@ -332,7 +332,7 @@ describe AdmitsController do
 
       it 'builds a list of possible meeting slots' do
         Admit.stub(:find).and_return(@admit)
-        @admit.should_receive(:build_available_times)
+        @admit.should_receive(:build_time_slots)
         get :edit_availability, :id => @admit.id
       end
 

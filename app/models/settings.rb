@@ -36,7 +36,7 @@ class Settings < ActiveRecord::Base
 
   def meeting_times(division_name)
     division = self.divisions.find_by_name(division_name)
-    division.nil? ? nil : division.available_times
+    division.nil? ? nil : division.time_slots
   end
 
   def method_missing(method, *args, &block)

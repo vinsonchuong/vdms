@@ -18,18 +18,18 @@
     %table
       %thead
         %tr
-          %th{:scope => 'col'}!= AvailableTime.human_attribute_name(:time)
-          %th{:scope => 'col'}!= AvailableTime.human_attribute_name(:available)
-          %th{:scope => 'col'}!= AvailableTime.human_attribute_name(:room)
+          %th{:scope => 'col'}!= TimeSlot.human_attribute_name(:time)
+          %th{:scope => 'col'}!= TimeSlot.human_attribute_name(:available)
+          %th{:scope => 'col'}!= TimeSlot.human_attribute_name(:room)
       %tbody
-        - faculty_form.fields_for :available_times do |available_time_fields|
-          - @available_time = available_time_fields.object
-          != available_time_fields.hidden_field :begin
-          != available_time_fields.hidden_field :end
+        - faculty_form.fields_for :time_slots do |time_slot_fields|
+          - @time_slot = time_slot_fields.object
+          != time_slot_fields.hidden_field :begin
+          != time_slot_fields.hidden_field :end
           %tr
-            %td!= "#{@available_time.begin.strftime('%m/%d/%y - %I:%M%p')} to #{@available_time.end.strftime('%I:%M%p')}"
-            %td!= available_time_fields.check_box :available
-            %td!= available_time_fields.text_field :room
+            %td!= "#{@time_slot.begin.strftime('%m/%d/%y - %I:%M%p')} to #{@time_slot.end.strftime('%I:%M%p')}"
+            %td!= time_slot_fields.check_box :available
+            %td!= time_slot_fields.text_field :room
     != hidden_field_tag :origin_action, @origin_action
     != hidden_field_tag :redirect_action, @redirect_action
     != faculty_form.submit t('.submit'), :disabled => (Settings.instance.disable_faculty && @current_user.class == Faculty)

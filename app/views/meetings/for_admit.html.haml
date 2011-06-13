@@ -6,10 +6,10 @@
       %th{:scope => 'col'} Faculty Name
       %th{:scope => 'col'} Room
   %tbody
-    - @admit.available_times.each do |available_time|
-      - meeting = @admit.meeting_at_time(available_time.begin)
-      %tr{:class => (available_time.available ? nil : 'unavailable')}
-        %td!= available_time.begin.strftime('%I:%M%p')
+    - @admit.time_slots.each do |time_slot|
+      - meeting = @admit.meeting_at_time(time_slot.begin)
+      %tr{:class => (time_slot.available ? nil : 'unavailable')}
+        %td!= time_slot.begin.strftime('%I:%M%p')
         - unless meeting.nil?
           %td!= link_to meeting.faculty.full_name, (@current_user.class == Staff ? tweak_faculty_meetings_path(meeting.faculty) : faculty_meetings_path(meeting.faculty))
           %td!= meeting.room

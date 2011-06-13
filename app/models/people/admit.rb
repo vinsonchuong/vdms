@@ -25,7 +25,9 @@ class Admit < Person
   has_many :ranked_faculty, :source => :faculty, :through => :faculty_rankings, :order => 'rank ASC'
   has_many :admit_rankings, :dependent => :destroy
   accepts_nested_attributes_for :faculty_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
-  has_and_belongs_to_many :meetings, :uniq => true
+  has_many :time_slots, :class_name => 'VisitorTimeSlot', :foreign_key => 'visitor_id', :order => 'begin ASC', :dependent => :destroy
+  has_many :meetings, :through => :time_slots
+  accepts_nested_attributes_for :time_slots, :reject_if => :all_blank, :allow_destroy => true
 
   validates_inclusion_of :area1, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
   validates_inclusion_of :area2, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
@@ -46,10 +48,11 @@ class Admit < Person
     meetings.find_by_time(time)
   end
 
+  # Flagged for removal
   def available_at?(time)
-    available_times.any?{ |at| at.begin == time and at.available? }
+    time_slots.any?{ |at| at.begin == time and at.available? }
     # incorrect code
-    # available_times.map(&:begin).include?(time)
+    # time_slots.map(&:begin).include?(time)
   end
 
   def unsatisfied?
@@ -61,7 +64,7 @@ class Admit < Person
   end
   
   def self.attending_admits
-    Admit.all.select{ |admit| admit.available_times.select {|available_time| available_time.available?}.count > 0 }
+    Admit.all.select{ |admit| admit.time_slots.select {|time_slot| time_slot.available?}.count > 0 }
   end
 
   def self.unsatisfied_admits

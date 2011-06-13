@@ -34,9 +34,9 @@ module MeetingsScheduler
 
     def initialize_all_meetings
       @all_meetings = Faculty.all.collect do |faculty|
-        faculty.available_times.select(&:available).collect do |available_time|
-          faculty.meetings.new(:time => available_time.begin,
-                               :room => faculty.room_for(available_time.begin))
+        faculty.time_slots.select(&:available).collect do |time_slot|
+          faculty.meetings.new(:time => time_slot.begin,
+                               :room => faculty.room_for(time_slot.begin))
         end
       end
       @all_meetings.flatten!

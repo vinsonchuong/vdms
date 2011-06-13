@@ -20,16 +20,16 @@ describe Division do
   end
 
   describe 'Associations' do
-    describe 'Available Times' do
-      it 'has many Available Times (available_times)' do
-        @division.should have_many(:available_times)
+    describe 'Time Slots' do
+      it 'has many Time Slots (time_slots)' do
+        @division.should have_many(:time_slots)
       end
 
-      it 'has many Available Times sorted by Start Time' do
-        @division.available_times.create(:begin => Time.zone.parse('1/4/2011'), :end => Time.zone.parse('1/5/2011'))
-        @division.available_times.create(:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011'))
-        @division.available_times.create(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
-        @division.available_times.reload.map {|t| t.attributes['begin']}.should == [
+      it 'has many Time Slots sorted by Start Time' do
+        @division.time_slots.create(:begin => Time.zone.parse('1/4/2011'), :end => Time.zone.parse('1/5/2011'))
+        @division.time_slots.create(:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011'))
+        @division.time_slots.create(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
+        @division.time_slots.reload.map {|t| t.attributes['begin']}.should == [
           Time.zone.parse('1/3/2011'),
           Time.zone.parse('1/4/2011'),
           Time.zone.parse('1/6/2011'),
@@ -43,40 +43,40 @@ describe Division do
   end
 
   describe 'Nested Attributes' do
-    describe 'Available Times (available_times)' do
-      it 'allows nested attributes for Available Times (available_times)' do
-        attributes = {:available_times_attributes => [
+    describe 'Time Slots (time_slots)' do
+      it 'allows nested attributes for Time Slots (time_slots)' do
+        attributes = {:time_slots_attributes => [
           {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
           {:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011')}
         ]}
         @division.attributes = attributes
-        @division.available_times.each_with_index do |time, i|
-          time.begin.should == attributes[:available_times_attributes][i][:begin]
-          time.end.should == attributes[:available_times_attributes][i][:end]
+        @division.time_slots.each_with_index do |time, i|
+          time.begin.should == attributes[:time_slots_attributes][i][:begin]
+          time.end.should == attributes[:time_slots_attributes][i][:end]
         end
       end
   
       it 'ignores completely blank entries' do
-        attributes = {:available_times_attributes => [
+        attributes = {:time_slots_attributes => [
           {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
           {:begin => '', :end => ''}
         ]}
         @division.attributes = attributes
-        @division.available_times.length.should == 1
+        @division.time_slots.length.should == 1
       end
 
       it 'allows deletion' do
-        attributes = {:available_times_attributes => [
+        attributes = {:time_slots_attributes => [
           {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')}
         ]}
         @division.attributes = attributes
         @division.save
 
-        new_attributes = {:available_times_attributes => [
-          {:id => @division.available_times.first.id, :_destroy => true},
+        new_attributes = {:time_slots_attributes => [
+          {:id => @division.time_slots.first.id, :_destroy => true},
         ]}
         @division.attributes = new_attributes
-        @division.available_times.first.should be_marked_for_destruction
+        @division.time_slots.first.should be_marked_for_destruction
       end
     end
   end
@@ -94,49 +94,49 @@ describe Division do
     it 'is valid with valid non-overlapping Available Meeting Times' do
       [
         [
-          AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
-          AvailableTime.new(:begin => Time.zone.parse('1/8/2011'), :end => Time.zone.parse('1/9/2011'))
+          DivisionTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          DivisionTimeSlot.new(:begin => Time.zone.parse('1/8/2011'), :end => Time.zone.parse('1/9/2011'))
         ],
         [
-          AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/6/2011')),
-          AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
+          DivisionTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/6/2011')),
+          DivisionTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
         ]
       ].each do |times|
-        @division.available_times = times
+        @division.time_slots = times
         @division.should be_valid
       end
     end
 
     it 'is not valid with invalid Available Meeting Times' do
-      @division.available_times.build
+      @division.time_slots.build
       @division.should_not be_valid
     end
 
     it 'is not valid with overlapping Available Meeting Times' do
       [
         [
-          AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
-          AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
+          DivisionTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          DivisionTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
         ],
         [
-          AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
-          AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/9/2011'))
+          DivisionTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          DivisionTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/9/2011'))
         ],
         [
-          AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
-          AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
+          DivisionTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          DivisionTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
         ]
       ].each do |times|
-        @division.available_times = times
+        @division.time_slots = times
         @division.should_not be_valid
       end
     end
 
-    it 'is valid with overlapping Available Times that are marked for destruction' do
-      time1 = AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011'))
-      time2 = AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
-      time3 = AvailableTime.new(:begin => Time.zone.parse('1/7/2011'), :end => Time.zone.parse('1/9/2011'))
-      @division.available_times = [time1, time2, time3]
+    it 'is valid with overlapping Time Slots that are marked for destruction' do
+      time1 = DivisionTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011'))
+      time2 = DivisionTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
+      time3 = DivisionTimeSlot.new(:begin => Time.zone.parse('1/7/2011'), :end => Time.zone.parse('1/9/2011'))
+      @division.time_slots = [time1, time2, time3]
       time1.mark_for_destruction
       time2.mark_for_destruction
       @division.should be_valid
@@ -154,16 +154,16 @@ describe Division do
   end
 
   context 'when destroying' do
-    it 'destroys its Available Times' do
-      available_times = Array.new(3) do |i|
-        available_time = AvailableTime.create(
+    it 'destroys its Time Slots' do
+      time_slots = Array.new(3) do |i|
+        time_slot = TimeSlot.create(
           :begin => Time.zone.parse("1:00PM 1/#{i + 1}/2011"),
           :end => Time.zone.parse("5:00PM 1/#{i + 1}/2011")
         )
-        available_time.should_receive(:destroy)
-        available_time
+        time_slot.should_receive(:destroy)
+        time_slot
       end
-      @division.stub(:available_times).and_return(available_times)
+      @division.stub(:time_slots).and_return(time_slots)
       @division.destroy
     end
   end

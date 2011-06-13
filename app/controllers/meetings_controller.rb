@@ -16,10 +16,10 @@ class MeetingsController < ApplicationController
   # Show the master schedule
   # GET /meetings/master
   def master
-    available_faculty = Faculty.all.select {|f| f.available_times.select(&:available).count > 0}
-    sorted_faculty = available_faculty.sort_by {|f| [-f.available_times.select(&:available).count, f.last_name, f.first_name]}
-    @meetings_by_faculty = sorted_faculty.map {|f| [f, f.available_times.map {|t| f.meeting_for(t.begin)}]}
-    @times = AvailableTime.all.map(&:begin).uniq.sort!
+    available_faculty = Faculty.all.select {|f| f.time_slots.select(&:available).count > 0}
+    sorted_faculty = available_faculty.sort_by {|f| [-f.time_slots.select(&:available).count, f.last_name, f.first_name]}
+    @meetings_by_faculty = sorted_faculty.map {|f| [f, f.time_slots.map {|t| f.meeting_for(t.begin)}]}
+    @times = TimeSlot.all.map(&:begin).uniq.sort!
   end
 
   # Show meetings statistics
@@ -50,7 +50,7 @@ class MeetingsController < ApplicationController
   # Show the faculty schedule
   # GET /meetings/print_faculty
   def print_faculty
-    @times = AvailableTime.all.map(&:begin).uniq.sort!
+    @times = TimeSlot.all.map(&:begin).uniq.sort!
     @faculty = Faculty.by_name.reject {|f| f.meetings.empty?}
     @one_per_page = params['one_per_page'].to_b
   end
@@ -66,13 +66,13 @@ class MeetingsController < ApplicationController
   # GET /people/faculty/1/meetings
   def for_faculty(faculty_id)
     @faculty = Faculty.find(faculty_id)
-    @times = AvailableTime.all.map(&:begin).uniq.sort!
+    @times = TimeSlot.all.map(&:begin).uniq.sort!
     render :action => 'for_faculty'
   end
 
   # Tweak the schedule for faculty (ie, show editable view) - for staff only
   def tweak
-    @times = AvailableTime.all.map(&:begin).uniq.sort!
+    @times = TimeSlot.all.map(&:begin).uniq.sort!
     @faculty = Faculty.find(params[:faculty_id])
     @max_admits = @faculty.max_admits_per_meeting
     @meetings = @faculty.meetings.sort_by(&:time)

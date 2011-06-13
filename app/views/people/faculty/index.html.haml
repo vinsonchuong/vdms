@@ -4,7 +4,7 @@
     %tr
       %th{:scope => 'col'}!= Faculty.human_attribute_name(:full_name)
       %th{:scope => 'col'}!= Faculty.human_attribute_name(:email)
-      %th{:scope => 'col'}!= t('.available_times')
+      %th{:scope => 'col'}!= t('.time_slots')
       %th{:scope => 'col'}!= t('.admit_rankings')
       %th{:scope => 'col'}!= t('.actions')
   %tbody
@@ -13,7 +13,7 @@
       %tr
         %td= faculty_instance.full_name
         %td= faculty_instance.email
-        %td= faculty_instance.available_times.select {|t| t.available}.count
+        %td= faculty_instance.time_slots.select {|t| t.available}.count
         %td= faculty_instance.admit_rankings.count
         %td
           %ul

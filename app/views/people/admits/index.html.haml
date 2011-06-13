@@ -5,7 +5,7 @@
       %th{:scope => 'col'}!= Admit.human_attribute_name(:full_name)
       %th{:scope => 'col'}!= Admit.human_attribute_name(:email)
       %th{:scope => 'col'}!= Admit.human_attribute_name(:phone)
-      %th{:scope => 'col'}!= t('.available_times')
+      %th{:scope => 'col'}!= t('.time_slots')
       %th{:scope => 'col'}!= t('.faculty_rankings')
       %th{:scope => 'col'}!= t('.actions')
   %tbody
@@ -15,7 +15,7 @@
         %td= admit.full_name
         %td= admit.email
         %td= admit.phone
-        %td= admit.available_times.select {|t| t.available}.count
+        %td= admit.time_slots.select {|t| t.available}.count
         %td= admit.faculty_rankings.count
         %td
           %ul

@@ -1,7 +1,7 @@
 Given /^"(.*) (.*)" is available at (.*)$/ do |first,last,time|
   time = Time.zone.parse(time)
   p = Person.find_by_first_name_and_last_name(first,last)
-  p.available_times.create!(:begin => time, :end => time + @slot_length, :available => true)
+  p.time_slots.create!(:begin => time, :end => time + @slot_length, :available => true)
 end
 
 Given /^my first admit has the following meeting schedule:$/ do |admit_meeting_schedules|
@@ -27,8 +27,8 @@ Given /^the following (\d+)-minute meetings are scheduled starting at (.*):$/ do
       next if admit_name.blank?
       admit =  Admit.find_by_first_name_and_last_name(*(admit_name.split(/\s+/)))
       time = base_time + @slot_length * timeslot
-      @faculty.available_times.create!(:begin => time, :end => time+@slot_length-1, :available => true) unless @faculty.available_at?(time)
-      admit.available_times.create!(:begin => time, :end => time+@slot_length, :available => true) unless admit.available_at?(time)
+      @faculty.time_slots.create!(:begin => time, :end => time+@slot_length-1, :available => true) unless @faculty.available_at?(time)
+      admit.time_slots.create!(:begin => time, :end => time+@slot_length, :available => true) unless admit.available_at?(time)
       # if already a meeting at this time, add the admit to it; else create new mtg
       m = @faculty.meetings.find_by_time(time) ||
         @faculty.meetings.create!(:time => time, :room => 'Default')

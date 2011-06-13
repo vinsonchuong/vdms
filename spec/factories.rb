@@ -26,6 +26,8 @@ Factory.define :faculty do |f|
   f.email {Factory.next(:email)}
   f.area Settings.instance.areas.keys.first
   f.division Settings.instance.divisions.first.name
+  f.max_admits_per_meeting 4
+  f.max_additional_admits 4
 end
 
 Factory.define :admit do |a|
@@ -40,13 +42,11 @@ Factory.define :admit do |a|
   a.division 'Computer Science'
 end
 
-Factory.define :available_time do |t|
+Factory.define :time_slot do |t|
   t.begin {Time.zone.parse('1/1/2011')}
   t.end {Time.zone.parse('1/2/2011')}
   t.room 'Room'
   t.available false
-  t.association :schedulable, :factory => :admit
-  t.association :schedulable, :factory => :faculty
 end
 
 Factory.define :admit_ranking do |r|
@@ -61,8 +61,21 @@ Factory.define :faculty_ranking do |r|
   r.association :faculty
 end
 
+Factory.define :host_time_slot do |t|
+  t.begin {Time.zone.parse('1/1/2011 9AM')}
+  t.end {Time.zone.parse('1/2/2011 9:15AM')}
+  t.available true
+  t.association :host, :factory => :faculty
+end
+
+Factory.define :visitor_time_slot do |t|
+  t.begin {Time.zone.parse('1/1/2011 9AM')}
+  t.end {Time.zone.parse('1/2/2011 9:15AM')}
+  t.available true
+  t.association :visitor, :factory => :admit
+end
+
 Factory.define :meeting do |m|
-  m.time {Time.zone.now + 50000}
-  m.room 'Room'
-  m.association :faculty
+  m.association :host_time_slot
+  m.association :visitor_time_slot
 end

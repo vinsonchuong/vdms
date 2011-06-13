@@ -27,10 +27,10 @@ describe SettingsController do
         assigns[:settings].should equal(@settings)
       end
 
-      it 'builds a new AvailableTime for each division' do
+      it 'builds a new TimeSlot for each division' do
         divisions = Array.new(3) do |i|
           Division.new(:name => "Division #{i}") do |division|
-            division.available_times.should_receive(:build)
+            division.time_slots.should_receive(:build)
           end
         end
         @settings.stub(:divisions).and_return(divisions)

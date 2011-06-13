@@ -15,7 +15,7 @@ class FacultyController < PeopleController
   def edit_availability
     settings = Settings.instance
     @faculty_instance = Faculty.find(params[:id])
-    @faculty_instance.build_available_times(settings.meeting_times(@faculty_instance.division), settings.meeting_length, settings.meeting_gap)
+    @faculty_instance.build_time_slots(settings.meeting_times(@faculty_instance.division), settings.meeting_length, settings.meeting_gap)
 
     if Settings.instance.disable_faculty && @current_user.class == Faculty
       flash[:alert] = t('people.faculty.edit_availability.disabled')

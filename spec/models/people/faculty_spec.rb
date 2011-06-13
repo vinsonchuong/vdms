@@ -95,16 +95,16 @@ describe Faculty do
   end
 
   describe 'Associations' do
-    describe 'Available Times' do
-      it 'has many Available Times (available_times)' do
-        @faculty.should have_many(:available_times)
+    describe 'Time Slots' do
+      it 'has many Time Slots (time_slots)' do
+        @faculty.should have_many(:time_slots)
       end
 
-      it 'has many Available Times sorted by Start Time' do
-        @faculty.available_times.create(:begin => Time.zone.parse('1/4/2011'), :end => Time.zone.parse('1/5/2011'))
-        @faculty.available_times.create(:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011'))
-        @faculty.available_times.create(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
-        @faculty.available_times.reload.map {|t| t.attributes['begin']}.should == [
+      it 'has many Time Slots sorted by Start Time' do
+        @faculty.time_slots.create(:begin => Time.zone.parse('1/4/2011'), :end => Time.zone.parse('1/5/2011'))
+        @faculty.time_slots.create(:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011'))
+        @faculty.time_slots.create(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
+        @faculty.time_slots.reload.map {|t| t.attributes['begin']}.should == [
           Time.zone.parse('1/3/2011'),
           Time.zone.parse('1/4/2011'),
           Time.zone.parse('1/6/2011'),
@@ -131,26 +131,26 @@ describe Faculty do
   end
 
   describe 'Nested Attributes' do
-    describe 'Available Times (available_times)' do
-      it 'allows nested attributes for Available Times (available_times)' do
-        attributes = {:available_times_attributes => [
+    describe 'Time Slots (time_slots)' do
+      it 'allows nested attributes for Time Slots (time_slots)' do
+        attributes = {:time_slots_attributes => [
           {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
           {:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011')}
         ]}
         @faculty.attributes = attributes
-        @faculty.available_times.each_with_index do |time, i|
-          time.begin.should == attributes[:available_times_attributes][i][:begin]
-          time.end.should == attributes[:available_times_attributes][i][:end]
+        @faculty.time_slots.each_with_index do |time, i|
+          time.begin.should == attributes[:time_slots_attributes][i][:begin]
+          time.end.should == attributes[:time_slots_attributes][i][:end]
         end
       end
 
       it 'ignores completely blank entries' do
-        attributes = {:available_times_attributes => [
+        attributes = {:time_slots_attributes => [
           {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
           {:begin => '', :end => ''}
         ]}
         @faculty.attributes = attributes
-        @faculty.available_times.length.should == 1
+        @faculty.time_slots.length.should == 1
       end
     end
 
@@ -276,36 +276,36 @@ describe Faculty do
       @faculty.should_not be_valid
     end
 
-    it 'is not valid with invalid Available Times' do
-      @faculty.available_times.build
+    it 'is not valid with invalid Time Slots' do
+      @faculty.time_slots.build
       @faculty.should_not be_valid
     end
 
-    it 'is not valid with overlapping Available Times' do
+    it 'is not valid with overlapping Time Slots' do
       [
         [
-          AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
-          AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
+          HostTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          HostTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
         ],
         [
-          AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
-          AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/9/2011'))
+          HostTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          HostTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/9/2011'))
         ],
         [
-          AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
-          AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
+          HostTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
+          HostTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
         ]
       ].each do |times|
-        @faculty.available_times = times
+        @faculty.time_slots = times
         @faculty.should_not be_valid
       end
     end
 
-    it 'is valid with overlapping Available Times that are marked for destruction' do
-      time1 = AvailableTime.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011'))
-      time2 = AvailableTime.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
-      time3 = AvailableTime.new(:begin => Time.zone.parse('1/7/2011'), :end => Time.zone.parse('1/9/2011'))
-      @faculty.available_times = [time1, time2, time3]
+    it 'is valid with overlapping Time Slots that are marked for destruction' do
+      time1 = HostTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011'))
+      time2 = HostTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
+      time3 = HostTimeSlot.new(:begin => Time.zone.parse('1/7/2011'), :end => Time.zone.parse('1/9/2011'))
+      @faculty.time_slots = [time1, time2, time3]
       time1.mark_for_destruction
       time2.mark_for_destruction
       @faculty.should be_valid
@@ -382,10 +382,11 @@ describe Faculty do
 
   context 'before saving' do
     it 'destroys Meetings at times at which it is no longer available' do
+      pending
       time1 = Time.zone.now
       time2 = Time.zone.now + 3600
-      available1 = @faculty.available_times.create(:begin => time1, :end => (time1 + 900), :room => 'Room', :available => true)
-      available2 = @faculty.available_times.create(:begin => time2, :end => (time2 + 900), :room => 'Room', :available => false)
+      available1 = @faculty.time_slots.create(:begin => time1, :end => (time1 + 900), :room => 'Room', :available => true)
+      available2 = @faculty.time_slots.create(:begin => time2, :end => (time2 + 900), :room => 'Room', :available => false)
       meeting1 = @faculty.meetings.create(:time => time1, :room => 'Room')
       meeting2 = @faculty.meetings.create(:time => time2, :room => 'Room')
       meetings = [meeting1, meeting2]
@@ -399,42 +400,44 @@ describe Faculty do
     end
 
     it 'creates new Meetings for newly available time slots' do
+      pending
       @faculty.meetings.should be_empty
       time1 = Time.zone.now
       time2 = Time.zone.now + 3600
-      @faculty.available_times.create(:begin => time1, :end => (time1 + 900), :room => 'Room', :available => true)
-      @faculty.available_times.create(:begin => time2, :end => (time2 + 900), :room => 'Room', :available => false)
+      @faculty.time_slots.create(:begin => time1, :end => (time1 + 900), :room => 'Room', :available => true)
+      @faculty.time_slots.create(:begin => time2, :end => (time2 + 900), :room => 'Room', :available => false)
       @faculty.save
       meeting_times = @faculty.meetings.map {|m| m.time.to_s}
       meeting_times.should include(time1.to_s)
       meeting_times.should_not include(time2.to_s)
     end
 
-    it 'ensures room consistency between AvailableTimes and Meetings' do
+    it 'ensures room consistency between HostTimeSlots and Meetings' do
+      pending
       time = Time.zone.now
-      available = @faculty.available_times.create(:begin => time, :end => (time + 900), :room => 'Room', :available => true)
-      @faculty.available_times.reload
+      available = @faculty.time_slots.create(:begin => time, :end => (time + 900), :room => 'Room', :available => true)
+      @faculty.time_slots.reload
       @faculty.save
       @faculty.meetings.first.room.should == 'Room'
       available.room = 'New Room'
       available.save
-      @faculty.available_times.reload
+      @faculty.time_slots.reload
       @faculty.save
-      @faculty.meetings.first.room.should == 'New Room'
+      @faculty.meetings.reload.first.room.should == 'New Room'
     end
   end
 
   context 'when destroying' do
-    it 'destroys its Available Times' do
-      available_times = Array.new(3) do |i|
-        available_time = AvailableTime.create(
+    it 'destroys its Time Slots' do
+      time_slots = Array.new(3) do |i|
+        time_slot = HostTimeSlot.create(
           :begin => Time.zone.parse("1:00PM 1/#{i + 1}/2011"),
           :end => Time.zone.parse("5:00PM 1/#{i + 1}/2011")
         )
-        available_time.should_receive(:destroy)
-        available_time
+        time_slot.should_receive(:destroy)
+        time_slot
       end
-      @faculty.stub(:available_times).and_return(available_times)
+      @faculty.stub(:time_slots).and_return(time_slots)
       @faculty.destroy
     end
 
@@ -459,6 +462,7 @@ describe Faculty do
     end
 
     it 'destroys its Meetings' do
+      pending
       meetings = Array.new(3) do
         meeting = Factory.create(:meeting, :faculty => @faculty)
         meeting.should_receive(:destroy)
@@ -524,18 +528,18 @@ describe Faculty do
   context 'when building a list of time slots' do
     before(:each) do
       @meeting_times = [
-        AvailableTime.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 9AM')),
-        AvailableTime.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')),
-        AvailableTime.new(:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 11AM'))
+        HostTimeSlot.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 9AM')),
+        HostTimeSlot.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')),
+        HostTimeSlot.new(:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 11AM'))
       ]
       @meeting_length = 15 * 60
       @meeting_gap = 5 * 60
     end
 
     context 'when no available meeting slots have been specified' do
-      it 'partitions the given times and produces an AvailableTime for each resulting slot' do
-        @faculty.build_available_times(@meeting_times, @meeting_length, @meeting_gap)
-        @faculty.available_times.map {|t| {:begin => t.begin, :end => t.end}}.should == [
+      it 'partitions the given times and produces an TimeSlot for each resulting slot' do
+        @faculty.build_time_slots(@meeting_times, @meeting_length, @meeting_gap)
+        @faculty.time_slots.map {|t| {:begin => t.begin, :end => t.end}}.should == [
           {:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')},
           {:begin => Time.zone.parse('1/1/2011 8:20AM'), :end => Time.zone.parse('1/1/2011 8:35AM')},
           {:begin => Time.zone.parse('1/1/2011 8:40AM'), :end => Time.zone.parse('1/1/2011 8:55AM')},
@@ -546,23 +550,23 @@ describe Faculty do
     end
 
     context 'when some available meeting times have been specified' do
-      it 'partitions the given times - already specified times and produces an AvailableTime for each resulting slot' do
+      it 'partitions the given times - already specified times and produces an TimeSlot for each resulting slot' do
         specified_times = [
-          AvailableTime.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')),
-          AvailableTime.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM'))
+          HostTimeSlot.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')),
+          HostTimeSlot.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM'))
         ]
-        @faculty.available_times += specified_times
+        @faculty.time_slots += specified_times
         @faculty.save
-        @faculty.build_available_times(@meeting_times, @meeting_length, @meeting_gap)
-        @faculty.available_times.map {|t| {:begin => t.begin, :end => t.end}}.should == [
+        @faculty.build_time_slots(@meeting_times, @meeting_length, @meeting_gap)
+        @faculty.time_slots.map {|t| {:begin => t.begin, :end => t.end}}.should == [
           {:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')},
           {:begin => Time.zone.parse('1/1/2011 8:20AM'), :end => Time.zone.parse('1/1/2011 8:35AM')},
           {:begin => Time.zone.parse('1/1/2011 8:40AM'), :end => Time.zone.parse('1/1/2011 8:55AM')},
           {:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')},
           {:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 10:45AM')}
         ]
-        [0, 3].each {|i| @faculty.available_times[i].should_not be_a_new_record}
-        [1, 2, 4].each {|i| @faculty.available_times[i].should be_a_new_record}
+        [0, 3].each {|i| @faculty.time_slots[i].should_not be_a_new_record}
+        [1, 2, 4].each {|i| @faculty.time_slots[i].should be_a_new_record}
       end
     end
   end
@@ -570,14 +574,14 @@ describe Faculty do
   context 'when finding the designated room for a given time slot' do
     it 'returns the time-slot-specific room if it is specified' do
       time = Time.zone.now
-      @faculty.available_times.create(:begin => time, :end => time + 900, :room => 'Room')
+      @faculty.time_slots.create(:begin => time, :end => time + 900, :room => 'Room')
       @faculty.room_for(time).should == 'Room'
     end
 
     it 'returns the default room if the time-slot-specific room has not been specified' do
       @faculty.stub(:default_room).and_return('Default')
       time = Time.zone.now
-      @faculty.available_times.create(:begin => time, :end => time + 900, :room => '')
+      @faculty.time_slots.create(:begin => time, :end => time + 900, :room => '')
       @faculty.room_for(time).should == 'Default'
     end
   end

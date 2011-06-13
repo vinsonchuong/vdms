@@ -2,7 +2,7 @@ en:
   faculty:
     index:
       title: "Manage Faculty"
-      available_times: "# Time Slots Available"
+      time_slots: "# Time Slots Available"
       admit_rankings: "# Admits Ranked"
       actions: "Actions"
     delete_all:

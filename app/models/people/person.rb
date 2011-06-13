@@ -22,6 +22,11 @@ class Person < ActiveRecord::Base
     "#{self.first_name} #{self.last_name}"
   end
 
+  # Placeholder for future attribute change
+  def name
+    full_name
+  end
+
   def areas
     [self.area1, self.area2, self.area3]
   end

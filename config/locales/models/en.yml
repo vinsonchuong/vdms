@@ -11,7 +11,9 @@ en:
       faculty_ranking: "Faculty Ranking"
       settings: "Settings"
       division: "Division"
-      available_time: "Available Time"
+      time_slot: "Time Slot"
+      host_time_slot: "Host's Time Slot"
+      visitor_time_slot: "Visitor's Time Slot"
       meeting: "Meeting"
     attributes:
       person:
@@ -59,48 +61,70 @@ en:
       division:
         name: "Abbreviation"
         long_name: "Name"
-      available_time:
-        begin: "From"
-        end: "To"
-        offset: "To"
+      time_slot:
+        begin: "Start Time"
+        end: "End Time"
         room: "Different Room"
         available: "Available?"
       meeting:
         time: "Time"
         room: "Room"
-        faculty: "Faculty"
-        faculty_id: "Faculty"
-        admits: "Admits"
+        host: "Faculty"
+        visitor: "Visitor"
     errors:
-      messages:
-        record_invalid: "There were %{errors} problems"
-        confirmation: "must match confirmation"
-        accepted: "must be accepted"
-        blank: "can't be blank"
-        too_short: "is too short (must have at least %{count} characters)"
-        too_long: "is too long (cannot have more than %{count} characters)"
-        wrong_length: "is the wrong length (must have %{count} characters)"
-        taken: "has already been taken"
-        invalid: "is invalid"
-        inclusion: "is not included in the list"
-        exclusion: "is reserved"
-        not_a_number: "is not a number"
-        greater_than: "must be greater than %{count}"
-        greater_than_or_equal_to: "must be greater than or equal to %{count}"
-        equal_to: "must be equal to %{count}"
-        less_than: "must be less than %{count}"
-        less_than_or_equal_to: "must be less than or equal to %{count}"
-        odd: "must be odd"
-        even: "must be even"
-        empty: "can't be empty"
-        invalid_time: "is not a valid time"
-        invalid_date: "is not a valid date"
-        invalid_datetime: "is not a valid datetime"
-        between: "must be between %{earliest} and %{latest}"
-        before: "must be before %{restriction}"
-        on_or_before: "must be on or before %{restriction}"
-        is_at: "must be at %{restriction}"
-        on_or_after: "must be on or after %{restriction}"
-        after: "must be after %{restriction}"
       full_messages:
-        format: "%{attribute} %{message}"
+        format: "%{message}"
+      messages:
+        accepted: "%{attribute} must be accepted"
+        after: "%{attribute} must be after %{restriction}"
+        before: "%{attribute} must be before %{restriction}"
+        between: "%{attribute} must be between %{earliest} and %{latest}"
+        blank: "%{attribute} can't be blank"
+        confirmation: "%{attribute} doesn't match confirmation"
+        empty: "%{attribute} can't be empty"
+        equal_to: "%{attribute} must be equal to %{count}"
+        even: "%{attribute} must be even"
+        exclusion: "%{attribute} is reserved"
+        greater_than: "%{attribute} must be greater than %{count}"
+        greater_than_or_equal_to: "%{attribute} must be greater than or equal to %{count}"
+        inclusion: "%{attribute} is not included in the list"
+        invalid: "%{attribute} is invalid"
+        invalid_date: "%{attribute} is not a valid date"
+        invalid_datetime: "%{attribute} is not a valid datetime"
+        invalid_time: "%{attribute} is not a valid time"
+        is_at: "%{attribute} must be at %{restriction}"
+        less_than: "%{attribute} must be less than %{count}"
+        less_than_or_equal_to: "%{attribute} must be less than or equal to %{count}"
+        not_a_number: "%{attribute} is not a number"
+        odd: "%{attribute} must be odd"
+        on_or_after: "%{attribute} must be on or after %{restriction}"
+        on_or_before: "%{attribute} must be on or before %{restriction}"
+        record_invalid: "%{attribute} Validation failed: %{errors}"
+        taken: "%{attribute} has already been taken"
+        too_long: "%{attribute} is too long (maximum is %{count} characters)"
+        too_short: "%{attribute} is too short (minimum is %{count} characters)"
+        wrong_length: "%{attribute} is the wrong length (should be %{count} characters)"
+      models:
+        meeting:
+          attributes:
+            base:
+              time_slots_must_match: "Time slots must match"
+            host_time_slot:
+              not_available: "%{name} is not available from %{begin} to %{end}"
+              per_meeting_cap_exceeded: "%{name} is already meeting with his/her max of %{max} visitors"
+            visitor_time_slot:
+              conflict: "%{visitor_name} is already meeting with %{host_name} from %{begin} to %{end}"
+              not_available: "%{name} is not available from %{begin} to %{end}"
+        host_time_slot:
+          attributes:
+            host_id:
+              existence: "Host must be specified"
+        visitor_time_slot:
+          attributes:
+            visitor_id:
+              existence: "Visitor must be specified"
+      template:
+        body: "There were problems with the following fields:"
+        header:
+          one: "1 error prohibited this %{model} from being saved"
+          other: "%{count} errors prohibited this %{model} from being saved"

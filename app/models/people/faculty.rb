@@ -37,22 +37,15 @@ class Faculty < Person
     record.area3 = areas[record.area3] unless record.area3.nil? || areas[record.area3].nil?
     record.division = divisions[record.division] unless record.division.nil? || divisions[record.division].nil?
   end
-  before_save do |record| # Maintain correspondence between available time slots and meeting slots
-    available_times = record.available_times.select(&:available).map(&:begin)
-    meeting_times = record.meetings.map(&:time)
-    record.meetings.reject {|m| available_times.include?(m.time)}.each(&:destroy)
-    (available_times - meeting_times).each do |time|
-      record.meetings.create(:time => time, :room => record.room_for(time))
-    end
-    record.meetings.reload.each {|m| m.update_attributes(:room => record.room_for(m.time))}
-  end
 
   has_many :admit_rankings, :order => 'rank ASC', :dependent => :destroy
   has_many :ranked_admits, :source => :admit, :through => :admit_rankings, :order => 'rank ASC'
   has_many :ranked_one_on_one_admits, :source => :admit, :through => :admit_rankings, :conditions => ['rankings.one_on_one = ?', true]
   has_many :mandatory_admits, :source => :admit, :through => :admit_rankings, :conditions => ['rankings.mandatory = ?', true]
   has_many :faculty_rankings, :dependent => :destroy
-  has_many :meetings, :dependent => :destroy
+  has_many :time_slots, :class_name => 'HostTimeSlot', :foreign_key => 'host_id', :order => 'begin ASC', :dependent => :destroy
+  has_many :meetings, :through => :time_slots
+  accepts_nested_attributes_for :time_slots, :reject_if => :all_blank, :allow_destroy => true
   accepts_nested_attributes_for :admit_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
 
   validates_presence_of :email
@@ -82,16 +75,16 @@ class Faculty < Person
   end
   
   def available_at?(time)
-    available_times.any?{ |at| at.begin == time and at.available? }
+    time_slots.any?{ |at| at.begin == time and at.available? }
     # incorrect code
-    # available_times.map(&:begin).include?(time)
+    # time_slots.map(&:begin).include?(time)
   end
 
   def room_for(time)
-    available_time = available_times.detect {|t| t.begin == time}
-    available_time.nil? ? default_room :
-    available_time.room.blank? ? default_room :
-    available_time.room
+    time_slot = time_slots.detect {|t| t.begin == time}
+    time_slot.nil? ? default_room :
+    time_slot.room.blank? ? default_room :
+    time_slot.room
   end
 
   def meeting_for(time)
@@ -99,7 +92,7 @@ class Faculty < Person
   end
   
   def self.attending_faculties
-    Faculty.all.select {|faculty| faculty.available_times.select {|available_time| available_time.available?}.count > 0}
+    Faculty.all.select {|faculty| faculty.time_slots.select {|time_slot| time_slot.available?}.count > 0}
   end
 
   

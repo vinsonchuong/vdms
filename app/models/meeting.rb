@@ -1,79 +1,88 @@
 class Meeting < ActiveRecord::Base
-  belongs_to :faculty
-  has_and_belongs_to_many :admits
+  # Notes and To-Do
+  # - Add ranking checks as warnings (see http://stackoverflow.com/questions/3342449/activerecord-replace-model-validation-error-with-warning)
+  # - Remove assumption of single day events or remove "from time1 to time2" entirely
+  # - Pull scheduler into namespaced module
 
-  validates_datetime :time
-  validates_presence_of :room
-  validates_existence_of :faculty
+  attr_accessible :host_time_slot, :host_time_slot_id, :visitor_time_slot, :visitor_time_slot_id
 
-  validate :no_conflicts, :if => Proc.new { |m|  !m.admits.blank? }
+  belongs_to :host_time_slot
+  belongs_to :visitor_time_slot
+
+  after_save :reset_associations
+
+  validates_associated :host_time_slot
+  validates_associated :visitor_time_slot
+  validate :time_slots, :if => Proc.new {|m| m.errors[:host_time_slot].blank? && m.errors[:visitor_time_slot].blank?}
+  validate :meeting_caps, :if => Proc.new {|m| m.errors[:host_time_slot].blank? && m.errors[:visitor_time_slot].blank?}
+  validate :conflicts, :if => Proc.new {|m| m.errors[:host_time_slot].blank? && m.errors[:visitor_time_slot].blank?}
 
   def self.generate
     MeetingsScheduler.delete_old_meetings!
     MeetingsScheduler.create_meetings_from_ranking_scores!
   end
 
-  def to_s
-    "Time: #{time.to_formatted_s(:long)}, faculty: #{faculty.full_name if faculty}, " <<
-      "admits: #{admits.map { |a| a.full_name } if admits}"
+  def host
+    host_time_slot.host
   end
 
-  def one_on_one_meeting?
-    !(self.admits & self.faculty.ranked_one_on_one_admits).empty?
+  def visitor
+    visitor_time_slot.visitor
   end
 
-  def add_admit!(admit)
-    begin
-      self.admits << admit
-      self.save!
-    rescue 
-      self.admits -= [admit]
-      raise
-    end
+  def time
+    (host_time_slot.begin)..(host_time_slot.end)
   end
 
-  def remove_admit!(admit)
-    self.admits -= [admit]
-    self.save!
+  def room
+    host_time_slot.room
   end
 
-  private unless Rails.env == "test"
-
-  def no_conflicts
-    fn = faculty.full_name
-    tm = time.strftime('%I:%M%p')
-    errors.add_to_base "#{fn} has a 1-on-1 meeting with #{find_one_on_one_admit_ranking.admit.full_name} at #{tm}." if conflicts_with_one_on_one
-    errors.add_to_base "#{fn} is already seeing #{@faculty.max_admits_per_meeting} people at #{tm}, which is his/her maximum." if exceeds_max_admits_per_meeting
-    errors.add_to_base "#{fn} is not available at #{tm}." unless faculty.available_at?(time)
-    unless admits.nil?
-      admits.each do |admit|
-        errors.add_to_base "#{admit.full_name} is not available at #{tm}." unless admit.available_at?(time)
-        if (m = admit.meeting_at_time(time)) && m != self
-          errors.add_to_base "#{admit.full_name} is already meeting with #{m.faculty.full_name} at #{tm}."
-        end
-      end
-    end
+  # Callbacks
+  def reset_associations
+    host_time_slot.meetings.reset
+    host.meetings.reset
+    visitor_time_slot.meetings.reset
+    visitor.meetings.reset
   end
 
-  def exceeds_max_admits_per_meeting
-    self.admits.count > faculty.max_admits_per_meeting
+  # Validations
+  def time_slots
+    errors.add_to_base :time_slots_must_match unless host_time_slot.same_time?(visitor_time_slot)
+    errors.add(
+      :host_time_slot,
+      :not_available,
+      :name => host.name,
+      :begin => time.begin.strftime('%I:%M%p'),
+      :end => time.end.strftime('%I:%M%p')
+    ) unless host_time_slot.available?
+    errors.add(
+      :visitor_time_slot,
+      :not_available,
+      :name => visitor.name,
+      :begin => time.begin.strftime('%I:%M%p'),
+      :end => time.end.strftime('%I:%M%p')
+    ) unless visitor_time_slot.available?
   end
 
-  def admit_unavailable(admit)
-    unless
-      errors.add_to_base("#{admit.full_name} is not available at #{time.strftime('%I:%M%p')}.")
-    end
+  def meeting_caps
+    errors.add(
+      :host_time_slot,
+      :per_meeting_cap_exceeded,
+      :name => host.name,
+      :max => host.max_admits_per_meeting
+    ) if host_time_slot.meetings.count >= host.max_admits_per_meeting
   end
 
-  def conflicts_with_one_on_one
-    # conflicts if faculty has a meeting at this same time with a "1 on 1" ranked candidate
-    one_on_one_meeting? and admits.count > 1
+  def conflicts
+    meeting = visitor_time_slot.meetings.detect {|m| m != self}
+    errors.add(
+      :visitor_time_slot,
+      :conflict,
+      :visitor_name => visitor.name,
+      :host_name => meeting.host.name,
+      :begin => meeting.time.begin.strftime('%I:%M%p'),
+      :end => meeting.time.end.strftime('%I:%M%p')
+    ) unless meeting.nil?
   end
-
-  def find_one_on_one_admit_ranking
-    admit_ids = admits.collect{ |admit| admit.id }
-    rankings = admit_ids.collect{ |id| faculty.admit_rankings.find_by_admit_id(id) }
-    rankings.uniq.delete_if{ |r| r.nil? }.first
-  end
-
 end
