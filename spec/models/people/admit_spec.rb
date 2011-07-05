@@ -92,19 +92,8 @@ describe Admit do
 
   describe 'Associations' do
     describe 'Time Slots' do
-      it 'has many Time Slots (time_slots)' do
-        @admit.should have_many(:time_slots)
-      end
-
-      it 'has many Time Slots sorted by Start Time' do
-        @admit.time_slots.create(:begin => Time.zone.parse('1/4/2011'), :end => Time.zone.parse('1/5/2011'))
-        @admit.time_slots.create(:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011'))
-        @admit.time_slots.create(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
-        @admit.time_slots.reload.map {|t| t.attributes['begin']}.should == [
-          Time.zone.parse('1/3/2011'),
-          Time.zone.parse('1/4/2011'),
-          Time.zone.parse('1/6/2011'),
-        ]
+      it 'has many Availabilities (availabilities)' do
+        @admit.should have_many(:availabilities)
       end
     end
 
@@ -128,26 +117,26 @@ describe Admit do
   end
 
   describe 'Nested Attributes' do
-    describe 'Time Slots (time_slots)' do
-      it 'allows nested attributes for Time Slots (time_slots)' do
-        attributes = {:time_slots_attributes => [
-          {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
-          {:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011')}
+    describe 'Availabilities (availabilities)' do
+      it 'allows nested attributes for Availabilities (availabilities)' do
+        time_slot1 = Factory.create(:time_slot)
+        time_slot2 = Factory.create(:time_slot)
+        attributes = {:availabilities_attributes => [
+          {:time_slot => time_slot1, :available => true},
+          {:time_slot => time_slot2, :available => true}
         ]}
         @admit.attributes = attributes
-        @admit.time_slots.each_with_index do |time, i|
-          time.begin.should == attributes[:time_slots_attributes][i][:begin]
-          time.end.should == attributes[:time_slots_attributes][i][:end]
-        end
+        @admit.availabilities.first.time_slot.should == time_slot1
+        @admit.availabilities.last.time_slot.should == time_slot2
       end
   
       it 'ignores completely blank entries' do
-        attributes = {:time_slots_attributes => [
-          {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
-          {:begin => '', :end => ''}
+        attributes = {:availabilities_attributes => [
+          {:time_slot => Factory.create(:time_slot), :available => true},
+          {:time_slot => '', :availabile => ''}
         ]}
         @admit.attributes = attributes
-        @admit.time_slots.length.should == 1
+        @admit.availabilities.length.should == 1
       end
     end
 
@@ -250,55 +239,10 @@ describe Admit do
       end
     end
 
-    it 'is valid with valid non-overlapping Time Slots' do
-      [
-        [
-          VisitorTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
-          VisitorTimeSlot.new(:begin => Time.zone.parse('1/8/2011'), :end => Time.zone.parse('1/9/2011'))
-        ],
-        [
-          VisitorTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/6/2011')),
-          VisitorTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
-        ]
-      ].each do |times|
-        @admit.time_slots = times
-        @admit.should be_valid
-      end
-    end
-
     it 'is not valid with invalid Time Slots' do
+      pending
       @admit.time_slots.build
       @admit.should_not be_valid
-    end
-
-    it 'is not valid with overlapping Time Slots' do
-      [
-        [
-          VisitorTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
-          VisitorTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
-        ],
-        [
-          VisitorTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
-          VisitorTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/9/2011'))
-        ],
-        [
-          VisitorTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
-          VisitorTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
-        ]
-      ].each do |times|
-        @admit.time_slots = times
-        @admit.should_not be_valid
-      end
-    end
-
-    it 'is valid with overlapping Time Slots that are marked for destruction' do
-      time1 = VisitorTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011'))
-      time2 = VisitorTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
-      time3 = VisitorTimeSlot.new(:begin => Time.zone.parse('1/7/2011'), :end => Time.zone.parse('1/9/2011'))
-      @admit.time_slots = [time1, time2, time3]
-      time1.mark_for_destruction
-      time2.mark_for_destruction
-      @admit.should be_valid
     end
 
     it 'is not valid with non-unique Faculty Ranking ranks' do
@@ -345,22 +289,19 @@ describe Admit do
   end
 
   context 'when destroying' do
-    it 'destroys its Time Slots' do
-      time_slots = Array.new(3) do |i|
-        time_slot = VisitorTimeSlot.create(
-          :begin => Time.zone.parse("1:00PM 1/#{i + 1}/2011"),
-          :end => Time.zone.parse("5:00PM 1/#{i + 1}/2011")
-        )
-        time_slot.should_receive(:destroy)
-        time_slot
+    it 'destroys its Availabilities' do
+      availabilities = Array.new(3) do
+        availability = mock_model(VisitorAvailability)
+        availability.should_receive(:destroy)
+        availability
       end
-      @admit.stub(:time_slots).and_return(time_slots)
+      @admit.stub(:availabilities).and_return(availabilities)
       @admit.destroy
     end
 
     it 'destroys its Faculty Rankings' do
       faculty_rankings = Array.new(3) do
-        faculty_ranking = Factory.create(:faculty_ranking, :admit => @admit)
+        faculty_ranking = mock_model(FacultyRanking)
         faculty_ranking.should_receive(:destroy)
         faculty_ranking
       end
@@ -370,9 +311,9 @@ describe Admit do
 
     it 'destroys its Admit Rankings' do
       admit_rankings = Array.new(3) do
-        faculty_ranking = Factory.create(:admit_ranking, :admit => @admit)
-        faculty_ranking.should_receive(:destroy)
-        faculty_ranking
+        admit_ranking = mock_model(AdmitRanking)
+        admit_ranking.should_receive(:destroy)
+        admit_ranking
       end
       @admit.stub(:admit_rankings).and_return(admit_rankings)
       @admit.destroy
@@ -447,52 +388,6 @@ describe Admit do
         admit.phone.should == "123456789#{i}"
         admit.area1.should == "Area 1#{i}"
         admit.area2.should == "Area 2#{i}"
-      end
-    end
-  end
-
-  context 'when building a list of time slots' do
-    before(:each) do
-      @meeting_times = [
-        VisitorTimeSlot.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 9AM')),
-        VisitorTimeSlot.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')),
-        VisitorTimeSlot.new(:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 11AM'))
-      ]
-      @meeting_length = 15 * 60
-      @meeting_gap = 5 * 60
-    end
-
-    context 'when no available meeting slots have been specified' do
-      it 'partitions the given times and produces an TimeSlot for each resulting slot' do
-        @admit.build_time_slots(@meeting_times, @meeting_length, @meeting_gap)
-        @admit.time_slots.map {|t| {:begin => t.begin, :end => t.end}}.should == [
-          {:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')},
-          {:begin => Time.zone.parse('1/1/2011 8:20AM'), :end => Time.zone.parse('1/1/2011 8:35AM')},
-          {:begin => Time.zone.parse('1/1/2011 8:40AM'), :end => Time.zone.parse('1/1/2011 8:55AM')},
-          {:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')},
-          {:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 10:45AM')}
-        ]
-      end
-    end
-
-    context 'when some available meeting times have been specified' do
-      it 'partitions the given times - already specified times and produces an TimeSlot for each resulting slot' do
-        specified_times = [
-          VisitorTimeSlot.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')),
-          VisitorTimeSlot.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM'))
-        ]
-        @admit.time_slots += specified_times
-        @admit.save
-        @admit.build_time_slots(@meeting_times, @meeting_length, @meeting_gap)
-        @admit.time_slots.map {|t| {:begin => t.begin, :end => t.end}}.should == [
-          {:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')},
-          {:begin => Time.zone.parse('1/1/2011 8:20AM'), :end => Time.zone.parse('1/1/2011 8:35AM')},
-          {:begin => Time.zone.parse('1/1/2011 8:40AM'), :end => Time.zone.parse('1/1/2011 8:55AM')},
-          {:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')},
-          {:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 10:45AM')}
-        ]
-        [0, 3].each {|i| @admit.time_slots[i].should_not be_a_new_record}
-        [1, 2, 4].each {|i| @admit.time_slots[i].should be_a_new_record}
       end
     end
   end

@@ -1,9 +1,16 @@
 class TimeSlot < ActiveRecord::Base
-  attr_accessible :begin, :end, :room, :available
+  attr_accessible :begin, :end, :settings, :settings_id
+
+  belongs_to :settings
+  has_many :host_availabilities, :dependent => :destroy
+  has_many :visitor_availabilities, :dependent => :destroy
+
+  default_scope :order => 'begin'
 
   validates_datetime :begin
   validates_datetime :end
   validates_datetime :end, :after => :begin
+  validates_existence_of :settings
 
   def begin=(begin_time)
     if begin_time.class == String

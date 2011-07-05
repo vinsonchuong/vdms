@@ -8,7 +8,7 @@
 
 %p.instructions!= t('.instructions')
 
-- form_tag({:action => 'apply_tweaks'}, {:id => 'apply_tweaks'}) do
+- form_for @faculty, :url => {:action => 'apply_tweaks'} do |tweak_form|
   %table.schedule
     %thead
       %tr
@@ -17,18 +17,17 @@
         - 1.upto(@max_admits) do |i|
           %th Admit #{i}
     %tbody
-      - @times.each do |time|
-        - meeting = @faculty.meeting_for(time)
+      - tweak_form.fields_for :availabilities do |availability_fields|
+        - availability = availability_fields.object
         %tr
-          %td= time.strftime('%I:%M%p')
-          %td.room= @faculty.room_for(time)
-          - unless meeting.nil?
-            - meeting.admits.each_with_index do |admit,index|
-              %td!= render :partial => 'slot_with_admit', :locals => {:admit => admit, :meeting => meeting}
-            - (meeting.admits.length + 1).upto(@max_admits) do |index|
-              %td!= render :partial => 'open_slot', :locals => {:meeting => meeting, :index => index}
-          - else
-            %td.room
-            - 1.upto(@max_admits) do |i|
-              %td
-  != submit_tag 'Save Changes'
+          %td= availability.time_slot.begin.strftime('%I:%M%p')
+          %td.room= availability.room || @faculty.default_room
+          - availability_fields.fields_for :meetings, availability.meetings.by_name do |meeting_fields|
+            - meeting = meeting_fields.object
+            %td
+              - unless meeting.visitor.nil?
+                != meeting_fields.check_box :_destroy
+                != link_to meeting.visitor.name, admit_meetings_path(meeting.visitor)
+              - else
+                != meeting_fields.select :visitor_availability, options_for_select([''], '') + options_from_collection_for_select(@all_admits.map {|a| [a.name, a.availabilities.find_by_time_slot_id(availability.time_slot_id).id]})
+  != tweak_form.submit 'Save Changes'

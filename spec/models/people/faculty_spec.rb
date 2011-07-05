@@ -96,11 +96,12 @@ describe Faculty do
 
   describe 'Associations' do
     describe 'Time Slots' do
-      it 'has many Time Slots (time_slots)' do
-        @faculty.should have_many(:time_slots)
+      it 'has many Availabilities (availabilities)' do
+        @faculty.should have_many(:availabilities)
       end
 
-      it 'has many Time Slots sorted by Start Time' do
+      it 'has many Availabilities sorted by Start Time' do
+        pending
         @faculty.time_slots.create(:begin => Time.zone.parse('1/4/2011'), :end => Time.zone.parse('1/5/2011'))
         @faculty.time_slots.create(:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011'))
         @faculty.time_slots.create(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
@@ -131,26 +132,26 @@ describe Faculty do
   end
 
   describe 'Nested Attributes' do
-    describe 'Time Slots (time_slots)' do
-      it 'allows nested attributes for Time Slots (time_slots)' do
-        attributes = {:time_slots_attributes => [
-          {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
-          {:begin => Time.zone.parse('1/3/2011'), :end => Time.zone.parse('1/4/2011')}
+    describe 'Availabilities (availabilities)' do
+      it 'allows nested attributes for Availabilities' do
+        time_slot1 = Factory.create(:time_slot)
+        time_slot2 = Factory.create(:time_slot)
+        attributes = {:availabilities_attributes => [
+          {:time_slot => time_slot1, :available => true},
+          {:time_slot => time_slot2, :available => true}
         ]}
         @faculty.attributes = attributes
-        @faculty.time_slots.each_with_index do |time, i|
-          time.begin.should == attributes[:time_slots_attributes][i][:begin]
-          time.end.should == attributes[:time_slots_attributes][i][:end]
-        end
+        @faculty.availabilities.first.time_slot.should == time_slot1
+        @faculty.availabilities.last.time_slot.should == time_slot2
       end
 
       it 'ignores completely blank entries' do
-        attributes = {:time_slots_attributes => [
-          {:begin => Time.zone.parse('1/1/2011'), :end => Time.zone.parse('1/2/2011')},
-          {:begin => '', :end => ''}
+        attributes = {:availabilities_attributes => [
+          {:time_slot => Factory.create(:time_slot), :available => true},
+          {:time_slot => ''}
         ]}
         @faculty.attributes = attributes
-        @faculty.time_slots.length.should == 1
+        @faculty.availabilities.length.should == 1
       end
     end
 
@@ -276,40 +277,7 @@ describe Faculty do
       @faculty.should_not be_valid
     end
 
-    it 'is not valid with invalid Time Slots' do
-      @faculty.time_slots.build
-      @faculty.should_not be_valid
-    end
-
-    it 'is not valid with overlapping Time Slots' do
-      [
-        [
-          HostTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
-          HostTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
-        ],
-        [
-          HostTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
-          HostTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/9/2011'))
-        ],
-        [
-          HostTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011')),
-          HostTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/7/2011'))
-        ]
-      ].each do |times|
-        @faculty.time_slots = times
-        @faculty.should_not be_valid
-      end
-    end
-
-    it 'is valid with overlapping Time Slots that are marked for destruction' do
-      time1 = HostTimeSlot.new(:begin => Time.zone.parse('1/5/2011'), :end => Time.zone.parse('1/8/2011'))
-      time2 = HostTimeSlot.new(:begin => Time.zone.parse('1/6/2011'), :end => Time.zone.parse('1/8/2011'))
-      time3 = HostTimeSlot.new(:begin => Time.zone.parse('1/7/2011'), :end => Time.zone.parse('1/9/2011'))
-      @faculty.time_slots = [time1, time2, time3]
-      time1.mark_for_destruction
-      time2.mark_for_destruction
-      @faculty.should be_valid
-    end
+    it 'is not valid with invalid Availabilities'
 
     it 'is not valid without a Default Doom' do
       @faculty.default_room = ''
@@ -428,22 +396,19 @@ describe Faculty do
   end
 
   context 'when destroying' do
-    it 'destroys its Time Slots' do
-      time_slots = Array.new(3) do |i|
-        time_slot = HostTimeSlot.create(
-          :begin => Time.zone.parse("1:00PM 1/#{i + 1}/2011"),
-          :end => Time.zone.parse("5:00PM 1/#{i + 1}/2011")
-        )
-        time_slot.should_receive(:destroy)
-        time_slot
+    it 'destroys its Availabilities' do
+      availabilities = Array.new(3) do
+        availability = mock_model(Availability)
+        availability.should_receive(:destroy)
+        availability
       end
-      @faculty.stub(:time_slots).and_return(time_slots)
+      @faculty.stub(:availabilities).and_return(availabilities)
       @faculty.destroy
     end
 
     it 'destroys its Admit Rankings' do
       admit_rankings = Array.new(3) do
-        admit_ranking = Factory.create(:admit_ranking, :faculty => @faculty)
+        admit_ranking = mock_model(AdmitRanking)
         admit_ranking.should_receive(:destroy)
         admit_ranking
       end
@@ -453,7 +418,7 @@ describe Faculty do
 
     it 'destroys the Faculty Rankings to which it belongs' do
       faculty_rankings = Array.new(3) do
-        faculty_ranking = Factory.create(:faculty_ranking, :faculty => @faculty)
+        faculty_ranking = mock_model(FacultyRanking)
         faculty_ranking.should_receive(:destroy)
         faculty_ranking
       end
@@ -464,7 +429,7 @@ describe Faculty do
     it 'destroys its Meetings' do
       pending
       meetings = Array.new(3) do
-        meeting = Factory.create(:meeting, :faculty => @faculty)
+        meeting = mock_model(Meeting)
         meeting.should_receive(:destroy)
         meeting
       end
@@ -528,9 +493,9 @@ describe Faculty do
   context 'when building a list of time slots' do
     before(:each) do
       @meeting_times = [
-        HostTimeSlot.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 9AM')),
-        HostTimeSlot.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')),
-        HostTimeSlot.new(:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 11AM'))
+        HostAvailability.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 9AM')),
+        HostAvailability.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM')),
+        HostAvailability.new(:begin => Time.zone.parse('1/1/2011 10:30AM'), :end => Time.zone.parse('1/1/2011 11AM'))
       ]
       @meeting_length = 15 * 60
       @meeting_gap = 5 * 60
@@ -538,6 +503,7 @@ describe Faculty do
 
     context 'when no available meeting slots have been specified' do
       it 'partitions the given times and produces an TimeSlot for each resulting slot' do
+        pending
         @faculty.build_time_slots(@meeting_times, @meeting_length, @meeting_gap)
         @faculty.time_slots.map {|t| {:begin => t.begin, :end => t.end}}.should == [
           {:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')},
@@ -551,9 +517,10 @@ describe Faculty do
 
     context 'when some available meeting times have been specified' do
       it 'partitions the given times - already specified times and produces an TimeSlot for each resulting slot' do
+        pending
         specified_times = [
-          HostTimeSlot.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')),
-          HostTimeSlot.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM'))
+          HostAvailability.new(:begin => Time.zone.parse('1/1/2011 8AM'), :end => Time.zone.parse('1/1/2011 8:15AM')),
+          HostAvailability.new(:begin => Time.zone.parse('1/1/2011 10AM'), :end => Time.zone.parse('1/1/2011 10:15AM'))
         ]
         @faculty.time_slots += specified_times
         @faculty.save
@@ -573,15 +540,21 @@ describe Faculty do
 
   context 'when finding the designated room for a given time slot' do
     it 'returns the time-slot-specific room if it is specified' do
-      time = Time.zone.now
-      @faculty.time_slots.create(:begin => time, :end => time + 900, :room => 'Room')
+      time = Time.zone.parse('5PM')
+      @faculty.availabilities.create(
+          :time_slot => Factory.create(:time_slot, :begin => time, :end => time + 15.minutes),
+          :room => 'Room'
+      )
       @faculty.room_for(time).should == 'Room'
     end
 
     it 'returns the default room if the time-slot-specific room has not been specified' do
-      @faculty.stub(:default_room).and_return('Default')
+      @faculty.default_room = 'Default'
       time = Time.zone.now
-      @faculty.time_slots.create(:begin => time, :end => time + 900, :room => '')
+      @faculty.availabilities.create(
+          :time_slot => Factory.create(:time_slot, :begin => time, :end => time + 15.minutes),
+          :room => 'Room'
+      )
       @faculty.room_for(time).should == 'Default'
     end
   end

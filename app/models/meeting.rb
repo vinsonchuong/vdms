@@ -4,18 +4,21 @@ class Meeting < ActiveRecord::Base
   # - Remove assumption of single day events or remove "from time1 to time2" entirely
   # - Pull scheduler into namespaced module
 
-  attr_accessible :host_time_slot, :host_time_slot_id, :visitor_time_slot, :visitor_time_slot_id
+  attr_accessible :host_availability, :host_availability_id, :visitor_availability, :visitor_availability_id
 
-  belongs_to :host_time_slot
-  belongs_to :visitor_time_slot
+  belongs_to :host_availability
+  belongs_to :visitor_availability
+
+  named_scope :by_host, :joins => {:host_availability => :host}, :order => 'last_name, first_name'
+  named_scope :by_visitor, :joins => {:visitor_availability => :visitor}, :order => 'last_name, first_name'
 
   after_save :reset_associations
 
-  validates_associated :host_time_slot
-  validates_associated :visitor_time_slot
-  validate :time_slots, :if => Proc.new {|m| m.errors[:host_time_slot].blank? && m.errors[:visitor_time_slot].blank?}
-  validate :meeting_caps, :if => Proc.new {|m| m.errors[:host_time_slot].blank? && m.errors[:visitor_time_slot].blank?}
-  validate :conflicts, :if => Proc.new {|m| m.errors[:host_time_slot].blank? && m.errors[:visitor_time_slot].blank?}
+  validates_associated :host_availability
+  validates_associated :visitor_availability
+  validate :time_slots, :if => Proc.new {|m| m.errors[:host_availability].blank? && m.errors[:visitor_availability].blank?}
+  validate :meeting_caps, :if => Proc.new {|m| m.errors[:host_availability].blank? && m.errors[:visitor_availability].blank?}
+  validate :conflicts, :if => Proc.new {|m| m.errors[:host_availability].blank? && m.errors[:visitor_availability].blank?}
 
   def self.generate
     MeetingsScheduler.delete_old_meetings!
@@ -23,61 +26,61 @@ class Meeting < ActiveRecord::Base
   end
 
   def host
-    host_time_slot.host
+    host_availability.host
   end
 
   def visitor
-    visitor_time_slot.visitor
+    visitor_availability.visitor
   end
 
   def time
-    (host_time_slot.begin)..(host_time_slot.end)
+    (host_availability.time_slot.begin)..(host_availability.time_slot.end)
   end
 
   def room
-    host_time_slot.room
+    host_availability.room
   end
 
   # Callbacks
   def reset_associations
-    host_time_slot.meetings.reset
+    host_availability.meetings.reset
     host.meetings.reset
-    visitor_time_slot.meetings.reset
+    visitor_availability.meetings.reset
     visitor.meetings.reset
   end
 
   # Validations
   def time_slots
-    errors.add_to_base :time_slots_must_match unless host_time_slot.same_time?(visitor_time_slot)
+    errors.add_to_base :time_slots_must_match unless host_availability.time_slot == visitor_availability.time_slot
     errors.add(
-      :host_time_slot,
+      :host_availability,
       :not_available,
       :name => host.name,
       :begin => time.begin.strftime('%I:%M%p'),
       :end => time.end.strftime('%I:%M%p')
-    ) unless host_time_slot.available?
+    ) unless host_availability.available?
     errors.add(
-      :visitor_time_slot,
+      :visitor_availability,
       :not_available,
       :name => visitor.name,
       :begin => time.begin.strftime('%I:%M%p'),
       :end => time.end.strftime('%I:%M%p')
-    ) unless visitor_time_slot.available?
+    ) unless visitor_availability.available?
   end
 
   def meeting_caps
     errors.add(
-      :host_time_slot,
+      :host_availability,
       :per_meeting_cap_exceeded,
       :name => host.name,
       :max => host.max_admits_per_meeting
-    ) if host_time_slot.meetings.count >= host.max_admits_per_meeting
+    ) if host_availability.meetings.count >= host.max_admits_per_meeting
   end
 
   def conflicts
-    meeting = visitor_time_slot.meetings.detect {|m| m != self}
+    meeting = visitor_availability.meetings.detect {|m| m != self}
     errors.add(
-      :visitor_time_slot,
+      :visitor_availability,
       :conflict,
       :visitor_name => visitor.name,
       :host_name => meeting.host.name,

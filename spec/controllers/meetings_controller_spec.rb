@@ -62,12 +62,14 @@ describe MeetingsController do
         assigns[:unsatisfied_faculty].should == [[faculty1, [admit1]]]
       end
       it 'assigns to @admits_with_unsatisfied_rankings a list of admits with unsatisfied faculty rankings' do
-        pending
         admit1 = Factory.create(:admit)
         admit2 = Factory.create(:admit)
         faculty21 = Factory.create(:faculty)
         ranking21 = Factory.create(:faculty_ranking, :admit => admit2, :faculty => faculty21)
-        Factory.create(:meeting, :faculty => faculty21).admits << admit2
+        time_slot = Factory.create(:time_slot)
+        faculty21_availability = faculty21.availabilities.create(:time_slot => time_slot, :available => true)
+        admit2_availability = admit2.availabilities.create(:time_slot => time_slot, :available => true)
+        Meeting.create(:host_availability => faculty21_availability, :visitor_availability => admit2_availability)
         admit3 = Factory.create(:admit)
         faculty31 = Factory.create(:faculty)
         ranking31 = Factory.create(:faculty_ranking, :admit => admit3, :faculty => faculty31)
@@ -77,16 +79,16 @@ describe MeetingsController do
         assigns[:admits_with_unsatisfied_rankings].should == [[admit3, [ranking31]]]
       end
       it 'assigns to @faculty_with_unsatisfied_rankings a list of faculty with unsatisfied admit rankings' do
-        pending
         time = Time.zone.now
         faculty1 = Factory.create(:faculty)
         faculty2 = Factory.create(:faculty)
         admit21 = Factory.create(:admit)
-        admit21.time_slots.create(:begin => time, :end => time + 20.minutes, :available => true)
         Factory.create(:admit_ranking, :faculty => faculty2, :admit => admit21)
-        faculty2.time_slots.create(:begin => time, :end => time + 20.minutes, :available => true)
-        meeting = Factory.create(:meeting, :time => time, :faculty => faculty2)
-        meeting.add_admit!(admit21)
+        time_slot = Factory.create(:time_slot)
+        meeting = Meeting.create(
+          :host_availability => faculty2.availabilities.create(:time_slot => time_slot, :available => true),
+          :visitor_availability => admit21.availabilities.create(:time_slot => time_slot, :available => true)
+        )
         faculty3 = Factory.create(:faculty)
         admit31 = Factory.create(:admit)
         ranking31 = Factory.create(:admit_ranking, :faculty => faculty3, :admit => admit31)
@@ -124,27 +126,6 @@ describe MeetingsController do
       flash[:alert].should == 'Only Staff users may perform this action.'
     end
   end
-  describe 'manually deleting' do
-    before(:each) do
-      fake_login(:staff)
-    end
-    it 'should delete the meeting' do
-      pending
-      host = Factory.create(:faculty)
-      visitor1 = Factory.create(:admit)
-      visitor2 = Factory.create(:admit)
-      start_time = Time.zone.parse('9AM')
-      end_time = start_time + 15.minutes
-      host_time_slot = host.time_slots.create(:begin => start_time, :end => end_time, :available => true)
-      [visitor1, visitor2].each do |admit|
-        visitor_time_slot = admit.time_slots.create(:begin => start_time, :end => end_time, :available => true)
-        Meeting.create!(:host_time_slot => host_time_slot, :visitor_time_slot => visitor_time_slot)
-      end
-      params  = {:faculty_id => 1, "remove_#{visitor1.id}_#{meeting.id}" => '1'}
-      post :apply_tweaks, params
-      host.meetings.reload.map {|m| m.visitor}.should_not include(visitor1)
-    end
-  end
   context "when logged in as any valid user" do
     before(:each) { fake_login(:peer_advisor) }
     describe "index" do
@@ -159,37 +140,6 @@ describe MeetingsController do
       it "should show master schedule if neither faculty_id nor admit_id given" do
         controller.should_receive(:master)
         get :index
-      end
-    end
-    describe "master schedule" do
-      before(:each) do
-        pending
-        @nine_am = Time.zone.parse("9:00am")
-        @ten_am = Time.zone.parse("10:00am")
-        @faculty1 = Factory.create(:faculty)
-        @faculty2 = Factory.create(:faculty)
-        @faculty2.time_slots.create(:begin => @ten_am, :end => @ten_am + 20.minutes, :available => true)
-        @faculty3 = Factory.create(:faculty)
-        @faculty3.time_slots.create(:begin => @nine_am, :end => @nine_am + 20.minutes, :available => true)
-        @faculty3.time_slots.create(:begin => @ten_am, :end => @ten_am + 20.minutes, :available => true)
-        @m1 = Factory.create(:meeting, :faculty => @faculty3, :time => @nine_am)
-        @m2 = Factory.create(:meeting, :faculty => @faculty3, :time => @ten_am)
-        @m3 = Factory.create(:meeting, :faculty => @faculty2, :time => @ten_am)
-        [@faculty1, @faculty2, @faculty3].each {|f| f.meetings.reload}
-      end
-      it "should include all meetings sorted by faculty" do
-        pending
-        get :master
-        sorted = assigns[:meetings_by_faculty]
-        sorted.should be_a_kind_of(Array)
-        sorted.detect {|f, m| f == @faculty3}[1].should include(@m1)
-        sorted.detect {|f, m| f == @faculty3}[1].should include(@m2)
-        sorted.detect {|f, m| f == @faculty2}[1].should include(@m3)
-        end
-      it "should enumerate the times without duplicates" do
-        pending
-        get :master
-        assigns[:times].should == [@nine_am, @ten_am]
       end
     end
   end

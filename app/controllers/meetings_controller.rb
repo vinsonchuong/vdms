@@ -16,10 +16,8 @@ class MeetingsController < ApplicationController
   # Show the master schedule
   # GET /meetings/master
   def master
-    available_faculty = Faculty.all.select {|f| f.time_slots.select(&:available).count > 0}
-    sorted_faculty = available_faculty.sort_by {|f| [-f.time_slots.select(&:available).count, f.last_name, f.first_name]}
-    @meetings_by_faculty = sorted_faculty.map {|f| [f, f.time_slots.map {|t| f.meeting_for(t.begin)}]}
-    @times = TimeSlot.all.map(&:begin).uniq.sort!
+    @settings = Settings.instance
+    @hosts = Faculty.by_name
   end
 
   # Show meetings statistics
@@ -29,13 +27,13 @@ class MeetingsController < ApplicationController
     @admits = Admit.by_name
     @faculty = Faculty.by_name
     @unsatisfied_admits = @admits.select {|a| a.meetings.count < settings.unsatisfied_admit_threshold}
-    @unsatisfied_faculty = @faculty.map {|f| [f, f.mandatory_admits - f.meetings.map(&:admits).flatten]}.reject {|f, a| a.empty?}
+    @unsatisfied_faculty = @faculty.map {|f| [f, f.mandatory_admits - f.meetings.map(&:visitor)]}.reject {|f, a| a.empty?}
     @admits_with_unsatisfied_rankings = @admits.map do |admit|
-      meeting_faculty = admit.meetings.map(&:faculty)
+      meeting_faculty = admit.meetings.map(&:host)
       [admit, admit.faculty_rankings.reject {|r| meeting_faculty.include?(r.faculty)}]
     end.reject {|a, r| r.empty?}
     @faculty_with_unsatisfied_rankings = @faculty.map do |faculty|
-      meeting_admits = faculty.meetings.map(&:admits).flatten
+      meeting_admits = faculty.meetings.map(&:visitor)
       [faculty, faculty.admit_rankings.reject {|r| meeting_admits.include?(r.admit)}]
     end.reject {|f, r| r.empty?}
   end
@@ -43,6 +41,7 @@ class MeetingsController < ApplicationController
   # Show the admit schedule
   # GET /meetings/print_admits
   def print_admits
+    @settings = Settings.instance
     @admits = Admit.by_name.reject {|a| a.meetings.empty?}
     @one_per_page = params['one_per_page'].to_b
   end
@@ -50,7 +49,6 @@ class MeetingsController < ApplicationController
   # Show the faculty schedule
   # GET /meetings/print_faculty
   def print_faculty
-    @times = TimeSlot.all.map(&:begin).uniq.sort!
     @faculty = Faculty.by_name.reject {|f| f.meetings.empty?}
     @one_per_page = params['one_per_page'].to_b
   end
@@ -66,17 +64,17 @@ class MeetingsController < ApplicationController
   # GET /people/faculty/1/meetings
   def for_faculty(faculty_id)
     @faculty = Faculty.find(faculty_id)
-    @times = TimeSlot.all.map(&:begin).uniq.sort!
     render :action => 'for_faculty'
   end
 
   # Tweak the schedule for faculty (ie, show editable view) - for staff only
   def tweak
-    @times = TimeSlot.all.map(&:begin).uniq.sort!
     @faculty = Faculty.find(params[:faculty_id])
     @max_admits = @faculty.max_admits_per_meeting
-    @meetings = @faculty.meetings.sort_by(&:time)
-    @all_admits = Admit.all.sort_by(&:last_name)
+    @faculty.availabilities.each do |availability|
+      (@max_admits - availability.meetings.count).times {availability.meetings.build}
+    end
+    @all_admits = Admit.by_name
   end
 
   # Save the tweaks to a faculty meeting schedule - for staff only
@@ -107,40 +105,6 @@ class MeetingsController < ApplicationController
   end
 
   private
-
-  def delete_meetings(keys)
-    messages = []
-    keys.each do |key|
-      if key =~ /^remove_(\d+)_(\d+)$/
-        begin
-          meeting = Meeting.find($2)
-          admit = Admit.find($1)
-          meeting.remove_admit!(admit)
-          messages << "#{admit.full_name} removed from #{meeting.time.strftime('%I:%M%p')} meeting."
-        rescue Exception => e
-          messages << "Can't remove admit #{admit} from meeting #{meeting}: #{e.message}"
-        end
-      end
-    end
-    messages
-  end
-
-  def add_meetings(params)
-    messages = []
-    params.each_pair do |menu_name,admit|
-      if menu_name =~ /^add_(\d+)_\d+$/
-        begin
-          meeting = Meeting.find($1)
-          admit = Admit.find(admit)
-          meeting.add_admit!(admit)
-          messages << "#{admit.full_name} added to #{meeting.time.strftime('%I:%M%p')} meeting."
-        rescue Exception => e
-          messages << "#{admit.full_name if admit} NOT added to #{meeting.time.strftime('%I:%M%p')} meeting: #{e.message}"
-        end
-      end
-    end
-    messages
-  end
 
   def current_user_is_staff?
     unless @current_user && @current_user.class.name == 'Staff'

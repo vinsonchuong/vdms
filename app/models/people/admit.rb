@@ -25,9 +25,9 @@ class Admit < Person
   has_many :ranked_faculty, :source => :faculty, :through => :faculty_rankings, :order => 'rank ASC'
   has_many :admit_rankings, :dependent => :destroy
   accepts_nested_attributes_for :faculty_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
-  has_many :time_slots, :class_name => 'VisitorTimeSlot', :foreign_key => 'visitor_id', :order => 'begin ASC', :dependent => :destroy
-  has_many :meetings, :through => :time_slots
-  accepts_nested_attributes_for :time_slots, :reject_if => :all_blank, :allow_destroy => true
+  has_many :availabilities, :class_name => 'VisitorAvailability', :foreign_key => 'visitor_id', :dependent => :destroy
+  has_many :meetings, :through => :availabilities
+  accepts_nested_attributes_for :availabilities, :reject_if => :all_blank, :allow_destroy => true
 
   validates_inclusion_of :area1, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
   validates_inclusion_of :area2, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true

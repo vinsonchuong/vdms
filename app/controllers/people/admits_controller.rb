@@ -4,8 +4,8 @@ class AdmitsController < PeopleController
   # GET /people/admits/1/edit_availability
   def edit_availability
     @admit = Admit.find(params[:id])
-    settings = Settings.instance
-    @admit.build_time_slots(settings.divisions.map(&:time_slots).flatten, settings.meeting_length, settings.meeting_gap)
+#    settings = Settings.instance
+#    @admit.build_time_slots(settings.divisions.map(&:time_slots).flatten, settings.meeting_length, settings.meeting_gap)
 
     if Settings.instance.disable_peer_advisors && @current_user.class == PeerAdvisor
       flash[:alert] = t('people.admits.edit_availability.disabled')

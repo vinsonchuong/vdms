@@ -347,6 +347,7 @@ describe FacultyController do
       end
 
       it 'builds a list of possible meeting slots' do
+        pending
         Faculty.stub(:find).and_return(@faculty_instance)
         @faculty_instance.should_receive(:build_time_slots)
         get :edit_availability, :id => @faculty_instance.id

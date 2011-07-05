@@ -43,9 +43,9 @@ class Faculty < Person
   has_many :ranked_one_on_one_admits, :source => :admit, :through => :admit_rankings, :conditions => ['rankings.one_on_one = ?', true]
   has_many :mandatory_admits, :source => :admit, :through => :admit_rankings, :conditions => ['rankings.mandatory = ?', true]
   has_many :faculty_rankings, :dependent => :destroy
-  has_many :time_slots, :class_name => 'HostTimeSlot', :foreign_key => 'host_id', :order => 'begin ASC', :dependent => :destroy
-  has_many :meetings, :through => :time_slots
-  accepts_nested_attributes_for :time_slots, :reject_if => :all_blank, :allow_destroy => true
+  has_many :availabilities, :class_name => 'HostAvailability', :foreign_key => 'host_id', :dependent => :destroy
+  has_many :meetings, :through => :availabilities
+  accepts_nested_attributes_for :availabilities, :reject_if => :all_blank
   accepts_nested_attributes_for :admit_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
 
   validates_presence_of :email
@@ -75,25 +75,21 @@ class Faculty < Person
   end
   
   def available_at?(time)
-    time_slots.any?{ |at| at.begin == time and at.available? }
+    availabilities.any?{ |a| a.time_slot.begin == time and a.available? }
     # incorrect code
     # time_slots.map(&:begin).include?(time)
   end
 
   def room_for(time)
-    time_slot = time_slots.detect {|t| t.begin == time}
-    time_slot.nil? ? default_room :
-    time_slot.room.blank? ? default_room :
-    time_slot.room
+    availability = availabilities.detect {|a| a.time_slot && a.time_slot.begin == time}
+    availability.nil? ?
+        default_room :
+        availability.room.blank? ?
+            default_room :
+            availability.room
   end
 
-  def meeting_for(time)
-    meetings.detect {|m| m.time == time}
-  end
-  
   def self.attending_faculties
     Faculty.all.select {|faculty| faculty.time_slots.select {|time_slot| time_slot.available?}.count > 0}
   end
-
-  
 end

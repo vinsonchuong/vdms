@@ -15,7 +15,7 @@
         %td= admit.full_name
         %td= admit.email
         %td= admit.phone
-        %td= admit.time_slots.select {|t| t.available}.count
+        %td= admit.availabilities.select {|t| t.available}.count
         %td= admit.faculty_rankings.count
         %td
           %ul

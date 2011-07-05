@@ -1,6 +1,6 @@
 - content_for :title, 'Print Faculty Schedules'
-- @faculty.each do |faculty|
-  %h3!= faculty.full_name
+- @faculty.each do |faculty_instance|
+  %h3!= faculty_instance.full_name
   %table{:style => @one_per_page ? 'page-break-after: always;' : '', :class => 'schedule'}
     %thead
       %tr
@@ -8,13 +8,11 @@
         %th{:scope => 'col'} Room
         %th{:scope => 'col'} Admits
     %tbody
-      - @times.each do |time|
-        - meeting = faculty.meeting_for(time)
-        %tr{:class => (meeting.nil? ? 'unavailable' : nil)}
-          %td!= time.strftime('%I:%M%p')
-          %td!= faculty.room_for(time)
+      - faculty_instance.availabilities.each do |availability|
+        %tr{:class => (availability.available ? nil : 'unavailable')}
+          %td!= availability.time_slot.begin.strftime('%I:%M%p')
+          %td!= availability.room || faculty_instance.default_room
           %td
             %ul
-              - unless meeting.nil?
-                - meeting.admits.each do |admit|
-                  %li!= admit.full_name
+              - availability.meetings.by_visitor.map(&:visitor) do |visitor|
+                %li!= visitor.name

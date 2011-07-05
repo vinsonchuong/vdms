@@ -42,13 +42,6 @@ Factory.define :admit do |a|
   a.division 'Computer Science'
 end
 
-Factory.define :time_slot do |t|
-  t.begin {Time.zone.parse('1/1/2011')}
-  t.end {Time.zone.parse('1/2/2011')}
-  t.room 'Room'
-  t.available false
-end
-
 Factory.define :admit_ranking do |r|
   r.sequence(:rank) {|n| n}
   r.association :faculty
@@ -61,21 +54,21 @@ Factory.define :faculty_ranking do |r|
   r.association :faculty
 end
 
-Factory.define :host_time_slot do |t|
-  t.begin {Time.zone.parse('1/1/2011 9AM')}
-  t.end {Time.zone.parse('1/2/2011 9:15AM')}
-  t.available true
-  t.association :host, :factory => :faculty
+Factory.define :time_slot do |t|
+  t.begin {Time.zone.parse('1/1/2011')}
+  t.end {Time.zone.parse('1/2/2011')}
+  t.settings {Settings.instance}
 end
 
-Factory.define :visitor_time_slot do |t|
-  t.begin {Time.zone.parse('1/1/2011 9AM')}
-  t.end {Time.zone.parse('1/2/2011 9:15AM')}
-  t.available true
-  t.association :visitor, :factory => :admit
+Factory.define :host_availability do |a|
+  a.room 'Room'
+  a.available true
+  a.association :time_slot, :factory => :time_slot
+  a.association :host, :factory => :faculty
 end
 
-Factory.define :meeting do |m|
-  m.association :host_time_slot
-  m.association :visitor_time_slot
+Factory.define :visitor_availability do |a|
+  a.available true
+  a.association :time_slot, :factory => :time_slot
+  a.association :visitor, :factory => :admit
 end

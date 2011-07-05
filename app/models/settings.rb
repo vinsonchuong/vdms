@@ -20,6 +20,8 @@ class Settings < ActiveRecord::Base
 
   has_many :divisions, :order => 'name ASC', :dependent => :destroy
   accepts_nested_attributes_for :divisions
+  has_many :time_slots, :order => 'begin ASC', :dependent => :destroy
+  accepts_nested_attributes_for :time_slots
 
   validates_presence_of :unsatisfied_admit_threshold
   validates_numericality_of :unsatisfied_admit_threshold, :only_integer => true, :greater_than_or_equal_to => 0
@@ -34,10 +36,10 @@ class Settings < ActiveRecord::Base
     self.find(:all).first || self.send(:create)
   end
 
-  def meeting_times(division_name)
-    division = self.divisions.find_by_name(division_name)
-    division.nil? ? nil : division.time_slots
-  end
+#  def meeting_times(division_name)
+#    division = self.divisions.find_by_name(division_name)
+#    division.nil? ? nil : division.time_slots
+#  end
 
   def method_missing(method, *args, &block)
     STATIC_SETTINGS[method.to_s] || super

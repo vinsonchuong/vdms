@@ -109,17 +109,21 @@ en:
           attributes:
             base:
               time_slots_must_match: "Time slots must match"
-            host_time_slot:
+            host_availability:
               not_available: "%{name} is not available from %{begin} to %{end}"
               per_meeting_cap_exceeded: "%{name} is already meeting with his/her max of %{max} visitors"
-            visitor_time_slot:
+            visitor_availability:
               conflict: "%{visitor_name} is already meeting with %{host_name} from %{begin} to %{end}"
               not_available: "%{name} is not available from %{begin} to %{end}"
-        host_time_slot:
+        availability:
+          attributes:
+            time_slot_id:
+              existence: "Time Slot must be specified"
+        host_availability:
           attributes:
             host_id:
               existence: "Host must be specified"
-        visitor_time_slot:
+        visitor_availability:
           attributes:
             visitor_id:
               existence: "Visitor must be specified"

@@ -30,7 +30,7 @@
         - ranks = []
         - (@faculty_instance.admit_rankings.map(&:rank) << @faculty_instance.admit_rankings.length).max.times {|i| ranks[i] = i + 1}
         - time_slots = []
-        - [@faculty_instance.time_slots.count, 10].max.times {|i| time_slots[i] = i + 1}
+        - [@faculty_instance.availabilities.count, 10].max.times {|i| time_slots[i] = i + 1}
         - faculty_form.fields_for :admit_rankings do |admit_ranking_fields|
           - @admit_ranking = admit_ranking_fields.object
           %tr

@@ -2,19 +2,17 @@
 %table#master.schedule
   %thead
     %tr
-      %th Faculty Name
-      - @times.each do |time|
-        %th.time= time.strftime('%I:%M%p')
-  %tbody
-    - @meetings_by_faculty.each do |faculty,meetings|
-      %tr
-        %td!= link_to faculty.full_name, (@current_user.class == Staff ? tweak_faculty_meetings_path(faculty) : faculty_meetings_path(faculty))
-        - @times.each do |time|
-          %td.meeting
-            - meetings.select { |m| !m.nil? && m.time == time }.each do |meeting|
-              - meeting.admits.each do |admit|
-                %span
-                  != link_to  admit.full_name, admit_meetings_path(admit), {:title => room_if_not_default(meeting)}
-                %br
-
-            
+      %th
+        Time
+        - @hosts.each do |host|
+          %th.time!= link_to host.name, (@current_user.class == Staff ? tweak_faculty_meetings_path(faculty) : faculty_meetings_path(faculty))
+      %tbody
+        - @settings.time_slots.each do |time_slot|
+          %tr
+            %
+            - time_slot.host_availabilities.each do |host_availability|
+              %td.meeting
+                - host_availability.meetings.by_visitor.each do |meeting|
+                  %span
+                    != link_to meeting.visitor.name, admit_meetings_path(meeting.visitor), {:title => room_if_not_default(meeting)}
+                  %br

@@ -1,6 +1,6 @@
 - content_for :title, 'Print Admit Schedules'
 - @admits.each do |admit|
-  %h3!= admit.full_name
+  %h3!= admit.name
   %table{:style => @one_per_page ? 'page-break-after: always;' : '', :class => 'schedule'}
     %thead
       %tr
@@ -8,13 +8,13 @@
         %th{:scope => 'col'} Faculty Name
         %th{:scope => 'col'} Room
     %tbody
-      - admit.time_slots.each do |time_slot|
-        - meeting = admit.meeting_at_time(time_slot.begin)
-        %tr{:class => (time_slot.available ? nil : 'unavailable')}
-          %td!= time_slot.begin.strftime('%I:%M%p')
+      - admit.availabilities.each do |availability|
+        %tr{:class => (availability.available ? nil : 'unavailable')}
+          %td!= availability.time_slot.begin.strftime('%I:%M%p')
+          - meeting = availability.meetings.first
           - unless meeting.nil?
-            %td!= meeting.faculty.full_name
-            %td!= meeting.room
+            %td!= meeting.host.name
+            %td!= meeting.room || meeting.host.default_room
           - else
             %td
             %td
