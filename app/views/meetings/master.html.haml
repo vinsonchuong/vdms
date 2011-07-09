@@ -2,17 +2,16 @@
 %table#master.schedule
   %thead
     %tr
-      %th
-        Time
-        - @hosts.each do |host|
-          %th.time!= link_to host.name, (@current_user.class == Staff ? tweak_faculty_meetings_path(faculty) : faculty_meetings_path(faculty))
+      %th Time
+      - @hosts.each do |host|
+        %th.time!= link_to host.name, (@current_user.class == Staff ? tweak_faculty_meetings_path(host) : faculty_meetings_path(host))
       %tbody
         - @settings.time_slots.each do |time_slot|
           %tr
-            %
+            %td= time_slot.begin.strftime('%I:%M%p')
             - time_slot.host_availabilities.each do |host_availability|
               %td.meeting
                 - host_availability.meetings.by_visitor.each do |meeting|
                   %span
-                    != link_to meeting.visitor.name, admit_meetings_path(meeting.visitor), {:title => room_if_not_default(meeting)}
+                    != link_to meeting.visitor.name, admit_meetings_path(meeting.visitor)
                   %br

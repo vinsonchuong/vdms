@@ -10,14 +10,19 @@ Feature: Staff can manage admits
       | First1      | Last1      | email1@email.com | 1234567891 | Theory                      | Graphics |
       | First2      | Last2      | email2@email.com | 1234567892 | Communications & Networking | Energy   |
       | First3      | Last3      | email3@email.com | 1234567893 | Human-Computer Interaction  | Graphics |
-    And "Computer Science" has the following meeting times:
-      | begin           | end              |
-      | 1/1/2011 9:00AM | 1/1/2011 11:00AM |
-      | 1/1/2011 2:00PM | 1/1/2011 02:45PM |
-    Given "Electrical Engineering" has the following meeting times:
-      | begin           | end              |
-      | 1/1/2011 9:00AM | 1/1/2011 11:00AM |
-      | 1/1/2011 2:00PM | 1/1/2011 02:45PM |
+    Given the event has the following meeting time slots:
+      | begin            | end              |
+      | 1/1/2011 09:00AM | 1/1/2011 09:15AM |
+      | 1/1/2011 09:15AM | 1/1/2011 09:30AM |
+      | 1/1/2011 09:30AM | 1/1/2011 09:45AM |
+      | 1/1/2011 09:45AM | 1/1/2011 10:00AM |
+      | 1/1/2011 10:00AM | 1/1/2011 10:15AM |
+      | 1/1/2011 10:15AM | 1/1/2011 10:30AM |
+      | 1/1/2011 10:30AM | 1/1/2011 10:45AM |
+      | 1/1/2011 10:45AM | 1/1/2011 11:00AM |
+      | 1/1/2011 02:00PM | 1/1/2011 02:15PM |
+      | 1/1/2011 02:15PM | 1/1/2011 02:30PM |
+      | 1/1/2011 02:30PM | 1/1/2011 02:45PM |
     And I am registered as a "Staff"
     And I am signed in
 

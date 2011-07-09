@@ -8,7 +8,7 @@
 
 %p.instructions!= t('.instructions')
 
-- form_for @faculty, :url => {:action => 'apply_tweaks'} do |tweak_form|
+- form_for @faculty, :url => {:action => 'apply_tweaks'}, :html => {:method => :post} do |tweak_form|
   %table.schedule
     %thead
       %tr
@@ -22,12 +22,12 @@
         %tr
           %td= availability.time_slot.begin.strftime('%I:%M%p')
           %td.room= availability.room || @faculty.default_room
-          - availability_fields.fields_for :meetings, availability.meetings.by_name do |meeting_fields|
+          - availability_fields.fields_for :meetings do |meeting_fields|
             - meeting = meeting_fields.object
             %td
               - unless meeting.visitor.nil?
                 != meeting_fields.check_box :_destroy
                 != link_to meeting.visitor.name, admit_meetings_path(meeting.visitor)
               - else
-                != meeting_fields.select :visitor_availability, options_for_select([''], '') + options_from_collection_for_select(@all_admits.map {|a| [a.name, a.availabilities.find_by_time_slot_id(availability.time_slot_id).id]})
+                != meeting_fields.select :visitor_availability_id, [['', '']] + @all_admits.map {|a| [a.name, a.availabilities.find_by_time_slot_id(availability.time_slot_id).id]}
   != tweak_form.submit 'Save Changes'

@@ -1,7 +1,8 @@
 Given /^"(.*) (.*)" is available at (.*)$/ do |first,last,time|
   time = Time.zone.parse(time)
   p = Person.find_by_first_name_and_last_name(first,last)
-  p.time_slots.create!(:begin => time, :end => time + @slot_length, :available => true)
+  t = Settings.instance.time_slots.find_by_begin(time)
+  p.availabilities.find_by_time_slot_id(t).update_attribute(:available, true)
 end
 
 Given /^my first admit has the following meeting schedule:$/ do |admit_meeting_schedules|
@@ -27,39 +28,46 @@ Given /^the following (\d+)-minute meetings are scheduled starting at (.*):$/ do
       next if admit_name.blank?
       admit =  Admit.find_by_first_name_and_last_name(*(admit_name.split(/\s+/)))
       time = base_time + @slot_length * timeslot
-      @faculty.time_slots.create!(:begin => time, :end => time+@slot_length-1, :available => true) unless @faculty.available_at?(time)
-      admit.time_slots.create!(:begin => time, :end => time+@slot_length, :available => true) unless admit.available_at?(time)
-      # if already a meeting at this time, add the admit to it; else create new mtg
-      m = @faculty.meetings.find_by_time(time) ||
-        @faculty.meetings.create!(:time => time, :room => 'Default')
-      m.add_admit!(admit)
+      time_slot = TimeSlot.find_by_begin(time) || TimeSlot.create!(:settings => Settings.instance, :begin => time, :end => time+@slot_length-1)
+      fa = @faculty.availabilities.find_by_time_slot_id(time_slot.id)
+      fa.available || fa.update_attribute(:available, true)
+      aa = admit.availabilities.find_by_time_slot_id(time_slot.id)
       # make sure faculty's max admits/slot is bumped up to allow this
-      @faculty.max_admits_per_meeting = 1 + m.admits.length
+      @faculty.max_admits_per_meeting += 1;
       @faculty.save!
-      m.save!
+      Meeting.create!(:host_availability => fa, :visitor_availability => aa)
     end
   end
 end
 
 When /^I check the remove box for admit "(.*) (.*)" at (.*)/ do |first,last,time|
   @admit = Admit.find_by_first_name_and_last_name(first,last)
-  @time = Time.zone.parse(time)
-  @meeting = Meeting.find_all_by_time(@time).detect { |m| m.admits.include?(@admit) }
-  When %Q{I check "remove_#{@admit.id}_#{@meeting.id}"}
+  time_slot = Settings.instance.time_slots.find_by_begin(Time.zone.parse(time))
+  @host_availability = time_slot.host_availabilities.find_by_host_id(Faculty.all.first.id)
+  @visitor_availability = time_slot.visitor_availabilities.find_by_visitor_id(@admit.id)
+  @meeting = @host_availability.meetings.find_by_visitor_availability_id(@visitor_availability.id)
+  i1 = Faculty.all.first.availabilities.index(@host_availability)
+  i2 = @host_availability.meetings.index(@meeting)
+  When %Q{I check "faculty_availabilities_attributes_#{i1}_meetings_attributes_#{i2}__destroy"}
 end
 
 When /^I select "(.*)" from the menu for the (.*) meeting with "(.*) (.*)"$/ do |admit,time,fac_first,fac_last|
   @time = Time.zone.parse(time)
   @faculty = Faculty.find_by_first_name_and_last_name(fac_first,fac_last)
-  meeting = @faculty.meetings.find_by_time(@time)
-  select(admit, :from => "add_#{meeting.id}_#{@faculty.max_admits_per_meeting}")
+  time_slot = Settings.instance.time_slots.find_by_begin(@time)
+  availability = @faculty.availabilities.find_by_time_slot_id(time_slot.id)
+  ai = @faculty.availabilities.index {|a| a.time_slot == time_slot}
+  mi = availability.meetings.count + 1
+  select(admit, :from => "faculty_availabilities_attributes_#{ai}_meetings_attributes_#{mi}_visitor_availability_id")
 end
 
 Then /^faculty "(.*) (.*)" should (not |)?have a meeting with "(.*) (.*)" at (.*)/ do |fac_first,fac_last,neg,first,last,time|
   @faculty = Faculty.find_by_first_name_and_last_name(fac_first,fac_last)
   @admit = Admit.find_by_first_name_and_last_name(first,last)
-  @time = Time.zone.parse(time)
-  meeting = @faculty.meetings.find_all_by_time(@time).detect { |m| m.admits.include?(@admit) }
+  @time_slot = Settings.instance.time_slots.find_by_begin(Time.zone.parse(time))
+  @host_availability = @faculty.availabilities.find_by_time_slot_id(@time_slot.id)
+  @visitor_availability = @admit.availabilities.find_by_time_slot_id(@time_slot.id)
+  meeting = @host_availability.meetings.find_by_visitor_availability_id(@visitor_availability.id)
   if neg =~ /not/
     meeting.should be_nil
   else

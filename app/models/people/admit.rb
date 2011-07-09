@@ -20,6 +20,12 @@ class Admit < Person
     record.area2 = areas[record.area2] unless record.area2.nil? || areas[record.area2].nil?
     record.area3 = areas[record.area3] unless record.area3.nil? || areas[record.area3].nil?
   end
+  after_create do |record|
+    # validate against duplicates
+    Settings.instance.time_slots.each do |time_slot|
+      record.availabilities.create(:time_slot => time_slot, :available => true)
+    end
+  end
 
   has_many :faculty_rankings, :order => 'rank ASC', :dependent => :destroy
   has_many :ranked_faculty, :source => :faculty, :through => :faculty_rankings, :order => 'rank ASC'

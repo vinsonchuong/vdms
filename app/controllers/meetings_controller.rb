@@ -79,11 +79,13 @@ class MeetingsController < ApplicationController
 
   # Save the tweaks to a faculty meeting schedule - for staff only
   def apply_tweaks
-    flash[:alert] = ''
-    params.delete_if { |k,v| v.blank? }
-    messages = delete_meetings(params.keys)
-    messages += add_meetings(params)
-    flash[:alert] = messages.join('<br/>')
+    @faculty = Faculty.find(params[:faculty_id])
+
+    if @faculty.update_attributes(params[:faculty])
+      flash[:notice] = 'Success!'
+    else
+      flash[:alert] = 'Failure'
+    end
     redirect_to master_meetings_path
   end
   

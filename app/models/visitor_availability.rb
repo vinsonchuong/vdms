@@ -1,5 +1,5 @@
 class VisitorAvailability < Availability
-  attr_accessible :visitor, :visitor_id
+  #attr_accessible :visitor, :visitor_id
 
   belongs_to :visitor, :class_name => 'Admit'
   has_many :meetings, :dependent => :destroy

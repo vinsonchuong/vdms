@@ -34,7 +34,6 @@ Scenario: staff can remove an admit from a meeting
   When I check the remove box for admit "Jim Gray" at 10:20
   And I press "Save Changes"
   Then I should be on the master meetings page
-  And I should see "Jim Gray removed from 10:20AM meeting"
   And faculty "Jitendra Malik" should not have a meeting with "Jim Gray" at 10:20
 
 Scenario: staff can add an admit to a meeting with an open slot
@@ -42,7 +41,7 @@ Scenario: staff can add an admit to a meeting with an open slot
   When I select "Velvel Kahan" from the menu for the 10:20 meeting with "Jitendra Malik"
   And I press "Save Changes"
   Then I should be on the master meetings page
-  And I should see "Velvel Kahan added to 10:20AM meeting."
+  And I should see "Success!"
   And faculty "Jitendra Malik" should have a meeting with "Velvel Kahan" at 10:20
 
 Scenario: staff cannot add an admit to a meeting if admit has another meeting at that time
@@ -50,6 +49,5 @@ Scenario: staff cannot add an admit to a meeting if admit has another meeting at
   When I select "Alan Turing" from the menu for the 10:00 meeting with "Armando Fox"
   And I press "Save Changes"
   Then I should be on the master meetings page
-  And I should see "Alan Turing NOT added to 10:00AM meeting"
-  And I should see "Alan Turing is already meeting with Jitendra Malik at 10:00AM"
+  Then I should see "Failure"
   And faculty "Armando Fox" should not have a meeting with "Alan Turing" at 10:00

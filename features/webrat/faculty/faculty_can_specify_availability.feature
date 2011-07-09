@@ -5,10 +5,19 @@ Feature: Faculty can specify availability
   I want to specify my meeting availability
 
   Background: I am signed in as a faculty
-    Given "Computer Science" has the following meeting times:
-      | begin           | end              |
-      | 1/1/2011 9:00AM | 1/1/2011 11:00AM |
-      | 1/1/2011 2:00PM | 1/1/2011 02:45PM |
+    Given the event has the following meeting time slots:
+      | begin            | end              |
+      | 1/1/2011 09:00AM | 1/1/2011 09:15AM |
+      | 1/1/2011 09:15AM | 1/1/2011 09:30AM |
+      | 1/1/2011 09:30AM | 1/1/2011 09:45AM |
+      | 1/1/2011 09:45AM | 1/1/2011 10:00AM |
+      | 1/1/2011 10:00AM | 1/1/2011 10:15AM |
+      | 1/1/2011 10:15AM | 1/1/2011 10:30AM |
+      | 1/1/2011 10:30AM | 1/1/2011 10:45AM |
+      | 1/1/2011 10:45AM | 1/1/2011 11:00AM |
+      | 1/1/2011 02:00PM | 1/1/2011 02:15PM |
+      | 1/1/2011 02:15PM | 1/1/2011 02:30PM |
+      | 1/1/2011 02:30PM | 1/1/2011 02:45PM |
     And I am registered as a "Faculty" in "Computer Science"
     And I am signed in
 

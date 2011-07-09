@@ -1,11 +1,21 @@
 class TimeSlot < ActiveRecord::Base
-  attr_accessible :begin, :end, :settings, :settings_id
+  #attr_accessible :begin, :end, :settings, :settings_id
 
   belongs_to :settings
   has_many :host_availabilities, :dependent => :destroy
   has_many :visitor_availabilities, :dependent => :destroy
 
   default_scope :order => 'begin'
+
+  after_create do |record|
+    #validate against duplicates
+    Faculty.all.each do |faculty_instance|
+      faculty_instance.availabilities.create(:time_slot => record, :available => false)
+    end
+    Admit.all.each do |admit|
+      admit.availabilities.create(:time_slot => record, :available => true)
+    end
+  end
 
   validates_datetime :begin
   validates_datetime :end

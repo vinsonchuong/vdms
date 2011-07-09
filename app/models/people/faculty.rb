@@ -37,6 +37,11 @@ class Faculty < Person
     record.area3 = areas[record.area3] unless record.area3.nil? || areas[record.area3].nil?
     record.division = divisions[record.division] unless record.division.nil? || divisions[record.division].nil?
   end
+  after_create do |record|
+    Settings.instance.time_slots.each do |time_slot|
+      record.availabilities.create(:time_slot => time_slot, :available => false)
+    end
+  end
 
   has_many :admit_rankings, :order => 'rank ASC', :dependent => :destroy
   has_many :ranked_admits, :source => :admit, :through => :admit_rankings, :order => 'rank ASC'

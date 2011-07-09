@@ -1,5 +1,5 @@
 class HostAvailability < Availability
-  attr_accessible :host, :host_id, :room
+  #attr_accessible :host, :host_id, :room
 
   belongs_to :host, :class_name => 'Faculty'
   has_many :meetings, :dependent => :destroy

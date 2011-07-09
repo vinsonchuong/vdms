@@ -4,7 +4,7 @@ class Meeting < ActiveRecord::Base
   # - Remove assumption of single day events or remove "from time1 to time2" entirely
   # - Pull scheduler into namespaced module
 
-  attr_accessible :host_availability, :host_availability_id, :visitor_availability, :visitor_availability_id
+  #attr_accessible :host_availability, :host_availability_id, :visitor_availability, :visitor_availability_id
 
   belongs_to :host_availability
   belongs_to :visitor_availability
@@ -26,11 +26,11 @@ class Meeting < ActiveRecord::Base
   end
 
   def host
-    host_availability.host
+    host_availability && host_availability.host
   end
 
   def visitor
-    visitor_availability.visitor
+    visitor_availability && visitor_availability.visitor
   end
 
   def time

@@ -12,13 +12,28 @@ Feature: Peer advisor can specify admit availability
       | First1      | Last1      | email1@email.com | 1234567891 | Computer Science       | Theory                     | Artificial Intelligence |
       | First2      | Last2      | email2@email.com | 1234567892 | Computer Science       | Human-Computer Interaction | Graphics                |
       | First3      | Last3      | email3@email.com | 1234567893 | Electrical Engineering | Energy                     | Physical Electronics    |
-    And "Computer Science" has the following meeting times:
+    Given the event has the following meeting time slots:
       | begin            | end              |
-      | 1/1/2011 9:00AM  | 1/1/2011 11:00AM |
-      | 1/1/2011 2:00PM  | 1/1/2011 02:45PM |
-    And "Electrical Engineering" has the following meeting times:
-      | begin            | end              |
-      | 1/1/2011 12:00PM | 1/1/2011 03:00PM |
+      | 1/1/2011 09:00AM | 1/1/2011 09:15AM |
+      | 1/1/2011 09:15AM | 1/1/2011 09:30AM |
+      | 1/1/2011 09:30AM | 1/1/2011 09:45AM |
+      | 1/1/2011 09:45AM | 1/1/2011 10:00AM |
+      | 1/1/2011 10:00AM | 1/1/2011 10:15AM |
+      | 1/1/2011 10:15AM | 1/1/2011 10:30AM |
+      | 1/1/2011 10:30AM | 1/1/2011 10:45AM |
+      | 1/1/2011 10:45AM | 1/1/2011 11:00AM |
+      | 1/1/2011 12:00PM | 1/1/2011 12:15PM |
+      | 1/1/2011 12:15PM | 1/1/2011 12:30PM |
+      | 1/1/2011 12:30PM | 1/1/2011 12:45PM |
+      | 1/1/2011 12:45PM | 1/1/2011 01:00PM |
+      | 1/1/2011 01:00PM | 1/1/2011 01:15PM |
+      | 1/1/2011 01:15PM | 1/1/2011 01:30PM |
+      | 1/1/2011 01:30PM | 1/1/2011 01:45PM |
+      | 1/1/2011 01:45PM | 1/1/2011 02:00PM |
+      | 1/1/2011 02:00PM | 1/1/2011 02:15PM |
+      | 1/1/2011 02:15PM | 1/1/2011 02:30PM |
+      | 1/1/2011 02:30PM | 1/1/2011 02:45PM |
+      | 1/1/2011 02:45PM | 1/1/2011 03:00PM |
 
   Scenario: I update an admit's availability
     Given I am on the view admits page
