@@ -105,6 +105,10 @@ en:
         too_short: "%{attribute} is too short (minimum is %{count} characters)"
         wrong_length: "%{attribute} is the wrong length (should be %{count} characters)"
       models:
+        settings:
+          attributes:
+            time_slots:
+              overlap: "Time slots must not overlap"
         meeting:
           attributes:
             base:

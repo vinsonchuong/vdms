@@ -89,13 +89,11 @@ describe AdmitRanking do
     end
 
     it 'is not valid with an invalid Faculty' do
-      pending
       @admit_ranking.faculty.destroy
       @admit_ranking.should_not be_valid
     end
 
     it 'is not valid with an invalid Admit' do
-      pending
       @admit_ranking.admit.destroy
       @admit_ranking.should_not be_valid
     end

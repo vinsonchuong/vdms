@@ -520,6 +520,7 @@ describe StaffController do
       before(:each) do
         @other_staff_instance = Factory.create(:staff)
         CASClient::Frameworks::Rails::Filter.fake(@other_staff_instance.ldap_id)
+        Staff.stub(:find).and_return(@other_staff_instance, @staff_instance)
       end
 
       it 'assigns to @staff_instance the given Staff' do
@@ -539,13 +540,11 @@ describe StaffController do
         end
   
         it 'sets a flash[:notice] message' do
-          pending
           put :update, :id => @staff_instance.id
           flash[:notice].should == I18n.t('people.staff.update.success')
         end
 
         it 'redirects to the given success redirect action' do
-          pending
           put :update, :id => @staff_instance.id, :redirect_action => 'index'
           response.should redirect_to(:controller => 'staff', :action => 'index')
         end
@@ -557,19 +556,16 @@ describe StaffController do
         end
 
         it 'sets the error redirect to the given error action' do
-          pending
           put :update, :id => @staff_instance.id, :origin_action => 'edit'
           assigns[:origin_action].should == 'edit'
         end
 
         it 'sets the success redirect to the index action' do
-          pending
           put :update, :id => @staff_instance.id, :redirect_action => 'index'
           assigns[:redirect_action].should == 'index'
         end
 
         it 'renders the template for the given error action' do
-          pending
           put :update, :id => @staff_instance.id, :origin_action => 'edit'
           response.should render_template('edit')
         end
@@ -650,11 +646,10 @@ describe StaffController do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
         #Person.stub(:find).and_return(PeerAdvisor.new)
-        PeerAdvisor.stub(:find).and_return(PeerAdvisor)
+        PeerAdvisor.stub(:find).and_return(PeerAdvisor.new)
       end
 
       it 'redirects to the New Peer Advisor page' do
-        pending
         delete :destroy, :id => @staff_instance.id
         response.should redirect_to(:controller => 'peer_advisors', :action => 'new')
       end
@@ -690,10 +685,9 @@ describe StaffController do
       end
 
       it 'destroys all Staff records' do
-        pending
         staff = Array.new(3) {Staff.new}
         staff.each {|a| a.should_receive(:destroy)}
-        Staff.stub(:find).and_return(staff)
+        Staff.stub(:find).and_return(@staff_instance, staff)
         delete :destroy_all
       end
 

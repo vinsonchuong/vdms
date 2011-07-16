@@ -67,22 +67,21 @@
         != settings_form.label :meeting_gap
         != settings_form.select :meeting_gap, sec_to_min, {}, :disabled => true
         %span.units!= t('.minutes')
-      - settings_form.fields_for :divisions do |division_fields|
-        %li
-          %h4!= "#{t('.time_intervals_for')} #{division_fields.object.long_name}"
-          %ul
-            - division_fields.fields_for :time_slots do |time_slot_fields|
-              - @time = time_slot_fields.object
-              %li.field
-                %ul
+      %li
+        %h4 Meeting Time Ranges
+        %ul
+          - settings_form.fields_for :meeting_times, @meeting_times do |meeting_time_fields|
+            - time = meeting_time_fields.object
+            %li.field
+              %ul
+                %li
+                  != meeting_time_fields.label :begin, nil, :class => 'hidden'
+                  != meeting_time_fields.datetime_select :begin, :include_blank => true
+                %li
+                  != meeting_time_fields.label :end
+                  != meeting_time_fields.time_select :end, :include_blank => true
+                - unless time.begin.blank? || time.end.blank?
                   %li
-                    != time_slot_fields.label :begin, nil, :class => 'hidden'
-                    != time_slot_fields.datetime_select :begin, :include_blank => true
-                  %li
-                    != time_slot_fields.label :end
-                    != time_slot_fields.time_select :end, :include_blank => true
-                  - unless time_slot_fields.object.new_record?
-                    %li
-                      != time_slot_fields.check_box :_destroy
-                      != time_slot_fields.label :_destroy, t('.remove')
+                    != meeting_time_fields.check_box :_destroy
+                    != meeting_time_fields.label :_destroy, t('.remove')
     != settings_form.submit t('.submit')

@@ -330,13 +330,6 @@ describe AdmitsController do
         assigns[:redirect_action].should == 'edit_availability'
       end
 
-      it 'builds a list of possible meeting slots' do
-        pending
-        Admit.stub(:find).and_return(@admit)
-        @admit.should_receive(:build_time_slots)
-        get :edit_availability, :id => @admit.id
-      end
-
       it 'renders the schedule template' do
         get :edit_availability, :id => @admit.id
         response.should render_template('edit_availability')
@@ -836,7 +829,6 @@ describe AdmitsController do
         end
 
         it 'redirects to the given success redirect action' do
-          pending
           put :update, :id => @admit.id, :redirect_action => 'index'
           response.should redirect_to(:controller => 'admits', :action => 'index')
         end

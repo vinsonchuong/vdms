@@ -25,7 +25,7 @@ Factory.define :faculty do |f|
   f.last_name 'Last'
   f.email {Factory.next(:email)}
   f.area Settings.instance.areas.keys.first
-  f.division Settings.instance.divisions.first.name
+  f.division Settings.instance.divisions.keys.first
   f.max_admits_per_meeting 4
   f.max_additional_admits 4
 end
@@ -39,7 +39,6 @@ Factory.define :admit do |a|
   a.phone '1234567890'
   a.area1 Settings.instance.areas.keys.first
   a.area2 Settings.instance.areas.keys.last
-  a.division 'Computer Science'
 end
 
 Factory.define :admit_ranking do |r|

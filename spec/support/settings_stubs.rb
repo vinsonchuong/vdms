@@ -6,12 +6,7 @@ module SettingsStubs
 
   def stub_divisions(division_names)
     stub_settings if @settings.nil?
-    divisions = division_names.map do |name, long_name|
-      division = Division.new(:name => name, :settings => @settings)
-      division.stub(:long_name).and_return(long_name)
-      division
-    end
-    @settings.stub(:divisions).and_return(divisions)
+    @settings.stub(:divisions).and_return(division_names)
   end
 
   def stub_areas(area_names)

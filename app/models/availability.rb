@@ -1,5 +1,5 @@
 class Availability < ActiveRecord::Base
-  attr_accessible :time_slot, :time_slot_id, :available
+  #attr_accessible :time_slot, :time_slot_id, :available
 
   belongs_to :time_slot
 

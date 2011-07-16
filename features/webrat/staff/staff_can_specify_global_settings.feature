@@ -15,21 +15,21 @@ Feature: Staff can specify global settings
 
   Scenario: I specify the meeting time ranges
     Given I am on the update settings page
-    When I add "January 1, 2011 10:00AM" to "12:00PM" to the meeting times for "Computer Science"
-    And I add "January 1, 2011 10:00AM" to "12:00PM" to the meeting times for "Electrical Engineering"
+    When I add "January 1, 2011 10:00AM" to "12:00PM" to the meeting times
+    And I add "January 1, 2011 1:00PM" to "2:00PM" to the meeting times
     And I press "Update Settings"
     Then I should see "Settings were successfully updated."
 
   Scenario: I remove a meeting time range
-    Given "Computer Science" has the following meeting times:
+    Given the event has the following meeting times:
       | begin           | end              |
       | 1/1/2000 9:00AM | 1/1/2000 12:00PM |
       | 1/1/2000 2:00PM | 1/1/2000 3:00PM  |
     And I am on the update settings page
-    When I remove the "Computer Science" meeting time beginning with "1/1/2000 9:00AM"
+    When I remove the meeting time beginning with "1/1/2000 9:00AM"
     And I press "Update Settings"
     Then I should see "Settings were successfully updated."
-    And "Computer Science" should not have a meeting time beginning with "1/1/2000 9:00AM"
+    And there should not be a meeting time beginning with "1/1/2000 9:00AM"
 
   Scenario: I specify the threshold number of meetings for an admit to be unsatisfied
     Given I am on the update settings page

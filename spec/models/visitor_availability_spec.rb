@@ -2,7 +2,9 @@ require 'spec_helper'
 
 describe VisitorAvailability do
   before(:each) do
-    @visitor_availability = Factory.create(:visitor_availability)
+    time_slot = Factory.create(:time_slot)
+    visitor = Factory.create(:admit)
+    @visitor_availability = visitor.availabilities.first
   end
 
   describe 'Attributes' do
@@ -29,13 +31,10 @@ describe VisitorAvailability do
   describe 'Scopes' do
     it 'by default is sorted by Time Slot' do
       time = Time.zone.parse('12PM')
-      time_slot1 = Factory.create(:time_slot, :begin => time, :end => time + 15.minutes)
-      time_slot2 = Factory.create(:time_slot, :begin => time + 15.minutes, :end => time + 30.minutes)
-      time_slot3 = Factory.create(:time_slot, :begin => time + 30.minutes, :end => time + 45.minutes)
-      @visitor_availability.update_attribute(:time_slot, time_slot1)
-      visitor_availability2 = Factory.create(:visitor_availability, :time_slot => time_slot2)
-      visitor_availability3 = Factory.create(:visitor_availability, :time_slot => time_slot3)
-      VisitorAvailability.all.should == [@visitor_availability, visitor_availability2, visitor_availability3]
+      Factory.create(:time_slot, :begin => time, :end => time + 15.minutes)
+      @visitor_availability.time_slot.update_attributes(:begin => time + 15.minutes, :end => time + 30.minutes)
+      Factory.create(:time_slot, :begin => time + 30.minutes, :end => time + 45.minutes)
+      @visitor_availability.visitor.availabilities.reload.map(&:time_slot).map(&:begin).should == [time, time + 15.minutes, time + 30.minutes]
     end
   end
 
@@ -54,6 +53,16 @@ describe VisitorAvailability do
       @visitor_availability.visitor = nil
       @visitor_availability.should_not be_valid
       @visitor_availability.errors.full_messages.should include('Visitor must be specified')
+    end
+  end
+
+  context 'after saving' do
+    it 'destroys its Meetings if it is not available' do
+      meetings = Array.new(3) {stub_model(Meeting)}
+      meetings.should_receive(:destroy_all)
+      @visitor_availability.stub(:meetings).and_return(meetings)
+      @visitor_availability.available = false
+      @visitor_availability.save
     end
   end
 

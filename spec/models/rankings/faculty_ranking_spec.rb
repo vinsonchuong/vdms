@@ -35,13 +35,11 @@ describe FacultyRanking do
     end
 
    it 'is not valid with an invalid Admit' do
-      pending
       @faculty_ranking.admit.destroy
       @faculty_ranking.should_not be_valid
     end
 
     it 'is not valid with an invalid Faculty' do
-      pending
       @faculty_ranking.faculty.destroy
       @faculty_ranking.should_not be_valid
     end

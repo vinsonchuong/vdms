@@ -33,9 +33,206 @@ describe Settings do
     end
   end
 
-  describe 'Associations' do
-    it 'has many Divisions' do
-      @settings.should have_many(:divisions)
+  describe 'Nested Attributes' do
+    describe 'Meeting Times (meeting_times)' do
+      context 'when getting' do
+        it 'has a getter' do
+          @settings.should respond_to(:meeting_times)
+        end
+
+        it 'returns the list of Time Slots concatenated by Meeting Length and Gap' do
+          settings = Settings.instance
+          Settings.stub(:instance).and_return(settings)
+          time = Time.zone.parse('12PM')
+          [
+              [
+                15.minutes,
+                0,
+                [
+                  TimeSlot.new(:begin => time, :end => time + 15.minutes),
+                  TimeSlot.new(:begin => time + 15.minutes, :end => time + 30.minutes),
+                  TimeSlot.new(:begin => time + 30.minutes, :end => time + 45.minutes)
+                ],
+                [time..(time + 45.minutes)]
+              ],
+              [
+                15.minutes,
+                0,
+                [
+                  TimeSlot.new(:begin => time, :end => time + 15.minutes),
+                  TimeSlot.new(:begin => time + 15.minutes, :end => time + 30.minutes),
+                  TimeSlot.new(:begin => time + 60.minutes, :end => time + 75.minutes)
+                ],
+                [time..(time + 30.minutes), (time + 60.minutes)..(time + 75.minutes)]
+              ],
+              [
+                15.minutes,
+                5.minutes,
+                [
+                  TimeSlot.new(:begin => time, :end => time + 15.minutes),
+                  TimeSlot.new(:begin => time + 20.minutes, :end => time + 35.minutes),
+                  TimeSlot.new(:begin => time + 60.minutes, :end => time + 75.minutes)
+                ],
+                [time..(time + 35.minutes), (time + 60.minutes)..(time + 75.minutes)]
+              ],
+              [
+                15.minutes,
+                5.minutes,
+                [
+                  TimeSlot.new(:begin => time, :end => time + 15.minutes),
+                  TimeSlot.new(:begin => time + 20.minutes, :end => time + 35.minutes),
+                  TimeSlot.new(:begin => time + 41.minutes, :end => time + 56.minutes)
+                ],
+                [time..(time + 35.minutes), (time + 41.minutes)..(time + 56.minutes)]
+              ]
+          ].each do |meeting_length, meeting_gap, time_slots, result|
+            settings.stub(:meeting_length).and_return(meeting_length)
+            settings.stub(:meeting_gap).and_return(meeting_gap)
+            settings.stub(:time_slots).and_return(time_slots)
+            settings.meeting_times.should == result
+          end
+        end
+      end
+
+      context 'when setting' do
+        it 'has a setter' do
+          @settings.should respond_to(:meeting_times_attributes=)
+        end
+
+        it 'partitions the times into Time Slots by Meeting Length and Gap' do
+          settings = Settings.instance
+          Settings.stub(:instance).and_return(settings)
+          time = Time.zone.parse('12PM')
+          [
+            [
+              15.minutes,
+              0,
+              [
+                  {:begin => time, :end => time + 30.minutes},
+                  {:begin => time + 60.minutes, :end => time + 75.minutes},
+              ],
+              [],
+              [],
+              [
+                time..(time + 15.minutes),
+                (time + 15.minutes)..(time + 30.minutes),
+                (time + 60.minutes)..(time + 75.minutes)
+              ]
+            ],
+            [
+              15.minutes,
+              0,
+              [
+                  {:begin => time, :end => time + 30.minutes},
+                  {:begin => time + 60.minutes, :end => time + 75.minutes},
+              ],
+              [
+                {:begin => time, :end => time + 15.minutes}
+              ],
+              [
+                {:begin => time + 75.minutes, :end => time + 90.minutes}
+              ],
+              [
+                time..(time + 15.minutes),
+                (time + 15.minutes)..(time + 30.minutes),
+                (time + 60.minutes)..(time + 75.minutes)
+              ]
+            ],
+            [
+              15.minutes,
+              5.minutes,
+              [
+                {:begin => time, :end => time + 60.minutes},
+                {:begin => time + 120.minutes, :end => time + 135.minutes},
+              ],
+              [
+                {:begin => time, :end => time + 15.minutes}
+              ],
+              [
+                {:begin => time + 75.minutes, :end => time + 90.minutes}
+              ],
+              [
+                time..(time + 15.minutes),
+                (time + 20.minutes)..(time + 35.minutes),
+                (time + 40.minutes)..(time + 55.minutes),
+                (time + 120.minutes)..(time + 135.minutes)
+              ]
+            ],
+            [
+              15.minutes,
+              5.minutes,
+              [
+                {:begin => time, :end => time + 60.minutes},
+                {:begin => time + 120.minutes, :end => time + 135.minutes},
+              ],
+              [
+                {:begin => time, :end => time + 15.minutes}
+              ],
+              [
+                {:begin => time + 15.minutes, :end => time + 30.minutes},
+                {:begin => time + 75.minutes, :end => time + 90.minutes}
+              ],
+              [
+                time..(time + 15.minutes),
+                (time + 20.minutes)..(time + 35.minutes),
+                (time + 40.minutes)..(time + 55.minutes),
+                (time + 120.minutes)..(time + 135.minutes)
+              ]
+            ],
+            [
+              15.minutes,
+              5.minutes,
+              [
+                {:begin => time, :end => time + 60.minutes},
+                {:begin => time + 120.minutes, :end => time + 135.minutes, :_destroy => true},
+              ],
+              [
+                {:begin => time, :end => time + 15.minutes}
+              ],
+              [
+                {:begin => time + 15.minutes, :end => time + 30.minutes},
+                {:begin => time + 75.minutes, :end => time + 90.minutes}
+              ],
+              [
+                time..(time + 15.minutes),
+                (time + 20.minutes)..(time + 35.minutes),
+                (time + 40.minutes)..(time + 55.minutes)
+              ]
+            ],
+            [
+              15.minutes,
+              5.minutes,
+              [
+                {:begin => time, :end => time + 60.minutes},
+                {:begin => nil, :end => nil},
+              ],
+              [
+                {:begin => time, :end => time + 15.minutes}
+              ],
+              [
+                {:begin => time + 15.minutes, :end => time + 30.minutes},
+                {:begin => time + 75.minutes, :end => time + 90.minutes}
+              ],
+              [
+                time..(time + 15.minutes),
+                (time + 20.minutes)..(time + 35.minutes),
+                (time + 40.minutes)..(time + 55.minutes)
+              ]
+            ]
+          ].each do |meeting_length, meeting_gap, meeting_times, time_slots_to_keep, time_slots_to_remove, results|
+            settings.stub(:meeting_length).and_return(meeting_length)
+            settings.stub(:meeting_gap).and_return(meeting_gap)
+            settings.time_slots.delete_all
+            time_slots_to_keep.map! {|t| settings.time_slots.create(t)}
+            time_slots_to_remove.map! {|t| settings.time_slots.create(t)}
+            settings.meeting_times_attributes = meeting_times
+            settings.save!
+            settings.time_slots.reload.map {|s| (s.begin)..(s.end)}.should == results
+            (settings.time_slots & time_slots_to_keep).should == time_slots_to_keep
+            (settings.time_slots & time_slots_to_remove).should be_empty
+          end
+        end
+      end
     end
   end
 
@@ -59,13 +256,6 @@ describe Settings do
   end
 
   context 'when building' do
-    it 'by default has a list of empty Meeting Times per Division' do
-      pending
-      STATIC_SETTINGS['divisions'].each_key do |division_name|
-        @settings.meeting_times(division_name).should be_empty
-      end
-    end
-
     it 'by default has an Unsatisfied Admit Threshold of 0' do
       @settings.unsatisfied_admit_threshold.should == 0
     end
@@ -143,18 +333,6 @@ describe Settings do
     it 'is not valid without a Disable Peer Advisors From Making Changes flag' do
       @settings.disable_peer_advisors = nil
       @settings.should_not be_valid
-    end
-  end
-
-  context 'when destroying' do
-    it 'destroys its Divisions' do
-      divisions = Array.new(3) do |i|
-        division = Division.new(:name => "Division #{i}")
-        division.should_receive(:destroy)
-        division
-      end
-      @settings.stub(:divisions).and_return(divisions)
-      @settings.destroy
     end
   end
 end

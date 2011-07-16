@@ -110,9 +110,8 @@ describe Admit do
       end
     end
 
-    it 'has and belongs to many Meetings (meetings)' do
-      pending
-      @admit.should have_and_belong_to_many(:meetings)
+    it 'have many Meetings (meetings) through Availabilities' do
+      @admit.should have_many(:meetings).through(:availabilities)
     end
   end
 
@@ -121,22 +120,15 @@ describe Admit do
       it 'allows nested attributes for Availabilities (availabilities)' do
         time_slot1 = Factory.create(:time_slot)
         time_slot2 = Factory.create(:time_slot)
+        availability1 = @admit.availabilities.find_by_time_slot_id(time_slot1.id)
+        availability2 = @admit.availabilities.find_by_time_slot_id(time_slot2.id)
         attributes = {:availabilities_attributes => [
-          {:time_slot => time_slot1, :available => true},
-          {:time_slot => time_slot2, :available => true}
+          {:id => availability1.id, :available => true},
+          {:id => availability2.id, :available => false}
         ]}
-        @admit.attributes = attributes
-        @admit.availabilities.first.time_slot.should == time_slot1
-        @admit.availabilities.last.time_slot.should == time_slot2
-      end
-  
-      it 'ignores completely blank entries' do
-        attributes = {:availabilities_attributes => [
-          {:time_slot => Factory.create(:time_slot), :available => true},
-          {:time_slot => '', :availabile => ''}
-        ]}
-        @admit.attributes = attributes
-        @admit.availabilities.length.should == 1
+        @admit.update_attributes(attributes)
+        availability1.reload.should be_available
+        availability2.reload.should_not be_available
       end
     end
 
@@ -237,12 +229,6 @@ describe Admit do
         @admit.area2 = invalid_area
         @admit.should_not be_valid
       end
-    end
-
-    it 'is not valid with invalid Time Slots' do
-      pending
-      @admit.time_slots.build
-      @admit.should_not be_valid
     end
 
     it 'is not valid with non-unique Faculty Ranking ranks' do

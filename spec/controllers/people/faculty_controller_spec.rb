@@ -346,13 +346,6 @@ describe FacultyController do
         assigns[:redirect_action].should == 'edit_availability'
       end
 
-      it 'builds a list of possible meeting slots' do
-        pending
-        Faculty.stub(:find).and_return(@faculty_instance)
-        @faculty_instance.should_receive(:build_time_slots)
-        get :edit_availability, :id => @faculty_instance.id
-      end
-
       it 'renders the schedule template' do
         get :edit_availability, :id => @faculty_instance.id
         response.should render_template('edit_availability')
@@ -892,7 +885,6 @@ describe FacultyController do
         end
 
         it 'redirects to the given success redirect action' do
-          pending
           put :update, :id => @faculty_instance.id, :redirect_action => 'index'
           response.should redirect_to(:controller => 'faculty', :action => 'index')
         end

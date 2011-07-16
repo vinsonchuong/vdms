@@ -43,11 +43,6 @@ class TimeSlot < ActiveRecord::Base
   end
 
   def overlap?(other)
-    (self.begin != other.end && self.end != other.begin) &&
-    (
-      (self.begin >= other.begin && self.begin <= other.end) ||
-      (self.end >= other.begin && self.end <= other.end) ||
-      (self.begin <= other.begin && self.end >= other.end)
-    )
+    ((self.begin)...(self.end)).overlaps?((other.begin)...(other.end))
   end
 end

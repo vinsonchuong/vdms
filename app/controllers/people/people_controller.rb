@@ -69,7 +69,7 @@ class PeopleController < ApplicationController
 
     if instance_variable_get("@#{@instance}").update_attributes(attributes)
       flash[:notice] = t(:success, :scope => [:people, @model.name.tableize, :update])
-      redirect_to(:action => params[:redirect_action], :record => instance_variable_get("@#{@instance}"))
+      redirect_to(:action => params[:redirect_action])
     else
       @origin_action = params[:origin_action]
       @redirect_action = params[:redirect_action]

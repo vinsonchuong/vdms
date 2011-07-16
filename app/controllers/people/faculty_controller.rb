@@ -70,6 +70,6 @@ class FacultyController < PeopleController
   def get_areas_and_divisions
     settings = Settings.instance
     @areas = settings.areas.map {|k, v| [v, k]}.sort!
-    @divisions = settings.divisions.map {|d| [d.long_name, d.name]}.sort!
+    @divisions = settings.divisions.map {|k, v| [v, k]}.sort!
   end
 end

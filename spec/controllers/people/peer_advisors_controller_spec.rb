@@ -539,7 +539,6 @@ describe PeerAdvisorsController do
         end
 
         it 'redirects to the given success redirect action' do
-          pending
           put :update, :id => @peer_advisor.id, :redirect_action => 'index'
           response.should redirect_to(:controller => 'peer_advisors', :action => 'index')
         end

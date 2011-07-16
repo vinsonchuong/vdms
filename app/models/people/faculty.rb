@@ -30,8 +30,7 @@ class Faculty < Person
   after_validation do |record| # Map Area and Division to their canonical forms
     settings = Settings.instance
     areas = settings.areas.invert
-    divisions = {}
-    settings.divisions.each {|d| divisions[d.long_name] = d.name}
+    divisions = settings.divisions.invert
     record.area1 = areas[record.area1] unless record.area1.nil? || areas[record.area1].nil?
     record.area2 = areas[record.area2] unless record.area2.nil? || areas[record.area2].nil?
     record.area3 = areas[record.area3] unless record.area3.nil? || areas[record.area3].nil?
@@ -55,10 +54,10 @@ class Faculty < Person
 
   validates_presence_of :email
   validates_format_of :email, :with => /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
-  validates_inclusion_of :division, :in => (Settings.instance.divisions.map(&:name) + Settings.instance.divisions.map(&:long_name))
   validates_inclusion_of :area1, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
   validates_inclusion_of :area2, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
   validates_inclusion_of :area3, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
+  validates_inclusion_of :division, :in => Settings.instance.divisions.to_a.flatten
   validates_presence_of :default_room
   validates_presence_of :max_admits_per_meeting
   validates_numericality_of :max_admits_per_meeting, :only_integer => true, :greater_than => 0
