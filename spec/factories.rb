@@ -41,16 +41,16 @@ Factory.define :admit do |a|
   a.area2 Settings.instance.areas.keys.last
 end
 
-Factory.define :admit_ranking do |r|
+Factory.define :host_ranking do |r|
   r.sequence(:rank) {|n| n}
-  r.association :faculty
-  r.association :admit
+  r.association :ranker, :factory => :faculty
+  r.association :rankable, :factory => :admit
 end
 
-Factory.define :faculty_ranking do |r|
+Factory.define :visitor_ranking do |r|
   r.sequence(:rank) {|n| n}
-  r.association :admit
-  r.association :faculty
+  r.association :ranker, :factory => :admit
+  r.association :rankable, :factory => :faculty
 end
 
 Factory.define :time_slot do |t|

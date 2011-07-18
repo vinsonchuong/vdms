@@ -97,16 +97,16 @@ describe Admit do
       end
     end
 
-    describe 'Faculty Rankings' do
-      it 'has many Faculty Rankings (faculty_rankings)' do
-        @admit.should have_many(:faculty_rankings)
+    describe 'Rankings' do
+      it 'has many Rankings (rankings)' do
+        @admit.should have_many(:rankings)
       end
 
-      it 'has many Faculty Rankings sorted by rank' do
-        @admit.faculty_rankings.create(:rank => 2, :faculty => Factory.create(:faculty))
-        @admit.faculty_rankings.create(:rank => 1, :faculty => Factory.create(:faculty))
-        @admit.faculty_rankings.create(:rank => 3, :faculty => Factory.create(:faculty))
-        @admit.faculty_rankings.reload.map {|r| r.attributes['rank']}.should == [1, 2, 3]
+      it 'has many Rankings sorted by rank' do
+        @admit.rankings.create(:rank => 2, :rankable => Factory.create(:faculty))
+        @admit.rankings.create(:rank => 1, :rankable => Factory.create(:faculty))
+        @admit.rankings.create(:rank => 3, :rankable => Factory.create(:faculty))
+        @admit.rankings.reload.map {|r| r.attributes['rank']}.should == [1, 2, 3]
       end
     end
 
@@ -132,44 +132,44 @@ describe Admit do
       end
     end
 
-    describe 'Faculty Rankings (faculty_rankings)' do
+    describe 'Rankings (rankings)' do
       before(:each) do
         @faculty1 = Factory.create(:faculty)
         @faculty2 = Factory.create(:faculty)
       end
       
-      it 'allows nested attributes for Faculty Rankings (faculty_rankings)' do
-        attributes = {:faculty_rankings_attributes => [
-          {:rank => 1, :faculty => @faculty1},
-          {:rank => 2, :faculty => @faculty2}
+      it 'allows nested attributes for Rankings (rankings)' do
+        attributes = {:rankings_attributes => [
+          {:rank => 1, :rankable => @faculty1},
+          {:rank => 2, :rankable => @faculty2}
         ]}
         @admit.attributes = attributes
-        @admit.faculty_rankings.map {|r| r.faculty.id}.should == [@faculty1.id, @faculty2.id]
+        @admit.rankings.map {|r| r.rankable.id}.should == [@faculty1.id, @faculty2.id]
       end
 
       it 'ignores entries with blank ranks' do
-        attributes = {:faculty_rankings_attributes => [
-          {:rank => 1, :faculty => @faculty1},
-          {:rank => '', :faculty => @faculty2}
+        attributes = {:rankings_attributes => [
+          {:rank => 1, :rankable => @faculty1},
+          {:rank => '', :rankable => @faculty2}
         ]}
         @admit.attributes = attributes
-        @admit.faculty_rankings.length.should == 1
+        @admit.rankings.length.should == 1
       end
 
       it 'allows deletion' do
-        attributes = {:faculty_rankings_attributes => [
-          {:rank => 1, :faculty => @faculty1},
-          {:rank => 2, :faculty => @faculty2}
+        attributes = {:rankings_attributes => [
+          {:rank => 1, :rankable => @faculty1},
+          {:rank => 2, :rankable => @faculty2}
         ]}
         @admit.attributes = attributes
         @admit.save
 
-        delete_id = @admit.faculty_rankings.first.id
-        new_attributes = {:faculty_rankings_attributes => [
+        delete_id = @admit.rankings.first.id
+        new_attributes = {:rankings_attributes => [
           {:id => delete_id, :_destroy => true}
         ]}
         @admit.attributes = new_attributes
-        @admit.faculty_rankings.detect {|r| r.id == delete_id}.should be_marked_for_destruction
+        @admit.rankings.detect {|r| r.id == delete_id}.should be_marked_for_destruction
       end
     end
   end
@@ -231,24 +231,24 @@ describe Admit do
       end
     end
 
-    it 'is not valid with non-unique Faculty Ranking ranks' do
-      faculty_rankings = [
-        FacultyRanking.new(:rank => 1, :faculty => Factory.create(:faculty)),
-        FacultyRanking.new(:rank => 1, :faculty => Factory.create(:faculty))
+    it 'is not valid with non-unique Ranking ranks' do
+      rankings = [
+        VisitorRanking.new(:rank => 1, :rankable => Factory.create(:faculty)),
+        VisitorRanking.new(:rank => 1, :rankable => Factory.create(:faculty))
       ]
-      @admit.faculty_rankings = faculty_rankings
+      @admit.rankings = rankings
       @admit.should_not be_valid
     end
 
-    it 'is valid with non-unique Faculty Rankings that are marked for destruction' do
-      faculty_rankings = [
-        FacultyRanking.new(:rank => 1, :faculty => Factory.create(:faculty)),
-        FacultyRanking.new(:rank => 1, :faculty => Factory.create(:faculty)),
-        FacultyRanking.new(:rank => 1, :faculty => Factory.create(:faculty))
+    it 'is valid with non-unique Rankings that are marked for destruction' do
+      rankings = [
+        VisitorRanking.new(:rank => 1, :rankable => Factory.create(:faculty)),
+        VisitorRanking.new(:rank => 1, :rankable => Factory.create(:faculty)),
+        VisitorRanking.new(:rank => 1, :rankable => Factory.create(:faculty))
       ]
-      faculty_rankings[0].mark_for_destruction
-      faculty_rankings[1].mark_for_destruction
-      @admit.faculty_rankings = faculty_rankings
+      rankings[0].mark_for_destruction
+      rankings[1].mark_for_destruction
+      @admit.rankings = rankings
       @admit.should be_valid
     end
   end
@@ -285,23 +285,23 @@ describe Admit do
       @admit.destroy
     end
 
-    it 'destroys its Faculty Rankings' do
-      faculty_rankings = Array.new(3) do
-        faculty_ranking = mock_model(FacultyRanking)
-        faculty_ranking.should_receive(:destroy)
-        faculty_ranking
+    it 'destroys its Rankings' do
+      rankings = Array.new(3) do
+        ranking = mock_model(VisitorRanking)
+        ranking.should_receive(:destroy)
+        ranking
       end
-      @admit.stub(:faculty_rankings).and_return(faculty_rankings)
+      @admit.stub(:rankings).and_return(rankings)
       @admit.destroy
     end
 
-    it 'destroys its Admit Rankings' do
-      admit_rankings = Array.new(3) do
-        admit_ranking = mock_model(AdmitRanking)
-        admit_ranking.should_receive(:destroy)
-        admit_ranking
+    it 'destroys its Host Rankings' do
+      rankings = Array.new(3) do
+        ranking = mock_model(HostRanking)
+        ranking.should_receive(:destroy)
+        ranking
       end
-      @admit.stub(:admit_rankings).and_return(admit_rankings)
+      @admit.stub(:host_rankings).and_return(rankings)
       @admit.destroy
     end
   end
@@ -353,9 +353,9 @@ describe Admit do
         admit.phone.should == "123456789#{i}"
         admit.area1.should == "Area 1#{i}"
         admit.area2.should == "Area 2#{i}"
-        admit.faculty_rankings.detect {|r| r.rank == 1}.faculty.full_name.should == "First#{(i%3)+1} Last#{(i%3)+1}"
-        admit.faculty_rankings.detect {|r| r.rank == 2}.faculty.full_name.should == "First#{((i+1)%3)+1} Last#{((i+1)%3)+1}"
-        admit.faculty_rankings.detect {|r| r.rank == 3}.faculty.full_name.should == "First#{((i+2)%3)+1} Last#{((i+2)%3)+1}"
+        admit.rankings.detect {|r| r.rank == 1}.rankable.full_name.should == "First#{(i%3)+1} Last#{(i%3)+1}"
+        admit.rankings.detect {|r| r.rank == 2}.rankable.full_name.should == "First#{((i+1)%3)+1} Last#{((i+1)%3)+1}"
+        admit.rankings.detect {|r| r.rank == 3}.rankable.full_name.should == "First#{((i+2)%3)+1} Last#{((i+2)%3)+1}"
       end
     end
 

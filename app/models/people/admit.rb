@@ -27,10 +27,10 @@ class Admit < Person
     end
   end
 
-  has_many :faculty_rankings, :order => 'rank ASC', :dependent => :destroy
-  has_many :ranked_faculty, :source => :faculty, :through => :faculty_rankings, :order => 'rank ASC'
-  has_many :admit_rankings, :dependent => :destroy
-  accepts_nested_attributes_for :faculty_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
+  has_many :rankings, :class_name => 'VisitorRanking', :foreign_key => 'ranker_id', :dependent => :destroy
+  has_many :ranked_hosts, :source => :rankable, :through => :rankings
+  has_many :host_rankings, :foreign_key => 'rankable_id', :dependent => :destroy
+  accepts_nested_attributes_for :rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
   has_many :availabilities, :class_name => 'VisitorAvailability', :foreign_key => 'visitor_id', :dependent => :destroy
   has_many :meetings, :through => :availabilities
   accepts_nested_attributes_for :availabilities, :reject_if => :all_blank, :allow_destroy => true
@@ -39,7 +39,7 @@ class Admit < Person
   validates_inclusion_of :area2, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
   validates_inclusion_of :area3, :in => Settings.instance.areas.to_a.flatten, :allow_blank => true
   validate do |record| # uniqueness of ranks in faculty_rankings
-    ranks = record.faculty_rankings.reject(&:marked_for_destruction?).map(&:rank)
+    ranks = record.rankings.reject(&:marked_for_destruction?).map(&:rank)
     if ranks.count != ranks.uniq.count
       record.errors.add_to_base('Ranks must be unique')
     end

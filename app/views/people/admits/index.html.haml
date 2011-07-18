@@ -16,7 +16,7 @@
         %td= admit.email
         %td= admit.phone
         %td= admit.availabilities.select {|t| t.available}.count
-        %td= admit.faculty_rankings.count
+        %td= admit.rankings.count
         %td
           %ul
             %li!= link_to t('admits.edit.short_title'), edit_admit_path(admit)

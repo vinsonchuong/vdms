@@ -42,15 +42,15 @@ class Faculty < Person
     end
   end
 
-  has_many :admit_rankings, :order => 'rank ASC', :dependent => :destroy
-  has_many :ranked_admits, :source => :admit, :through => :admit_rankings, :order => 'rank ASC'
-  has_many :ranked_one_on_one_admits, :source => :admit, :through => :admit_rankings, :conditions => ['rankings.one_on_one = ?', true]
-  has_many :mandatory_admits, :source => :admit, :through => :admit_rankings, :conditions => ['rankings.mandatory = ?', true]
-  has_many :faculty_rankings, :dependent => :destroy
+  has_many :rankings, :class_name => 'HostRanking', :foreign_key => 'ranker_id', :dependent => :destroy
+  has_many :ranked_visitors, :source => :rankable, :through => :rankings
+  has_many :ranked_one_on_one_visitors, :source => :rankable, :through => :rankings, :conditions => ['rankings.one_on_one = ?', true]
+  has_many :mandatory_visitors, :source => :rankable, :through => :rankings, :conditions => ['rankings.mandatory = ?', true]
+  has_many :visitor_rankings, :foreign_key => 'rankable_id', :dependent => :destroy
   has_many :availabilities, :class_name => 'HostAvailability', :foreign_key => 'host_id', :dependent => :destroy
   has_many :meetings, :through => :availabilities
   accepts_nested_attributes_for :availabilities, :reject_if => :all_blank
-  accepts_nested_attributes_for :admit_rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
+  accepts_nested_attributes_for :rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
 
   validates_presence_of :email
   validates_format_of :email, :with => /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
@@ -64,7 +64,7 @@ class Faculty < Person
   validates_presence_of :max_additional_admits
   validates_numericality_of :max_additional_admits, :only_integer => true, :greater_than_or_equal_to => 0
   validate do |record| # uniqueness of ranks in admit_rankings
-    ranks = record.admit_rankings.reject(&:marked_for_destruction?).map(&:rank)
+    ranks = record.rankings.reject(&:marked_for_destruction?).map(&:rank)
     if ranks.count != ranks.uniq.count
       record.errors.add_to_base('Ranks must be unique')
     end

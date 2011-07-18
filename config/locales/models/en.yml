@@ -7,8 +7,8 @@ en:
       faculty: "Faculty"
       admit: "Admit"
       ranking: "Ranking"
-      admit_ranking: "Admit Ranking"
-      faculty_ranking: "Faculty Ranking"
+      host_ranking: "Host Ranking"
+      visitor_ranking: "Visitor Ranking"
       settings: "Settings"
       division: "Division"
       time_slot: "Time Slot"
@@ -36,15 +36,15 @@ en:
         area3: "Area 3"
       ranking:
         rank: "Rank"
-      admit_ranking:
-        admit: "Admit"
-        admit_id: "Admit"
+      host_ranking:
+        rankable: "Visitor"
+        rankable_id: "Visitor"
         mandatory: "Mandatory"
-        time_slots: "# Time Slots"
+        num_time_slots: "# Time Slots"
         one_on_one: "1-On-1"
-      faculty_ranking:
-        faculty: "Faculty"
-        faculty_id: "Faculty"
+      visitor_ranking:
+        rankable: "Host"
+        rankable_id: "Host"
       settings:
         areas: "Areas"
         divisions: "Divisions"

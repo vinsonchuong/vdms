@@ -39,7 +39,7 @@
           %dl
             - admit_rankings.each do |admit_ranking|
               %dt!= admit_ranking.rank
-              %dd!= link_to admit_ranking.admit.full_name, admit_meetings_path(admit_ranking.admit)
+              %dd!= link_to admit_ranking.rankable.full_name, admit_meetings_path(admit_ranking.rankable)
 %h3 Admits with Unsatisfied Rankings
 %table
   %thead

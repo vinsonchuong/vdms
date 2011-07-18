@@ -10,15 +10,15 @@ module Importable
   
     def convert_attributes(csv_row)
       attributes = csv_row.to_hash
-      faculty_rankings = []
+      rankings = []
       attributes.delete_if do |col, value|
         if col =~ /^Faculty (\d+)$/
           ranking_attributes = {:rank => $1.to_i}
           if value =~ /(\w+)\s+(\w+)/
             faculty = Faculty.find_by_first_name_and_last_name($1, $2)
-            ranking_attributes[:faculty] = faculty
+            ranking_attributes[:rankable] = faculty
           end
-          faculty_rankings << ranking_attributes
+          rankings << ranking_attributes
           true
         else
           false
@@ -34,8 +34,8 @@ module Importable
         end
         {accessor, value.send(conversion)}
       end
-      unless faculty_rankings.empty?
-        attributes.merge({:faculty_rankings_attributes => faculty_rankings})
+      unless rankings.empty?
+        attributes.merge({:rankings_attributes => rankings})
       else
         attributes
       end

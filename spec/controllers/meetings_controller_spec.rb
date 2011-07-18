@@ -53,10 +53,10 @@ describe MeetingsController do
       it 'assigns to @unsatisfied_faculty a list of Faculty with unfulfilled mandatory meetings' do
         faculty1 = Factory.create(:faculty)
         admit1 = Factory.create(:admit)
-        Factory.create(:admit_ranking, :admit => admit1, :mandatory => true, :faculty => faculty1)
+        Factory.create(:host_ranking, :rankable => admit1, :mandatory => true, :ranker => faculty1)
         faculty2 = Factory.create(:faculty)
         admit2 = Factory.create(:admit)
-        Factory.create(:admit_ranking, :admit => admit2, :mandatory => false, :faculty => faculty2)
+        Factory.create(:host_ranking, :rankable => admit2, :mandatory => false, :ranker => faculty2)
         Faculty.stub(:find).and_return([faculty1, faculty2])
         get :statistics
         assigns[:unsatisfied_faculty].should == [[faculty1, [admit1]]]
@@ -65,16 +65,16 @@ describe MeetingsController do
         admit1 = Factory.create(:admit)
         admit2 = Factory.create(:admit)
         faculty21 = Factory.create(:faculty)
-        ranking21 = Factory.create(:faculty_ranking, :admit => admit2, :faculty => faculty21)
+        ranking21 = Factory.create(:visitor_ranking, :ranker => admit2, :rankable => faculty21)
         time_slot = Factory.create(:time_slot)
         faculty21_availability = faculty21.availabilities.create(:time_slot => time_slot, :available => true)
         admit2_availability = admit2.availabilities.create(:time_slot => time_slot, :available => true)
         Meeting.create(:host_availability => faculty21_availability, :visitor_availability => admit2_availability)
         admit3 = Factory.create(:admit)
         faculty31 = Factory.create(:faculty)
-        ranking31 = Factory.create(:faculty_ranking, :admit => admit3, :faculty => faculty31)
+        ranking31 = Factory.create(:visitor_ranking, :ranker => admit3, :rankable => faculty31)
         Admit.stub(:find).and_return([admit1, admit2, admit3])
-        [admit1, admit2, admit3].each {|a| a.save; a.faculty_rankings.reload}
+        [admit1, admit2, admit3].each {|a| a.save; a.rankings.reload}
         get :statistics
         assigns[:admits_with_unsatisfied_rankings].should == [[admit3, [ranking31]]]
       end
@@ -83,7 +83,7 @@ describe MeetingsController do
         faculty1 = Factory.create(:faculty)
         faculty2 = Factory.create(:faculty)
         admit21 = Factory.create(:admit)
-        Factory.create(:admit_ranking, :faculty => faculty2, :admit => admit21)
+        Factory.create(:host_ranking, :ranker => faculty2, :rankable => admit21)
         time_slot = Factory.create(:time_slot)
         meeting = Meeting.create(
           :host_availability => faculty2.availabilities.create(:time_slot => time_slot, :available => true),
@@ -91,10 +91,10 @@ describe MeetingsController do
         )
         faculty3 = Factory.create(:faculty)
         admit31 = Factory.create(:admit)
-        ranking31 = Factory.create(:admit_ranking, :faculty => faculty3, :admit => admit31)
+        ranking31 = Factory.create(:host_ranking, :ranker => faculty3, :rankable => admit31)
         Faculty.stub(:find).and_return([faculty1, faculty2, faculty3])
         [faculty1, faculty2, faculty3].each do |f|
-          f.admit_rankings.reload
+          f.rankings.reload
           f.meetings.reload
         end
         get :statistics

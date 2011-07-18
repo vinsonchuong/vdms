@@ -27,14 +27,14 @@ class MeetingsController < ApplicationController
     @admits = Admit.by_name
     @faculty = Faculty.by_name
     @unsatisfied_admits = @admits.select {|a| a.meetings.count < settings.unsatisfied_admit_threshold}
-    @unsatisfied_faculty = @faculty.map {|f| [f, f.mandatory_admits - f.meetings.map(&:visitor)]}.reject {|f, a| a.empty?}
+    @unsatisfied_faculty = @faculty.map {|f| [f, f.mandatory_visitors - f.meetings.map(&:visitor)]}.reject {|f, a| a.empty?}
     @admits_with_unsatisfied_rankings = @admits.map do |admit|
       meeting_faculty = admit.meetings.map(&:host)
-      [admit, admit.faculty_rankings.reject {|r| meeting_faculty.include?(r.faculty)}]
+      [admit, admit.rankings.reject {|r| meeting_faculty.include?(r.rankable)}]
     end.reject {|a, r| r.empty?}
     @faculty_with_unsatisfied_rankings = @faculty.map do |faculty|
       meeting_admits = faculty.meetings.map(&:visitor)
-      [faculty, faculty.admit_rankings.reject {|r| meeting_admits.include?(r.admit)}]
+      [faculty, faculty.rankings.reject {|r| meeting_admits.include?(r.rankable)}]
     end.reject {|f, r| r.empty?}
   end
 

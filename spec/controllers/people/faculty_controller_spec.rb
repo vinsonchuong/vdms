@@ -439,7 +439,7 @@ describe FacultyController do
 
       context 'when the Faculty has ranked but not selected any Admits' do
         before(:each) do
-          Factory.create(:admit_ranking, :faculty => @faculty_instance)
+          Factory.create(:host_ranking, :ranker => @faculty_instance)
         end
 
         it 'sets the error redirect to the rank_admits action' do
@@ -477,7 +477,7 @@ describe FacultyController do
         it 'builds a new AdmitRanking for each given Admit' do
           Faculty.stub(:find).and_return(@faculty_instance)
           get :rank_admits, :id => @faculty_instance.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
-          @faculty_instance.admit_rankings.map(&:admit).should == @admits
+          @faculty_instance.rankings.map(&:rankable).should == @admits
         end
 
         it 'sets the error redirect to the rank_admits action' do
@@ -573,7 +573,7 @@ describe FacultyController do
           admit = Admit.new
           admits = Array.new(3) {Admit.new}
           Admit.stub(:by_name).and_return(admits + [admit])
-          @faculty_instance.admit_rankings.build(:admit => admit)
+          @faculty_instance.rankings.build(:rankable => admit)
           Faculty.stub(:find).and_return(@faculty_instance)
           get :select_admits, :id => @faculty_instance.id
           assigns[:admits].should == admits
@@ -592,7 +592,7 @@ describe FacultyController do
           admit = Admit.new
           admits = Array.new(3) {Admit.new}
           Admit.stub(:with_areas).and_return(admits + [admit])
-          @faculty_instance.admit_rankings.build(:admit => admit)
+          @faculty_instance.rankings.build(:rankable => admit)
           Faculty.stub(:find).and_return(@faculty_instance)
           get :select_admits, :id => @faculty_instance.id, :filter => {'a1' => '1', 'a2' => '0', 'a3' => '1'}
           assigns[:admits].should == admits

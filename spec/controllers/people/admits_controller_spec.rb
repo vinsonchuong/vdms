@@ -413,7 +413,7 @@ describe AdmitsController do
 
       context 'when some Faculty have been ranked but none have been selected' do
         before(:each) do
-          Factory.create(:faculty_ranking, :admit => @admit)
+          Factory.create(:visitor_ranking, :ranker => @admit)
         end
 
         it 'sets the error redirect to the rank_faculty action' do
@@ -456,7 +456,7 @@ describe AdmitsController do
         it 'builds a new FacultyRanking for each given Faculty' do
           Admit.stub(:find).and_return(@admit)
           get :rank_faculty, :id => @admit.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
-          @admit.faculty_rankings.map(&:faculty).should == @faculty
+          @admit.rankings.map(&:rankable).should == @faculty
         end
 
         it 'sets the error redirect to the rank_faculty action' do
@@ -538,7 +538,7 @@ describe AdmitsController do
         faculty_instance = Faculty.new
         faculty = Array.new(3) {Faculty.new}
         Faculty.stub(:by_name).and_return(faculty + [faculty_instance])
-        @admit.faculty_rankings.build(:faculty => faculty_instance)
+        @admit.rankings.build(:rankable => faculty_instance)
         Admit.stub(:find).and_return(@admit)
         get :select_faculty, :id => @admit.id
         assigns[:faculty].should == faculty
