@@ -250,7 +250,7 @@ describe PeerAdvisorsController do
     context 'when signed in as an unregistered Peer Advisor' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(PeerAdvisor.new)
+        LDAP.stub(:find_person).and_return(:role => :grad)
       end
 
       it 'redirects to the New Peer Advisor page' do
@@ -264,7 +264,7 @@ describe PeerAdvisorsController do
     context 'when signed in as an unregistered Faculty' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(Faculty.new)
+        LDAP.stub(:find_person).and_return(:role => :faculty)
       end
 
       it 'redirects to the New Faculty page' do
@@ -304,7 +304,7 @@ describe PeerAdvisorsController do
     context 'when signed in as an unregistered Peer Advisor' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(PeerAdvisor.new)
+        LDAP.stub(:find_person).and_return(:role => :grad)
       end
 
       it 'redirects to the New Peer Advisor page' do
@@ -318,7 +318,7 @@ describe PeerAdvisorsController do
     context 'when signed in as an unregistered Faculty' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(Faculty.new)
+        LDAP.stub(:find_person).and_return(:role => :faculty)
       end
 
       it 'redirects to the New Faculty page' do
@@ -386,7 +386,7 @@ describe PeerAdvisorsController do
     context 'when signed in as an unregistered Peer Advisor' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(PeerAdvisor.new(:ldap_id => '12345'))
+        LDAP.stub(:find_person).and_return(:role => :grad, :uid => '12345')
       end
 
       it 'assigns to @peer_advisor a PeerAdvisor with the same LDAP UID as the logged in user' do
@@ -414,7 +414,7 @@ describe PeerAdvisorsController do
     context 'when signed in as an unregistered Faculty' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(Faculty.new)
+        LDAP.stub(:find_person).and_return(:role => :faculty)
       end
 
       it 'redirects to the New Faculty page' do
@@ -479,7 +479,7 @@ describe PeerAdvisorsController do
     context 'when signed in as an unregistered Peer Advisor' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(PeerAdvisor.new)
+        LDAP.stub(:find_person).and_return(:role => :grad)
       end
 
       it 'redirects to the New Peer Advisor page' do
@@ -493,7 +493,7 @@ describe PeerAdvisorsController do
     context 'when signed in as an unregistered Faculty' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(Faculty.new)
+        LDAP.stub(:find_person).and_return(:role => :faculty)
       end
 
       it 'redirects to the New Faculty page' do
@@ -583,7 +583,7 @@ describe PeerAdvisorsController do
     context 'when signed in as an unregistered Peer Advisor' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(PeerAdvisor.new)
+        LDAP.stub(:find_person).and_return(:role => :grad)
       end
 
       it 'redirects to the New Peer Advisor page' do
@@ -597,7 +597,7 @@ describe PeerAdvisorsController do
     context 'when signed in as an unregistered Faculty' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(Faculty.new)
+        LDAP.stub(:find_person).and_return(:role => :faculty)
       end
 
       it 'redirects to the New Faculty page' do
@@ -648,7 +648,7 @@ describe PeerAdvisorsController do
     context 'when signed in as an unregistered Peer Advisor' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(PeerAdvisor.new)
+        LDAP.stub(:find_person).and_return(:role => :grad)
       end
 
       it 'redirects to the New Peer Advisor page' do
@@ -662,7 +662,7 @@ describe PeerAdvisorsController do
     context 'when signed in as an unregistered Faculty' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(Faculty.new)
+        LDAP.stub(:find_person).and_return(:role => :faculty)
       end
 
       it 'redirects to the New Faculty page' do
@@ -708,7 +708,7 @@ describe PeerAdvisorsController do
     context 'when signed in as an unregistered Peer Advisor' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(PeerAdvisor.new)
+        LDAP.stub(:find_person).and_return(:role => :grad)
       end
 
       it 'redirects to the New Peer Advisor page' do
@@ -722,7 +722,7 @@ describe PeerAdvisorsController do
     context 'when signed in as an unregistered Faculty' do
       before(:each) do
         CASClient::Frameworks::Rails::Filter.fake('12345')
-        Person.stub(:find).and_return(Faculty.new)
+        LDAP.stub(:find_person).and_return(:role => :faculty)
       end
 
       it 'redirects to the New Faculty page' do

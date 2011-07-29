@@ -217,13 +217,18 @@ describe 'Routes' do
         end
       end
 
-      context 'Update Faculty Admit Rankings' do
-        it 'routes GET /people/faculty/1/rank_admits to Faculty#rank_admits' do
-          {:get => '/people/faculty/1/rank_admits'}.should route_to(:controller => 'faculty', :action => 'rank_admits', :id => '1')
+      context 'Update Faculty Rankings' do
+        it 'routes GET /people/faculty/1/rankings to HostRankings#index' do
+          {:get => '/people/faculty/1/rankings'}.should route_to(:controller => 'host_rankings', :action => 'index', :faculty_instance_id => '1')
         end
-
-        it 'routes GET /people/faculty/1/select_admits to Faculty#admits' do
-          {:get => '/people/faculty/1/select_admits'}.should route_to(:controller => 'faculty', :action => 'select_admits', :id => '1')
+        it 'routes GET /people/faculty/1/rankings/add to HostRankings#add' do
+          {:get => '/people/faculty/1/rankings/add'}.should route_to(:controller => 'host_rankings', :action => 'add', :faculty_instance_id => '1')
+        end
+        it 'routes GET /people/faculty/1/rankings/edit_all to HostRankings#edit_all' do
+          {:get => '/people/faculty/1/rankings/edit_all'}.should route_to(:controller => 'host_rankings', :action => 'edit_all', :faculty_instance_id => '1')
+        end
+        it 'routes PUT /people/faculty/1/rankings/update_all to HostRankings#update_all' do
+          {:put => '/people/faculty/1/rankings/update_all'}.should route_to(:controller => 'host_rankings', :action => 'update_all', :faculty_instance_id => '1')
         end
       end
 
@@ -234,12 +239,6 @@ describe 'Routes' do
 
         it 'routes DELETE /people/faculty/1 to Faculty#destroy' do
           {:delete => '/people/faculty/1'}.should route_to(:controller => 'faculty', :action => 'destroy', :id => '1')
-        end
-      end
-      
-      context 'Update Faculty Admit Rankings' do
-        it 'routes GET /people/faculty/1/rank_admits to Faculty#rank_admits' do
-          {:get => '/people/faculty/1/rank_admits'}.should route_to(:controller => 'faculty', :action => 'rank_admits', :id => '1')
         end
       end
     end
@@ -297,16 +296,6 @@ describe 'Routes' do
         end
       end
 
-      context 'Update Admit Faculty Rankings' do
-        it 'routes GET /people/admits/1/rank_faculty to Admits#rank_faculty' do
-          {:get => '/people/admits/1/rank_faculty'}.should route_to(:controller => 'admits', :action => 'rank_faculty', :id => '1')
-        end
-
-        it 'routes GET /people/admits/1/select_faculty to Admits#select_faculty' do
-          {:get => '/people/admits/1/select_faculty'}.should route_to(:controller => 'admits', :action => 'select_faculty', :id => '1')
-        end
-      end
-
       context 'Remove Admits' do
         it 'routes GET /people/admits/1/delete to Admits#delete' do
           {:get => '/people/admits/1/delete'}.should route_to(:controller => 'admits', :action => 'delete', :id => '1')
@@ -319,7 +308,7 @@ describe 'Routes' do
     end
     context 'Completed Schedules' do
       it 'can view meetings for a faculty member' do
-        {:get => '/people/faculty/1/meetings'}.should route_to(:controller => 'meetings', :action => 'index', :faculty_id => '1')
+        {:get => '/people/faculty/1/meetings'}.should route_to(:controller => 'meetings', :action => 'index', :faculty_instance_id => '1')
       end
       it 'can view meetings for an admit' do
         {:get => '/people/admits/1/meetings'}.should route_to(:controller => 'meetings', :action => 'index', :admit_id => '1')
@@ -328,10 +317,10 @@ describe 'Routes' do
         {:get => '/meetings/master'}.should route_to(:controller => 'meetings', :action => 'master')
       end
       it 'can tweak meeting schedule for a faculty member' do
-        {:get => '/people/faculty/1/meetings/tweak'}.should route_to(:controller => 'meetings', :action => 'tweak', :faculty_id => '1')
+        {:get => '/people/faculty/1/meetings/tweak'}.should route_to(:controller => 'meetings', :action => 'tweak', :faculty_instance_id => '1')
       end
       it 'can apply tweaks to a faculty meeting schedule' do
-        {:post => '/people/faculty/1/meetings/apply_tweaks'}.should route_to(:controller => 'meetings', :action => 'apply_tweaks', :faculty_id => '1')
+        {:post => '/people/faculty/1/meetings/apply_tweaks'}.should route_to(:controller => 'meetings', :action => 'apply_tweaks', :faculty_instance_id => '1')
       end
       it 'can view meeting statistics' do
         {:get => '/meetings/statistics'}.should route_to(:controller => 'meetings', :action => 'statistics')

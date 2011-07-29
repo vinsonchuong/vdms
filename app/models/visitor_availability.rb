@@ -5,7 +5,7 @@ class VisitorAvailability < Availability
     record.meetings.destroy_all unless record.available?
   end
 
-  belongs_to :visitor, :class_name => 'Admit'
+  belongs_to :visitor, :class_name => 'Admit', :foreign_key => :schedulable_id
   has_many :meetings, :dependent => :destroy
   has_many :hosts, :through => :meetings
 

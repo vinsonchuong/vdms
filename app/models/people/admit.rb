@@ -31,7 +31,7 @@ class Admit < Person
   has_many :ranked_hosts, :source => :rankable, :through => :rankings
   has_many :host_rankings, :foreign_key => 'rankable_id', :dependent => :destroy
   accepts_nested_attributes_for :rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
-  has_many :availabilities, :class_name => 'VisitorAvailability', :foreign_key => 'visitor_id', :dependent => :destroy
+  has_many :availabilities, :class_name => 'VisitorAvailability', :foreign_key => 'schedulable_id', :dependent => :destroy
   has_many :meetings, :through => :availabilities
   accepts_nested_attributes_for :availabilities, :reject_if => :all_blank, :allow_destroy => true
 

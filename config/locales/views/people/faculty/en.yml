@@ -52,37 +52,9 @@ en:
       select_all: "Check All Time Slots"
       unselect_all: "Uncheck All Time Slots"
       submit: "Update Availability"
-    rank_admits:
-      title: "Update Faculty's (%{name}) Admit Rankings"
-      short_title: "Update Rankings"
-      alt_title: "Update My Admit Rankings"
-      errors: "Errors"
-      admit_rankings: "Admit Rankings"
-      admit_rankings_description: "Please form a ranked list of admits you would like to meet. Note that ranks must be
-                                   unique. Flagging an admit as \"Mandatory\" emphasizes the importance of meeting
-                                   with that admit. If you specify that you wish to meet with an admit for more than one
-                                   \"Time Slot\", we will attempt to allocate a contiguous block of time. If you flag an
-                                   Admit as \"1-On-1\", we will attempt to allocate a time slot only for that Admit. 
-                                   Before you can rank admits, you need to populate the candidate list.  To
-                                   do so, follow this link:"
-      add_admits: "Add Admits to Rankings"
-      remove: "Remove"
-      submit: "Update Rankings"
     view_schedule:
       title: "Schedule for %{name}"
       alt_title: "View My Schedule"
-    select_admits:
-      title: "Select Admits to Rank"
-      filter_admits: "Filter Admits"
-      by_area: "By Area"
-      select_cs: "Select All CS Areas"
-      select_ee: "Select All EE Areas"
-      select_all: "Select All Areas"
-      unselect_all: "Unselect All Areas"
-      filter_submit: "Filter Admits"
-      select_admits: "Select Admits"
-      admits: "Admits"
-      select_submit: "Rank Admits"
     delete:
       title: "Remove Faculty (%{name})"
       short_title: "Remove"

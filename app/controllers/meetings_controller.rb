@@ -8,7 +8,7 @@ class MeetingsController < ApplicationController
   # If called with an admit_id, show that admit's meetings
   # If neither, show the master schedule of meetings
   def index
-    params[:faculty_id] ? for_faculty(params[:faculty_id]) :
+    params[:faculty_instance_id] ? for_faculty(params[:faculty_instance_id]) :
       params[:admit_id] ? for_admit(params[:admit_id]) :
       master
   end
@@ -69,7 +69,7 @@ class MeetingsController < ApplicationController
 
   # Tweak the schedule for faculty (ie, show editable view) - for staff only
   def tweak
-    @faculty = Faculty.find(params[:faculty_id])
+    @faculty = Faculty.find(params[:faculty_instance_id])
     @max_admits = @faculty.max_admits_per_meeting
     @faculty.availabilities.each do |availability|
       (@max_admits - availability.meetings.count).times {availability.meetings.build}
@@ -79,7 +79,7 @@ class MeetingsController < ApplicationController
 
   # Save the tweaks to a faculty meeting schedule - for staff only
   def apply_tweaks
-    @faculty = Faculty.find(params[:faculty_id])
+    @faculty = Faculty.find(params[:faculty_instance_id])
 
     if @faculty.update_attributes(params[:faculty])
       flash[:notice] = 'Success!'

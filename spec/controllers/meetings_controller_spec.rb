@@ -110,18 +110,18 @@ describe MeetingsController do
     it 'should be allowed for staff' do
       fake_login(:staff)
       Faculty.stub!(:find).and_return(Factory.create(:faculty))
-      get :tweak, :faculty_id => 1
+      get :tweak, :faculty_instance_id => 1
       response.should render_template(:tweak)
     end
     it 'should be forbidden for peer advisors' do
       fake_login(:peer_advisor)
-      get :tweak, :faculty_id => 1
+      get :tweak, :faculty_instance_id => 1
       response.should redirect_to(home_path)
       flash[:alert].should == 'Only Staff users may perform this action.'
     end
     it 'should be forbidden for faculty' do
       fake_login(:faculty)
-      get :tweak, :faculty_id => 1
+      get :tweak, :faculty_instance_id => 1
       response.should redirect_to(home_path)
       flash[:alert].should == 'Only Staff users may perform this action.'
     end
@@ -131,7 +131,7 @@ describe MeetingsController do
     describe "index" do
       it "should list meetings for faculty if given faculty_id" do
         controller.should_receive(:for_faculty).with('3')
-        get :index, :faculty_id => '3'
+        get :index, :faculty_instance_id => '3'
       end
       it "should list meetings for admit if given admit_id" do
         controller.should_receive(:for_admit).with('2')

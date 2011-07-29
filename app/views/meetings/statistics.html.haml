@@ -8,7 +8,7 @@
   %tbody
     - @unsatisfied_faculty.each do |faculty, admits|
       %tr
-        %td!= link_to faculty.full_name, (@current_user.class == Staff ? tweak_faculty_meetings_path(faculty) : faculty_meetings_path(faculty))
+        %td!= link_to faculty.full_name, (@current_user.class == Staff ? tweak_faculty_instance_meetings_path(faculty) : faculty_instance_meetings_path(faculty))
         %td
           %ul
             - admits.each do |admit|
@@ -34,7 +34,7 @@
   %tbody
     - @faculty_with_unsatisfied_rankings.each do |faculty, admit_rankings|
       %tr
-        %td!= link_to faculty.full_name, (@current_user.class == Staff ? tweak_faculty_meetings_path(faculty) : faculty_meetings_path(faculty))
+        %td!= link_to faculty.full_name, (@current_user.class == Staff ? tweak_faculty_instance_meetings_path(faculty) : faculty_instance_meetings_path(faculty))
         %td
           %dl
             - admit_rankings.each do |admit_ranking|
@@ -54,4 +54,4 @@
           %dl
             - faculty_rankings.each do |faculty_ranking|
               %dt!= faculty_ranking.rank
-              %dd!= link_to faculty_ranking.faculty.full_name, (@current_user.class == Staff ? tweak_faculty_meetings_path(faculty_ranking.faculty) : faculty_meetings_path(faculty_ranking.faculty))
+              %dd!= link_to faculty_ranking.faculty.full_name, (@current_user.class == Staff ? tweak_faculty_instance_meetings_path(faculty_ranking.faculty) : faculty_instance_meetings_path(faculty_ranking.faculty))

@@ -151,7 +151,7 @@ Feature: Staff can manage admits
     When I follow "Update Rankings"
     And I check "Aaa Aaa"
     And I check "Bbb Bbb"
-    And I press "Rank Faculty"
+    And I press "Rank Hosts"
     And I rank the "first" faculty "2"
     And I rank the "second" faculty "1"
     And I press "Update Rankings"

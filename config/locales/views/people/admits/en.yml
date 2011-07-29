@@ -40,18 +40,6 @@ en:
       select_all: "Check All Time Slots"
       unselect_all: "Uncheck All Time Slots"
       submit: "Update Availability"
-    rank_faculty:
-      title: "Update Admit's (%{name}) Faculty Rankings"
-      short_title: "Update Rankings"
-      errors: "Errors"
-      faculty_rankings: "Faculty Rankings"
-      add_faculty: "Add Faculty to Rankings"
-      remove: "Remove"
-      submit: "Update Rankings"
-    select_faculty:
-      title: "Select Faculty to Rank"
-      faculty: "Faculty"
-      submit: "Rank Faculty"
     view_meetings:
       title: "View Admit's Meeting Schedule"
       short_title: "View Meeting Schedule"

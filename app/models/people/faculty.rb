@@ -47,7 +47,7 @@ class Faculty < Person
   has_many :ranked_one_on_one_visitors, :source => :rankable, :through => :rankings, :conditions => ['rankings.one_on_one = ?', true]
   has_many :mandatory_visitors, :source => :rankable, :through => :rankings, :conditions => ['rankings.mandatory = ?', true]
   has_many :visitor_rankings, :foreign_key => 'rankable_id', :dependent => :destroy
-  has_many :availabilities, :class_name => 'HostAvailability', :foreign_key => 'host_id', :dependent => :destroy
+  has_many :availabilities, :class_name => 'HostAvailability', :foreign_key => 'schedulable_id', :dependent => :destroy
   has_many :meetings, :through => :availabilities
   accepts_nested_attributes_for :availabilities, :reject_if => :all_blank
   accepts_nested_attributes_for :rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true

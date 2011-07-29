@@ -15,32 +15,6 @@ class AdmitsController < PeopleController
     @redirect_action = 'edit_availability'
   end
 
-  # GET /people/admits/1/rank_faculty
-  def rank_faculty
-    @admit = Admit.find(params[:id])
-
-    unless params[:select].nil?
-      new_faculty = Faculty.find(params[:select].select {|f, checked| checked.to_b}.map(&:first))
-      new_faculty.each {|f| @admit.rankings.build(:rankable => f, :rank => 1)}
-    end
-
-    if Settings.instance.disable_peer_advisors && @current_user.class == PeerAdvisor
-      flash[:alert] = t('people.admits.rank_faculty.disabled')
-    elsif @admit.rankings.empty?
-      redirect_to(select_faculty_admit_url(@admit))
-      return
-    end
-
-    @origin_action = 'rank_faculty'
-    @redirect_action = 'rank_faculty'
-  end
-
-  # GET /people/admits/1/select_faculty
-  def select_faculty
-    @admit = Admit.find(params[:id])
-    @faculty = Faculty.by_name - @admit.rankings.map(&:rankable)
-  end
-
   private
 
   def get_model

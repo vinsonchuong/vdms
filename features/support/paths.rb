@@ -31,21 +31,21 @@ module NavigationHelpers
     when /the import faculty page/ then upload_faculty_instance_path
     when /the edit faculty page/ then edit_faculty_instance_path(@faculty)
     when /the update faculty availability page/ then edit_availability_faculty_instance_path(@faculty)
-    when /the rank admits page/ then rank_admits_faculty_instance_path(@faculty)
-    when /the select admits page/ then select_admits_faculty_instance_path(@faculty)
+    when /the rank admits page/ then edit_all_faculty_instance_rankings_path(@faculty)
+    when /the select admits page/ then add_faculty_instance_rankings_path(@faculty)
     when /the delete faculty page/ then delete_faculty_instance_path(@faculty)
     when /the admit_ranking page/ then rank_admits_faculty_instance_path(@faculty)   
     when /the view faculty meeting schedule page$/ then faculty_meetings_path(@faculty)
-    when /the view faculty meeting schedule page for "(.*) (.*)"/ then faculty_meetings_path(Faculty.find_by_first_name_and_last_name($1,$2))
-    when /the tweak faculty schedule page for "(.*) (.*)"/ then tweak_faculty_meetings_path(Faculty.find_by_first_name_and_last_name($1,$2))
+    when /the view faculty meeting schedule page for "(.*) (.*)"/ then faculty_instance_meetings_path(Faculty.find_by_first_name_and_last_name($1,$2))
+    when /the tweak faculty schedule page for "(.*) (.*)"/ then tweak_faculty_instance_meetings_path(Faculty.find_by_first_name_and_last_name($1,$2))
 
     when /the view admits page/ then admits_path
     when /the new admit page/ then new_admit_path
     when /the import admits page/ then upload_admits_path
     when /the edit admit page/ then edit_admit_path(@admit)
     when /the update admit availability page/ then edit_availability_admit_path(@admit)
-    when /the rank faculty page/ then rank_faculty_admit_path(@admit)
-    when /the select faculty page/ then select_faculty_admit_path(@admit)
+    when /the rank faculty page/ then edit_all_admit_rankings_path(@admit)
+    when /the select faculty page/ then add_admit_rankings_path(@admit)
     when /the delete admit page/ then delete_admit_path(@admit)
     when /the view admit meeting schedule page$/ then admit_meetings_path(@admit)
     when /the view admit meeting schedule page for "(.*) (.*)"$/ then admit_meetings_path(Admit.find_by_first_name_and_last_name($1,$2))

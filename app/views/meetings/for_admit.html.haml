@@ -11,7 +11,7 @@
         %td!= availability.time_slot.begin.strftime('%I:%M%p')
         - unless availability.meetings.empty?
           - meeting = availability.meetings.first
-          %td!= link_to meeting.host.name, (@current_user.class == Staff ? tweak_faculty_meetings_path(meeting.host) : faculty_meetings_path(meeting.host))
+          %td!= link_to meeting.host.name, (@current_user.class == Staff ? tweak_faculty_instance_meetings_path(meeting.host) : faculty_instance_meetings_path(meeting.host))
           %td!= meeting.room || meeting.host.default_room
         - else
           %td

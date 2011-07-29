@@ -1,37 +1,37 @@
 - if @current_user.class == Faculty
   - content_for :title, t('.alt_title')
 - else
-  - content_for :title, t('.title', :name => @faculty_instance.full_name)
-- form_for @faculty_instance, :url => {:action => 'update'} do |faculty_form|
-  - if @faculty_instance.errors.any?
+  - content_for :title, t('.title', :name => @ranker.full_name)
+- form_for @ranker, :url => {:action => 'update_all'} do |ranker_form|
+  - if @ranker.errors.any?
     #errors
       %h3!= t('.errors')
       %ul
-        - @faculty_instance.errors.full_messages.each do |message|
+        - @ranker.errors.full_messages.each do |message|
           %li!= message
   %fieldset
-    %h3!= t('.admit_rankings')
-    %p!= t('.admit_rankings_description')
+    %h3!= t('.rankings')
+    %p!= t('.rankings_description')
     %ul
       - if Settings.instance.disable_faculty && @current_user.class == Faculty
-        %li{:class => 'button'}!= link_to t('.add_admits'), rank_admits_faculty_instance_path(@faculty_instance)
+        %li{:class => 'button'}!= link_to t('.add'), edit_all_faculty_instance_rankings_path(@faculty_instance)
       - else
-        %li{:class => 'button'}!= link_to t('.add_admits'), select_admits_faculty_instance_path(@faculty_instance)
+        %li{:class => 'button'}!= link_to t('.add'), add_faculty_instance_rankings_path(@faculty_instance)
     %table
       %thead
         %tr
           %th{:scope => 'col'}!= HostRanking.human_attribute_name(:rank)
-          %th{:scope => 'col'}!= Admit.human_attribute_name(:full_name)
+          %th{:scope => 'col'}!= Person.human_attribute_name(:full_name)
           %th{:scope => 'col'}!= HostRanking.human_attribute_name(:mandatory)
           %th{:scope => 'col'}!= HostRanking.human_attribute_name(:time_slots)
           %th{:scope => 'col'}!= HostRanking.human_attribute_name(:one_on_one)
           %th{:scope => 'col'}!= t('.remove')
       %tbody
         - ranks = []
-        - (@faculty_instance.rankings.map(&:rank) << @faculty_instance.rankings.length).max.times {|i| ranks[i] = i + 1}
+        - (@ranker.rankings.map(&:rank) << @ranker.rankings.length).max.times {|i| ranks[i] = i + 1}
         - time_slots = []
-        - [@faculty_instance.availabilities.count, 10].max.times {|i| time_slots[i] = i + 1}
-        - faculty_form.fields_for :rankings do |ranking_fields|
+        - [@ranker.availabilities.count, 10].max.times {|i| time_slots[i] = i + 1}
+        - ranker_form.fields_for :rankings do |ranking_fields|
           - @ranking = ranking_fields.object
           %tr
             %td!= ranking_fields.select :rank, ranks
@@ -41,6 +41,4 @@
             %td!= ranking_fields.check_box :one_on_one, {}, "true", "false"
             %td!= ranking_fields.check_box :_destroy
             != ranking_fields.hidden_field :rankable_id
-  != hidden_field_tag :origin_action, @origin_action
-  != hidden_field_tag :redirect_action, @redirect_action
-  != faculty_form.submit t('.submit'), :disabled => (Settings.instance.disable_faculty && @current_user.class == Faculty)
+  != ranker_form.submit t('.submit'), :disabled => (Settings.instance.disable_faculty && @current_user.class == Faculty)

@@ -28,7 +28,7 @@ Feature: Peer advisor can rank faculty on behalf of admits
     When I follow "Update Rankings"
     And I check "Faculty Aaaa"
     And I check "Faculty Cccc"
-    And I press "Rank Faculty"
+    And I press "Rank Hosts"
     Then I should be on the rank faculty page
     And I should see "Faculty Aaaa"
     And I should see "Faculty Cccc"
@@ -38,7 +38,7 @@ Feature: Peer advisor can rank faculty on behalf of admits
     When I follow "Update Rankings"
     And I check "Faculty Aaaa"
     And I check "Faculty Cccc"
-    And I press "Rank Faculty"
+    And I press "Rank Hosts"
     And I rank the "first" faculty "2"
     And I rank the "second" faculty "1"
     And I press "Update Rankings"
@@ -50,7 +50,7 @@ Feature: Peer advisor can rank faculty on behalf of admits
     When I follow "Update Rankings"
     And I check "Faculty Aaaa"
     And I check "Faculty Bbbb"
-    And I press "Rank Faculty"
+    And I press "Rank Hosts"
     And I rank the "first" faculty "2"
     And I rank the "second" faculty "2"
     And I press "Update Rankings"
@@ -63,7 +63,7 @@ Feature: Peer advisor can rank faculty on behalf of admits
     When I follow "Update Rankings"
     And I check "Faculty Aaaa"
     And I check "Faculty Bbbb"
-    And I press "Rank Faculty"
+    And I press "Rank Hosts"
     And I rank the "first" faculty "2"
     And I rank the "second" faculty "2"
     And I press "Update Rankings"
@@ -100,9 +100,9 @@ Feature: Peer advisor can rank faculty on behalf of admits
       | rank | faculty      |
       | 1    | Faculty Aaaa |
     And I am on the rank faculty page
-    And I follow "Add Faculty"
+    And I follow "Add"
     And I check "Faculty Cccc"
-    And I press "Rank Faculty"
+    And I press "Rank Hosts"
     And I rank the "first" faculty "2"
     And I rank the "second" faculty "1"
     And I press "Update Rankings"

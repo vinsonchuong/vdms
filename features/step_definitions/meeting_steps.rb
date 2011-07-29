@@ -43,8 +43,8 @@ end
 When /^I check the remove box for admit "(.*) (.*)" at (.*)/ do |first,last,time|
   @admit = Admit.find_by_first_name_and_last_name(first,last)
   time_slot = Settings.instance.time_slots.find_by_begin(Time.zone.parse(time))
-  @host_availability = time_slot.host_availabilities.find_by_host_id(Faculty.all.first.id)
-  @visitor_availability = time_slot.visitor_availabilities.find_by_visitor_id(@admit.id)
+  @host_availability = time_slot.host_availabilities.find_by_schedulable_id(Faculty.all.first.id)
+  @visitor_availability = time_slot.visitor_availabilities.find_by_schedulable_id(@admit.id)
   @meeting = @host_availability.meetings.find_by_visitor_availability_id(@visitor_availability.id)
   i1 = Faculty.all.first.availabilities.index(@host_availability)
   i2 = @host_availability.meetings.index(@meeting)

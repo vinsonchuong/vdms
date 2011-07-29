@@ -1,0 +1,16 @@
+en:
+  visitor_rankings:
+    index:
+    add:
+      title: "Select Hosts to Rank"
+      host: "Host"
+      submit: "Rank Hosts"
+    edit_all:
+      title: "Update Visitor's (%{name}) Rankings"
+      short_title: "Update Rankings"
+      errors: "Errors"
+      rankings: "Rankings"
+      add: "Add Hosts to Rankings"
+      remove: "Remove"
+      submit: "Update Rankings"
+

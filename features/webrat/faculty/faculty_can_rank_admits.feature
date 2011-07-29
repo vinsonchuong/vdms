@@ -15,40 +15,40 @@ Feature: Faculty can rank admits
 
   Scenario: If I have yet ranked any admits, I am asked to select admits to rank
     Given I am on the faculty dashboard page
-    When I follow "Update My Admit Rankings"
+    When I follow "Update My Rankings"
     Then I should be on the select admits page
 
   Scenario: I select new admits to rank
     Given I am on the faculty dashboard page
-    When I follow "Update My Admit Rankings"
+    When I follow "Update My Rankings"
     And I check "Aaa Aaa"
     And I check "Ccc Ccc"
-    And I press "Rank Admits"
+    And I press "Rank Visitors"
     Then I should be on the rank admits page
     And I should see "Aaa Aaa"
     And I should see "Ccc Ccc"
 
   Scenario: I filter and select new admits by area
     Given I am on the faculty dashboard page
-    When I follow "Update My Admit Rankings"
+    When I follow "Update My Rankings"
     And I unselect every area
     And I check "Artificial Intelligence"
     And I check "Graphics"
-    And I press "Filter Admits"
+    And I press "Filter Visitors"
     Then I should see "Aaa Aaa"
     And I should see "Bbb Bbb"
     But I should not see "Ccc Ccc"
 
   Scenario: I rank some new admits
     Given I am on the faculty dashboard page
-    When I follow "Update My Admit Rankings"
+    When I follow "Update My Rankings"
     And I unselect every area
     And I check "Artificial Intelligence"
     And I check "Graphics"
-    And I press "Filter Admits"
+    And I press "Filter Visitors"
     And I check "Aaa Aaa"
     And I check "Bbb Bbb"
-    And I press "Rank Admits"
+    And I press "Rank Visitors"
     And I rank the "first" admit "2"
     And I flag the "first" admit as "1-On-1"
     And I flag the "first" admit as "Mandatory"
@@ -59,10 +59,10 @@ Feature: Faculty can rank admits
 
   Scenario: I give two admits duplicate ranks
     Given I am on the faculty dashboard page
-    When I follow "Update My Admit Rankings"
+    When I follow "Update My Rankings"
     And I check "Aaa Aaa"
     And I check "Bbb Bbb"
-    And I press "Rank Admits"
+    And I press "Rank Visitors"
     And I rank the "first" admit "2"
     And I rank the "second" admit "2"
     And I press "Update Rankings"
@@ -72,10 +72,10 @@ Feature: Faculty can rank admits
 
   Scenario: I give two admits duplicate ranks twice
     Given I am on the faculty dashboard page
-    When I follow "Update My Admit Rankings"
+    When I follow "Update My Rankings"
     And I check "Aaa Aaa"
     And I check "Bbb Bbb"
-    And I press "Rank Admits"
+    And I press "Rank Visitors"
     And I rank the "first" admit "2"
     And I rank the "second" admit "2"
     And I press "Update Rankings"
@@ -91,7 +91,7 @@ Feature: Faculty can rank admits
       | 2    | Bbb Bbb |
       | 3    | Ccc Ccc |
     And I am on the faculty dashboard page
-    When I follow "Update My Admit Rankings"
+    When I follow "Update My Rankings"
     Then I should be on the rank admits page
     And I should see "Aaa Aaa"
     And I should see "Bbb Bbb"
@@ -102,10 +102,10 @@ Feature: Faculty can rank admits
       | rank | admit   |
       | 1    | Aaa Aaa |
     And I am on the rank admits page
-    When I follow "Add Admits"
+    When I follow "Add"
     And I unselect every area
     And I check "Bbb Bbb"
-    And I press "Rank Admits"
+    And I press "Rank Visitors"
     And I rank the "first" admit "2"
     And I flag the "first" admit as "1-On-1"
     And I flag the "first" admit as "Mandatory"

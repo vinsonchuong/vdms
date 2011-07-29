@@ -1,0 +1,32 @@
+en:
+  host_rankings:
+    index:
+    add:
+      title: "Select Visitors to Rank"
+      filter: "Filter Visitors"
+      by_area: "By Area"
+      select_cs: "Select All CS Areas"
+      select_ee: "Select All EE Areas"
+      select_all: "Select All Areas"
+      unselect_all: "Unselect All Areas"
+      filter_submit: "Filter Visitors"
+      select: "Select Visitors"
+      Visitors: "Visitors"
+      select_submit: "Rank Visitors"
+    edit_all:
+      title: "Update Host's (%{name}) Rankings"
+      short_title: "Update Rankings"
+      alt_title: "Update My Rankings"
+      errors: "Errors"
+      rankings: "Rankings"
+      rankings_description: "Please form a ranked list of visitors you would like to meet. Note that ranks must be
+                                   unique. Flagging an admit as \"Mandatory\" emphasizes the importance of meeting
+                                   with that admit. If you specify that you wish to meet with an admit for more than one
+                                   \"Time Slot\", we will attempt to allocate a contiguous block of time. If you flag an
+                                   Admit as \"1-On-1\", we will attempt to allocate a time slot only for that Admit.
+                                   Before you can rank admits, you need to populate the candidate list.  To
+                                   do so, follow this link:"
+      add: "Add Visitors to Rankings"
+      remove: "Remove"
+      submit: "Update Rankings"
+
