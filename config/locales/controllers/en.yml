@@ -23,10 +23,6 @@ en:
       destroy_all:
         success: "Peer Advisors were all successfully removed."
     faculty:
-      edit_availability:
-        disabled: "The Staff have disabled making further changes."
-      rank_admits:
-        disabled: "The Staff have disabled making further changes."
       create:
         success: "Faculty was successfully added."
       import:
@@ -38,10 +34,6 @@ en:
       destroy_all:
         success: "Faculty were all successfully removed."
     admits:
-      edit_availability:
-        disabled: "The Staff have disabled making further changes."
-      rank_faculty:
-        disabled: "The Staff have disabled making further changes."
       create:
         success: "Admit was successfully added."
       import:
@@ -52,6 +44,12 @@ en:
         success: "Admit was successfully removed."
       destroy_all:
         success: "Admits were all successfully removed."
+  rankings:
+    edit_all:
+      disabled: "The Staff have disabled making further changes."
+  availabilities:
+    edit_all:
+      disabled: "The Staff have disabled making further changes."
   settings:
     update:
       success: "Settings were successfully updated."

@@ -64,8 +64,11 @@ en:
       time_slot:
         begin: "Start Time"
         end: "End Time"
-        room: "Different Room"
+      availability:
+        time_slot: "Time"
         available: "Available?"
+      host_availability:
+        room: "Different Room"
       meeting:
         time: "Time"
         room: "Room"

@@ -30,7 +30,7 @@ module NavigationHelpers
     when /the new faculty page/ then new_faculty_instance_path
     when /the import faculty page/ then upload_faculty_instance_path
     when /the edit faculty page/ then edit_faculty_instance_path(@faculty)
-    when /the update faculty availability page/ then edit_availability_faculty_instance_path(@faculty)
+    when /the update faculty availability page/ then edit_all_faculty_instance_availabilities_path(@faculty)
     when /the rank admits page/ then edit_all_faculty_instance_rankings_path(@faculty)
     when /the select admits page/ then add_faculty_instance_rankings_path(@faculty)
     when /the delete faculty page/ then delete_faculty_instance_path(@faculty)
@@ -43,7 +43,7 @@ module NavigationHelpers
     when /the new admit page/ then new_admit_path
     when /the import admits page/ then upload_admits_path
     when /the edit admit page/ then edit_admit_path(@admit)
-    when /the update admit availability page/ then edit_availability_admit_path(@admit)
+    when /the update admit availability page/ then edit_all_admit_availabilities_path(@admit)
     when /the rank faculty page/ then edit_all_admit_rankings_path(@admit)
     when /the select faculty page/ then add_admit_rankings_path(@admit)
     when /the delete admit page/ then delete_admit_path(@admit)

@@ -33,13 +33,6 @@ en:
       errors: "Errors"
       info: "Admit Info"
       submit: "Update Admit"
-    edit_availability:
-      title: "Update Admit's (%{name}) Availability"
-      short_title: "Update Availability"
-      availability: "Availability"
-      select_all: "Check All Time Slots"
-      unselect_all: "Uncheck All Time Slots"
-      submit: "Update Availability"
     view_meetings:
       title: "View Admit's Meeting Schedule"
       short_title: "View Meeting Schedule"

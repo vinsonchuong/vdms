@@ -32,10 +32,9 @@ class RankingsController < ApplicationController
       end
     end
 
-    if @settings.disable_faculty && @current_user.class == Faculty
-      flash[:alert] = t('people.faculty.rank_admits.disabled')
-    elsif @settings.disable_peer_advisors && @current_user.class == PeerAdvisor
-      flash[:alert] = t('people.admits.rank_faculty.disabled')
+    if @settings.disable_faculty && @current_user.class == Faculty ||
+       @settings.disable_peer_advisors && @current_user.class == PeerAdvisor
+      flash[:alert] = t('rankings.edit_all.disabled')
     end
 
     redirect_to :action => 'add' if @ranker.rankings.empty?

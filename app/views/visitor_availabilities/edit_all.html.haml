@@ -1,0 +1,20 @@
+- content_for :title, t('.title', :name => @schedulable.full_name)
+- form_for @schedulable, :url => {:action => 'update_all'}, :html => {:name => 'availability_form'} do |schedulable_form|
+  != schedulable_form.error_messages
+  %fieldset
+    %h3!= t('.availability')
+    %ul
+      %li!= link_to_function(t('.select_all'), 'select_all(availability_form)')
+      %li!= link_to_function(t('.unselect_all'), 'unselect_all(availability_form)')
+    %table
+      %thead
+        %tr
+          %th{:scope => 'col'}!= VisitorAvailability.human_attribute_name(:time_slot)
+          %th{:scope => 'col'}!= VisitorAvailability.human_attribute_name(:available)
+      %tbody
+        - schedulable_form.fields_for :availabilities do |availability_fields|
+          - availability = availability_fields.object
+          %tr
+            %td!= "#{availability.time_slot.begin.strftime('%m/%d/%y - %I:%M%p')} to #{availability.time_slot.end.strftime('%I:%M%p')}"
+            %td!= availability_fields.check_box :available
+    != schedulable_form.submit t('.submit'), :disabled => (Settings.instance.disable_peer_advisors && @current_user.class == PeerAdvisor)

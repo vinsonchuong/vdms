@@ -212,8 +212,11 @@ describe 'Routes' do
       end
 
       context 'Update Faculty Availability' do
-        it 'routes GET /people/faculty/1/edit_availability to Faculty#edit_availability' do
-          {:get => '/people/faculty/1/edit_availability'}.should route_to(:controller => 'faculty', :action => 'edit_availability', :id => '1')
+        it 'routes GET /people/faculty/1/availabilities/edit_all to HostAvailabilities#edit_all' do
+          {:get => '/people/faculty/1/availabilities/edit_all'}.should route_to(:controller => 'host_availabilities', :action => 'edit_all', :faculty_instance_id => '1')
+        end
+        it 'routes PUT /people/faculty/1/availabilities/update_all to HostAvailabilities#update_all' do
+          {:put => '/people/faculty/1/availabilities/update_all'}.should route_to(:controller => 'host_availabilities', :action => 'update_all', :faculty_instance_id => '1')
         end
       end
 
@@ -291,8 +294,26 @@ describe 'Routes' do
       end
 
       context 'Update Admit Availability' do
-        it 'routes GET /people/admits/1/edit_availability to Admits#edit_availability' do
-          {:get => '/people/admits/1/edit_availability'}.should route_to(:controller => 'admits', :action => 'edit_availability', :id => '1')
+        it 'routes GET /people/admits/1/availabilities/edit_all to VisitorAvailabilities#edit_all' do
+          {:get => '/people/admits/1/availabilities/edit_all'}.should route_to(:controller => 'visitor_availabilities', :action => 'edit_all', :admit_id => '1')
+        end
+        it 'routes PUT /people/admits/1/availabilities/update_all to VisitorAvailabilities#update_all' do
+          {:put => '/people/admits/1/availabilities/update_all'}.should route_to(:controller => 'visitor_availabilities', :action => 'update_all', :admit_id => '1')
+        end
+      end
+
+      context 'Update Admit Rankings' do
+        it 'routes GET /people/admits/1/rankings to VisitorRankings#index' do
+          {:get => '/people/admits/1/rankings'}.should route_to(:controller => 'visitor_rankings', :action => 'index', :admit_id => '1')
+        end
+        it 'routes GET /people/admits/1/rankings/add to VisitorRankings#add' do
+          {:get => '/people/admits/1/rankings/add'}.should route_to(:controller => 'visitor_rankings', :action => 'add', :admit_id => '1')
+        end
+        it 'routes GET /people/admits/1/rankings/edit_all to VisitorRankings#edit_all' do
+          {:get => '/people/admits/1/rankings/edit_all'}.should route_to(:controller => 'visitor_rankings', :action => 'edit_all', :admit_id => '1')
+        end
+        it 'routes PUT /people/admits/1/rankings/update_all to VisitorRankings#update_all' do
+          {:put => '/people/admits/1/rankings/update_all'}.should route_to(:controller => 'visitor_rankings', :action => 'update_all', :admit_id => '1')
         end
       end
 
