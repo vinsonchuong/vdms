@@ -9,11 +9,11 @@ class TimeSlot < ActiveRecord::Base
 
   after_create do |record|
     #validate against duplicates
-    Faculty.all.each do |faculty_instance|
-      faculty_instance.availabilities.create(:time_slot => record, :available => false)
+    Host.all.each do |host|
+      host.availabilities.create(:time_slot => record, :available => false)
     end
-    Admit.all.each do |admit|
-      admit.availabilities.create(:time_slot => record, :available => true)
+    Visitor.all.each do |visitor|
+      visitor.availabilities.create(:time_slot => record, :available => true)
     end
   end
 

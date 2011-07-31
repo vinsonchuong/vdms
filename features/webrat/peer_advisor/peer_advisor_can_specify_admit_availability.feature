@@ -41,7 +41,7 @@ Feature: Peer advisor can specify admit availability
     When I flag the "1/1/2011 9:00AM" to "1/1/2011 9:15AM" slot as available
     And I flag the "1/1/2011 12:00PM" to "1/1/2011 12:15PM" slot as available
     And I press "Update Availability"
-    Then I should see "Admit was successfully updated"
+    Then I should see "Visitor was successfully updated"
     And I should be on the update admit availability page
 
   Scenario: I see the admit's name

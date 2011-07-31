@@ -211,30 +211,6 @@ describe 'Routes' do
         end
       end
 
-      context 'Update Faculty Availability' do
-        it 'routes GET /people/faculty/1/availabilities/edit_all to HostAvailabilities#edit_all' do
-          {:get => '/people/faculty/1/availabilities/edit_all'}.should route_to(:controller => 'host_availabilities', :action => 'edit_all', :faculty_instance_id => '1')
-        end
-        it 'routes PUT /people/faculty/1/availabilities/update_all to HostAvailabilities#update_all' do
-          {:put => '/people/faculty/1/availabilities/update_all'}.should route_to(:controller => 'host_availabilities', :action => 'update_all', :faculty_instance_id => '1')
-        end
-      end
-
-      context 'Update Faculty Rankings' do
-        it 'routes GET /people/faculty/1/rankings to HostRankings#index' do
-          {:get => '/people/faculty/1/rankings'}.should route_to(:controller => 'host_rankings', :action => 'index', :faculty_instance_id => '1')
-        end
-        it 'routes GET /people/faculty/1/rankings/add to HostRankings#add' do
-          {:get => '/people/faculty/1/rankings/add'}.should route_to(:controller => 'host_rankings', :action => 'add', :faculty_instance_id => '1')
-        end
-        it 'routes GET /people/faculty/1/rankings/edit_all to HostRankings#edit_all' do
-          {:get => '/people/faculty/1/rankings/edit_all'}.should route_to(:controller => 'host_rankings', :action => 'edit_all', :faculty_instance_id => '1')
-        end
-        it 'routes PUT /people/faculty/1/rankings/update_all to HostRankings#update_all' do
-          {:put => '/people/faculty/1/rankings/update_all'}.should route_to(:controller => 'host_rankings', :action => 'update_all', :faculty_instance_id => '1')
-        end
-      end
-
       context 'Remove Faculty' do
         it 'routes GET /people/faculty/1/delete to Faculty#delete' do
           {:get => '/people/faculty/1/delete'}.should route_to(:controller => 'faculty', :action => 'delete', :id => '1')
@@ -293,30 +269,6 @@ describe 'Routes' do
         end
       end
 
-      context 'Update Admit Availability' do
-        it 'routes GET /people/admits/1/availabilities/edit_all to VisitorAvailabilities#edit_all' do
-          {:get => '/people/admits/1/availabilities/edit_all'}.should route_to(:controller => 'visitor_availabilities', :action => 'edit_all', :admit_id => '1')
-        end
-        it 'routes PUT /people/admits/1/availabilities/update_all to VisitorAvailabilities#update_all' do
-          {:put => '/people/admits/1/availabilities/update_all'}.should route_to(:controller => 'visitor_availabilities', :action => 'update_all', :admit_id => '1')
-        end
-      end
-
-      context 'Update Admit Rankings' do
-        it 'routes GET /people/admits/1/rankings to VisitorRankings#index' do
-          {:get => '/people/admits/1/rankings'}.should route_to(:controller => 'visitor_rankings', :action => 'index', :admit_id => '1')
-        end
-        it 'routes GET /people/admits/1/rankings/add to VisitorRankings#add' do
-          {:get => '/people/admits/1/rankings/add'}.should route_to(:controller => 'visitor_rankings', :action => 'add', :admit_id => '1')
-        end
-        it 'routes GET /people/admits/1/rankings/edit_all to VisitorRankings#edit_all' do
-          {:get => '/people/admits/1/rankings/edit_all'}.should route_to(:controller => 'visitor_rankings', :action => 'edit_all', :admit_id => '1')
-        end
-        it 'routes PUT /people/admits/1/rankings/update_all to VisitorRankings#update_all' do
-          {:put => '/people/admits/1/rankings/update_all'}.should route_to(:controller => 'visitor_rankings', :action => 'update_all', :admit_id => '1')
-        end
-      end
-
       context 'Remove Admits' do
         it 'routes GET /people/admits/1/delete to Admits#delete' do
           {:get => '/people/admits/1/delete'}.should route_to(:controller => 'admits', :action => 'delete', :id => '1')
@@ -327,24 +279,84 @@ describe 'Routes' do
         end
       end
     end
-    context 'Completed Schedules' do
-      it 'can view meetings for a faculty member' do
-        {:get => '/people/faculty/1/meetings'}.should route_to(:controller => 'meetings', :action => 'index', :faculty_instance_id => '1')
+  end
+
+
+  describe 'Events' do
+    describe 'Hosts' do
+      describe 'Rankings' do
+        context 'when adding' do
+          it 'routes GET /hosts/1/rankings/add to HostRankings#add' do
+            {:get => '/hosts/1/rankings/add'}.should route_to(:controller => 'host_rankings', :action => 'add', :host_id => '1')
+          end
+        end
+        context 'when updating' do
+          it 'routes GET /hosts/1/rankings/edit_all to HostRankings#edit_all' do
+            {:get => '/hosts/1/rankings/edit_all'}.should route_to(:controller => 'host_rankings', :action => 'edit_all', :host_id => '1')
+          end
+          it 'routes PUT /hosts/1/rankings/update_all to HostRankings#update_all' do
+            {:put => '/hosts/1/rankings/update_all'}.should route_to(:controller => 'host_rankings', :action => 'update_all', :host_id => '1')
+          end
+        end
       end
-      it 'can view meetings for an admit' do
-        {:get => '/people/admits/1/meetings'}.should route_to(:controller => 'meetings', :action => 'index', :admit_id => '1')
+      describe 'Availabilities' do
+        context 'when updating' do
+          it 'routes GET /hosts/1/availabilities/edit_all to HostAvailabilities#edit_all' do
+            {:get => '/hosts/1/availabilities/edit_all'}.should route_to(:controller => 'host_availabilities', :action => 'edit_all', :host_id => '1')
+          end
+          it 'routes PUT /hosts/1/availabilities/update_all to HostAvailabilities#update_all' do
+            {:put => '/hosts/1/availabilities/update_all'}.should route_to(:controller => 'host_availabilities', :action => 'update_all', :host_id => '1')
+          end
+        end
       end
-      it 'can view the master schedule' do
-        {:get => '/meetings/master'}.should route_to(:controller => 'meetings', :action => 'master')
+      describe 'Meetings' do
+        context 'when viewing' do
+          it 'routes GET /hosts/1/meetings to Meetings#index' do
+            {:get => '/hosts/1/meetings'}.should route_to(:controller => 'meetings', :action => 'index', :host_id => '1')
+          end
+        end
+        context 'when updating' do
+          it 'routes GET /hosts/1/meetings/tweak to Meetings#tweak' do
+            {:get => '/hosts/1/meetings/tweak'}.should route_to(:controller => 'meetings', :action => 'tweak', :host_id => '1')
+          end
+          it 'routes POST /hosts/1/meetings/apply_tweaks to Meetings#apply_tweaks' do
+            {:post => '/hosts/1/meetings/apply_tweaks'}.should route_to(:controller => 'meetings', :action => 'apply_tweaks', :host_id => '1')
+          end
+        end
       end
-      it 'can tweak meeting schedule for a faculty member' do
-        {:get => '/people/faculty/1/meetings/tweak'}.should route_to(:controller => 'meetings', :action => 'tweak', :faculty_instance_id => '1')
+    end
+    describe 'Visitors' do
+      describe 'Rankings' do
+        context 'when adding' do
+          it 'routes GET /visitors/1/rankings/add to VisitorRankings#add' do
+            {:get => '/visitors/1/rankings/add'}.should route_to(:controller => 'visitor_rankings', :action => 'add', :visitor_id => '1')
+          end
+        end
+        context 'when updating' do
+          it 'routes GET /visitors/1/rankings/edit_all to VisitorRankings#edit_all' do
+            {:get => '/visitors/1/rankings/edit_all'}.should route_to(:controller => 'visitor_rankings', :action => 'edit_all', :visitor_id => '1')
+          end
+          it 'routes PUT /visitors/1/rankings/update_all to VisitorRankings#update_all' do
+            {:put => '/visitors/1/rankings/update_all'}.should route_to(:controller => 'visitor_rankings', :action => 'update_all', :visitor_id => '1')
+          end
+        end
       end
-      it 'can apply tweaks to a faculty meeting schedule' do
-        {:post => '/people/faculty/1/meetings/apply_tweaks'}.should route_to(:controller => 'meetings', :action => 'apply_tweaks', :faculty_instance_id => '1')
+      describe 'Availabilities' do
+        context 'when updating' do
+          it 'routes GET /visitors/1/availabilities/edit_all to VisitorAvailabilities#edit_all' do
+            {:get => '/visitors/1/availabilities/edit_all'}.should route_to(:controller => 'visitor_availabilities', :action => 'edit_all', :visitor_id => '1')
+          end
+          it 'routes PUT /visitors/1/availabilities/update_all to VisitorAvailabilities#update_all' do
+            {:put => '/visitors/1/availabilities/update_all'}.should route_to(:controller => 'visitor_availabilities', :action => 'update_all', :visitor_id => '1')
+          end
+        end
       end
-      it 'can view meeting statistics' do
-        {:get => '/meetings/statistics'}.should route_to(:controller => 'meetings', :action => 'statistics')
+      describe 'Meetings' do
+        context 'when viewing' do
+          it 'routes GET /visitors/1/meetings to Meetings#index' do
+            {:get => '/visitors/1/meetings'}.should route_to(:controller => 'meetings', :action => 'index', :visitor_id => '1')
+          end
+        end
       end
     end
   end

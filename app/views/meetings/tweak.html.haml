@@ -1,10 +1,10 @@
-- content_for :title, t('.title', :name => @faculty.full_name)
+- content_for :title, t('.title', :name => @faculty.person.full_name)
 
 %p
-  Edit #{@faculty.first_name}'s 
-  != link_to 'Availability', edit_all_faculty_instance_availabilities_path(@faculty)
+  Edit #{@faculty.person.first_name}'s
+  != link_to 'Availability', edit_all_host_availabilities_path(@faculty)
   or
-  != link_to 'Profile', edit_faculty_instance_path(@faculty)
+  != link_to 'Profile', edit_faculty_instance_path(@faculty.person)
 
 %p.instructions!= t('.instructions')
 
@@ -27,7 +27,7 @@
             %td
               - unless meeting.visitor.nil?
                 != meeting_fields.check_box :_destroy
-                != link_to meeting.visitor.name, admit_meetings_path(meeting.visitor)
+                != link_to meeting.visitor.person.name, visitor_meetings_path(meeting.visitor)
               - else
-                != meeting_fields.select :visitor_availability_id, [['', '']] + @all_admits.map {|a| [a.name, a.availabilities.find_by_time_slot_id(availability.time_slot_id).id]}
+                != meeting_fields.select :visitor_availability_id, [['', '']] + @all_admits.map {|a| [a.person.name, a.availabilities.find_by_time_slot_id(availability.time_slot_id).id]}
   != tweak_form.submit 'Save Changes'

@@ -30,25 +30,25 @@ module NavigationHelpers
     when /the new faculty page/ then new_faculty_instance_path
     when /the import faculty page/ then upload_faculty_instance_path
     when /the edit faculty page/ then edit_faculty_instance_path(@faculty)
-    when /the update faculty availability page/ then edit_all_faculty_instance_availabilities_path(@faculty)
-    when /the rank admits page/ then edit_all_faculty_instance_rankings_path(@faculty)
-    when /the select admits page/ then add_faculty_instance_rankings_path(@faculty)
+    when /the update faculty availability page/ then edit_all_host_availabilities_path(@faculty.host)
+    when /the rank admits page/ then edit_all_host_rankings_path(@faculty.host)
+    when /the select admits page/ then add_host_rankings_path(@faculty.host)
     when /the delete faculty page/ then delete_faculty_instance_path(@faculty)
-    when /the admit_ranking page/ then rank_admits_faculty_instance_path(@faculty)   
-    when /the view faculty meeting schedule page$/ then faculty_meetings_path(@faculty)
-    when /the view faculty meeting schedule page for "(.*) (.*)"/ then faculty_instance_meetings_path(Faculty.find_by_first_name_and_last_name($1,$2))
-    when /the tweak faculty schedule page for "(.*) (.*)"/ then tweak_faculty_instance_meetings_path(Faculty.find_by_first_name_and_last_name($1,$2))
+    when /the admit_ranking page/ then edit_all_host_rankings_path(@faculty.host)
+    when /the view faculty meeting schedule page$/ then host_meetings_path(@faculty.host)
+    when /the view faculty meeting schedule page for "(.*) (.*)"/ then host_meetings_path(Faculty.find_by_first_name_and_last_name($1,$2).host)
+    when /the tweak faculty schedule page for "(.*) (.*)"/ then tweak_host_meetings_path(Faculty.find_by_first_name_and_last_name($1,$2).host)
 
     when /the view admits page/ then admits_path
     when /the new admit page/ then new_admit_path
     when /the import admits page/ then upload_admits_path
     when /the edit admit page/ then edit_admit_path(@admit)
-    when /the update admit availability page/ then edit_all_admit_availabilities_path(@admit)
-    when /the rank faculty page/ then edit_all_admit_rankings_path(@admit)
-    when /the select faculty page/ then add_admit_rankings_path(@admit)
+    when /the update admit availability page/ then edit_all_visitor_availabilities_path(@admit.visitor)
+    when /the rank faculty page/ then edit_all_visitor_rankings_path(@admit.visitor)
+    when /the select faculty page/ then add_visitor_rankings_path(@admit.visitor)
     when /the delete admit page/ then delete_admit_path(@admit)
-    when /the view admit meeting schedule page$/ then admit_meetings_path(@admit)
-    when /the view admit meeting schedule page for "(.*) (.*)"$/ then admit_meetings_path(Admit.find_by_first_name_and_last_name($1,$2))
+    when /the view admit meeting schedule page$/ then visitor_meetings_path(@admit.visitor)
+    when /the view admit meeting schedule page for "(.*) (.*)"$/ then visitor_meetings_path(Admit.find_by_first_name_and_last_name($1,$2).visitor)
 
     when /the master meetings page/  then master_meetings_path() 
 

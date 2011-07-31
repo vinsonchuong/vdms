@@ -53,3 +53,10 @@ en:
   settings:
     update:
       success: "Settings were successfully updated."
+  hosts:
+    update:
+      success: "Host was successfully updated."
+  visitors:
+    update:
+      success: "Visitor was successfully updated."
+

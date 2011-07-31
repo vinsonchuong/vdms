@@ -42,7 +42,7 @@ Feature: Peer advisor can rank faculty on behalf of admits
     And I rank the "first" faculty "2"
     And I rank the "second" faculty "1"
     And I press "Update Rankings"
-    Then I should see "Admit was successfully updated."
+    Then I should see "Visitor was successfully updated."
     And I should be on the rank faculty page
 
   Scenario: I give two faculty duplicate ranks
@@ -106,7 +106,7 @@ Feature: Peer advisor can rank faculty on behalf of admits
     And I rank the "first" faculty "2"
     And I rank the "second" faculty "1"
     And I press "Update Rankings"
-    Then I should see "Admit was successfully updated."
+    Then I should see "Visitor was successfully updated."
     And I should be on the rank faculty page
 
   Scenario: I change an admit's faculty rankings
@@ -119,7 +119,7 @@ Feature: Peer advisor can rank faculty on behalf of admits
     And I rank the "first" faculty "2"
     And I rank the "second" faculty "1"
     And I press "Update Rankings"
-    Then I should see "Admit was successfully updated"
+    Then I should see "Visitor was successfully updated"
     And I should be on the rank faculty page
 
   Scenario: I remove an admit's faculty rankings
@@ -132,7 +132,7 @@ Feature: Peer advisor can rank faculty on behalf of admits
     And I flag the "second" faculty for removal
     And I flag the "third" faculty for removal
     And I press "Update Rankings"
-    Then I should see "Admit was successfully updated"
+    Then I should see "Visitor was successfully updated"
     And I should see "Faculty Aaa"
     But I should not see "Faculty Bbb"
     And I should not see "Faculty Ccc"

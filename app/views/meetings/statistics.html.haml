@@ -6,13 +6,13 @@
       %th{:scope => 'col'} Faculty
       %th{:scope => 'col'} Admits
   %tbody
-    - @unsatisfied_faculty.each do |faculty, admits|
+    - @unsatisfied_hosts.each do |faculty, admits|
       %tr
-        %td!= link_to faculty.full_name, (@current_user.class == Staff ? tweak_faculty_instance_meetings_path(faculty) : faculty_instance_meetings_path(faculty))
+        %td!= link_to faculty.person.full_name, (@current_user.class == Staff ? tweak_host_meetings_path(faculty) : host_meetings_path(faculty))
         %td
           %ul
             - admits.each do |admit|
-              %li!= link_to admit.full_name, admit_meetings_path(admit)
+              %li!= link_to admit.person.full_name, visitor_meetings_path(admit)
 %h3 Unsatisfied Admits
 %p!= "Admits with fewer than #{Settings.instance.unsatisfied_admit_threshold} meetings"
 %table
@@ -21,9 +21,9 @@
       %th{:scope => 'col'} Admit
       %th{:scope => 'col'} # Meetings
   %tbody
-    - @unsatisfied_admits.each do |admit|
+    - @unsatisfied_visitors.each do |admit|
       %tr
-        %td!= link_to admit.full_name, admit_meetings_path(admit)
+        %td!= link_to admit.person.full_name, visitor_meetings_path(admit)
         %td!= admit.meetings.count
 %h3 Faculty with Unsatisfied Rankings
 %table
@@ -32,14 +32,14 @@
       %th{:scope => 'col'} Faculty
       %th{:scope => 'col'} Admits
   %tbody
-    - @faculty_with_unsatisfied_rankings.each do |faculty, admit_rankings|
+    - @hosts_with_unsatisfied_rankings.each do |faculty, admit_rankings|
       %tr
-        %td!= link_to faculty.full_name, (@current_user.class == Staff ? tweak_faculty_instance_meetings_path(faculty) : faculty_instance_meetings_path(faculty))
+        %td!= link_to faculty.person.full_name, (@current_user.class == Staff ? tweak_host_meetings_path(faculty) : host_meetings_path(faculty))
         %td
           %dl
             - admit_rankings.each do |admit_ranking|
               %dt!= admit_ranking.rank
-              %dd!= link_to admit_ranking.rankable.full_name, admit_meetings_path(admit_ranking.rankable)
+              %dd!= link_to admit_ranking.rankable.person.full_name, visitor_meetings_path(admit_ranking.rankable)
 %h3 Admits with Unsatisfied Rankings
 %table
   %thead
@@ -47,7 +47,7 @@
       %th{:scope => 'col'} Admit
       %th{:scope => 'col'} Faculty
   %tbody
-    - @admits_with_unsatisfied_rankings.each do |admit, faculty_rankings|
+    - @visitors_with_unsatisfied_rankings.each do |admit, faculty_rankings|
       %tr
         %td!= link_to admit.full_name, admit_meetings_path(admit)
         %td

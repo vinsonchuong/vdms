@@ -14,6 +14,8 @@ class Settings < ActiveRecord::Base
   end
 
   has_many :time_slots, :order => 'begin ASC', :dependent => :destroy
+  has_many :hosts, :foreign_key => 'event_id'
+  has_many :visitors, :foreign_key => 'event_id'
   accepts_nested_attributes_for :time_slots
 
   validates_presence_of :unsatisfied_admit_threshold

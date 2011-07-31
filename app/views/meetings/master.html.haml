@@ -4,7 +4,7 @@
     %tr
       %th Time
       - @hosts.each do |host|
-        %th.time!= link_to host.name, (@current_user.class == Staff ? tweak_faculty_instance_meetings_path(host) : faculty_instance_meetings_path(host))
+        %th.time!= link_to host.person.name, (@current_user.class == Staff ? tweak_host_meetings_path(host) : host_meetings_path(host))
       %tbody
         - @settings.time_slots.each do |time_slot|
           %tr
@@ -13,5 +13,5 @@
               %td.meeting
                 - host_availability.meetings.by_visitor.each do |meeting|
                   %span
-                    != link_to meeting.visitor.name, admit_meetings_path(meeting.visitor)
+                    != link_to meeting.visitor.person.name, visitor_meetings_path(meeting.visitor)
                   %br

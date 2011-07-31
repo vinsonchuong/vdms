@@ -121,11 +121,11 @@ Feature: Staff can manage faculty
     Given I am on the view faculty page
     When I follow "Update Availability"
     And I fill in "Default room" with "373 Soda"
-    And I fill in "Max admits per meeting" with "4"
+    And I fill in "Max visitors per meeting" with "4"
     And I flag the "1/1/2011 9:00AM" to "1/1/2011 9:15AM" slot as available
     And I flag the "1/1/2011 10:00AM" to "1/1/2011 10:15AM" slot as available
     And I press "Update Availability"
-    Then I should see "Faculty was successfully updated"
+    Then I should see "Host was successfully updated"
     And I should be on the update faculty availability page
 
   Scenario: I see the faculty's name while updating his admit rankings
@@ -158,7 +158,7 @@ Feature: Staff can manage faculty
     And I rank the "first" admit "2"
     And I rank the "second" admit "1"
     And I press "Update Rankings"
-    Then I should see "Faculty was successfully updated."
+    Then I should see "Host was successfully updated."
 
   Scenario: I see the faculty's name while removing him
     Given I am on the view faculty page

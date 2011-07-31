@@ -3,8 +3,8 @@ require 'spec_helper'
 describe HostAvailability do
   before(:each) do
     time_slot = Factory.create(:time_slot)
-    faculty = Factory.create(:faculty)
-    @host_availability = faculty.availabilities.first
+    host = Factory.create(:host)
+    @host_availability = host.availabilities.first
   end
 
   describe 'Attributes' do

@@ -24,18 +24,19 @@ ActionController::Routing::Routes.draw do |map|
     :except => [:show],
     :collection => {:upload => :get, :delete_all => :get, :import => :post, :destroy_all => :delete},
     :member => {:delete => :get}
-  map.resources :faculty, :singular => 'faculty_instance', :path_prefix => '/people' do |faculty|
-    faculty.resources :rankings, :controller => 'host_rankings', :only => :index, :collection => {:add => :get, :edit_all => :get, :update_all => :put}
-    faculty.resources :availabilities, :controller => 'host_availabilities', :except => :all, :collection => {:edit_all => :get, :update_all => :put}
-    faculty.resources :meetings, :only => :index, :collection => {:tweak => :get, :apply_tweaks => :post}
-  end
   map.resources :admits, :path_prefix => '/people',
     :except => [:show],
     :collection => {:upload => :get, :delete_all => :get, :import => :post, :destroy_all => :delete},
     :member => {:delete => :get}
-  map.resources :admits, :path_prefix => '/people' do |admit|
-    admit.resources :rankings, :controller => 'visitor_rankings', :only => :index, :collection => {:add => :get, :edit_all => :get, :update_all => :put}
-    admit.resources :availabilities, :controller => 'visitor_availabilities', :except => :all, :collection => {:edit_all => :get, :update_all => :put}
-    admit.resources :meetings, :only => :index
+
+  map.resources :hosts, :except => :all do |host|
+    host.resources :rankings, :controller => 'host_rankings', :only => :index, :collection => {:add => :get, :edit_all => :get, :update_all => :put}
+    host.resources :availabilities, :controller => 'host_availabilities', :except => :all, :collection => {:edit_all => :get, :update_all => :put}
+    host.resources :meetings, :only => :index, :collection => {:tweak => :get, :apply_tweaks => :post}
+  end
+  map.resources :visitors do |visitor|
+    visitor.resources :rankings, :controller => 'visitor_rankings', :only => :index, :collection => {:add => :get, :edit_all => :get, :update_all => :put}
+    visitor.resources :availabilities, :controller => 'visitor_availabilities', :except => :all, :collection => {:edit_all => :get, :update_all => :put}
+    visitor.resources :meetings, :only => :index
   end
 end

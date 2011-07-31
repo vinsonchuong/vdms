@@ -30,14 +30,14 @@ Feature: Faculty can specify availability
     Given I am on the update faculty availability page
     When I fill in "Default room" with "373 Soda"
     And I press "Update Availability"
-    Then I should see "Faculty was successfully updated"
+    Then I should see "Host was successfully updated"
     And I should be on the update faculty availability page
 
   Scenario: I specify the maximum number of students per meeting slot
     Given I am on the update faculty availability page
-    When I fill in "Max admits per meeting" with "4"
+    When I fill in "Max visitors per meeting" with "4"
     And I press "Update Availability"
-    Then I should see "Faculty was successfully updated"
+    Then I should see "Host was successfully updated"
     And I should be on the update faculty availability page
 
   Scenario: I specify the meeting slots for which I am available
@@ -45,7 +45,7 @@ Feature: Faculty can specify availability
     When I flag the "1/1/2011 9:00AM" to "1/1/2011 9:15AM" slot as available
     And I flag the "1/1/2011 10:00AM" to "1/1/2011 10:15AM" slot as available
     And I press "Update Availability"
-    Then I should see "Faculty was successfully updated"
+    Then I should see "Host was successfully updated"
     And I should be on the update faculty availability page
 
   Scenario: I specify a different room for a meeting slot
@@ -55,7 +55,7 @@ Feature: Faculty can specify availability
     And I flag the "1/1/2011 10:00AM" to "1/1/2011 10:15AM" slot as available
     And I set the room for the "1/1/2011 9:00AM" to "1/1/2011 9:15AM" slot to "373 Soda"
     And I press "Update Availability"
-    Then I should see "Faculty was successfully updated"
+    Then I should see "Host was successfully updated"
     And I should be on the update faculty availability page
 
   Scenario: The staff have disabled making further changes

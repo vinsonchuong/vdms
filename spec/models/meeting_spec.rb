@@ -37,23 +37,23 @@ describe Meeting do
 
   describe 'Scopes' do
     it "sorts by Host's name" do
-      @meeting.host.update_attributes(:first_name => 'Bbb', :last_name => 'Bbb')
+      @meeting.host.person.update_attributes(:first_name => 'Bbb', :last_name => 'Bbb')
       visitor_availability2 = Factory.create(:visitor_availability, :time_slot => @time_slot)
       Meeting.create(:host_availability => @meeting.host_availability, :visitor_availability => visitor_availability2)
-      host2 = Factory.create(:faculty, :first_name => 'Aaa', :last_name => 'Aaa')
+      host2 = Factory.create(:host, :person => Factory.create(:faculty, :first_name => 'Aaa', :last_name => 'Aaa'))
       host_availability2 = Factory.create(:host_availability, :host => host2, :time_slot => @time_slot)
       visitor_availability3 = Factory.create(:visitor_availability, :time_slot => @time_slot)
       Meeting.create(:host_availability => host_availability2, :visitor_availability => visitor_availability3)
-      Meeting.by_host.map {|m| m.host.name}.should == ['Aaa Aaa', 'Bbb Bbb', 'Bbb Bbb']
+      Meeting.by_host.map {|m| m.host.person.name}.should == ['Aaa Aaa', 'Bbb Bbb', 'Bbb Bbb']
     end
 
     it "sorts by Visitor's name" do
-      @meeting.visitor.update_attributes(:first_name => 'Bbb', :last_name => 'Bbb')
-      visitor2 = Factory.create(:admit, :first_name => 'Aaa', :last_name => 'Aaa')
+      @meeting.visitor.person.update_attributes(:first_name => 'Bbb', :last_name => 'Bbb')
+      visitor2 = Factory.create(:visitor, :person => Factory.create(:admit, :first_name => 'Aaa', :last_name => 'Aaa'))
       visitor_availability2 = Factory.create(:visitor_availability, :visitor => visitor2, :time_slot => @time_slot)
       host_availability2 = Factory.create(:host_availability, :time_slot => @time_slot)
       Meeting.create(:host_availability => host_availability2, :visitor_availability => visitor_availability2)
-      Meeting.by_visitor.map {|m| m.visitor.name}.should == ['Aaa Aaa', 'Bbb Bbb']
+      Meeting.by_visitor.map {|m| m.visitor.person.name}.should == ['Aaa Aaa', 'Bbb Bbb']
     end
   end
 
@@ -82,11 +82,11 @@ describe Meeting do
     end
 
     it 'is not valid when the Host is already meeting with his maximum number of Visitors for the Time Slot' do
-      @meeting.host.update_attribute(:max_admits_per_meeting, 2)
-      visitor2 = Factory.create(:admit)
+      @meeting.host.update_attribute(:max_visitors_per_meeting, 2)
+      visitor2 = Factory.create(:visitor)
       visitor2_availability = visitor2.availabilities.create(:time_slot => @time_slot, :available => true)
       meeting2 = Meeting.create(:host_availability => @meeting.host_availability, :visitor_availability => visitor2_availability)
-      visitor3 = Factory.create(:admit)
+      visitor3 = Factory.create(:visitor)
       visitor3_availability = visitor3.availabilities.create(:time_slot => @time_slot, :available => true)
       meeting3 = Meeting.new(:host_availability => @meeting.host_availability, :visitor_availability => visitor3_availability)
       meeting3.should_not be_valid

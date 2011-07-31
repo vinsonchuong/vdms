@@ -1,6 +1,6 @@
 class HostRanking < Ranking
-  belongs_to :ranker, :class_name => 'Faculty'
-  belongs_to :rankable, :class_name => 'Admit'
+  belongs_to :ranker, :class_name => 'Host'
+  belongs_to :rankable, :class_name => 'Visitor'
 
   validates_existence_of :ranker
   validates_existence_of :rankable

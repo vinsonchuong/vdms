@@ -90,90 +90,6 @@ describe Admit do
     end
   end
 
-  describe 'Associations' do
-    describe 'Time Slots' do
-      it 'has many Availabilities (availabilities)' do
-        @admit.should have_many(:availabilities)
-      end
-    end
-
-    describe 'Rankings' do
-      it 'has many Rankings (rankings)' do
-        @admit.should have_many(:rankings)
-      end
-
-      it 'has many Rankings sorted by rank' do
-        @admit.rankings.create(:rank => 2, :rankable => Factory.create(:faculty))
-        @admit.rankings.create(:rank => 1, :rankable => Factory.create(:faculty))
-        @admit.rankings.create(:rank => 3, :rankable => Factory.create(:faculty))
-        @admit.rankings.reload.map {|r| r.attributes['rank']}.should == [1, 2, 3]
-      end
-    end
-
-    it 'have many Meetings (meetings) through Availabilities' do
-      @admit.should have_many(:meetings).through(:availabilities)
-    end
-  end
-
-  describe 'Nested Attributes' do
-    describe 'Availabilities (availabilities)' do
-      it 'allows nested attributes for Availabilities (availabilities)' do
-        time_slot1 = Factory.create(:time_slot)
-        time_slot2 = Factory.create(:time_slot)
-        availability1 = @admit.availabilities.find_by_time_slot_id(time_slot1.id)
-        availability2 = @admit.availabilities.find_by_time_slot_id(time_slot2.id)
-        attributes = {:availabilities_attributes => [
-          {:id => availability1.id, :available => true},
-          {:id => availability2.id, :available => false}
-        ]}
-        @admit.update_attributes(attributes)
-        availability1.reload.should be_available
-        availability2.reload.should_not be_available
-      end
-    end
-
-    describe 'Rankings (rankings)' do
-      before(:each) do
-        @faculty1 = Factory.create(:faculty)
-        @faculty2 = Factory.create(:faculty)
-      end
-      
-      it 'allows nested attributes for Rankings (rankings)' do
-        attributes = {:rankings_attributes => [
-          {:rank => 1, :rankable => @faculty1},
-          {:rank => 2, :rankable => @faculty2}
-        ]}
-        @admit.attributes = attributes
-        @admit.rankings.map {|r| r.rankable.id}.should == [@faculty1.id, @faculty2.id]
-      end
-
-      it 'ignores entries with blank ranks' do
-        attributes = {:rankings_attributes => [
-          {:rank => 1, :rankable => @faculty1},
-          {:rank => '', :rankable => @faculty2}
-        ]}
-        @admit.attributes = attributes
-        @admit.rankings.length.should == 1
-      end
-
-      it 'allows deletion' do
-        attributes = {:rankings_attributes => [
-          {:rank => 1, :rankable => @faculty1},
-          {:rank => 2, :rankable => @faculty2}
-        ]}
-        @admit.attributes = attributes
-        @admit.save
-
-        delete_id = @admit.rankings.first.id
-        new_attributes = {:rankings_attributes => [
-          {:id => delete_id, :_destroy => true}
-        ]}
-        @admit.attributes = new_attributes
-        @admit.rankings.detect {|r| r.id == delete_id}.should be_marked_for_destruction
-      end
-    end
-  end
-
   context 'when validating' do
     it 'is valid with valid attributes' do
       @admit.should be_valid
@@ -230,27 +146,6 @@ describe Admit do
         @admit.should_not be_valid
       end
     end
-
-    it 'is not valid with non-unique Ranking ranks' do
-      rankings = [
-        VisitorRanking.new(:rank => 1, :rankable => Factory.create(:faculty)),
-        VisitorRanking.new(:rank => 1, :rankable => Factory.create(:faculty))
-      ]
-      @admit.rankings = rankings
-      @admit.should_not be_valid
-    end
-
-    it 'is valid with non-unique Rankings that are marked for destruction' do
-      rankings = [
-        VisitorRanking.new(:rank => 1, :rankable => Factory.create(:faculty)),
-        VisitorRanking.new(:rank => 1, :rankable => Factory.create(:faculty)),
-        VisitorRanking.new(:rank => 1, :rankable => Factory.create(:faculty))
-      ]
-      rankings[0].mark_for_destruction
-      rankings[1].mark_for_destruction
-      @admit.rankings = rankings
-      @admit.should be_valid
-    end
   end
 
   context 'after validating' do
@@ -271,38 +166,6 @@ describe Admit do
       @admit.area1 = nil
       @admit.valid?
       @admit.area1.should == nil
-    end
-  end
-
-  context 'when destroying' do
-    it 'destroys its Availabilities' do
-      availabilities = Array.new(3) do
-        availability = mock_model(VisitorAvailability)
-        availability.should_receive(:destroy)
-        availability
-      end
-      @admit.stub(:availabilities).and_return(availabilities)
-      @admit.destroy
-    end
-
-    it 'destroys its Rankings' do
-      rankings = Array.new(3) do
-        ranking = mock_model(VisitorRanking)
-        ranking.should_receive(:destroy)
-        ranking
-      end
-      @admit.stub(:rankings).and_return(rankings)
-      @admit.destroy
-    end
-
-    it 'destroys its Host Rankings' do
-      rankings = Array.new(3) do
-        ranking = mock_model(HostRanking)
-        ranking.should_receive(:destroy)
-        ranking
-      end
-      @admit.stub(:host_rankings).and_return(rankings)
-      @admit.destroy
     end
   end
 
@@ -336,6 +199,7 @@ describe Admit do
     end
 
     it 'also allows Faculty Rankings to be specified' do
+      pending
       faculty1 = Factory.create(:faculty, :first_name => 'First1', :last_name => 'Last1')
       faculty2 = Factory.create(:faculty, :first_name => 'First2', :last_name => 'Last2')
       faculty3 = Factory.create(:faculty, :first_name => 'First3', :last_name => 'Last3')

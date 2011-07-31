@@ -1,6 +1,6 @@
 class VisitorRanking < Ranking
-  belongs_to :ranker, :class_name => 'Admit'
-  belongs_to :rankable, :class_name => 'Faculty'
+  belongs_to :ranker, :class_name => 'Visitor'
+  belongs_to :rankable, :class_name => 'Host'
 
   validates_existence_of :ranker
   validates_existence_of :rankable
@@ -8,7 +8,7 @@ class VisitorRanking < Ranking
 
   # Existence validation sufficient?
   validate do |record| # faculty is not nil, used for CSV imports.
-    record.errors.add_to_base('Faculty not recognized') if record.rankable.nil?
+    record.errors.add_to_base('Host not recognized') if record.rankable.nil?
   end
 
   # Not concern of Ranking

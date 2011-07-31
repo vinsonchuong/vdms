@@ -23,7 +23,7 @@ Background: I am signed in as staff and a faculty member's schedule has been gen
     | Jitendra Malik | Frances Allen | Jim Gray |        | Donald Norman |
     |                | Alan Turing   |          |        |               |
     | Armando Fox    | Donald Norman |          |        |               |
-  And the "max admits per meeting" for Faculty "Jitendra Malik" is 3
+  And the "max visitors per meeting" for Faculty "Jitendra Malik" is 3
   And I am on the tweak faculty schedule page for "Jitendra Malik"
 
 Scenario: mandatory meetings appear in bold

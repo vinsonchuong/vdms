@@ -125,7 +125,7 @@ Feature: Staff can manage admits
     And I flag the "1/1/2011 9:00AM" to "1/1/2011 9:15AM" slot as available
     And I flag the "1/1/2011 10:00AM" to "1/1/2011 10:15AM" slot as available
     And I press "Update Availability"
-    Then I should see "Admit was successfully updated"
+    Then I should see "Visitor was successfully updated"
     And I should be on the update admit availability page
 
   Scenario: I see the admit's name while updating his faculty rankings
@@ -155,7 +155,7 @@ Feature: Staff can manage admits
     And I rank the "first" faculty "2"
     And I rank the "second" faculty "1"
     And I press "Update Rankings"
-    Then I should see "Admit was successfully updated."
+    Then I should see "Visitor was successfully updated."
 
   Scenario: I see the admit's name while removing him
     Given I am on the view admits page

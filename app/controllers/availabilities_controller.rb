@@ -15,7 +15,7 @@ class AvailabilitiesController < ApplicationController
     @schedulable = get_schedulable
 
     if @schedulable.update_attributes(params[@schedulable.class.name.underscore.to_sym])
-      flash[:notice] = t(:success, :scope => [:people, @schedulable.class.name.tableize, :update])
+      flash[:notice] = t(:success, :scope => [@schedulable.class.name.tableize, :update])
       redirect_to :action => 'edit_all'
     else
       render 'edit_all'

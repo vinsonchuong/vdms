@@ -6,7 +6,7 @@ end
 Given /the "(.*)" for (.*) "(.*) (.*)" is (.*)/ do |attrib, role, first, last, value|
   klass = role.capitalize.constantize
   person = klass.send(:find_by_first_name_and_last_name,first,last)
-  person.update_attribute(attrib.downcase.gsub(/ /,'_'), value)
+  person.host.update_attribute(attrib.downcase.gsub(/ /,'_'), value)
 end
 
 Given /the staff have disabled faculty from making further changes/ do

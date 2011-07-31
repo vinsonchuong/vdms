@@ -36,8 +36,8 @@
             %ul
               - unless faculty_instance.nil?
                 %li!= link_to 'Update My Faculty Info', edit_faculty_instance_path(faculty_instance)
-                %li!= link_to t('host_availabilities.edit_all.alt_title'), edit_all_faculty_instance_availabilities_path(faculty_instance)
-                %li!= link_to t('host_rankings.edit_all.alt_title'), rank_admits_faculty_instance_path(faculty_instance)
+                %li!= link_to t('host_availabilities.edit_all.alt_title'), edit_all_host_availabilities_path(faculty_instance.host)
+                %li!= link_to t('host_rankings.edit_all.alt_title'), edit_all_host_rankings_path(faculty_instance.host)
               %li!= link_to t('faculty.new.title'), new_faculty_instance_path
               %li!= link_to t('faculty.upload.title'), upload_faculty_path
           %li
@@ -61,15 +61,15 @@
           %li!= link_to t('admits.index.title'), admits_path
           - unless faculty_instance.nil?
             %li!= link_to 'Update My Faculty Info', edit_faculty_instance_path(faculty_instance)
-            %li!= link_to t('host_availabilities.edit_all.alt_title'), edit_availability_faculty_instance_path(faculty_instance)
-            %li!= link_to t('host_rankings.edit_all.alt_title'), edit_all_faculty_instance_rankings_path(faculty_instance)
+            %li!= link_to t('host_availabilities.edit_all.alt_title'), edit_all_host_availabilities_path(faculty_instance.host)
+            %li!= link_to t('host_rankings.edit_all.alt_title'), edit_all_host_rankings_path(faculty_instance.host)
       - elsif @current_user.class == Faculty && !@current_user.new_record?
         %ul
           %li.highlight!= link_to t('root.sign_out.title'), sign_out_path
           %li!= link_to t('faculty.edit.alt_title'), edit_faculty_instance_path(@current_user)
-          %li!= link_to t('host_availabilities.edit_all.alt_title'), edit_all_faculty_instance_availabilities_path(@current_user)
-          %li!= link_to t('host_rankings.edit_all.alt_title'), edit_all_faculty_instance_rankings_path(@current_user)
-          %li!= link_to t('faculty.view_schedule.alt_title'), faculty_instance_meetings_path(@current_user)
+          %li!= link_to t('host_availabilities.edit_all.alt_title'), edit_all_host_availabilities_path(@current_user.host)
+          %li!= link_to t('host_rankings.edit_all.alt_title'), edit_all_host_rankings_path(@current_user.host)
+          %li!= link_to t('faculty.view_schedule.alt_title'), host_meetings_path(@current_user.host)
       - else
         %ul
           %li.highlight!= link_to t('root.sign_out.title'), sign_out_path

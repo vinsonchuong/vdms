@@ -2,6 +2,14 @@ Factory.sequence(:id) {|n| n}
 Factory.sequence(:ldap_id) {|n| "LDAP.ID#{n}"}
 Factory.sequence(:email) {|n| "email#{n}@email.com"}
 
+Factory.define :person do |p|
+  p.id {Factory.next(:id)}
+  p.ldap_id {Factory.next(:ldap_id)}
+  p.first_name 'First'
+  p.last_name 'Last'
+  p.email {Factory.next(:email)}
+end
+
 Factory.define :staff do |s|
   s.id {Factory.next(:id)}
   s.ldap_id {Factory.next(:ldap_id)}
@@ -26,8 +34,6 @@ Factory.define :faculty do |f|
   f.email {Factory.next(:email)}
   f.area Settings.instance.areas.keys.first
   f.division Settings.instance.divisions.keys.first
-  f.max_admits_per_meeting 4
-  f.max_additional_admits 4
 end
 
 Factory.define :admit do |a|
@@ -43,14 +49,14 @@ end
 
 Factory.define :host_ranking do |r|
   r.sequence(:rank) {|n| n}
-  r.association :ranker, :factory => :faculty
-  r.association :rankable, :factory => :admit
+  r.association :ranker, :factory => :host
+  r.association :rankable, :factory => :visitor
 end
 
 Factory.define :visitor_ranking do |r|
   r.sequence(:rank) {|n| n}
-  r.association :ranker, :factory => :admit
-  r.association :rankable, :factory => :faculty
+  r.association :ranker, :factory => :visitor
+  r.association :rankable, :factory => :host
 end
 
 Factory.define :time_slot do |t|
@@ -62,12 +68,22 @@ end
 Factory.define :host_availability do |a|
   a.room 'Room'
   a.available true
-  a.association :time_slot, :factory => :time_slot
-  a.association :host, :factory => :faculty
+  a.association :time_slot
+  a.association :host
 end
 
 Factory.define :visitor_availability do |a|
   a.available true
-  a.association :time_slot, :factory => :time_slot
-  a.association :visitor, :factory => :admit
+  a.association :time_slot
+  a.association :visitor
+end
+
+Factory.define :host do |h|
+  h.association :person, :factory => :person
+  h.event {Settings.instance}
+end
+
+Factory.define :visitor do |v|
+  v.association :person, :factory => :person
+  v.event {Settings.instance}
 end

@@ -1,4 +1,4 @@
-- content_for :title, t('.title', :name => @schedulable.full_name)
+- content_for :title, t('.title', :name => @schedulable.person.full_name)
 - form_for @schedulable, :url => {:action => 'update_all'}, :html => {:name => 'availability_form'} do |schedulable_form|
   != schedulable_form.error_messages
   %fieldset

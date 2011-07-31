@@ -45,7 +45,7 @@ class RankingsController < ApplicationController
     # Grab redirect logic from edit_all as well
     @ranker = get_ranker
     if @ranker.update_attributes(params[@ranker.class.name.underscore.to_sym])
-      flash[:notice] = t(:success, :scope => [:people, @ranker.class.name.tableize, :update])
+      flash[:notice] = t(:success, :scope => [@ranker.class.name.tableize, :update])
       redirect_to :action => 'edit_all'
     else
       render 'edit_all'

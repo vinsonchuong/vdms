@@ -5,12 +5,12 @@ class HostAvailability < Availability
     record.meetings.destroy_all unless record.available?
   end
 
-  belongs_to :host, :class_name => 'Faculty', :foreign_key => 'schedulable_id'
+  belongs_to :host, :foreign_key => 'schedulable_id'
   has_many :meetings, :dependent => :destroy
   has_many :visitors, :through => :meetings
   accepts_nested_attributes_for :meetings, :reject_if => :all_blank, :allow_destroy => true
 
-  default_scope :joins => [:time_slot, :host], :order => 'begin, last_name, first_name'
+  default_scope :joins => [:time_slot, {:host => :person}], :order => 'begin, last_name, first_name'
 
   validates_existence_of :host
 end

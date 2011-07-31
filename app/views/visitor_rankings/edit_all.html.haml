@@ -1,4 +1,4 @@
-- content_for :title, t('.title', :name => @ranker.full_name)
+- content_for :title, t('.title', :name => @ranker.person.full_name)
 - form_for @ranker, :url => {:action => 'update_all'} do |ranker_form|
   - if @ranker.errors.any?
     #errors
@@ -10,9 +10,9 @@
     %h3!= t('.rankings')
     %ul
       - if Settings.instance.disable_peer_advisors && @current_user.class == PeerAdvisor
-        %li{:class => 'button'}!= link_to t('.add'), edit_all_admit_rankings_path(@admit)
+        %li{:class => 'button'}!= link_to t('.add'), edit_all_visitor_rankings_path(@ranker)
       - else
-        %li{:class => 'button'}!= link_to t('.add'), add_admit_rankings_path(@admit)
+        %li{:class => 'button'}!= link_to t('.add'), add_visitor_rankings_path(@ranker)
     %table
       %thead
         %tr
@@ -26,7 +26,7 @@
           - @ranking = ranking_fields.object
           %tr
             %td!= ranking_fields.select :rank, ranks
-            %td!= @ranking.rankable.full_name
+            %td!= @ranking.rankable.person.full_name
             %td!= ranking_fields.check_box :_destroy
             != ranking_fields.hidden_field :rankable_id
   != ranker_form.submit t('.submit'), :disabled => (Settings.instance.disable_peer_advisors && @current_user.class == PeerAdvisor)

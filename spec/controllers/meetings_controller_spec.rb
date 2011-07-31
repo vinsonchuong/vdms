@@ -38,67 +38,67 @@ describe MeetingsController do
         @staff = Factory.create(:staff)
         CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
-      it 'assigns to @unsatisfied_admits a list of unsatisfied Admits' do
+      it 'assigns to @unsatisfied_visitors a list of unsatisfied Admits' do
         @settings.stub(:unsatisfied_admit_threshold).and_return(3)
-        admit1 = Admit.new
-        admit1.meetings.stub(:count).and_return(2)
-        admit2 = Admit.new
-        admit2.meetings.stub(:count).and_return(3)
-        admit3 = Admit.new
-        admit3.meetings.stub(:count).and_return(4)
-        Admit.stub(:find).and_return([admit1, admit2, admit3])
+        visitor1 = Visitor.new
+        visitor1.meetings.stub(:count).and_return(2)
+        visitor2 = Visitor.new
+        visitor2.meetings.stub(:count).and_return(3)
+        visitor3 = Visitor.new
+        visitor3.meetings.stub(:count).and_return(4)
+        Visitor.stub(:find).and_return([visitor1, visitor2, visitor3])
         get :statistics
-        assigns[:unsatisfied_admits].should == [admit1]
+        assigns[:unsatisfied_visitors].should == [visitor1]
       end
-      it 'assigns to @unsatisfied_faculty a list of Faculty with unfulfilled mandatory meetings' do
-        faculty1 = Factory.create(:faculty)
-        admit1 = Factory.create(:admit)
-        Factory.create(:host_ranking, :rankable => admit1, :mandatory => true, :ranker => faculty1)
-        faculty2 = Factory.create(:faculty)
-        admit2 = Factory.create(:admit)
-        Factory.create(:host_ranking, :rankable => admit2, :mandatory => false, :ranker => faculty2)
-        Faculty.stub(:find).and_return([faculty1, faculty2])
+      it 'assigns to @unsatisfied_host a list of Faculty with unfulfilled mandatory meetings' do
+        host1 = Factory.create(:host)
+        visitor1 = Factory.create(:visitor)
+        Factory.create(:host_ranking, :rankable => visitor1, :mandatory => true, :ranker => host1)
+        host2 = Factory.create(:host)
+        visitor2 = Factory.create(:visitor)
+        Factory.create(:host_ranking, :rankable => visitor2, :mandatory => false, :ranker => host2)
+        Host.stub(:find).and_return([host1, host2])
         get :statistics
-        assigns[:unsatisfied_faculty].should == [[faculty1, [admit1]]]
+        assigns[:unsatisfied_hosts].should == [[host1, [visitor1]]]
       end
-      it 'assigns to @admits_with_unsatisfied_rankings a list of admits with unsatisfied faculty rankings' do
-        admit1 = Factory.create(:admit)
-        admit2 = Factory.create(:admit)
-        faculty21 = Factory.create(:faculty)
-        ranking21 = Factory.create(:visitor_ranking, :ranker => admit2, :rankable => faculty21)
+      it 'assigns to @visitors_with_unsatisfied_rankings a list of visitors with unsatisfied host rankings' do
+        visitor1 = Factory.create(:visitor)
+        visitor2 = Factory.create(:visitor)
+        host21 = Factory.create(:host)
+        ranking21 = Factory.create(:visitor_ranking, :ranker => visitor2, :rankable => host21)
         time_slot = Factory.create(:time_slot)
-        faculty21_availability = faculty21.availabilities.create(:time_slot => time_slot, :available => true)
-        admit2_availability = admit2.availabilities.create(:time_slot => time_slot, :available => true)
-        Meeting.create(:host_availability => faculty21_availability, :visitor_availability => admit2_availability)
-        admit3 = Factory.create(:admit)
-        faculty31 = Factory.create(:faculty)
-        ranking31 = Factory.create(:visitor_ranking, :ranker => admit3, :rankable => faculty31)
-        Admit.stub(:find).and_return([admit1, admit2, admit3])
-        [admit1, admit2, admit3].each {|a| a.save; a.rankings.reload}
+        host21_availability = host21.availabilities.create(:time_slot => time_slot, :available => true)
+        visitor2_availability = visitor2.availabilities.create(:time_slot => time_slot, :available => true)
+        Meeting.create(:host_availability => host21_availability, :visitor_availability => visitor2_availability)
+        visitor3 = Factory.create(:visitor)
+        host31 = Factory.create(:host)
+        ranking31 = Factory.create(:visitor_ranking, :ranker => visitor3, :rankable => host31)
+        Visitor.stub(:find).and_return([visitor1, visitor2, visitor3])
+        [visitor1, visitor2, visitor3].each {|a| a.save; a.rankings.reload}
         get :statistics
-        assigns[:admits_with_unsatisfied_rankings].should == [[admit3, [ranking31]]]
+        assigns[:visitors_with_unsatisfied_rankings].should == [[visitor3, [ranking31]]]
       end
-      it 'assigns to @faculty_with_unsatisfied_rankings a list of faculty with unsatisfied admit rankings' do
+      it 'assigns to @host_with_unsatisfied_rankings a list of host with unsatisfied visitor rankings' do
         time = Time.zone.now
-        faculty1 = Factory.create(:faculty)
-        faculty2 = Factory.create(:faculty)
-        admit21 = Factory.create(:admit)
-        Factory.create(:host_ranking, :ranker => faculty2, :rankable => admit21)
+        host1 = Factory.create(:host)
+        host2 = Factory.create(:host)
+        visitor21 = Factory.create(:visitor)
+        Factory.create(:host_ranking, :ranker => host2, :rankable => visitor21)
         time_slot = Factory.create(:time_slot)
         meeting = Meeting.create(
-          :host_availability => faculty2.availabilities.create(:time_slot => time_slot, :available => true),
-          :visitor_availability => admit21.availabilities.create(:time_slot => time_slot, :available => true)
+          :host_availability => host2.availabilities.create(:time_slot => time_slot, :available => true),
+          :visitor_availability => visitor21.availabilities.create(:time_slot => time_slot, :available => true)
         )
-        faculty3 = Factory.create(:faculty)
-        admit31 = Factory.create(:admit)
-        ranking31 = Factory.create(:host_ranking, :ranker => faculty3, :rankable => admit31)
-        Faculty.stub(:find).and_return([faculty1, faculty2, faculty3])
-        [faculty1, faculty2, faculty3].each do |f|
+        host3 = Factory.create(:host)
+        visitor31 = Factory.create(:visitor)
+        ranking31 = Factory.create(:host_ranking, :ranker => host3, :rankable => visitor31)
+        Host.stub(:find).and_return([host1, host2, host3])
+        [host1, host2, host3].each do |f|
           f.rankings.reload
           f.meetings.reload
         end
         get :statistics
-        assigns[:faculty_with_unsatisfied_rankings].should == [[faculty3, [ranking31]]]
+        assigns[:hosts_with_unsatisfied_rankings].should == [[host3, [ranking31]]]
       end
       it 'renders the statistics template' do
         get :statistics
@@ -106,22 +106,22 @@ describe MeetingsController do
       end
     end
   end
-  describe 'tweaking faculty schedule' do
+  describe 'tweaking host schedule' do
     it 'should be allowed for staff' do
       fake_login(:staff)
-      Faculty.stub!(:find).and_return(Factory.create(:faculty))
-      get :tweak, :faculty_instance_id => 1
+      Host.stub!(:find).and_return(Factory.create(:host))
+      get :tweak, :host_id => 1
       response.should render_template(:tweak)
     end
     it 'should be forbidden for peer advisors' do
       fake_login(:peer_advisor)
-      get :tweak, :faculty_instance_id => 1
+      get :tweak, :host_id => 1
       response.should redirect_to(home_path)
       flash[:alert].should == 'Only Staff users may perform this action.'
     end
-    it 'should be forbidden for faculty' do
+    it 'should be forbidden for host' do
       fake_login(:faculty)
-      get :tweak, :faculty_instance_id => 1
+      get :tweak, :host_id => 1
       response.should redirect_to(home_path)
       flash[:alert].should == 'Only Staff users may perform this action.'
     end
@@ -129,15 +129,15 @@ describe MeetingsController do
   context "when logged in as any valid user" do
     before(:each) { fake_login(:peer_advisor) }
     describe "index" do
-      it "should list meetings for faculty if given faculty_id" do
+      it "should list meetings for host if given host_id" do
         controller.should_receive(:for_faculty).with('3')
-        get :index, :faculty_instance_id => '3'
+        get :index, :host_id => '3'
       end
-      it "should list meetings for admit if given admit_id" do
+      it "should list meetings for visitor if given visitor_id" do
         controller.should_receive(:for_admit).with('2')
-        get :index, :admit_id => '2'
+        get :index, :visitor_id => '2'
       end
-      it "should show master schedule if neither faculty_id nor admit_id given" do
+      it "should show master schedule if neither host_id nor visitor_id given" do
         controller.should_receive(:master)
         get :index
       end

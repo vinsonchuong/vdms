@@ -9,8 +9,8 @@ class Meeting < ActiveRecord::Base
   belongs_to :host_availability
   belongs_to :visitor_availability
 
-  named_scope :by_host, :joins => {:host_availability => :host}, :order => 'last_name, first_name'
-  named_scope :by_visitor, :joins => {:visitor_availability => :visitor}, :order => 'last_name, first_name'
+  named_scope :by_host, :joins => {:host_availability => {:host => :person}}, :order => 'last_name, first_name'
+  named_scope :by_visitor, :joins => {:visitor_availability => {:visitor => :person}}, :order => 'last_name, first_name'
 
   after_save :reset_associations
 
@@ -55,14 +55,14 @@ class Meeting < ActiveRecord::Base
     errors.add(
       :host_availability,
       :not_available,
-      :name => host.name,
+      :name => host.person.name,
       :begin => time.begin.strftime('%I:%M%p'),
       :end => time.end.strftime('%I:%M%p')
     ) unless host_availability.available?
     errors.add(
       :visitor_availability,
       :not_available,
-      :name => visitor.name,
+      :name => visitor.person.name,
       :begin => time.begin.strftime('%I:%M%p'),
       :end => time.end.strftime('%I:%M%p')
     ) unless visitor_availability.available?
@@ -72,9 +72,9 @@ class Meeting < ActiveRecord::Base
     errors.add(
       :host_availability,
       :per_meeting_cap_exceeded,
-      :name => host.name,
-      :max => host.max_admits_per_meeting
-    ) if host_availability.meetings.count >= host.max_admits_per_meeting
+      :name => host.person.name,
+      :max => host.max_visitors_per_meeting
+    ) if host_availability.meetings.count >= host.max_visitors_per_meeting
   end
 
   def conflicts
@@ -82,8 +82,8 @@ class Meeting < ActiveRecord::Base
     errors.add(
       :visitor_availability,
       :conflict,
-      :visitor_name => visitor.name,
-      :host_name => meeting.host.name,
+      :visitor_name => visitor.person.name,
+      :host_name => meeting.host.person.name,
       :begin => meeting.time.begin.strftime('%I:%M%p'),
       :end => meeting.time.end.strftime('%I:%M%p')
     ) unless meeting.nil?

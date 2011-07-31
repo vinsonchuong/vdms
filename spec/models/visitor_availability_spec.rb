@@ -3,7 +3,7 @@ require 'spec_helper'
 describe VisitorAvailability do
   before(:each) do
     time_slot = Factory.create(:time_slot)
-    visitor = Factory.create(:admit)
+    visitor = Factory.create(:visitor)
     @visitor_availability = visitor.availabilities.first
   end
 

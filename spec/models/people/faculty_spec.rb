@@ -36,21 +36,6 @@ describe Faculty do
       @faculty.should respond_to(:division=)
     end
 
-    it 'has a Default Room (default_room)' do
-      @faculty.should respond_to(:default_room)
-      @faculty.should respond_to(:default_room=)
-    end
-
-    it 'has a Max Admits Per Meeting preference (max_admits_per_meeting)' do
-      @faculty.should respond_to(:max_admits_per_meeting)
-      @faculty.should respond_to(:max_admits_per_meeting=)
-    end
-
-    it 'has a Max Additional Admits to meet with preference (max_additional_admits)' do
-      @faculty.should respond_to(:max_additional_admits)
-      @faculty.should respond_to(:max_additional_admits=)
-    end
-
     it 'has an attribute name to accessor map' do
       Faculty::ATTRIBUTES['LDAP ID'].should == :ldap_id
       Faculty::ATTRIBUTES['First Name'].should == :first_name
@@ -60,9 +45,6 @@ describe Faculty do
       Faculty::ATTRIBUTES['Area 2'].should == :area2
       Faculty::ATTRIBUTES['Area 3'].should == :area3
       Faculty::ATTRIBUTES['Division'].should == :division
-      Faculty::ATTRIBUTES['Default Room'].should == :default_room
-      Faculty::ATTRIBUTES['Max Admits Per Meeting'].should == :max_admits_per_meeting
-      Faculty::ATTRIBUTES['Max Additional Admits'].should == :max_additional_admits
     end
 
     it 'has an accessor to type map' do
@@ -74,9 +56,6 @@ describe Faculty do
       Faculty::ATTRIBUTE_TYPES[:area2].should == :string
       Faculty::ATTRIBUTE_TYPES[:area3].should == :string
       Faculty::ATTRIBUTE_TYPES[:division].should == :string
-      Faculty::ATTRIBUTE_TYPES[:default_room].should == :string
-      Faculty::ATTRIBUTE_TYPES[:max_admits_per_meeting].should == :integer
-      Faculty::ATTRIBUTE_TYPES[:max_additional_admits].should == :integer
     end
   end
 
@@ -93,99 +72,6 @@ describe Faculty do
       Factory.create(:faculty, :first_name => 'Jack', :last_name => 'Bbb')
       Factory.create(:faculty, :first_name => 'Jill', :last_name => 'Bbb')
       Faculty.by_name.map {|a| "#{a.first_name} #{a.last_name}"}.should == ['Foo Bar', 'Jack Bbb', 'Jill Bbb', 'Ccc Ccc']
-    end
-  end
-
-  describe 'Associations' do
-    describe 'Time Slots' do
-      it 'has many Availabilities (availabilities)' do
-        @faculty.should have_many(:availabilities)
-      end
-    end
-
-    it 'has many Rankings (rankings)' do
-      @faculty.should have_many(:rankings)
-    end
-
-    it 'has many Meetings (meetings)' do
-      @faculty.should have_many(:meetings)
-    end
-  end
-
-  describe 'Nested Attributes' do
-    describe 'Availabilities (availabilities)' do
-      it 'allows nested attributes for Availabilities (availabilities)' do
-        time_slot1 = Factory.create(:time_slot)
-        time_slot2 = Factory.create(:time_slot)
-        availability1 = @faculty.availabilities.find_by_time_slot_id(time_slot1.id)
-        availability2 = @faculty.availabilities.find_by_time_slot_id(time_slot2.id)
-        attributes = {:availabilities_attributes => [
-          {:id => availability1.id, :available => true},
-          {:id => availability2.id, :available => false}
-        ]}
-        @faculty.update_attributes(attributes)
-        availability1.reload.should be_available
-        availability2.reload.should_not be_available
-      end
-    end
-
-    describe 'Rankings (rankings)' do
-      before(:each) do
-        @admit1 = Factory.create(:admit)
-        @admit2 = Factory.create(:admit)
-      end
-
-      it 'allows nested attributes for Rankings (rankings)' do
-        attributes = {:rankings_attributes => [
-          {:rank => 1, :rankable => @admit1},
-          {:rank => 2, :rankable => @admit2}
-        ]}
-        @faculty.attributes = attributes
-        @faculty.rankings.map {|r| r.rankable.id}.should == [@admit1.id, @admit2.id]
-      end
-
-      it 'ignores entries with blank ranks' do
-        attributes = {:rankings_attributes => [
-          {:rank => 1, :rankable => @admit1},
-          {:rank => '', :rankable => @admit2}
-        ]}
-        @faculty.attributes = attributes
-        @faculty.rankings.length.should == 1
-      end
-
-      it 'allows deletion' do
-        attributes = {:rankings_attributes => [
-          {:rank => 1, :rankable => @admit1},
-          {:rank => 2, :rankable => @admit2}
-        ]}
-        @faculty.attributes = attributes
-        @faculty.save
-
-        delete_id = @faculty.rankings.first.id
-        new_attributes = {:rankings_attributes => [
-          {:id => delete_id, :_destroy => true}
-        ]}
-        @faculty.attributes = new_attributes
-        @faculty.rankings.detect {|r| r.id == delete_id}.should be_marked_for_destruction
-      end
-    end
-  end
-
-  context 'when building' do
-    before(:each) do
-      @faculty = Faculty.new
-    end
-
-    it 'has no default room (None)' do
-      @faculty.default_room.should == 'None'
-    end
-
-    it 'has a default Max Admits Per Meeting preference of 1' do
-      @faculty.max_admits_per_meeting.should == 1
-    end
-
-    it 'has a Max Additional Admits to meet with preference of 100' do
-      @faculty.max_additional_admits.should == 100 
     end
   end
 
@@ -250,46 +136,6 @@ describe Faculty do
       @faculty.division = ''
       @faculty.should_not be_valid
     end
-
-    it 'is not valid without a Default Doom' do
-      @faculty.default_room = ''
-      @faculty.should_not be_valid
-    end
-
-    it 'is not valid with an invalid Max Admits Per Meeting preference' do
-      ['', 0, -1, 5.5, 'foobar'].each do |invalid_preference|
-        @faculty.max_admits_per_meeting = invalid_preference
-        @faculty.should_not be_valid
-      end
-    end
-
-    it 'is not valid with an invalid Max Additional Admits to meet with preference' do
-      ['', -1, 5.5, 'foobar'].each do |invalid_preference|
-        @faculty.max_additional_admits = invalid_preference
-        @faculty.should_not be_valid
-      end
-    end
-
-    it 'is not valid with non-unique Ranking ranks' do
-      rankings = [
-        HostRanking.new(:rank => 1, :rankable => Factory.create(:admit)),
-        HostRanking.new(:rank => 1, :rankable => Factory.create(:admit))
-      ]
-      @faculty.rankings = rankings
-      @faculty.should_not be_valid
-    end
-
-    it 'is valid with non-unique Rankings that are marked for destruction' do
-      rankings = [
-        HostRanking.new(:rank => 1, :rankable => Factory.create(:admit)),
-        HostRanking.new(:rank => 1, :rankable => Factory.create(:admit)),
-        HostRanking.new(:rank => 1, :rankable => Factory.create(:admit))
-      ]
-      rankings[0].mark_for_destruction
-      rankings[1].mark_for_destruction
-      @faculty.rankings = rankings
-      @faculty.should be_valid
-    end
   end
 
   context 'after validating' do
@@ -320,38 +166,6 @@ describe Faculty do
     end
   end
 
-  context 'when destroying' do
-    it 'destroys its Availabilities' do
-      availabilities = Array.new(3) do
-        availability = mock_model(Availability)
-        availability.should_receive(:destroy)
-        availability
-      end
-      @faculty.stub(:availabilities).and_return(availabilities)
-      @faculty.destroy
-    end
-
-    it 'destroys its Rankings' do
-      rankings = Array.new(3) do
-        ranking = mock_model(HostRanking)
-        ranking.should_receive(:destroy)
-        ranking
-      end
-      @faculty.stub(:rankings).and_return(rankings)
-      @faculty.destroy
-    end
-
-    it 'destroys the Visitor Rankings to which it belongs' do
-      rankings = Array.new(3) do
-        ranking = mock_model(VisitorRanking)
-        ranking.should_receive(:destroy)
-        ranking
-      end
-      @faculty.stub(:visitor_rankings).and_return(rankings)
-      @faculty.destroy
-    end
-  end
-
   context 'when importing a CSV' do
     before(:each) do
       @faculties = Array.new(3) {Faculty.new}
@@ -365,10 +179,10 @@ describe Faculty do
 
     it 'builds a collection of Faculty with the attributes in each row' do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
-        First Name,Last Name,Email,Division,Area 1,Area 2, Area 3,Default Room,Max Admits Per Meeting,Max Additional Admits
-        First0,Last0,email0@email.com,Division0,Area0,,,Room0,1,0
-        First1,Last1,email1@email.com,Division1,Area1,,,Room1,2,1
-        First2,Last2,email2@email.com,Division2,Area2,,,Room2,3,2
+        First Name,Last Name,Email,Division,Area 1,Area 2, Area 3
+        First0,Last0,email0@email.com,Division0,Area0,,
+        First1,Last1,email1@email.com,Division1,Area1,,
+        First2,Last2,email2@email.com,Division2,Area2,,
       EOF
       Faculty.new_from_csv(csv_text).should == @faculties
       @faculties.each_with_index do |faculty, i|
@@ -377,18 +191,15 @@ describe Faculty do
         faculty.email.should == "email#{i}@email.com"
         faculty.division.should == "Division#{i}"
         faculty.area1.should == "Area#{i}"
-        faculty.default_room.should == "Room#{i}"
-        faculty.max_admits_per_meeting.should == i + 1
-        faculty.max_additional_admits.should == i
       end
     end
 
     it 'ignores extraneous attributes' do
       csv_text = <<-EOF.gsub(/^ {8}/, '')
-        Baz,First Name,Last Name,Email,Division,Area 1,Default Room,Max Admits Per Meeting,Max Additional Admits,Foo,Bar
-        Baz0,First0,Last0,email0@email.com,Division0,Area0,Room0,1,0,Foo0,Bar0
-        Baz1,First1,Last1,email1@email.com,Division1,Area1,Room1,2,1,Foo1,Bar1
-        Baz2,First2,Last2,email2@email.com,Division2,Area2,Room2,3,2,Foo2,Bar2
+        Baz,First Name,Last Name,Email,Division,Area 1,Foo,Bar
+        Baz0,First0,Last0,email0@email.com,Division0,Area0,Foo0,Bar0
+        Baz1,First1,Last1,email1@email.com,Division1,Area1,Foo1,Bar1
+        Baz2,First2,Last2,email2@email.com,Division2,Area2,Foo2,Bar2
       EOF
       Faculty.new_from_csv(csv_text).should == @faculties
       @faculties.each_with_index do |faculty, i|
@@ -397,9 +208,6 @@ describe Faculty do
         faculty.email.should == "email#{i}@email.com"
         faculty.division.should == "Division#{i}"
         faculty.area1.should == "Area#{i}"
-        faculty.default_room.should == "Room#{i}"
-        faculty.max_admits_per_meeting.should == i + 1
-        faculty.max_additional_admits.should == i
       end
     end
   end

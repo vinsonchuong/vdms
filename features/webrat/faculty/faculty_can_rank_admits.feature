@@ -55,7 +55,7 @@ Feature: Faculty can rank admits
     And I rank the "second" admit "1"
     And I select "2" time slots for the "second" admit
     And I press "Update Rankings"
-    Then I should see "Faculty was successfully updated."
+    Then I should see "Host was successfully updated."
 
   Scenario: I give two admits duplicate ranks
     Given I am on the faculty dashboard page
@@ -112,7 +112,7 @@ Feature: Faculty can rank admits
     And I rank the "second" admit "1"
     And I select "2" time slots for the "second" admit
     And I press "Update Rankings"
-    Then I should see "Faculty was successfully updated."
+    Then I should see "Host was successfully updated."
 
   Scenario: I change some rankings
     Given I have the following admit rankings:
@@ -124,7 +124,7 @@ Feature: Faculty can rank admits
     And I rank the "first" admit "2"
     And I rank the "second" admit "1"
     And I press "Update Rankings"
-    Then I should see "Faculty was successfully updated"
+    Then I should see "Host was successfully updated"
 
   Scenario: I remove some rankings
     Given I have the following admit rankings:
@@ -136,7 +136,7 @@ Feature: Faculty can rank admits
     And I flag the "second" admit for removal
     And I flag the "third" admit for removal
     And I press "Update Rankings"
-    Then I should see "Faculty was successfully updated"
+    Then I should see "Host was successfully updated"
     And I should see "Aaa Aaa"
     But I should not see "Bbb Bbb"
     And I should not see "Ccc Ccc"
