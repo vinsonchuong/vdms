@@ -37,23 +37,23 @@ describe Meeting do
 
   describe 'Scopes' do
     it "sorts by Host's name" do
-      @meeting.host.person.update_attributes(:first_name => 'Bbb', :last_name => 'Bbb')
+      @meeting.host.person.update_attributes(:name => 'Bbb')
       visitor_availability2 = Factory.create(:visitor_availability, :time_slot => @time_slot)
       Meeting.create(:host_availability => @meeting.host_availability, :visitor_availability => visitor_availability2)
-      host2 = Factory.create(:host, :person => Factory.create(:faculty, :first_name => 'Aaa', :last_name => 'Aaa'))
+      host2 = Factory.create(:host, :person => Factory.create(:person, :name => 'Aaa'))
       host_availability2 = Factory.create(:host_availability, :host => host2, :time_slot => @time_slot)
       visitor_availability3 = Factory.create(:visitor_availability, :time_slot => @time_slot)
       Meeting.create(:host_availability => host_availability2, :visitor_availability => visitor_availability3)
-      Meeting.by_host.map {|m| m.host.person.name}.should == ['Aaa Aaa', 'Bbb Bbb', 'Bbb Bbb']
+      Meeting.by_host.map {|m| m.host.person.name}.should == ['Aaa', 'Bbb', 'Bbb']
     end
 
     it "sorts by Visitor's name" do
-      @meeting.visitor.person.update_attributes(:first_name => 'Bbb', :last_name => 'Bbb')
-      visitor2 = Factory.create(:visitor, :person => Factory.create(:admit, :first_name => 'Aaa', :last_name => 'Aaa'))
+      @meeting.visitor.person.update_attributes(:name => 'Bbb')
+      visitor2 = Factory.create(:visitor, :person => Factory.create(:person, :name => 'Aaa'))
       visitor_availability2 = Factory.create(:visitor_availability, :visitor => visitor2, :time_slot => @time_slot)
       host_availability2 = Factory.create(:host_availability, :time_slot => @time_slot)
       Meeting.create(:host_availability => host_availability2, :visitor_availability => visitor_availability2)
-      Meeting.by_visitor.map {|m| m.visitor.person.name}.should == ['Aaa Aaa', 'Bbb Bbb']
+      Meeting.by_visitor.map {|m| m.visitor.person.name}.should == ['Aaa', 'Bbb']
     end
   end
 

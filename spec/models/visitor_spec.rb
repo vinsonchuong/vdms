@@ -7,11 +7,11 @@ describe Visitor do
 
   describe 'Named Scopes' do
     it "is sorted by its Person's Name" do
-      @visitor.person.update_attributes(:first_name => 'Foo', :last_name => 'Bar')
-      Factory.create(:visitor, :person => Factory.create(:person, :first_name => 'Ccc', :last_name => 'Ccc'))
-      Factory.create(:visitor, :person => Factory.create(:person, :first_name => 'Jack', :last_name => 'Bbb'))
-      Factory.create(:visitor, :person => Factory.create(:person, :first_name => 'Jill', :last_name => 'Bbb'))
-      Visitor.all.map(&:person).map(&:name).should == ['Foo Bar', 'Jack Bbb', 'Jill Bbb', 'Ccc Ccc']
+      @visitor.person.update_attributes(:name => 'Aaa')
+      Factory.create(:visitor, :person => Factory.create(:person, :name => 'Ccc'))
+      Factory.create(:visitor, :person => Factory.create(:person, :name => 'Bbb'))
+      Factory.create(:visitor, :person => Factory.create(:person, :name => 'Ddd'))
+      Visitor.all.map(&:person).map(&:name).should == ['Aaa', 'Bbb', 'Ccc', 'Ddd']
     end
   end
 

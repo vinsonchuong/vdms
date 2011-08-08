@@ -1,6 +1,6 @@
 class MeetingsController < ApplicationController
   
-  before_filter :current_user_is_staff?, :only => [:tweak, :apply_tweaks, :create_all]
+  #before_filter :current_user_is_staff?, :only => [:tweak, :apply_tweaks, :create_all]
   before_filter :schedule_empty?, :except => :create_all
 
   # GET /meetings/

@@ -13,8 +13,6 @@ Rails::Initializer.run do |config|
 
   # Add additional load paths for your own custom dirs
   # config.autoload_paths += %W( #{RAILS_ROOT}/extras )
-  config.autoload_paths += Dir["#{RAILS_ROOT}/app/models/*"].find_all { |f| File.stat(f).directory? }
-  config.autoload_paths += Dir["#{RAILS_ROOT}/app/controllers/*"].find_all { |f| File.stat(f).directory? }
 
   # Require Ruby Facets libraries as needed
   require 'facets/boolean'
@@ -44,6 +42,3 @@ Rails::Initializer.run do |config|
   config.i18n.default_locale = :en
   config.i18n.load_path += Dir[File.join(RAILS_ROOT, 'config', 'locales', '**', '*.{rb,yml}')]
 end
-
-# Add view paths
-ActionController::Base.view_paths += ["#{RAILS_ROOT}/app/views/people", "#{RAILS_ROOT}/app/views/rankings"]

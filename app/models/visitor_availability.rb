@@ -9,7 +9,7 @@ class VisitorAvailability < Availability
   has_many :meetings, :dependent => :destroy
   has_many :hosts, :through => :meetings
 
-  default_scope :joins => [:time_slot, {:visitor => :person}], :order => 'begin, last_name, first_name'
+  default_scope :joins => [:time_slot, {:visitor => :person}], :order => 'begin, name'
 
   validates_existence_of :visitor
 end

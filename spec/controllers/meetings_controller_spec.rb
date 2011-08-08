@@ -2,21 +2,9 @@ require 'spec_helper'
 
 describe MeetingsController do
   def fake_login(role)
-    CASClient::Frameworks::Rails::Filter.fake(Factory.create(role).ldap_id)
+    #CASClient::Frameworks::Rails::Filter.fake(Factory.create(role).ldap_id)
   end
   describe "generating the schedule" do
-    it "should be forbidden for Faculty users" do
-      fake_login(:faculty)
-      Meeting.should_not_receive(:generate)
-      post :create_all
-      response.should redirect_to(home_path)
-    end
-    it "should be forbidden for Peer Advisor users" do
-      fake_login(:peer_advisor)
-      Meeting.should_not_receive(:generate)
-      post :create_all
-      response.should redirect_to(home_path)
-    end
     context "for staff users" do
       before(:each) { fake_login(:staff) }
       it "should be allowed" do
@@ -35,8 +23,8 @@ describe MeetingsController do
       before(:each) do
         @settings = Settings.instance
         Settings.stub(:instance).and_return(@settings)
-        @staff = Factory.create(:staff)
-        CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
+        #@staff = Factory.create(:staff)
+        #CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
       end
       it 'assigns to @unsatisfied_visitors a list of unsatisfied Admits' do
         @settings.stub(:unsatisfied_admit_threshold).and_return(3)
@@ -112,18 +100,6 @@ describe MeetingsController do
       Host.stub!(:find).and_return(Factory.create(:host))
       get :tweak, :host_id => 1
       response.should render_template(:tweak)
-    end
-    it 'should be forbidden for peer advisors' do
-      fake_login(:peer_advisor)
-      get :tweak, :host_id => 1
-      response.should redirect_to(home_path)
-      flash[:alert].should == 'Only Staff users may perform this action.'
-    end
-    it 'should be forbidden for host' do
-      fake_login(:faculty)
-      get :tweak, :host_id => 1
-      response.should redirect_to(home_path)
-      flash[:alert].should == 'Only Staff users may perform this action.'
     end
   end
   context "when logged in as any valid user" do

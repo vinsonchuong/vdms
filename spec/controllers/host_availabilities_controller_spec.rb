@@ -3,9 +3,6 @@ require 'spec_helper'
 describe HostAvailabilitiesController do
   before(:each) do
     @host = Factory.create(:host)
-    @staff = Factory.create(:staff)
-    CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
-    Staff.stub(:find).and_return(@staff)
   end
 
   describe 'GET edit_all' do

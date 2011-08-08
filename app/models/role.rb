@@ -6,9 +6,9 @@ class Role < ActiveRecord::Base
   validates_existence_of :person
   validates_existence_of :event
 
-  default_scope :joins => :person, :order => 'last_name, first_name'
+  default_scope :joins => :person, :order => 'name'
   named_scope :with_areas, lambda {|*areas| {
     :joins => :person,
-    :conditions => ['area1 IN(?) or area2 IN(?)', areas, areas]
+    :conditions => ['area_1 IN(?) or area_2 IN(?) or area_3 IN (?)', areas, areas, areas]
   }}
 end

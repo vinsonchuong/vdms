@@ -12,19 +12,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :meetings, :collection => {:create_all => :post, :master => :get, :statistics => :get, :print_admits => :get, :print_faculty => :get}
 
-  map.resources :staff, :singular => 'staff_instance', :path_prefix => '/people',
-    :except => [:show],
-    :collection => {:upload => :get, :delete_all => :get, :import => :post, :destroy_all => :delete},
-    :member => {:delete => :get}
-  map.resources :peer_advisors, :path_prefix => '/people',
-    :except => [:show],
-    :collection => {:upload => :get, :delete_all => :get, :import => :post, :destroy_all => :delete},
-    :member => {:delete => :get}
-  map.resources :faculty, :singular => 'faculty_instance', :path_prefix => '/people',
-    :except => [:show],
-    :collection => {:upload => :get, :delete_all => :get, :import => :post, :destroy_all => :delete},
-    :member => {:delete => :get}
-  map.resources :admits, :path_prefix => '/people',
+  map.resources :people,
     :except => [:show],
     :collection => {:upload => :get, :delete_all => :get, :import => :post, :destroy_all => :delete},
     :member => {:delete => :get}
