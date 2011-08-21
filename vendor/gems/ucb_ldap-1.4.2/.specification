@@ -1,0 +1,95 @@
+--- !ruby/object:Gem::Specification
+name: ucb_ldap
+version: !ruby/object:Gem::Version
+  version: 1.4.2
+  prerelease: 
+  segments:
+  - 1
+  - 4
+  - 2
+platform: ruby
+authors:
+- Steven Hansen, Steve Downey, Lucas Rockwell
+autorequire: 
+bindir: bin
+cert_chain: []
+date: 2010-08-03 00:00:00.000000000Z
+dependencies:
+- !ruby/object:Gem::Dependency
+  name: net-ldap
+  requirement: &24510948 !ruby/object:Gem::Requirement
+    none: false
+    requirements:
+    - - ! '>='
+      - !ruby/object:Gem::Version
+        version: 0.0.4
+  type: :runtime
+  prerelease: false
+  version_requirements: *24510948
+description: Convenience classes for interacing with UCB's LDAP directory
+email: runner@berkeley.edu
+executables: []
+extensions: []
+extra_rdoc_files:
+- README
+- lib/person/adv_con_person.rb
+- lib/person/affiliation_methods.rb
+- lib/person/generic_attributes.rb
+- lib/ucb_ldap.rb
+- lib/ucb_ldap_address.rb
+- lib/ucb_ldap_affiliation.rb
+- lib/ucb_ldap_entry.rb
+- lib/ucb_ldap_exceptions.rb
+- lib/ucb_ldap_namespace.rb
+- lib/ucb_ldap_org.rb
+- lib/ucb_ldap_person.rb
+- lib/ucb_ldap_person_job_appointment.rb
+- lib/ucb_ldap_schema.rb
+- lib/ucb_ldap_schema_attribute.rb
+- lib/ucb_ldap_service.rb
+- lib/ucb_ldap_student_term.rb
+files:
+- README
+- lib/person/adv_con_person.rb
+- lib/person/affiliation_methods.rb
+- lib/person/generic_attributes.rb
+- lib/ucb_ldap.rb
+- lib/ucb_ldap_address.rb
+- lib/ucb_ldap_affiliation.rb
+- lib/ucb_ldap_entry.rb
+- lib/ucb_ldap_exceptions.rb
+- lib/ucb_ldap_namespace.rb
+- lib/ucb_ldap_org.rb
+- lib/ucb_ldap_person.rb
+- lib/ucb_ldap_person_job_appointment.rb
+- lib/ucb_ldap_schema.rb
+- lib/ucb_ldap_schema_attribute.rb
+- lib/ucb_ldap_service.rb
+- lib/ucb_ldap_student_term.rb
+homepage: http://ucbrb.rubyforge.org/ucb_ldap
+licenses: []
+post_install_message: 
+rdoc_options:
+- -o doc
+require_paths:
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement
+  none: false
+  requirements:
+  - - ! '>='
+    - !ruby/object:Gem::Version
+      version: '0'
+required_rubygems_version: !ruby/object:Gem::Requirement
+  none: false
+  requirements:
+  - - ! '>='
+    - !ruby/object:Gem::Version
+      version: '1.2'
+requirements: []
+rubyforge_project: ucbrb
+rubygems_version: 1.8.8
+signing_key: 
+specification_version: 3
+summary: Convenience classes for interacing with UCB's LDAP directory
+test_files: []
+
