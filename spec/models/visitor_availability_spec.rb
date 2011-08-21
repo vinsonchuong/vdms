@@ -2,8 +2,9 @@ require 'spec_helper'
 
 describe VisitorAvailability do
   before(:each) do
-    time_slot = Factory.create(:time_slot)
-    visitor = Factory.create(:visitor)
+    @event = Factory.create(:event)
+    Factory.create(:time_slot, :event => @event)
+    visitor = Factory.create(:visitor, :event => @event)
     @visitor_availability = visitor.availabilities.first
   end
 
@@ -31,9 +32,9 @@ describe VisitorAvailability do
   describe 'Scopes' do
     it 'by default is sorted by Time Slot' do
       time = Time.zone.parse('12PM')
-      Factory.create(:time_slot, :begin => time, :end => time + 15.minutes)
+      Factory.create(:time_slot, :begin => time, :end => time + 15.minutes, :event => @event)
       @visitor_availability.time_slot.update_attributes(:begin => time + 15.minutes, :end => time + 30.minutes)
-      Factory.create(:time_slot, :begin => time + 30.minutes, :end => time + 45.minutes)
+      Factory.create(:time_slot, :begin => time + 30.minutes, :end => time + 45.minutes, :event => @event)
       @visitor_availability.visitor.availabilities.reload.map(&:time_slot).map(&:begin).should == [time, time + 15.minutes, time + 30.minutes]
     end
   end

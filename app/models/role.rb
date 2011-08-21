@@ -1,6 +1,6 @@
 class Role < ActiveRecord::Base
   belongs_to :person
-  belongs_to :event, :class_name => 'Settings'
+  belongs_to :event
 
   # add to spec
   validates_existence_of :person

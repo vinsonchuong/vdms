@@ -1,6 +1,6 @@
 class Host < Role
   after_create do |record|
-    Settings.instance.time_slots.each do |time_slot|
+    record.event.time_slots.each do |time_slot|
       record.availabilities.create(:time_slot => time_slot, :available => false)
     end
   end

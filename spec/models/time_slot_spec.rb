@@ -18,8 +18,8 @@ describe TimeSlot do
   end
 
   describe 'Associations' do
-    it 'belongs to an Event (settings)' do
-      @time_slot.should belong_to(:settings)
+    it 'belongs to an Event (event)' do
+      @time_slot.should belong_to(:event)
     end
 
     it 'has many Host Availabilities (host_availabilities)' do
@@ -95,14 +95,14 @@ describe TimeSlot do
     end
 
     it 'is not valid with an End Time not following the Start Time' do
-      @time_slot.begin = Time.zone.parse('1/5/2011')
-      @time_slot.end = Time.zone.parse('1/4/2011')
+      @time_slot.begin = Time.zone.parse('2011-1-5')
+      @time_slot.end = Time.zone.parse('2011-1-4')
       @time_slot.should_not be_valid
       @time_slot.errors.full_messages.should include('End Time must be after 2011-01-05 00:00:00')
     end
 
     it 'is not valid without an Event' do
-      @time_slot.settings = nil
+      @time_slot.event = nil
       @time_slot.should_not be_valid
     end
   end

@@ -1,35 +1,63 @@
 require 'spec_helper'
 
-describe Settings do
+describe Event do
   before(:each) do
-    @settings = Settings.instance
-    @settings.save
+    @event = Factory.create(:event)
   end
 
   describe 'Attributes' do
-    it 'has an Unsatisfied Admit Threshold (unsatisfied_admit_threshold)' do
-      @settings.should respond_to(:unsatisfied_admit_threshold)
-      @settings.should respond_to(:unsatisfied_admit_threshold=)
+    it 'has a Name (name)' do
+      @event.should respond_to(:name)
+      @event.should respond_to(:name=)
     end
 
-    it 'has a Disable Faculty From Making Changes flag (disable_faculty)' do
-      @settings.should respond_to(:disable_faculty)
-      @settings.should respond_to(:disable_faculty=)
+    it 'has a Meeting Length in minutes (meeting_length)' do
+      @event.should respond_to(:meeting_length)
+      @event.should respond_to(:meeting_length=)
     end
 
-    it 'has a Disable Peer Advisors From Making Changes flag (disable_peer_advisors)' do
-      @settings.should respond_to(:disable_peer_advisors)
-      @settings.should respond_to(:disable_peer_advisors=)
+    it 'has a Meeting Gap in minutes (meeting_gap)' do
+      @event.should respond_to(:meeting_gap)
+      @event.should respond_to(:meeting_gap=)
+    end
+
+    it 'has a Prevent Facilitators From Making Changes flag (disable_facilitators)' do
+      @event.should respond_to(:disable_facilitators)
+      @event.should respond_to(:disable_facilitators=)
+    end
+
+    it 'has a Prevent Hosts From Making Changes flag (disable_hosts)' do
+      @event.should respond_to(:disable_hosts)
+      @event.should respond_to(:disable_hosts=)
+    end
+
+    it 'has a Max Meetings per Visitor (max_meetings_per_visitor)' do
+      @event.should respond_to(:max_meetings_per_visitor)
+      @event.should respond_to(:max_meetings_per_visitor=)
     end
   end
 
-  describe 'Static Attributes' do
-    it 'has a Meeting Length (meeting_length)' do
-      @settings.meeting_length.should == STATIC_SETTINGS['meeting_length']
+  describe 'Named Scopes' do
+    it "is sorted by its Name" do
+      @event.update_attributes(:name => 'Bbb')
+      Factory.create(:event, :name => 'Ccc')
+      Factory.create(:event, :name => 'Aaa')
+      Factory.create(:event, :name => 'Ddd')
+      Event.all.map(&:name).should == ['Aaa', 'Bbb', 'Ccc', 'Ddd']
+    end
+  end
+
+  describe 'Associations' do
+    it 'has many Time Slots (time_slots)' do
+      @event.should have_many(:time_slots)
     end
 
-    it 'has a Meeting Gap (meeting_gap)' do
-      @settings.meeting_gap.should == STATIC_SETTINGS['meeting_gap']
+    it 'has many Hosts (hosts)' do
+      @event.should have_many(:hosts)
+    end
+
+    it 'has many Visitors (visitors)' do
+      @event.should have_many(:visitors)
     end
   end
 
@@ -37,12 +65,10 @@ describe Settings do
     describe 'Meeting Times (meeting_times)' do
       context 'when getting' do
         it 'has a getter' do
-          @settings.should respond_to(:meeting_times)
+          @event.should respond_to(:meeting_times)
         end
 
         it 'returns the list of Time Slots concatenated by Meeting Length and Gap' do
-          settings = Settings.instance
-          Settings.stub(:instance).and_return(settings)
           time = Time.zone.parse('12PM')
           [
               [
@@ -86,22 +112,20 @@ describe Settings do
                 [time..(time + 35.minutes), (time + 41.minutes)..(time + 56.minutes)]
               ]
           ].each do |meeting_length, meeting_gap, time_slots, result|
-            settings.stub(:meeting_length).and_return(meeting_length)
-            settings.stub(:meeting_gap).and_return(meeting_gap)
-            settings.stub(:time_slots).and_return(time_slots)
-            settings.meeting_times.should == result
+            @event.meeting_length = meeting_length
+            @event.meeting_gap = meeting_gap
+            @event.stub(:time_slots).and_return(time_slots)
+            @event.meeting_times.should == result
           end
         end
       end
 
       context 'when setting' do
         it 'has a setter' do
-          @settings.should respond_to(:meeting_times_attributes=)
+          @event.should respond_to(:meeting_times_attributes=)
         end
 
         it 'partitions the times into Time Slots by Meeting Length and Gap' do
-          settings = Settings.instance
-          Settings.stub(:instance).and_return(settings)
           time = Time.zone.parse('12PM')
           [
             [
@@ -220,119 +244,118 @@ describe Settings do
               ]
             ]
           ].each do |meeting_length, meeting_gap, meeting_times, time_slots_to_keep, time_slots_to_remove, results|
-            settings.stub(:meeting_length).and_return(meeting_length)
-            settings.stub(:meeting_gap).and_return(meeting_gap)
-            settings.time_slots.delete_all
-            time_slots_to_keep.map! {|t| settings.time_slots.create(t)}
-            time_slots_to_remove.map! {|t| settings.time_slots.create(t)}
-            settings.meeting_times_attributes = meeting_times
-            settings.save!
-            settings.time_slots.reload.map {|s| (s.begin)..(s.end)}.should == results
-            (settings.time_slots & time_slots_to_keep).should == time_slots_to_keep
-            (settings.time_slots & time_slots_to_remove).should be_empty
+            @event.meeting_length = meeting_length
+            @event.meeting_gap = meeting_gap
+            @event.time_slots.delete_all
+            time_slots_to_keep.map! {|t| @event.time_slots.create(t)}
+            time_slots_to_remove.map! {|t| @event.time_slots.create(t)}
+            @event.meeting_times_attributes = meeting_times
+            @event.save!
+            @event.time_slots.reload.map {|s| (s.begin)..(s.end)}.should == results
+            (@event.time_slots & time_slots_to_keep).should == time_slots_to_keep
+            (@event.time_slots & time_slots_to_remove).should be_empty
           end
         end
       end
     end
   end
 
-  describe 'Singleton Model' do
-    context 'getting an instance' do
-      it 'builds an instance if one does not already exist' do
-        Settings.destroy_all
-        Settings.count.should == 0
-        Settings.instance
-        Settings.count.should == 1
-      end
- 
-      it 'returns the existent instance if one exists' do
-        Settings.instance.should_not be_a_new_record
-      end
-    end
-
-    it 'does not otherwise allow a new instance to be created' do
-      Settings.should_not respond_to(:new)
-    end
-  end
-
   context 'when building' do
-    it 'by default has an Unsatisfied Admit Threshold of 0' do
-      @settings.unsatisfied_admit_threshold.should == 0
+    it 'by default has a Prevent Facilitators From Making Changes flag of false' do
+      @event.disable_facilitators.should be_false
     end
 
-    it 'by default has a Faculty Weight of 1' do
-      @settings.faculty_weight.should == 1
-    end
-
-    it 'by default has an Admit Weight of 1' do
-      @settings.admit_weight.should == 1
-    end
-
-    it 'by default has a Rank Weight of 1' do
-      @settings.rank_weight.should == 1
-    end
-
-    it 'by default has a Mandatory Weight of 1' do
-      @settings.mandatory_weight.should == 1
-    end
-
-    it 'by default has a Disable Faculty From Making Changes flag of false' do
-      @settings.disable_faculty.should be_false
-    end
-
-    it 'by default has a Disable Peer Advisors From Making Changes flag of false' do
-      @settings.disable_peer_advisors.should be_false
+    it 'by default has a Prevent Hosts From Making Changes flag of false' do
+      @event.disable_hosts.should be_false
     end
   end
 
   context 'when validating' do
     it 'is valid with valid attributes' do
-      @settings.should be_valid
+      @event.should be_valid
     end
 
-    it 'is not valid with an invalid Unsatisfied Admit Threshold' do
-      ['', -1, 'foobar'].each do |invalid_threshold|
-        @settings.unsatisfied_admit_threshold = invalid_threshold
-        @settings.should_not be_valid
+    it 'is not valid without a Name' do
+      @event.name = ''
+      @event.should_not be_valid
+    end
+
+    it 'is not valid without a Meeting Length' do
+      @event.meeting_length = ''
+      @event.should_not be_valid
+    end
+
+    it 'is not valid with an invalid Meeting Length' do
+      [-1, 0, 1.5, 'foo'].each do |invalid_length|
+        @event.meeting_length = invalid_length
+        @event.should_not be_valid
       end
     end
 
-    it 'is not valid with an invalid Faculty Weight' do
-      ['', -1, 'foobar'].each do |invalid_weight|
-        @settings.faculty_weight = invalid_weight
-        @settings.should_not be_valid
+    it 'is not valid without a Meeting Gap' do
+      @event.meeting_gap = ''
+      @event.should_not be_valid
+    end
+
+    it 'is not valid with an invalid Meeting Gap' do
+      [-1, 1.5, 'foo'].each do |invalid_gap|
+        @event.meeting_gap = invalid_gap
+        @event.should_not be_valid
       end
     end
 
-    it 'is not valid with an invalid Admit Weight' do
-      ['', -1, 'foobar'].each do |invalid_weight|
-        @settings.admit_weight = invalid_weight
-        @settings.should_not be_valid
+    it 'is not valid without a Prevent Facilitators From Making Changes flag' do
+      @event.disable_facilitators = nil
+      @event.should_not be_valid
+    end
+
+    it 'is not valid without a Prevent Hosts From Making Changes flag' do
+      @event.disable_hosts = nil
+      @event.should_not be_valid
+    end
+
+    it 'is not valid without a Maximum Number of Meetings per Visitor' do
+      @event.max_meetings_per_visitor = ''
+      @event.should_not be_valid
+    end
+
+    it 'is not valid with an invalid Maximum Number of Meetings per Visitor' do
+      [-1, 1.5, 'foo'].each do |invalid_meetings|
+        @event.max_meetings_per_visitor = invalid_meetings
+        @event.should_not be_valid
       end
     end
+  end
 
-    it 'is not valid with an invalid Rank Weight' do
-      ['', -1, 'foobar'].each do |invalid_weight|
-        @settings.rank_weight = invalid_weight
-        @settings.should_not be_valid
+  context 'when destroying' do
+    it 'destroys its Time Slots' do
+      time_slots = Array.new(3) do
+        time_slot = mock_model(TimeSlot)
+        time_slot.should_receive(:destroy)
+      time_slot
       end
+      @event.stub(:time_slots).and_return(time_slots)
+      @event.destroy
     end
 
-    it 'is not valid with an invalid Mandatory Weight' do
-      ['', -1, 'foobar'].each do |invalid_weight|
-        @settings.mandatory_weight = invalid_weight
-        @settings.should_not be_valid
+    it 'destroys its Hosts' do
+      hosts = Array.new(3) do
+        host = mock_model(Host)
+        host.should_receive(:destroy)
+        host
       end
+      @event.stub(:hosts).and_return(hosts)
+      @event.destroy
     end
 
-    it 'is not valid without a Disable Faculty From Making Changes flag' do
-      @settings.disable_faculty = nil
-      @settings.should_not be_valid
-    end
-
-    it 'is not valid without a Disable Peer Advisors From Making Changes flag' do
-      @settings.disable_peer_advisors = nil
-      @settings.should_not be_valid
+    it 'destroys its Visitors' do
+      visitors = Array.new(3) do
+        visitor = mock_model(Visitor)
+        visitor.should_receive(:destroy)
+        visitor
+      end
+      @event.stub(:visitors).and_return(visitors)
+      @event.destroy
     end
   end
 end

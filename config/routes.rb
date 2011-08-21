@@ -8,23 +8,65 @@ ActionController::Routing::Routes.draw do |map|
     root.faculty_dashboard 'faculty', :action => 'faculty_dashboard', :conditions => {:method => :get}
   end
 
-  map.resource :settings, :only => [:edit, :update]
-
-  map.resources :meetings, :collection => {:create_all => :post, :master => :get, :statistics => :get, :print_admits => :get, :print_faculty => :get}
-
-  map.resources :people,
-    :except => [:show],
+  map.resources(
+    :people,
     :collection => {:upload => :get, :delete_all => :get, :import => :post, :destroy_all => :delete},
     :member => {:delete => :get}
+  )
 
-  map.resources :hosts, :except => :all do |host|
-    host.resources :rankings, :controller => 'host_rankings', :only => :index, :collection => {:add => :get, :edit_all => :get, :update_all => :put}
-    host.resources :availabilities, :controller => 'host_availabilities', :except => :all, :collection => {:edit_all => :get, :update_all => :put}
-    host.resources :meetings, :only => :index, :collection => {:tweak => :get, :apply_tweaks => :post}
-  end
-  map.resources :visitors do |visitor|
-    visitor.resources :rankings, :controller => 'visitor_rankings', :only => :index, :collection => {:add => :get, :edit_all => :get, :update_all => :put}
-    visitor.resources :availabilities, :controller => 'visitor_availabilities', :except => :all, :collection => {:edit_all => :get, :update_all => :put}
-    visitor.resources :meetings, :only => :index
+  map.resources(
+    :events,
+    :member => {:delete => :get}
+  ) do |event|
+    event.resources(
+      :hosts,
+      :except => :all
+    ) do |host|
+      host.resources(
+        :rankings, :controller => 'host_rankings',
+        :only => :index,
+        :collection => {:add => :get, :edit_all => :get, :update_all => :put}
+      )
+
+      host.resources(
+        :availabilities, :controller => 'host_availabilities',
+        :except => :all,
+        :collection => {:edit_all => :get, :update_all => :put}
+      )
+
+      host.resources(
+        :meetings,
+        :only => :index,
+        :collection => {:tweak => :get, :apply_tweaks => :post}
+      )
+    end
+
+    event.resources(
+      :visitors
+    ) do |visitor|
+      visitor.resources(
+        :rankings, :controller => 'visitor_rankings',
+        :only => :index,
+        :collection => {:add => :get, :edit_all => :get, :update_all => :put}
+      )
+
+      visitor.resources(
+        :availabilities,
+        :controller => 'visitor_availabilities',
+        :except => :all,
+        :collection => {:edit_all => :get, :update_all => :put}
+      )
+
+      visitor.resources(
+        :meetings,
+        :only => :index
+      )
+    end
+
+    event.resources(
+      :meetings,
+      :only => :index,
+      :collection => {:generate => :get}
+    )
   end
 end

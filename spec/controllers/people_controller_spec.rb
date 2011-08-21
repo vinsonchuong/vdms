@@ -33,13 +33,13 @@ describe PeopleController do
     end
 
     it 'assigns to @areas a list of the Areas' do
-      stub_areas('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
+      Person.stub(:areas).and_return('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
       get :new
       assigns[:areas].should == [['Area 1', 'A1'], ['Area 2', 'A2'], ['Area 3', 'A3']]
     end
 
     it 'assigns to @divisions a list of the Division names' do
-      stub_divisions('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
+      Person.stub(:divisions).and_return('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
       get :new
       assigns[:divisions].should == [['Division 1', 'D1'], ['Division 2', 'D2'], ['Division 3', 'D3']]
     end
@@ -65,13 +65,13 @@ describe PeopleController do
     end
 
     it 'assigns to @areas a list of the Areas' do
-      stub_areas('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
+      Person.stub(:areas).and_return('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
       get :edit, :id => @person.id
       assigns[:areas].should == [['Area 1', 'A1'], ['Area 2', 'A2'], ['Area 3', 'A3']]
     end
 
     it 'assigns to @divisions a list of the Division names' do
-      stub_divisions('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
+      Person.stub(:divisions).and_return('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
       get :edit, :id => @person.id
       assigns[:divisions].should == [['Division 1', 'D1'], ['Division 2', 'D2'], ['Division 3', 'D3']]
     end
@@ -133,13 +133,13 @@ describe PeopleController do
       end
 
       it 'assigns to @areas a list of the Areas' do
-        stub_areas('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
+        Person.stub(:areas).and_return('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
         post :create, :person => {'foo' => 'bar'}
         assigns[:areas].should == [['Area 1', 'A1'], ['Area 2', 'A2'], ['Area 3', 'A3']]
       end
 
       it 'assigns to @divisions a list of the Division names' do
-        stub_divisions('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
+        Person.stub(:divisions).and_return('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
         post :create, :person => {'foo' => 'bar'}
         assigns[:divisions].should == [['Division 1', 'D1'], ['Division 2', 'D2'], ['Division 3', 'D3']]
       end
@@ -229,13 +229,13 @@ describe PeopleController do
       end
 
       it 'assigns to @areas a list of the Areas' do
-        stub_areas('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
+        Person.stub(:areas).and_return('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
         put :update, :id => @person.id
         assigns[:areas].should == [['Area 1', 'A1'], ['Area 2', 'A2'], ['Area 3', 'A3']]
       end
 
       it 'assigns to @divisions a list of the Division names' do
-        stub_divisions('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
+        Person.stub(:divisions).and_return('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
         put :update, :id => @person.id
         assigns[:divisions].should == [['Division 1', 'D1'], ['Division 2', 'D2'], ['Division 3', 'D3']]
       end

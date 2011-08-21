@@ -27,7 +27,7 @@ describe HostRankingsController do
 
     context 'when given no filter' do
       it 'assigns to @areas a list of the Areas, all selected' do
-        stub_areas('a1' => 'Area 1', 'a2' => 'Area 2', 'a3' => 'Area 3')
+        Person.stub(:areas).and_return('a1' => 'Area 1', 'a2' => 'Area 2', 'a3' => 'Area 3')
         get :add, :host_id => @host.id
         assigns[:areas].should == [['a1', true], ['a2', true], ['a3', true]]
       end

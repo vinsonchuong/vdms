@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SettingsController do
+describe EventsController do
   before(:each) do
     @settings = Settings.instance
     Settings.stub(:instance).and_return(@settings)

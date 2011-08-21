@@ -2,8 +2,9 @@ require 'spec_helper'
 
 describe HostAvailability do
   before(:each) do
-    time_slot = Factory.create(:time_slot)
-    host = Factory.create(:host)
+    @event = Factory.create(:event)
+    Factory.create(:time_slot, :event => @event)
+    host = Factory.create(:host, :event => @event)
     @host_availability = host.availabilities.first
   end
 
@@ -40,9 +41,9 @@ describe HostAvailability do
   describe 'Scopes' do
     it 'by default is sorted by Time Slot' do
       time = Time.zone.parse('12PM')
-      Factory.create(:time_slot, :begin => time, :end => time + 15.minutes)
+      Factory.create(:time_slot, :begin => time, :end => time + 15.minutes, :event => @event)
       @host_availability.time_slot.update_attributes(:begin => time + 15.minutes, :end => time + 30.minutes)
-      Factory.create(:time_slot, :begin => time + 30.minutes, :end => time + 45.minutes)
+      Factory.create(:time_slot, :begin => time + 30.minutes, :end => time + 45.minutes, :event => @event)
       @host_availability.host.availabilities.reload.map(&:time_slot).map(&:begin).should == [time, time + 15.minutes, time + 30.minutes]
     end
   end

@@ -32,7 +32,7 @@ module Importable
         when :boolean then :to_b
         else :to_s
         end
-        {accessor, value.send(conversion)}
+        {accessor => value.send(conversion)}
       end
       unless rankings.empty?
         attributes.merge({:rankings_attributes => rankings})

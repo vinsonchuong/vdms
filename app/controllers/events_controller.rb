@@ -1,4 +1,4 @@
-class SettingsController < ApplicationController
+class EventsController < ApplicationController
   # GET /settings/edit
   def edit
     @settings = Settings.instance

@@ -108,7 +108,19 @@ en:
         too_short: "%{attribute} is too short (minimum is %{count} characters)"
         wrong_length: "%{attribute} is the wrong length (should be %{count} characters)"
       models:
-        settings:
+        person:
+          attributes:
+            division:
+              invalid: "Division is invalid"
+            area_1:
+              invalid: "Area 1 is invalid"
+            area_2:
+              invalid: "Area 2 is invalid"
+            area_3:
+              invalid: "Area 3 is invalid"
+            role:
+              inclusion: "Role is invalid"
+        event:
           attributes:
             time_slots:
               overlap: "Time slots must not overlap"
@@ -128,11 +140,11 @@ en:
               existence: "Time Slot must be specified"
         host_availability:
           attributes:
-            host_id:
+            host:
               existence: "Host must be specified"
         visitor_availability:
           attributes:
-            visitor_id:
+            visitor:
               existence: "Visitor must be specified"
       template:
         body: "There were problems with the following fields:"

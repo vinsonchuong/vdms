@@ -75,8 +75,8 @@ describe Visitor do
 
     describe 'Availabilities (availabilities)' do
       it 'allows nested attributes for Availabilities (availabilities)' do
-        time_slot1 = Factory.create(:time_slot)
-        time_slot2 = Factory.create(:time_slot)
+        time_slot1 = Factory.create(:time_slot, :event => @visitor.event)
+        time_slot2 = Factory.create(:time_slot, :event => @visitor.event)
         availability1 = @visitor.availabilities.find_by_time_slot_id(time_slot1.id)
         availability2 = @visitor.availabilities.find_by_time_slot_id(time_slot2.id)
         @visitor.update_attributes(:availabilities_attributes => [

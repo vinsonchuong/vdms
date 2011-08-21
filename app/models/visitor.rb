@@ -1,7 +1,7 @@
 class Visitor < Role
   after_create do |record|
     # validate against duplicates
-    Settings.instance.time_slots.each do |time_slot|
+    record.event.time_slots.each do |time_slot|
       record.availabilities.create(:time_slot => time_slot, :available => true)
     end
   end

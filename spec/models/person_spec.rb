@@ -87,6 +87,7 @@ describe Person do
     it 'is not valid without a Name' do
       @person.name = ''
       @person.should_not be_valid
+      @person.errors.full_messages.should include("Name can't be blank")
     end
 
     it 'is valid with a valid Email' do
@@ -100,6 +101,7 @@ describe Person do
       ['foobar', 'foo@bar', 'foo.com'].each do |invalid_email|
         @person.email = invalid_email
         @person.should_not be_valid
+        @person.errors.full_messages.should include("Email is invalid")
       end
     end
 
@@ -114,11 +116,12 @@ describe Person do
       ['foo', '', 123].each do |invalid_role|
         @person.role = invalid_role
         @person.should_not be_valid
+        @person.errors.full_messages.should include("Role is invalid")
       end
     end
 
     it 'is valid with a valid Division' do
-      (Settings.instance.divisions.map(&:last) << '').each do |division|
+      (Person.divisions.map(&:last) << '').each do |division|
         @person.division = division
         @person.should be_valid
       end
@@ -128,11 +131,12 @@ describe Person do
       ['Division 3', 123].each do |invalid_division|
         @person.division = invalid_division
         @person.should_not be_valid
+        @person.errors.full_messages.should include("Division is invalid")
       end
     end
 
     it 'is valid with a valid Area 1' do
-      (Settings.instance.areas.map(&:last) << '').each do |area|
+      (Person.areas.map(&:last) << '').each do |area|
         @person.area_1 = area
         @person.should be_valid
       end
@@ -142,11 +146,12 @@ describe Person do
       ['Area 3', 123].each do |invalid_area|
         @person.area_1 = invalid_area
         @person.should_not be_valid
+        @person.errors.full_messages.should include("Area 1 is invalid")
       end
     end
 
     it 'is valid with a valid Area 2' do
-      (Settings.instance.areas.map(&:last) << '').each do |area|
+      (Person.areas.map(&:last) << '').each do |area|
         @person.area_2 = area
         @person.should be_valid
       end
@@ -156,11 +161,12 @@ describe Person do
       ['Area 3', 123].each do |invalid_area|
         @person.area_2 = invalid_area
         @person.should_not be_valid
+        @person.errors.full_messages.should include("Area 2 is invalid")
       end
     end
 
     it 'is valid with a valid Area 3' do
-      (Settings.instance.areas.map(&:last) << '').each do |area|
+      (Person.areas.map(&:last) << '').each do |area|
         @person.area_3 = area
         @person.should be_valid
       end
@@ -170,13 +176,14 @@ describe Person do
       ['Area 3', 123].each do |invalid_area|
         @person.area_3 = invalid_area
         @person.should_not be_valid
+        @person.errors.full_messages.should include("Area 3 is invalid")
       end
     end
   end
 
   describe 'after validating' do
     it 'maps Areas to their canonical form' do
-      stub_areas('A1' => 'Area 1', 'A2' => 'Area 2')
+      Person.stub(:areas).and_return('A1' => 'Area 1', 'A2' => 'Area 2')
       [['A1', 'A1'], ['Area 1', 'A1'], ['', '']].each do |area, canonical|
         @person.area_1 = area
         @person.area_2 = area
@@ -189,7 +196,7 @@ describe Person do
     end
 
     it 'maps Division to its canonical form' do
-      stub_divisions('D1' => 'Division 1', 'D2' => 'Division 2')
+      Person.stub(:divisions).and_return('D1' => 'Division 1', 'D2' => 'Division 2')
       [['D1', 'D1'], ['Division 1', 'D1'], ['', '']].each do |division, canonical|
         @person.division = division
         @person.valid?

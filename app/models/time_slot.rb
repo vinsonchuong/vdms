@@ -1,7 +1,7 @@
 class TimeSlot < ActiveRecord::Base
   #attr_accessible :begin, :end, :settings, :settings_id
 
-  belongs_to :settings
+  belongs_to :event
   has_many :host_availabilities, :dependent => :destroy
   has_many :visitor_availabilities, :dependent => :destroy
 
@@ -9,10 +9,10 @@ class TimeSlot < ActiveRecord::Base
 
   after_create do |record|
     #validate against duplicates
-    Host.all.each do |host|
+    record.event.hosts.all.each do |host|
       host.availabilities.create(:time_slot => record, :available => false)
     end
-    Visitor.all.each do |visitor|
+    record.event.visitors.all.each do |visitor|
       visitor.availabilities.create(:time_slot => record, :available => true)
     end
   end
@@ -20,7 +20,7 @@ class TimeSlot < ActiveRecord::Base
   validates_datetime :begin
   validates_datetime :end
   validates_datetime :end, :after => :begin
-  validates_existence_of :settings
+  validates_existence_of :event
 
   def begin=(begin_time)
     if begin_time.class == String
@@ -43,6 +43,6 @@ class TimeSlot < ActiveRecord::Base
   end
 
   def overlap?(other)
-    ((self.begin)...(self.end)).overlaps?((other.begin)...(other.end))
+    !(self.end <= other.begin || self.begin >= other.end)
   end
 end
