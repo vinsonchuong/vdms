@@ -182,8 +182,8 @@ describe 'Routes' do
         end
       end
       context 'when generating' do
-        it 'routes GET /events/1/meetings/generate to Meetings#generate' do
-          {:get => '/events/1/meetings/generate'}.should route_to(:controller => 'meetings', :action => 'generate', :event_id => '1')
+        it 'routes GET /events/1/meetings/create_all to Meetings#create_all' do
+          {:get => '/events/1/meetings/create_all'}.should route_to(:controller => 'meetings', :action => 'create_all', :event_id => '1')
         end
       end
     end

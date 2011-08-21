@@ -10,6 +10,13 @@ en:
       success: "Person was successfully removed."
     destroy_all:
       success: "People were all successfully removed."
+  events:
+    create:
+      success: "Event was successfully added."
+    update:
+      success: "Event was successfully updated."
+    destroy:
+      success: "Event was successfully removed."
   rankings:
     edit_all:
       disabled: "The Staff have disabled making further changes."

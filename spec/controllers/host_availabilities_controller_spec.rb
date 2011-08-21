@@ -8,12 +8,12 @@ describe HostAvailabilitiesController do
   describe 'GET edit_all' do
     it 'assigns to @schedulable the Host' do
       Host.stub(:find).and_return(@host)
-      get :edit_all, :host_id => @host.id
+      get :edit_all, :host_id => @host.id, :event_id => @host.event.id
       assigns[:schedulable].should == @host
     end
 
     it 'renders the edit_all template' do
-      get :edit_all, :host_id => @host.id
+      get :edit_all, :host_id => @host.id, :event_id => @host.event.id
       response.should render_template('edit_all')
     end
   end
@@ -24,13 +24,13 @@ describe HostAvailabilitiesController do
     end
 
     it 'assigns to @schedulable the Host' do
-      put :update_all, :host_id => @host.id
+      put :update_all, :host_id => @host.id, :event_id => @host.event.id
       assigns[:schedulable].should == @host
     end
 
     it 'updates the Host' do
       @host.should_receive(:update_attributes).with('foo' => 'bar')
-      put :update_all, :host_id => @host.id, :host => {'foo' => 'bar'}
+      put :update_all, :host_id => @host.id, :host => {'foo' => 'bar'}, :event_id => @host.event.id
     end
 
     context 'when the Host is successfully updated' do
@@ -39,12 +39,12 @@ describe HostAvailabilitiesController do
       end
 
       it 'sets a flash[:notice] message' do
-        put :update_all, :host_id => @host.id, :host => {'foo' => 'bar'}
+        put :update_all, :host_id => @host.id, :host => {'foo' => 'bar'}, :event_id => @host.event.id
         flash[:notice].should == I18n.t('hosts.update.success')
       end
 
       it 'redirects to the Edit All Availabilities Page' do
-        put :update_all, :host_id => @host.id, :host => {'foo' => 'bar'}
+        put :update_all, :host_id => @host.id, :host => {'foo' => 'bar'}, :event_id => @host.event.id
         response.should redirect_to(:controller => 'host_availabilities', :action => 'edit_all', :host_id => @host.id)
       end
     end
@@ -55,7 +55,7 @@ describe HostAvailabilitiesController do
       end
 
       it 'renders the Edit All Availabilities Page' do
-        put :update_all, :host_id => @host.id, :host => {'foo' => 'bar'}
+        put :update_all, :host_id => @host.id, :host => {'foo' => 'bar'}, :event_id => @host.event.id
         response.should render_template('edit_all')
       end
     end

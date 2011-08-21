@@ -2,57 +2,173 @@ require 'spec_helper'
 
 describe EventsController do
   before(:each) do
-    @settings = Settings.instance
-    Settings.stub(:instance).and_return(@settings)
+    @event = Factory.create(:event)
+  end
+
+  describe 'GET index' do
+    it 'assigns to @events a list of all the Events sorted by name' do
+      events = Array.new(3) {Event.new}
+      Event.stub(:find).and_return(events)
+      get :index
+      assigns[:events].should == events
+    end
+
+    it 'renders the index template' do
+      get :index
+      response.should render_template('index')
+    end
+  end
+
+  describe 'GET new' do
+    it 'assigns to @event a new Event' do
+      get :new
+      assigns[:event].should be_a_new_record
+    end
+
+    it 'renders thew new template' do
+      get :new
+      response.should render_template('new')
+    end
   end
 
   describe 'GET edit' do
-    it 'assigns to @settings the Settings singleton' do
-      get :edit
-      assigns[:settings].should equal(@settings)
+    it 'assigns to @event the given Event' do
+      Event.stub(:find).and_return(@event)
+      get :edit, :id => @event.id
+      assigns[:event].should == @event
+    end
+
+    it 'assigns to @meeting_times a list of Meeting Times with a blank' do
+      Event.stub(:find).and_return(@event)
+      meeting_times = [1..2, 2..3]
+      @event.should_receive(:meeting_times).with(:include_blank => true).and_return(meeting_times)
+      get :edit, :id => @event.id
+      assigns[:meeting_times].should == meeting_times
     end
 
     it 'renders the edit template' do
-      get :edit
+      get :edit, :id => @event.id
       response.should render_template('edit')
     end
   end
 
-  describe 'PUT update' do
-    it 'assigns to @settings the Settings singleton' do
-      put :update
-      assigns[:settings].should equal(@settings)
+  describe 'GET delete' do
+    it 'assigns to @event the given Event' do
+      Event.stub(:find).and_return(@event)
+      get :delete, :id => @event.id
+      assigns[:event].should == @event
     end
 
-    it 'updates the settings' do
-      @settings.should_receive(:update_attributes).with('key' => 'value')
-      put :update, :settings => {'key' => 'value'}
+    it 'renders the delete template' do
+      get :delete, :id => @event.id
+      response.should render_template('delete')
+    end
+  end
+
+  describe 'POST create' do
+    before(:each) do
+      Event.stub(:new).and_return(@event)
     end
 
-    context 'when the settings are successfully updated' do
+    it 'assigns to @event a new Event with the given parameters' do
+      Event.should_receive(:new).with('foo' => 'bar').and_return(@event)
+      post :create, :event => {'foo' => 'bar'}
+      assigns[:event].should equal(@event)
+    end
+
+    it 'saves the Event' do
+      @event.should_receive(:save)
+      post :create, :event => {'foo' => 'bar'}
+    end
+
+    context 'when the Event is successfully saved' do
       before(:each) do
-        @settings.stub(:update_attributes).and_return(true)
+        @event.stub(:save).and_return(true)
       end
 
       it 'sets a flash[:notice] message' do
-        put :update
-        flash[:notice].should == I18n.t('settings.update.success')
+        post :create, :event => {'foo' => 'bar'}
+        flash[:notice].should == I18n.t('events.create.success')
       end
 
-      it 'redirects to the edit settings page' do
-        put :update
-        response.should redirect_to(:action => 'edit')
+      it 'redirects to the View Meeting page' do
+        post :create, :event => {'foo' => 'bar'}
+        response.should redirect_to(:action => 'index')
       end
     end
 
-    context 'when the settings fail to be updated' do
+    context 'when the Event fails to be saved' do
       before(:each) do
-        @settings.stub(:update_attributes).and_return(false)
+        @event.stub(:save).and_return(false)
       end
 
-      it 'renders the edit template' do
-        put :update
-        response.should render_template('edit')
+      it 'renders the new template' do
+        post :create, :event => {'foo' => 'bar'}
+        response.should render_template('new')
+      end
+    end
+
+    describe 'PUT update' do
+      before(:each) do
+        Event.stub(:find).and_return(@event)
+      end
+
+      it 'assigns to @event the given Event' do
+        put :update, :id => @event.id
+        assigns[:event].should == @event
+      end
+
+      it 'updates the Event' do
+        @event.should_receive(:update_attributes).with('foo' => 'bar')
+        put :update, :id => @event.id, :event => {'foo' => 'bar'}
+      end
+
+      context 'when the Event is successfully updated' do
+        before(:each) do
+          @event.stub(:update_attributes).and_return(true)
+        end
+
+        it 'sets a flash[:notice] message' do
+          put :update, :id => @event.id, :event => {'foo' => 'bar'}
+          flash[:notice].should == I18n.t('events.update.success')
+        end
+
+        it 'redirects to the View Event page' do
+          put :update, :id => @event.id, :event => {'foo' => 'bar'}
+          response.should redirect_to(:action => 'edit', :id => @event.id)
+        end
+      end
+
+      context 'when the Event fails to be saved' do
+        before(:each) do
+          @event.stub(:update_attributes).and_return(false)
+        end
+
+        it 'renders the edit template' do
+          put :update, :id => @event.id, :event => {'foo' => 'bar'}
+          response.should render_template('edit')
+        end
+      end
+    end
+
+    describe 'DELETE destroy' do
+      before(:each) do
+        Event.stub(:find).and_return(@event)
+      end
+
+      it 'destroys the Event' do
+        @event.should_receive(:destroy)
+        delete :destroy, :id => @event.id
+      end
+
+      it 'sets a flash[:notice] message' do
+        delete :destroy, :id => @event.id
+        flash[:notice].should == I18n.t('events.destroy.success')
+      end
+
+      it 'redirects to the View Events page' do
+        delete :destroy, :id => @event.id
+        response.should redirect_to(:action => 'index')
       end
     end
   end

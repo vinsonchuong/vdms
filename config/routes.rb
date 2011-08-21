@@ -66,7 +66,7 @@ ActionController::Routing::Routes.draw do |map|
     event.resources(
       :meetings,
       :only => :index,
-      :collection => {:generate => :get}
+      :collection => {:create_all => :get, :statistics => :get}
     )
   end
 end

@@ -1,22 +1,43 @@
 class EventsController < ApplicationController
-  # GET /settings/edit
-  def edit
-    @settings = Settings.instance
-    blank_time = ''..''
-    def blank_time.new_record?; true end
-    def blank_time.begin; nil end
-    def blank_time.end; nil end
-    @meeting_times = @settings.meeting_times << blank_time
+  # GET /events
+  def index
+    @events = Event.all
   end
 
-  # PUT /settings
+  # GET /events/new
+  def new
+    @event = Event.new
+  end
+
+  # GET /events/edit
+  def edit
+    @event = Event.find(params[:id])
+    @meeting_times = @event.meeting_times(:include_blank => true)
+  end
+
+  # GET /events/1/delete
+  def delete
+    @event = Event.find(params[:id])
+  end
+
+  # POST /events
+  def create
+    @event = Event.new(params[:event])
+    if @event.save
+      redirect_to(:events, :notice => t('events.create.success'))
+    else
+      render :action => 'new'
+    end
+  end
+
+  # PUT /events/1
   def update
-    @settings = Settings.instance
+    @event = Event.find(params[:id])
 
     # Hack to address standing bug in Rails 2.3: time_select doesn't work with :include_blank
     # NOT tested in RSpec.
-    unless params['settings'].nil? || params['settings']['meeting_times_attributes'].nil?
-      params['settings']['meeting_times_attributes'].each_pair do |i, time|
+    unless params['event'].nil? || params['event']['meeting_times_attributes'].nil?
+      params['event']['meeting_times_attributes'].each_pair do |i, time|
         unless time['end(4i)'].blank? || time['end(5i)'].blank?
           time['end(1i)'] = time['begin(1i)'].blank? ? '2011' : time['begin(1i)']
           time['end(2i)'] = time['begin(2i)'].blank? ? '1' : time['begin(2i)']
@@ -25,10 +46,16 @@ class EventsController < ApplicationController
       end
     end
 
-    if @settings.update_attributes(params[:settings])
-      redirect_to(edit_settings_url, :notice => t(:success, :scope => [:settings, :update]))
+    if @event.update_attributes(params[:event])
+      redirect_to(edit_event_url, :notice => t(:success, :scope => [:events, :update]))
     else
       render :action => 'edit'
     end
+  end
+
+  # DELETE /events/1
+  def destroy
+    Event.find(params[:id]).destroy
+    redirect_to(:events, :notice => t('events.destroy.success'))
   end
 end

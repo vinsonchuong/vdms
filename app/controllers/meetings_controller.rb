@@ -23,10 +23,10 @@ class MeetingsController < ApplicationController
   # Show meetings statistics
   # GET /meetings/statistics
   def statistics
-    settings = Settings.instance
+    event = Event.find(params[:event_id])
     @visitors = Visitor.all
     @hosts = Host.all
-    @unsatisfied_visitors = @visitors.select {|a| a.meetings.count < settings.unsatisfied_admit_threshold}
+    @unsatisfied_visitors = @visitors.select {|a| a.meetings.count < event.unsatisfied_visitor_threshold}
     @unsatisfied_hosts = @hosts.map {|f| [f, f.mandatory_visitors - f.meetings.map(&:visitor)]}.reject {|f, a| a.empty?}
     @visitors_with_unsatisfied_rankings = @visitors.map do |admit|
       meeting_faculty = admit.meetings.map(&:host)
@@ -41,7 +41,7 @@ class MeetingsController < ApplicationController
   # Show the admit schedule
   # GET /meetings/print_admits
   def print_admits
-    @settings = Settings.instance
+    @event = Event.find(params[:event])
     @admits = Visitor.all.reject {|a| a.meetings.empty?}
     @one_per_page = params['one_per_page'].to_b
   end
@@ -92,9 +92,9 @@ class MeetingsController < ApplicationController
   # Run the scheduler
   # POST /meetings/create_all
   def create_all
-    if Settings.instance.disable_scheduler
+    if Event.find(params[:event_id]).disable_scheduler
       flash[:alert] = "The staff have disabled automatic scheduler generation."
-      redirect_to master_meetings_path
+      redirect_to event_meetings_path(:event_id => params[:event_id])
       return
     end
     begin
@@ -103,7 +103,7 @@ class MeetingsController < ApplicationController
     rescue Exception => e
       flash[:alert] = "New schedule could NOT be generated: #{e.message}"
     end
-    redirect_to master_meetings_path
+    redirect_to event_meetings_path(:event_id => params[:event_id])
   end
 
   private

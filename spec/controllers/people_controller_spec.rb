@@ -219,7 +219,7 @@ describe PeopleController do
 
       it 'redirects to the View People page' do
         put :update, :id => @person.id
-        response.should redirect_to(:controller => 'people', :action => 'index')
+        response.should redirect_to(:action => 'index')
       end
     end
 

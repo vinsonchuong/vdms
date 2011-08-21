@@ -8,12 +8,12 @@ describe VisitorAvailabilitiesController do
   describe 'GET edit_all' do
     it 'assigns to @schedulable the Visitor' do
       Visitor.stub(:find).and_return(@visitor)
-      get :edit_all, :visitor_id => @visitor.id
+      get :edit_all, :visitor_id => @visitor.id, :event_id => @visitor.event.id
       assigns[:schedulable].should == @visitor
     end
 
     it 'renders the edit_all template' do
-      get :edit_all, :visitor_id => @visitor.id
+      get :edit_all, :visitor_id => @visitor.id, :event_id => @visitor.event.id
       response.should render_template('edit_all')
     end
   end
@@ -24,13 +24,13 @@ describe VisitorAvailabilitiesController do
     end
 
     it 'assigns to @schedulable the Visitor' do
-      put :update_all, :visitor_id => @visitor.id
+      put :update_all, :visitor_id => @visitor.id, :event_id => @visitor.event.id
       assigns[:schedulable].should == @visitor
     end
 
     it 'updates the Visitor' do
       @visitor.should_receive(:update_attributes).with('foo' => 'bar')
-      put :update_all, :visitor_id => @visitor.id, :visitor => {'foo' => 'bar'}
+      put :update_all, :visitor_id => @visitor.id, :event_id => @visitor.event.id, :visitor => {'foo' => 'bar'}
     end
 
     context 'when the Host is successfully updated' do
@@ -39,12 +39,12 @@ describe VisitorAvailabilitiesController do
       end
 
       it 'sets a flash[:notice] message' do
-        put :update_all, :visitor_id => @visitor.id, :visitor => {'foo' => 'bar'}
+        put :update_all, :visitor_id => @visitor.id, :event_id => @visitor.event.id, :visitor => {'foo' => 'bar'}
         flash[:notice].should == I18n.t('visitors.update.success')
       end
 
       it 'redirects to the Edit All Availabilities Page' do
-        put :update_all, :visitor_id => @visitor.id, :visitor => {'foo' => 'bar'}
+        put :update_all, :visitor_id => @visitor.id, :event_id => @visitor.event.id, :visitor => {'foo' => 'bar'}
         response.should redirect_to(:controller => 'visitor_availabilities', :action => 'edit_all', :visitor_id => @visitor.id)
       end
     end
@@ -55,7 +55,7 @@ describe VisitorAvailabilitiesController do
       end
 
       it 'renders the Edit All Availabilities Page' do
-        put :update_all, :visitor_id => @visitor.id, :visitor => {'foo' => 'bar'}
+        put :update_all, :visitor_id => @visitor.id, :event_id => @visitor.event.id, :visitor => {'foo' => 'bar'}
         response.should render_template('edit_all')
       end
     end

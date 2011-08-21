@@ -2,10 +2,10 @@ class AvailabilitiesController < ApplicationController
   # GET /people/PEOPLE/1/availabilities/edit_all
   def edit_all
     @schedulable = get_schedulable
-    settings = Settings.instance
+    event = Event.find(params[:event_id])
 
-    if settings.disable_faculty && @current_user.class == Faculty ||
-       settings.disable_peer_advisors && @current_user.class == PeerAdvisor
+    if event.disable_hosts? && @current_user.class == Faculty ||
+       event.disable_facilitators? && @current_user.class == PeerAdvisor
       flash[:alert] = t('availabilities.edit_all.disabled')
     end
   end

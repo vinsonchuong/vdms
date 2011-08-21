@@ -7,9 +7,8 @@ class RankingsController < ApplicationController
   # GET /people/PEOPLE/1/rankings/add
   def add
     @ranker = get_ranker
-    @settings = Settings.instance
     if params[:filter].nil?
-      @areas = @settings.areas.keys.sort!.map {|a| [a, true]}
+      @areas = Person.areas.keys.sort!.map {|a| [a, true]}
       @rankables = get_rankables.all # Pull into model
     else
       @areas = params[:filter].update_values(&:to_b).to_a.sort
@@ -22,7 +21,7 @@ class RankingsController < ApplicationController
   # GET /people/PEOPLE/1/rankings/edit_all
   def edit_all
     @ranker = get_ranker
-    @settings = Settings.instance
+    @event = Event.find(params[:event_id])
 
     unless params[:select].nil?
       get_rankables.find(
@@ -32,8 +31,8 @@ class RankingsController < ApplicationController
       end
     end
 
-    if @settings.disable_faculty && @current_user.class == Faculty ||
-       @settings.disable_peer_advisors && @current_user.class == PeerAdvisor
+    if @event.disable_hosts? && @current_user.class == Faculty ||
+       @event.disable_facilitators? && @current_user.class == PeerAdvisor
       flash[:alert] = t('rankings.edit_all.disabled')
     end
 

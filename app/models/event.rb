@@ -15,7 +15,7 @@ class Event < ActiveRecord::Base
 
   default_scope :order => 'name'
 
-  def meeting_times
+  def meeting_times(options = {})
     times = time_slots.map {|t| (t.begin)...(t.end + meeting_gap)}
     times = Range.combine(*times)
     times.map! do |r|
@@ -24,6 +24,14 @@ class Event < ActiveRecord::Base
       def time._destroy; end
       time
     end
+    if options[:include_blank]
+      blank_time = ''..''
+      def blank_time.new_record?; true end
+      def blank_time.begin; nil end
+      def blank_time.end; nil end
+      times << blank_time
+    end
+    times
   end
 
   def meeting_times_attributes=(times)
