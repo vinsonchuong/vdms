@@ -1,5 +1,6 @@
 class AvailabilitiesController < ApplicationController
-  # GET /people/PEOPLE/1/availabilities/edit_all
+  # GET /events/1/hosts/1/availabilities/edit_all
+  # GET /events/1/visitors/1/availabilities/edit_all
   def edit_all
     @schedulable = get_schedulable
     event = Event.find(params[:event_id])
@@ -10,7 +11,8 @@ class AvailabilitiesController < ApplicationController
     end
   end
 
-  # PUT /people/PEOPLE/1/availabilities/update_all
+  # PUT /events/1/hosts/1/availabilities/update_all
+  # PUT /events/1/visitors/1/availabilities/update_all
   def update_all
     @schedulable = get_schedulable
 

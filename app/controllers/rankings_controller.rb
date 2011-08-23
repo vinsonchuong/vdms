@@ -1,10 +1,12 @@
 class RankingsController < ApplicationController
-  # GET /people/PEOPLE/1/rankings
+  # GET /events/1/hosts/1/rankings
+  # GET /events/1/visitors/1/rankings
   def index
     @ranker = get_ranker
   end
 
-  # GET /people/PEOPLE/1/rankings/add
+  # GET /events/1/hosts/1/rankings/add
+  # GET /events/1/visitors/1/rankings/add
   def add
     @ranker = get_ranker
     if params[:filter].nil?
@@ -18,7 +20,8 @@ class RankingsController < ApplicationController
     @rankables -= @ranker.rankings.map(&:rankable)
   end
 
-  # GET /people/PEOPLE/1/rankings/edit_all
+  # GET /events/1/hosts/1/rankings/edit_all
+  # GET /events/1/visitors/1/rankings/edit_all
   def edit_all
     @ranker = get_ranker
     @event = Event.find(params[:event_id])
@@ -39,7 +42,8 @@ class RankingsController < ApplicationController
     redirect_to :action => 'add' if @ranker.rankings.empty?
   end
 
-  # PUT /people/PEOPLE/1/rankings/update_all
+  # PUT /events/1/hosts/1/rankings/update_all
+  # PUT /events/1/visitors/1/rankings/update_all
   def update_all
     # Grab redirect logic from edit_all as well
     @ranker = get_ranker

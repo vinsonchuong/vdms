@@ -3,7 +3,9 @@ class MeetingsController < ApplicationController
   #before_filter :current_user_is_staff?, :only => [:tweak, :apply_tweaks, :create_all]
   before_filter :schedule_empty?, :except => :create_all
 
-  # GET /meetings/
+  # GET /events/1/meetings/
+  # GET /events/1/hosts/1/meetings/
+  # GET /events/1/visitors/1/meetings/
   # If called with a faculty_id, show that faculty's meetings
   # If called with an admit_id, show that admit's meetings
   # If neither, show the master schedule of meetings
@@ -14,14 +16,13 @@ class MeetingsController < ApplicationController
   end
 
   # Show the master schedule
-  # GET /meetings/master
   def master
     @settings = Settings.instance
     @hosts = Host.all
   end
 
   # Show meetings statistics
-  # GET /meetings/statistics
+  # GET /events/1/meetings/statistics
   def statistics
     event = Event.find(params[:event_id])
     @visitors = Visitor.all
@@ -39,7 +40,7 @@ class MeetingsController < ApplicationController
   end
 
   # Show the admit schedule
-  # GET /meetings/print_admits
+  # GET /events/1/meetings/print_admits
   def print_admits
     @event = Event.find(params[:event])
     @admits = Visitor.all.reject {|a| a.meetings.empty?}
@@ -47,27 +48,26 @@ class MeetingsController < ApplicationController
   end
 
   # Show the faculty schedule
-  # GET /meetings/print_faculty
+  # GET /events/1/meetings/print_faculty
   def print_faculty
     @faculty = Host.all.reject {|f| f.meetings.empty?}
     @one_per_page = params['one_per_page'].to_b
   end
 
   # Show schedule for admit
-  # GET /people/admits/1/meetings
   def for_admit(admit_id)
     @admit = Visitor.find(admit_id)
     render :action => 'for_admit'
   end
 
   # Show schedule for faculty
-  # GET /people/faculty/1/meetings
   def for_faculty(faculty_id)
     @faculty = Host.find(faculty_id)
     render :action => 'for_faculty'
   end
 
   # Tweak the schedule for faculty (ie, show editable view) - for staff only
+  # GET /events/1/hosts/1/meetings/tweak
   def tweak
     @faculty = Host.find(params[:host_id])
     @max_admits = @faculty.max_visitors_per_meeting
@@ -78,6 +78,7 @@ class MeetingsController < ApplicationController
   end
 
   # Save the tweaks to a faculty meeting schedule - for staff only
+  # POST /events/1/hosts/1/meetings/apply_tweak
   def apply_tweaks
     @faculty = Host.find(params[:host_id])
 
@@ -90,7 +91,7 @@ class MeetingsController < ApplicationController
   end
   
   # Run the scheduler
-  # POST /meetings/create_all
+  # POST /events/1/meetings/create_all
   def create_all
     if Event.find(params[:event_id]).disable_scheduler
       flash[:alert] = "The staff have disabled automatic scheduler generation."
