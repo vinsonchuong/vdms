@@ -1,5 +1,6 @@
 class Event < ActiveRecord::Base
   has_many :time_slots, :autosave => true, :dependent => :destroy
+  has_many :roles
   has_many :hosts, :dependent => :destroy
   has_many :visitors, :dependent => :destroy
 

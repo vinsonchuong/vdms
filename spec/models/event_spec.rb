@@ -52,6 +52,10 @@ describe Event do
       @event.should have_many(:time_slots)
     end
 
+    it 'has many Roles (roles)' do
+      @event.should have_many(:roles)
+    end
+
     it 'has many Hosts (hosts)' do
       @event.should have_many(:hosts)
     end

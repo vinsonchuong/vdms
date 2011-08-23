@@ -34,8 +34,8 @@ class RankingsController < ApplicationController
       end
     end
 
-    if @event.disable_hosts? && @current_user.class == Faculty ||
-       @event.disable_facilitators? && @current_user.class == PeerAdvisor
+    if @event.disable_hosts? && !@event.hosts.find_by_person_id(@current_user.id).nil? ||
+        @event.disable_facilitators? && @current_user.role == 'facilitator'
       flash[:alert] = t('rankings.edit_all.disabled')
     end
 
