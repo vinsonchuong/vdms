@@ -1,5 +1,5 @@
 en:
-  settings:
+  events:
     edit:
       title: "Update Settings"
       errors: "Errors"

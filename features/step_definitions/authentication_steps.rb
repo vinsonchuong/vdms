@@ -3,18 +3,25 @@ Given /^(?:I am|.*? is) not signed in$/ do
 end
 
 Given /^(?:I am|"([^"]*?)" "([^"]*?)" is) registered as a "([^"]*?)"(?: in "([^"]*?)"|)$/ do |first_name, last_name, role, division|
-  @user = Factory.create(role.downcase.gsub(' ', '_').to_sym,
-    :first_name => first_name || 'My',
-    :last_name => last_name || 'Name',
+  @user = Factory.create(
+    :person,
+    :name => (first_name || 'My') + (last_name || 'Name'),
     :division => division
   )
   instance_variable_set("@#{role.downcase.gsub(' ', '_')}", @user)
+  @event = @event || Factory.create(:event, :name => 'Event')
+  case role
+    when 'Staff' then @user.update_attribute(:role, 'administrator')
+    when 'Peer Advisor' then @user.update_attribute(:role, 'facilitator')
+    when 'Faculty' then @event.hosts.create(:person => @user)
+    when 'Admit' then @event.visitors.create(:person => @user)
+  end
 end
 
 Given /^I am a "([^"]*?)"$/ do |role|
   role = case role
-         when 'Faculty': :faculty
-         when 'Grad Student': :grad
+         when 'Faculty' then :faculty
+         when 'Grad Student' then :grad
          else nil
          end
 

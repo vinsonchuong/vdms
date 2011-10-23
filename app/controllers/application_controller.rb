@@ -17,8 +17,7 @@ class ApplicationController < ActionController::Base
     unless entry.nil?
       attributes = {
         :ldap_id => entry[:uid],
-        :first_name => entry[:first_name],
-        :last_name => entry[:last_name],
+        :name => entry[:first_name] + entry[:last_name],
         :email => entry[:email]
       }
       @current_user = (entry[:role] == :faculty) ? Person.new(attributes) :

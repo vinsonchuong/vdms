@@ -29,7 +29,7 @@ Given /^the following (\d+)-minute meetings are scheduled starting at (.*):$/ do
       next if admit_name.blank?
       admit =  Admit.find_by_first_name_and_last_name(*(admit_name.split(/\s+/)))
       time = base_time + @slot_length * timeslot
-      time_slot = TimeSlot.find_by_begin(time) || TimeSlot.create!(:settings => Settings.instance, :begin => time, :end => time+@slot_length-1)
+      time_slot = TimeSlot.find_by_begin(time) || TimeSlot.create!(:events => Settings.instance, :begin => time, :end => time+@slot_length-1)
       fa = @faculty.host.availabilities.find_by_time_slot_id(time_slot.id)
       fa.available || fa.update_attribute(:available, true)
       aa = admit.visitor.availabilities.find_by_time_slot_id(time_slot.id)

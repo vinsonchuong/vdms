@@ -16,7 +16,7 @@ gem 'ucb_ldap', :path => 'vendor/gems/ucb_ldap-1.4.2'
 
 group :cucumber do
   gem 'cucumber', '~> 0.10', :require => false
-  gem 'cucumber-rails', '~> 0.4.1', :require => false
+  gem 'cucumber-rails', '~> 0.3.2', :require => false
   gem 'database_cleaner', :require => false
   gem 'webrat', :require => false
   gem 'rspec', '~> 1.3', :require => 'spec'

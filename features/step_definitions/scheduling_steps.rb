@@ -1,7 +1,7 @@
 Given /^the event has the following meeting time slots:$/ do |time_ranges|
-  settings = Settings.instance
+  @event = @event || Factory.create(:event, :name => 'event')
   time_ranges.hashes.each do |time_range|
-    settings.time_slots.create!(
+    @event.time_slots.create!(
       :begin => Time.zone.parse(time_range['begin']),
       :end => Time.zone.parse(time_range['end'])
     )
@@ -9,13 +9,13 @@ Given /^the event has the following meeting time slots:$/ do |time_ranges|
 end
 
 Given /^the event has the following meeting times:$/ do |time_ranges|
-  settings = Settings.instance
-  settings.meeting_times_attributes =
+  @event = @event || Factory.create(:event, :name => 'event')
+  @event.meeting_times_attributes =
     time_ranges.hashes.map do |time_range|
       {
         :begin => Time.zone.parse(time_range['begin']),
         :end => Time.zone.parse(time_range['end'])
       }
     end
-  settings.save
+  settings.save!
 end

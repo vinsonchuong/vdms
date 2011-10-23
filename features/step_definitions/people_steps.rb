@@ -1,5 +1,11 @@
 Given /^the following "([^"]*)" have been added:$/ do |role, people|
-  result = people.hashes.map {|p| Factory.create(role.singularize.downcase.gsub(' ', '_').to_sym, p)}
+  @event = @event || Factory.create(:event, :name => 'Event')
+  result = case role
+    when 'Staff' then people.hashes.map {|p| Factory.create(:person, p.merge!(:role => 'administrator'))}
+    when 'Peer Advisors' then people.hashes.map {|p| Factory.create(:person, p.merge!(:role => 'facilitator'))}
+    when 'Faculty' then people.hashes.map {|p| @event.hosts.create(:person => Factory.create(:person, p))}
+    when 'Admits' then people.hashes.map {|p| @event.visitors.create(:person => Factory.create(:person, p))}
+  end
   instance_variable_set("@#{role.singularize.downcase.gsub(' ', '_')}", result.first)
 end
 

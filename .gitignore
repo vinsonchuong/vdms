@@ -11,6 +11,7 @@ Gemfile.lock
 TAGS
 /.generators
 /.rakeTasks
+/VDMS-Code.ids
 /VDMS-Code.iml
 /VDMS-Code.ipr
 /VDMS-Code.iws

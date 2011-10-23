@@ -1,58 +1,21 @@
 - content_for :title, t('.title')
-- form_for @settings, :url => settings_path do |settings_form|
-  - if @settings.errors.any?
+- form_for @event, :url => {:action => :update} do |event_form|
+  - if @event.errors.any?
     #errors
       %h3!= t('.errors')
       %ul
-        - @settings.errors.full_messages.each do |message|
+        - @event.errors.full_messages.each do |message|
           %li!= message
   %fieldset
     %h3!= t('.data_entry_permissions')
     %p!= t('.data_entry_permissions_description')
     %ul
       %li.field
-        != settings_form.label :disable_peer_advisors
-        != settings_form.check_box :disable_peer_advisors
+        != event_form.label :disable_facilitators
+        != event_form.check_box :disable_facilitators
       %li.field
-        != settings_form.label :disable_faculty
-        != settings_form.check_box :disable_faculty
-  %fieldset
-    - numbers = []
-    - 101.times {|i| numbers[i] = i}
-    %h3!= t('.scheduler_settings')
-    %p!= t('.scheduler_settings_description')
-    %ul
-      %li.field
-        != settings_form.label :disable_scheduler
-        != settings_form.check_box :disable_scheduler
-      %li.field
-        != settings_form.label :faculty_weight
-        != settings_form.select :faculty_weight, numbers
-      %li.field
-        != settings_form.label :admit_weight
-        != settings_form.select :admit_weight, numbers
-      %li.field
-        != settings_form.label :rank_weight
-        != settings_form.select :rank_weight, numbers
-      %li.field
-        != settings_form.label :mandatory_weight
-        != settings_form.select :mandatory_weight, numbers
-  %fieldset
-    - numbers = []
-    - 121.times {|i| numbers[i] = i}
-    %h3 Meeting Statistics Settings
-    %ul
-      %li.field
-        != settings_form.label :unsatisfied_admit_threshold
-        %p!= t('.unsatisfied_admit_threshold_description')
-        != settings_form.select :unsatisfied_admit_threshold, numbers
-        %span.units!= t('.meetings')
-      %li.field
-        != settings_form.label :maximum_number_of_meetings_per_admit
-        %p!= t('.maximum_number_of_meetings_per_admit')
-        != settings_form.select :max_meetings_per_admit, numbers
-        %span.units!= t('.meetings')
-
+        != event_form.label :disable_hosts
+        != event_form.check_box :disable_hosts
   %fieldset
     - sec_to_min = []
     - 121.times {|i| sec_to_min[i] = [i, i * 60]}
@@ -60,17 +23,17 @@
     %p!= t('.meeting_times_description')
     %ul
       %li.field
-        != settings_form.label :meeting_length
-        != settings_form.select :meeting_length, sec_to_min, {}, :disabled => true
+        != event_form.label :meeting_length
+        != event_form.select :meeting_length, sec_to_min, {}
         %span.units!= t('.minutes')
       %li.field
-        != settings_form.label :meeting_gap
-        != settings_form.select :meeting_gap, sec_to_min, {}, :disabled => true
+        != event_form.label :meeting_gap
+        != event_form.select :meeting_gap, sec_to_min, {}
         %span.units!= t('.minutes')
       %li
         %h4 Meeting Time Ranges
         %ul
-          - settings_form.fields_for :meeting_times, @meeting_times do |meeting_time_fields|
+          - event_form.fields_for :meeting_times, @meeting_times do |meeting_time_fields|
             - time = meeting_time_fields.object
             %li.field
               %ul
@@ -84,4 +47,4 @@
                   %li
                     != meeting_time_fields.check_box :_destroy
                     != meeting_time_fields.label :_destroy, t('.remove')
-    != settings_form.submit t('.submit')
+    != event_form.submit t('.submit')
