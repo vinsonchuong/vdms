@@ -1,0 +1,38 @@
+- content_for :title, t('.title')
+- form_for @person do |person_form|
+  - if @person.errors.any?
+    #errors
+      %h3!= t('.errors')
+      %ul
+        - @person.errors.full_messages.each do |message|
+          %li!= message
+  %fieldset
+    %h3!= t('.info')
+    %ul
+      - if @current_user.role == 'administrator'
+        %li.field
+          != person_form.label :ldap_id
+          %p!= t('.ldap_id_description', :calnet_directory => link_to('CalNet Directory', 'https://calnet.berkeley.edu/directory/'))
+          != person_form.text_field :ldap_id
+      %li.field.required
+        != person_form.label :first_name
+        != person_form.text_field :first_name
+      %li.field.required
+        != person_form.label :last_name
+        != person_form.text_field :last_name
+      %li.field.required
+        != person_form.label :email
+        != person_form.text_field :email
+      %li.field
+        != person_form.label :division
+        != person_form.select :division, @divisions
+      %li.field
+        != person_form.label :area1
+        != person_form.select :area1, @areas, :include_blank => true
+      %li.field
+        != person_form.label :area2
+        != person_form.select :area2, @areas, :include_blank => true
+      %li.field
+        != person_form.label :area3
+        != person_form.select :area3, @areas, :include_blank => true
+    != person_form.submit(t('.submit'))

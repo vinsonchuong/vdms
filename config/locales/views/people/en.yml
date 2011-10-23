@@ -1,44 +1,41 @@
 en:
-  peer_advisors:
+  people:
     index:
-      title: "Manage Peer Advisors"
+      title: "Manage People"
       actions: "Actions"
     delete_all:
-      title: "Remove All Peer Advisors"
-      submit: "Remove All Peer Advisors"
+      title: "Remove All People"
+      submit: "Remove All People"
     new:
-      title: "Add Peer Advisor"
-      alt_title: "Register As A Peer Advisor"
+      title: "Add Person"
       errors: "Errors"
-      info: "Peer Advisor Info"
+      info: "Info"
       ldap_id_description: "The UID is needed to identify registered people with users who login through CalNet. It can
                             be found at the %{calnet_directory}."
-      submit: "Add Peer Advisor"
-      alt_submit: "Register"
+      submit: "Add Person"
     upload:
-      title: "Import Peer Advisors"
+      title: "Import People"
       errors: "Errors"
       data: "Data"
-      data_description: "Faculty can be quickly registered by importing a CSV (comma-separated values) file. The
+      data_description: "People can be quickly registered by importing a CSV (comma-separated values) file. The
                          required columns and data formats are as follows. Unrecognized columns will be ignored. Note
                          that column names and data are case-sensitive and must obey the formatting constraints
                          exactly. No data will be saved if any errors are found:"
       required: "required"
-      ldap_id_requirement: "Must be the exact UID for the person as listed in the %{calnet_directory}."
       email_requirement: "Must be a valid email address (e.g. email@email.com)."
+      division_requirement: "Must be one of Computer Science, Electrical Engineering, cs, ee, or blank."
+      area_requirement: "Must be one of the %{areas}, either the full name (e.g. Artificial Intelligence) or
+                         abbreviation in lower case (e.g. ai) or blank."
       csv_file: "CSV File"
-      submit: "Import Peer Advisors"
+      submit: "Import People"
     edit:
-      title: "Update Peer Advisor (%{name})"
+      title: "Update Person (%{name})"
       short_title: "Update Info"
-      alt_title: "Update My Info"
       errors: "Errors"
-      info: "Peer Advisor Info"
+      info: "Info"
       ldap_id_description: "The UID is needed to identify registered people with users who login through CalNet. It can
                             be found at the %{calnet_directory}."
-      submit: "Update Peer Advisor"
-      alt_submit: "Update Registration"
+      submit: "Update Person"
     delete:
-      title: "Remove Peer Advisor (%{name})"
-      short_title: "Remove"
-      submit: "Remove Peer Advisor"
+      title: "Remove Person (%{name})"
+      submit: "Remove Person"

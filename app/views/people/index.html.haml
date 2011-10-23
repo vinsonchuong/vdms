@@ -1,0 +1,17 @@
+- content_for :title, t('.title')
+%table
+  %thead
+    %tr
+      %th{:scope => 'col'}!= Person.human_attribute_name(:full_name)
+      %th{:scope => 'col'}!= Person.human_attribute_name(:email)
+      %th{:scope => 'col'}!= t('.actions')
+  %tbody
+    - @settings = Settings.instance
+    - @people.each do |person|
+      %tr
+        %td= person.full_name
+        %td= person.email
+        %td
+          %ul
+            %li!= link_to t('people.edit.short_title'), edit_person_path(person)
+            %li!= link_to t('people.delete.short_title'), delete_person_path(person)

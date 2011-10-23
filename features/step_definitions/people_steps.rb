@@ -1,6 +1,7 @@
 Given /^the following "([^"]*)" have been added:$/ do |role, people|
   @event = @event || Factory.create(:event, :name => 'Event')
   result = case role
+    when 'People' then people.hashes.map {|p| Factory.create(:person, p)}
     when 'Staff' then people.hashes.map {|p| Factory.create(:person, p.merge!(:role => 'administrator'))}
     when 'Peer Advisors' then people.hashes.map {|p| Factory.create(:person, p.merge!(:role => 'facilitator'))}
     when 'Faculty' then people.hashes.map {|p| @event.hosts.create(:person => Factory.create(:person, p))}
