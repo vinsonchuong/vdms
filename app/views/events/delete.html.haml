@@ -1,0 +1,4 @@
+- content_for :title, t('.title', :name => @event.name)
+- form_for @event, :url => {:action => 'destroy'}, :html => {:method => :delete} do |event_form|
+  != event_form.submit t('.submit')
+

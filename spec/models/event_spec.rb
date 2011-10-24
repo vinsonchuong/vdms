@@ -319,11 +319,13 @@ describe Event do
     end
 
     it 'is not valid without a Maximum Number of Meetings per Visitor' do
+      pending
       @event.max_meetings_per_visitor = ''
       @event.should_not be_valid
     end
 
     it 'is not valid with an invalid Maximum Number of Meetings per Visitor' do
+      pending
       [-1, 1.5, 'foo'].each do |invalid_meetings|
         @event.max_meetings_per_visitor = invalid_meetings
         @event.should_not be_valid

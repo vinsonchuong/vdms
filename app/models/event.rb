@@ -11,19 +11,19 @@ class Event < ActiveRecord::Base
   validates_numericality_of :meeting_gap, :only_integer => true, :greater_than_or_equal_to => 0
   validates_inclusion_of :disable_facilitators, :in => [true, false]
   validates_inclusion_of :disable_hosts, :in => [true, false]
-  validates_presence_of :max_meetings_per_visitor
-  validates_numericality_of :max_meetings_per_visitor, :only_integer => true, :greater_than_or_equal_to => 0
+  #validates_presence_of :max_meetings_per_visitor
+  #validates_numericality_of :max_meetings_per_visitor, :only_integer => true, :greater_than_or_equal_to => 0
 
   default_scope :order => 'name'
 
   def meeting_times(options = {})
     times = time_slots.map {|t| (t.begin)...(t.end + meeting_gap)}
     times = Range.combine(*times)
-    times.map! do |r|
-      time = (r.begin)..(r.end - meeting_gap)
-      def time.new_record?; false end
-      def time._destroy; end
-      time
+    times.map! {|r| (r.begin)..(r.end - meeting_gap)}
+    times.each_with_index do |time, i|
+      time.define_singleton_method :id, lambda {i}
+      time.define_singleton_method :new_record?, lambda {false}
+      time.define_singleton_method :_destroy, lambda {}
     end
     if options[:include_blank]
       blank_time = ''..''
@@ -42,8 +42,8 @@ class Event < ActiveRecord::Base
     else # Hash
       times.reject! {|k, v| v[:_destroy].to_b || v.values.any?(&:blank?)}
       times = times.map do |k, t|
-        (Time.zone.local t['begin(1i)'], t['begin(2i)'], t['begin(3i)'], t['begin(4i)'], t['begin(5i)'])..
-            (Time.zone.local t['end(1i)'], t['end(2i)'], t['end(3i)'], t['end(4i)'], t['end(5i)'])
+        (Time.zone.local t['begin(1i)'].to_i, t['begin(2i)'], t['begin(3i)'], t['begin(4i)'], t['begin(5i)'])..
+            (Time.zone.local t['end(1i)'].to_i, t['end(2i)'], t['end(3i)'], t['end(4i)'], t['end(5i)'])
       end
     end
 
@@ -63,4 +63,8 @@ class Event < ActiveRecord::Base
     times_to_remove = current_times - times
     time_slots.each {|t| t.mark_for_destruction if times_to_remove.include?((t.begin)..(t.end))}
   end
+
+  private
+
+
 end

@@ -7,6 +7,11 @@
         - @event.errors.full_messages.each do |message|
           %li!= message
   %fieldset
+    %h3!= "Basic Info"
+    %ul
+      %li.field
+        != event_form.label :name
+        != event_form.text_field :name
     %h3!= t('.data_entry_permissions')
     %p!= t('.data_entry_permissions_description')
     %ul

@@ -2,14 +2,10 @@ en:
   activerecord:
     models:
       person: "Person"
-      staff: "Staff"
-      peer_advisor: "Peer Advisor"
-      faculty: "Faculty"
-      admit: "Admit"
+      event: "Event"
       ranking: "Ranking"
       host_ranking: "Host Ranking"
       visitor_ranking: "Visitor Ranking"
-      settings: "Settings"
       division: "Division"
       time_slot: "Time Slot"
       host_time_slot: "Host's Time Slot"
@@ -22,18 +18,17 @@ en:
         last_name: "Last Name"
         full_name: "Name"
         email: "Email"
-      faculty:
         division: "Division"
         area1: "Area 1"
         area2: "Area 2"
         area3: "Area 3"
-        max_admits_per_meeting: "Max Admits Per Meeting"
-        max_additional_admits: "Max Unranked Admits to Allow Meetings With"
-      admit:
-        phone: "Phone Number"
-        area1: "Area 1"
-        area2: "Area 2"
-        area3: "Area 3"
+      event:
+        name: "Name"
+        meeting_length: "Meeting Length"
+        meeting_gap: "Inter-Meeting Gap"
+        disable_facilitators: "Prevent Updates by Facilitators"
+        disable_hosts: "Prevent Updates by Hosts"
+        disable_scheduler: "Disable the \"Generate Schedule\" button"
       ranking:
         rank: "Rank"
       host_ranking:
@@ -45,19 +40,6 @@ en:
       visitor_ranking:
         rankable: "Host"
         rankable_id: "Host"
-      settings:
-        areas: "Areas"
-        divisions: "Divisions"
-        meeting_length: "Meeting Length"
-        meeting_gap: "Inter-Meeting Gap"
-        unsatisfied_admit_threshold: "Unsatisfied Admit Threshold"
-        faculty_weight: "Faculty Weight"
-        admit_weight: "Admit Weight"
-        rank_weight: "Rank Weight"
-        mandatory_weight: "Mandatory Weight"
-        disable_peer_advisors: "Prevent Peer Advisors from changing Admits' availability and rankings"
-        disable_faculty: "Prevent Faculty from changing their availability and rankings"
-        disable_scheduler: "Disable the \"Generate Schedule\" button"
       division:
         name: "Abbreviation"
         long_name: "Name"

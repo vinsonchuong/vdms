@@ -1,0 +1,28 @@
+- content_for :title, t('.title')
+- form_for @event, {:action => :create} do |event_form|
+  - if @event.errors.any?
+    #errors
+      %h3!= t('.errors')
+      %ul
+        - @event.errors.full_messages.each do |message|
+          %li!= message
+  %fieldset
+    - sec_to_min = []
+    - 121.times {|i| sec_to_min[i] = [i, i * 60]}
+    %h3!= "Basic Info"
+    %ul
+      %li.field
+        != event_form.label :name
+        != event_form.text_field :name
+    %h3!= t('.meeting_times')
+    %p!= t('.meeting_times_description')
+    %ul
+      %li.field
+        != event_form.label :meeting_length
+        != event_form.select :meeting_length, sec_to_min, {}
+        %span.units!= t('.minutes')
+      %li.field
+        != event_form.label :meeting_gap
+        != event_form.select :meeting_gap, sec_to_min, {}
+        %span.units!= t('.minutes')
+    != event_form.submit t('.submit')

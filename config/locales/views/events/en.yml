@@ -1,7 +1,24 @@
 en:
   events:
+    index:
+      title: "Manage Events"
+      actions: "Actions"
+    new:
+      title: "Add Event"
+      errors: "Errors"
+      maximum_number_of_meetings_per_admit: "Admits will have no more than this number of meetings."
+      meetings: "Meetings"
+      meeting_times: "Meeting Times"
+      meeting_times_description: "Settings which define the time slots and ranges over which meetings can be scheduled.
+                                  For each division, the given time intervals are partitioned into time slots of the
+                                  given length (Meeting Length) separated by gaps (Inter-Meeting Gap). Faculty and
+                                  admits then specify their availability in terms of these time slots. Note that the
+                                  Meeting Length and Inter-Meeting Gap must be specified in advance and cannot be
+                                  changed."
+      minutes: "Minutes"
+      submit: "Add Event"
     edit:
-      title: "Update Settings"
+      title: "Edit Event"
       errors: "Errors"
       data_entry_permissions: "Data Entry Permissions"
       data_entry_permissions_description: "Prevents the checked roles from updating availability and rankings."
@@ -25,4 +42,8 @@ en:
       minutes: "Minutes"
       time_intervals_for: "Time Intervals for"
       remove: "Remove"
-      submit: "Update Settings"
+      submit: "Update Event"
+    delete:
+      alt_title: "Remove Event"
+      title: "Remove Event (%{name})"
+      submit: "Remove Event"

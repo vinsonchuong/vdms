@@ -17,5 +17,5 @@ Given /^the event has the following meeting times:$/ do |time_ranges|
         :end => Time.zone.parse(time_range['end'])
       }
     end
-  settings.save!
+  @event.save!
 end

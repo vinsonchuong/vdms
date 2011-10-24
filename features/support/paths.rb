@@ -7,24 +7,18 @@ module NavigationHelpers
   #
   def path_to(page_name)
     case page_name
-    when /the home\s?page/ then home_path
-    when /the staff dashboard page/ then staff_dashboard_path
-    when /the peer advisor dashboard page/ then peer_advisor_dashboard_path
-    when /the faculty dashboard page/ then faculty_dashboard_path
+    when /the home\s?page/ then root_path
 
-    when /the update settings page/ then edit_event_path(@event || Factory.create(:event))
+    when /the view people page/ then people_path
+    when /the new person page/ then new_person_path
+    when /the import people page/ then upload_people_path
+    when /the edit person page/ then edit_person_path(@staff)
+    when /the remove person page/ then delete_person_path(@staff)
 
-    when /the view staff page/ then people_path
-    when /the new staff page/ then new_person_path
-    when /the import staff page/ then upload_people_path
-    when /the edit staff page/ then edit_person_path(@staff)
-    when /the delete staff page/ then delete_person_path(@staff)
-
-    when /the view peer advisors page/ then people_path
-    when /the new peer advisor page/ then new_person_path
-    when /the import peer advisors page/ then upload_people_path
-    when /the edit peer advisor page/ then edit_person_path(@peer_advisor)
-    when /the delete peer advisor page/ then delete_person_path(@peer_advisor)
+    when /the view events page/ then events_path
+    when /the new event page/ then new_event_path
+    when /the edit event page/ then edit_event_path(@event)
+    when /the remove event page/ then delete_event_path(@event)
 
     when /the view faculty page/ then people_path
     when /the new faculty page/ then new_person_path
