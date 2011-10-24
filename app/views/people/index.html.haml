@@ -2,14 +2,13 @@
 %table
   %thead
     %tr
-      %th{:scope => 'col'}!= Person.human_attribute_name(:full_name)
+      %th{:scope => 'col'}!= Person.human_attribute_name(:name)
       %th{:scope => 'col'}!= Person.human_attribute_name(:email)
       %th{:scope => 'col'}!= t('.actions')
   %tbody
-    - @settings = Settings.instance
     - @people.each do |person|
       %tr
-        %td= person.full_name
+        %td= person.name
         %td= person.email
         %td
           %ul

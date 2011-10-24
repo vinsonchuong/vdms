@@ -19,6 +19,19 @@ describe EventsController do
     end
   end
 
+  describe 'GET show' do
+    it 'assigns to @event the given Event' do
+      Event.stub(:find).and_return(@event)
+      get :show, :id => @event.id
+      assigns[:event].should == @event
+    end
+
+    it 'renders the show template' do
+      get :show, :id => @event.id
+      response.should render_template('show')
+    end
+  end
+
   describe 'GET new' do
     it 'assigns to @event a new Event' do
       get :new

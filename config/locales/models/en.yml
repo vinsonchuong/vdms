@@ -14,14 +14,13 @@ en:
     attributes:
       person:
         ldap_id: "CalNet UID"
-        first_name: "First Name"
-        last_name: "Last Name"
-        full_name: "Name"
+        role: "Role"
+        name: "Name"
         email: "Email"
         division: "Division"
-        area1: "Area 1"
-        area2: "Area 2"
-        area3: "Area 3"
+        area_1: "Area 1"
+        area_2: "Area 2"
+        area_3: "Area 3"
       event:
         name: "Name"
         meeting_length: "Meeting Length"

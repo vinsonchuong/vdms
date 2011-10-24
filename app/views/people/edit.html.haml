@@ -1,4 +1,4 @@
-- content_for :title, t('.title', :name => @person.full_name)
+- content_for :title, t('.title', :name => @person.name)
 - form_for @person, :url => {:action => 'update'} do |person_form|
   - if @person.errors.any?
     #errors
@@ -14,12 +14,12 @@
           != person_form.label :ldap_id
           %p!= t('.ldap_id_description', :calnet_directory => link_to('CalNet Directory', 'https://calnet.berkeley.edu/directory/'))
           != person_form.text_field :ldap_id
+        %li.field.required
+          != person_form.label :role
+          != person_form.select :role, [['User', 'user'], ['Facilitator', 'facilitator'], ['Administator', 'administrator']]
       %li.field.required
-        != person_form.label :first_name
-        != person_form.text_field :first_name
-      %li.field.required
-        != person_form.label :last_name
-        != person_form.text_field :last_name
+        != person_form.label :name
+        != person_form.text_field :name
       %li.field.required
         != person_form.label :email
         != person_form.text_field :email
@@ -27,12 +27,12 @@
         != person_form.label :division
         != person_form.select :division, @divisions
       %li.field
-        != person_form.label :area1
-        != person_form.select :area1, @areas, :include_blank => true
+        != person_form.label :area_1
+        != person_form.select :area_1, @areas, :include_blank => true
       %li.field
-        != person_form.label :area2
-        != person_form.select :area2, @areas, :include_blank => true
+        != person_form.label :area_2
+        != person_form.select :area_2, @areas, :include_blank => true
       %li.field
-        != person_form.label :area3
-        != person_form.select :area3, @areas, :include_blank => true
+        != person_form.label :area_3
+        != person_form.select :area_3, @areas, :include_blank => true
     != person_form.submit((@current_user == @person) ? t('.alt_submit') : t('.submit'))

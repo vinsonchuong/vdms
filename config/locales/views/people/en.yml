@@ -38,4 +38,5 @@ en:
       submit: "Update Person"
     delete:
       title: "Remove Person (%{name})"
+      short_title: "Remove Person"
       submit: "Remove Person"
