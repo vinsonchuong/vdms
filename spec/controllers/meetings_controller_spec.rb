@@ -1,17 +1,13 @@
 require 'spec_helper'
 
 describe MeetingsController do
-  def fake_login(role)
-    #CASClient::Frameworks::Rails::Filter.fake(Factory.create(role).ldap_id)
-  end
   before(:each) do
     @event = Factory.create(:event)
+    @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
+    CASClient::Frameworks::Rails::Filter.fake('admin')
   end
   describe "generating the schedule" do
     context "for staff users" do
-      before(:each) do
-        fake_login(:staff)
-      end
       it "should be allowed" do
         Meeting.should_receive(:generate)
         post :create_all, :event_id => @event.id
@@ -25,12 +21,6 @@ describe MeetingsController do
   end
   describe 'viewing meeting statistics' do
     context 'when signed in as a Staff' do
-      before(:each) do
-        @event = Factory.create(:event)
-        Event.stub(:find).and_return(@event)
-        #@staff = Factory.create(:staff)
-        #CASClient::Frameworks::Rails::Filter.fake(@staff.ldap_id)
-      end
       it 'assigns to @unsatisfied_visitors a list of unsatisfied Admits' do
         pending
         @event.stub(:unsatisfied_admit_threshold).and_return(3)
@@ -106,14 +96,13 @@ describe MeetingsController do
   end
   describe 'tweaking host schedule' do
     it 'should be allowed for staff' do
-      fake_login(:staff)
       Host.stub!(:find).and_return(Factory.create(:host, :event => @event))
       get :tweak, :host_id => 1, :event_id => @event.id
       response.should render_template(:tweak)
     end
   end
   context "when logged in as any valid user" do
-    before(:each) { fake_login(:peer_advisor) }
+    # For peer advisors
     describe "index" do
       it "should list meetings for host if given host_id" do
         controller.should_receive(:for_faculty).with('3')

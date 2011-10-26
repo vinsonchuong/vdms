@@ -3,6 +3,8 @@ en:
     index:
       title: "Manage Events"
       actions: "Actions"
+    show:
+      title: ""
     new:
       title: "Add Event"
       errors: "Errors"

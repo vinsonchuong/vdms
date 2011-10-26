@@ -3,6 +3,8 @@ require 'spec_helper'
 describe VisitorAvailabilitiesController do
   before(:each) do
     @visitor = Factory.create(:visitor)
+    @fac = Factory.create(:person, :ldap_id => 'fac', :role => 'facilitator')
+    CASClient::Frameworks::Rails::Filter.fake('fac')
   end
 
   describe 'GET edit_all' do

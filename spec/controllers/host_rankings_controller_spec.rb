@@ -3,6 +3,8 @@ require 'spec_helper'
 describe HostRankingsController do
   before(:each) do
     @host = Factory.create(:host)
+    @host.person.update_attribute(:ldap_id, 'host')
+    CASClient::Frameworks::Rails::Filter.fake('host')
   end
 
   describe 'GET index' do

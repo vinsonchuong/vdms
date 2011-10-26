@@ -3,6 +3,8 @@ require 'spec_helper'
 describe PeopleController do
   before(:each) do
     @person = Factory.create(:person)
+    @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
+    CASClient::Frameworks::Rails::Filter.fake('admin')
   end
 
   describe 'GET index' do

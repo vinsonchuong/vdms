@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe EventsController do
   before(:each) do
+    @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
+    CASClient::Frameworks::Rails::Filter.fake('admin')
     @event = Factory.create(:event)
   end
 
