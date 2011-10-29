@@ -5,6 +5,7 @@ end
 Given /^(?:I am|"([^"]*?)" "([^"]*?)" is) registered as a "([^"]*?)"(?: in "([^"]*?)"|)$/ do |first_name, last_name, role, division|
   @user = Factory.create(
     :person,
+    :ldap_id => 'registered',
     :name => (first_name || 'My') + (last_name || 'Name'),
     :division => division
   )
