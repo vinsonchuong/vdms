@@ -10,11 +10,10 @@
         %li!= link_to_function(t('.select_all'), 'select_all(filter_form)')
         %li!= link_to_function(t('.unselect_all'), 'unselect_all(filter_form)')
       %ul
-        - settings = Settings.instance
         - @areas.each do |area, checked|
           %li
             != filter_form.check_box area, :checked => checked
-            != filter_form.label area, settings.areas[area]
+            != filter_form.label area, Person.areas[area]
     != filter_form.submit t('.filter_submit')
 #admit_list
   %h3!= t('.select')
@@ -25,5 +24,5 @@
         - @rankables.each do |rankable|
           %li
             != select_form.check_box rankable.id
-            != select_form.label rankable.id, rankable.person.full_name
+            != select_form.label rankable.id, rankable.person.name
     != select_form.submit t('.select_submit')

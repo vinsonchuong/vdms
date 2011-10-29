@@ -1,0 +1,18 @@
+en:
+  visitors:
+    index:
+      title: "Manage Visitors"
+      actions: "Actions"
+    new:
+      title: "Add Visitor"
+      errors: "Errors"
+      submit: "Add Visitor"
+    edit:
+      title: "Edit Visitor (%{name})"
+      short_title: "Edit Info"
+      errors: "Errors"
+      submit: "Update Visitor"
+    delete:
+      title: "Remove Visitor (%{name})"
+      short_title: "Remove Visitor"
+      submit: "Remove Visitor"

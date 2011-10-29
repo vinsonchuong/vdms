@@ -17,12 +17,12 @@ When /^I unselect every area$/ do
   end
 end
 
-When /^I rank the "([^"]*)" admit "([^"]*)"$/ do |order, rank|
+When /^I rank the "([^"]*)" visitor "([^"]*)"$/ do |order, rank|
   orders = {'first' => 0, 'second' => 1, 'third' => 2}
   select rank, :from => "host_rankings_attributes_#{orders[order]}_rank"
 end
 
-When /^I flag the "([^"]*)" admit as "([^"]*)"$/ do |order, flag|
+When /^I flag the "([^"]*)" visitor as "([^"]*)"$/ do |order, flag|
   orders = {'first' => 0, 'second' => 1, 'third' => 2}
   flags = {'Mandatory' => 'mandatory', '1-On-1' => 'one_on_one'}
   check "host_rankings_attributes_#{orders[order]}_#{flags[flag]}"
@@ -33,7 +33,7 @@ When /^I select "([^"]*)" time slots for the "([^"]*)" admit$/ do |slots, order|
   select slots, :from => "host_rankings_attributes_#{orders[order]}_num_time_slots"
 end
 
-When /^I flag the "([^"]*)" admit for removal$/ do |order|
+When /^I flag the "([^"]*)" visitor for removal$/ do |order|
   orders = {'first' => 0, 'second' => 1, 'third' => 2, 'fourth' => 3, 'fifth' => 4}
   check("host_rankings_attributes_#{orders[order]}__destroy")
 end

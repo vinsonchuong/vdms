@@ -49,23 +49,8 @@ Feature: Staff can manage people
       | ID1     | User | First Last | invalid_email   | Computer Science       | Artificial Intelligence | Email is invalid                   |
 
   Scenario: I add people by importing a CSV with valid data
-    Given I am on the view people page
-    When I follow "Import People"
-    And I attach the file "features/assets/valid_faculty.csv" to "CSV File"
-    And I press "Import"
-    Then I should see "People were successfully imported."
-    And I should see "First1"
-    And I should see "First2"
-    And I should see "First3"
 
   Scenario: I try to add people by importing a CSV with some invalid data
-    Given I am on the view people page
-    When I follow "Import People"
-    And I attach the file "features/assets/invalid_faculty.csv" to "CSV File"
-    And I press "Import"
-    Then I should see "Email can't be blank"
-    And I should see "Area 1 is not included in the list"
-    And I should see "Division is not included in the list"
 
   Scenario: I see the person's name while updating his information
     Given I am on the view people page
@@ -95,12 +80,12 @@ Feature: Staff can manage people
     Then I should see "Name can't be blank"
 
   Scenario: I see the faculty's name while removing him
-    Given I am on the view faculty page
+    Given I am on the view people page
     When I follow "Remove"
     Then I should see "Administrator1"
 
   Scenario: I remove a faculty
-    Given I am on the view faculty page
+    Given I am on the view people page
     When I follow "Remove Person"
     And I press "Remove Person"
     Then I should see "Person was successfully removed."

@@ -27,9 +27,16 @@ en:
     update:
       success: "Settings were successfully updated."
   hosts:
+    create:
+      success: "Host was successfully added."
     update:
       success: "Host was successfully updated."
+    destroy:
+      success: "Host was successfully removed."
   visitors:
+    create:
+      success: "Visitor was successfully added."
     update:
       success: "Visitor was successfully updated."
-
+    destroy:
+      success: "Visitor was successfully removed."

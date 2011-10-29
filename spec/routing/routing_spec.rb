@@ -42,10 +42,10 @@ describe 'Routes' do
       end
     end
     context 'when removing' do
-      it 'routes GET /people/1/delete to Person#delete' do
+      it 'routes GET /people/1/delete to People#delete' do
         {:get => '/people/1/delete'}.should route_to(:controller => 'people', :action => 'delete', :id => '1')
       end
-      it 'routes DELETE /people/1 to Person#destroy' do
+      it 'routes DELETE /people/1 to People#destroy' do
         {:delete => '/people/1'}.should route_to(:controller => 'people', :action => 'destroy', :id => '1')
       end
       it 'routes GET /people/delete_all to People#delete_all' do
@@ -130,6 +130,38 @@ describe 'Routes' do
           end
         end
       end
+      context 'when viewing' do
+        it 'routes GET /events/1/hosts to Hosts#index' do
+          {:get => '/events/1/hosts'}.should route_to(:controller => 'hosts', :action => 'index', :event_id => '1')
+        end
+        it 'routes GET /events/1/hosts/1 to Hosts#show' do
+          {:get => '/events/1/hosts/1'}.should route_to(:controller => 'hosts', :action => 'show', :event_id => '1', :id => '1')
+        end
+      end
+      context 'when adding' do
+        it 'routes GET /events/1/hosts/new to Hosts#new' do
+          {:get => '/events/1/hosts/new'}.should route_to(:controller => 'hosts', :action => 'new', :event_id => '1')
+        end
+        it 'routes POST /events/1/hosts to Hosts#create' do
+          {:post => '/events/1/hosts'}.should route_to(:controller => 'hosts', :action => 'create', :event_id => '1')
+        end
+      end
+      context 'when editing' do
+        it 'routes GET /events/1/hosts/edit to Hosts#edit' do
+          {:get => '/events/1/hosts/1/edit'}.should route_to(:controller => 'hosts', :action => 'edit', :event_id => '1', :id => '1')
+        end
+        it 'routes PUT /events/1 to Hosts#update' do
+          {:put => '/events/1/hosts/1'}.should route_to(:controller => 'hosts', :action => 'update', :event_id => '1', :id => '1')
+        end
+      end
+      context 'when removing' do
+        it 'routes GET /events/1/hosts/1/delete to Hosts#delete' do
+          {:get => '/events/1/hosts/1/delete'}.should route_to(:controller => 'hosts', :action => 'delete', :event_id => '1', :id => '1')
+        end
+        it 'routes DELETE /events/1/hosts/1 to Hosts#destroy' do
+          {:delete => '/events/1/hosts/1'}.should route_to(:controller => 'hosts', :action => 'destroy', :event_id => '1', :id => '1')
+        end
+      end
     end
     describe 'Visitors' do
       describe 'Rankings' do
@@ -162,6 +194,38 @@ describe 'Routes' do
           it 'routes GET /events/1/visitors/1/meetings to Meetings#index' do
             {:get => '/events/1/visitors/1/meetings'}.should route_to(:controller => 'meetings', :action => 'index', :visitor_id => '1', :event_id => '1')
           end
+        end
+      end
+      context 'when viewing' do
+        it 'routes GET /events/1/visitors to Visitors#index' do
+          {:get => '/events/1/visitors'}.should route_to(:controller => 'visitors', :action => 'index', :event_id => '1')
+        end
+        it 'routes GET /events/1/visitors/1 to Visitors#show' do
+          {:get => '/events/1/visitors/1'}.should route_to(:controller => 'visitors', :action => 'show', :event_id => '1', :id => '1')
+        end
+      end
+      context 'when adding' do
+        it 'routes GET /events/1/visitors/new to Visitors#new' do
+          {:get => '/events/1/visitors/new'}.should route_to(:controller => 'visitors', :action => 'new', :event_id => '1')
+        end
+        it 'routes POST /events/1/visitors to Hosts#create' do
+          {:post => '/events/1/visitors'}.should route_to(:controller => 'visitors', :action => 'create', :event_id => '1')
+        end
+      end
+      context 'when editing' do
+        it 'routes GET /events/1/visitors/edit to Visitors#edit' do
+          {:get => '/events/1/visitors/1/edit'}.should route_to(:controller => 'visitors', :action => 'edit', :event_id => '1', :id => '1')
+        end
+        it 'routes PUT /events/1 to Visitors#update' do
+          {:put => '/events/1/visitors/1'}.should route_to(:controller => 'visitors', :action => 'update', :event_id => '1', :id => '1')
+        end
+      end
+      context 'when removing' do
+        it 'routes GET /events/1/visitors/1/delete to Visitors#delete' do
+          {:get => '/events/1/visitors/1/delete'}.should route_to(:controller => 'visitors', :action => 'delete', :event_id => '1', :id => '1')
+        end
+        it 'routes DELETE /events/1/visitors/1 to Visitors#destroy' do
+          {:delete => '/events/1/visitors/1'}.should route_to(:controller => 'visitors', :action => 'destroy', :event_id => '1', :id => '1')
         end
       end
     end

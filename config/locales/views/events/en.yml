@@ -4,7 +4,8 @@ en:
       title: "Manage Events"
       actions: "Actions"
     show:
-      title: ""
+      title: "View Event (%{name})"
+      short_title: "View Event"
     new:
       title: "Add Event"
       errors: "Errors"

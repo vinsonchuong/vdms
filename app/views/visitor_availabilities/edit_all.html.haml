@@ -1,4 +1,4 @@
-- content_for :title, t('.title', :name => @schedulable.person.full_name)
+- content_for :title, t('.title', :name => @schedulable.person.name)
 - form_for @schedulable, :url => {:action => 'update_all'}, :html => {:name => 'availability_form'} do |schedulable_form|
   != schedulable_form.error_messages
   %fieldset
@@ -17,4 +17,4 @@
           %tr
             %td!= "#{availability.time_slot.begin.strftime('%m/%d/%y - %I:%M%p')} to #{availability.time_slot.end.strftime('%I:%M%p')}"
             %td!= availability_fields.check_box :available
-    != schedulable_form.submit t('.submit'), :disabled => (Settings.instance.disable_peer_advisors && @current_user.class == PeerAdvisor)
+    != schedulable_form.submit t('.submit'), :disabled => (@event.disable_facilitators && @current_user.role == 'facilitator')

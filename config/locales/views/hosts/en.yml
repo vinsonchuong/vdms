@@ -1,0 +1,18 @@
+en:
+  hosts:
+    index:
+      title: "Manage Hosts"
+      actions: "Actions"
+    new:
+      title: "Add Host"
+      errors: "Errors"
+      submit: "Add Host"
+    edit:
+      title: "Edit Host (%{name})"
+      short_title: "Edit Info"
+      errors: "Errors"
+      submit: "Update Host"
+    delete:
+      title: "Remove Host (%{name})"
+      short_title: "Remove Host"
+      submit: "Remove Host"

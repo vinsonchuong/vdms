@@ -28,6 +28,15 @@ en:
         disable_facilitators: "Prevent Updates by Facilitators"
         disable_hosts: "Prevent Updates by Hosts"
         disable_scheduler: "Disable the \"Generate Schedule\" button"
+      role:
+        person: "Person"
+        person_id: "Person"
+        event: "Event"
+        event_id: "Event"
+      host:
+        default_room: "Default Room"
+        max_visitors_per_meeting: "Max Visitors per Meeting"
+        max_visitors: "Max Total Visitors"
       ranking:
         rank: "Rank"
       host_ranking:

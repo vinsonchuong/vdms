@@ -2,12 +2,14 @@ class RankingsController < ApplicationController
   # GET /events/1/hosts/1/rankings
   # GET /events/1/visitors/1/rankings
   def index
+    @event = Event.find(params[:event_id])
     @ranker = get_ranker
   end
 
   # GET /events/1/hosts/1/rankings/add
   # GET /events/1/visitors/1/rankings/add
   def add
+    @event = Event.find(params[:event_id])
     @ranker = get_ranker
     if params[:filter].nil?
       @areas = Person.areas.keys.sort!.map {|a| [a, true]}
@@ -51,6 +53,7 @@ class RankingsController < ApplicationController
       flash[:notice] = t(:success, :scope => [@ranker.class.name.tableize, :update])
       redirect_to :action => 'edit_all'
     else
+      @event = Event.find(params[:event_id])
       render 'edit_all'
     end
   end

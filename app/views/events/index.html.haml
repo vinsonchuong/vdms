@@ -10,6 +10,6 @@
         %td= event.name
         %td
           %ul
-            %li!= link_to t('events.show.title'), event_path(event)
+            %li!= link_to t('events.show.short_title'), event_path(event)
             %li!= link_to t('events.edit.title'), edit_event_path(event)
             %li!= link_to t('events.delete.alt_title'), delete_event_path(event)

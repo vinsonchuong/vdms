@@ -11,7 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   ) do |event|
     event.resources(
       :hosts,
-      :except => :all
+      :member => {:delete => :get}
     ) do |host|
       host.resources(
         :rankings, :controller => 'host_rankings',
@@ -33,7 +33,8 @@ ActionController::Routing::Routes.draw do |map|
     end
 
     event.resources(
-      :visitors
+      :visitors,
+      :member => {:delete => :get}
     ) do |visitor|
       visitor.resources(
         :rankings, :controller => 'visitor_rankings',

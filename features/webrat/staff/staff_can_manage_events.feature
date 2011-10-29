@@ -7,14 +7,20 @@ Feature: Staff can manage events
   Background: I am signed in as a staff
     Given the following events have been added:
       | name      | meeting_length | meeting_gap | max_meetings_per_visitor |
-      | Visit Day | 900            | 300         | 10                       |
       | Tapia     | 900            | 300         | 10                       |
+      | Visit Day | 900            | 300         | 10                       |
     Given I am registered as a "Staff"
     And I am signed in
 
   Scenario: I view a list of all events
     Given I am on the home page
-    Then I should see "Visit Day"
+    Then I should see "Tapia"
+    And I should see "Visit Day"
+
+  Scenario: I view an event
+    Given I am on the home page
+    When I follow "View Event"
+    Then I should be on the view event page
     And I should see "Tapia"
 
   Scenario Outline: I add an event

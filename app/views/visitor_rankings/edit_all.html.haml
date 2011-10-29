@@ -1,4 +1,4 @@
-- content_for :title, t('.title', :name => @ranker.person.full_name)
+- content_for :title, t('.title', :name => @ranker.person.name)
 - form_for @ranker, :url => {:action => 'update_all'} do |ranker_form|
   - if @ranker.errors.any?
     #errors
@@ -9,15 +9,15 @@
   %fieldset
     %h3!= t('.rankings')
     %ul
-      - if Settings.instance.disable_peer_advisors && @current_user.class == PeerAdvisor
-        %li{:class => 'button'}!= link_to t('.add'), edit_all_visitor_rankings_path(@ranker)
+      - if @event.disable_facilitators && @current_user == @ranker.person
+        %li{:class => 'button'}!= link_to t('.add'), edit_all_event_visitor_rankings_path(@event, @ranker)
       - else
-        %li{:class => 'button'}!= link_to t('.add'), add_visitor_rankings_path(@ranker)
+        %li{:class => 'button'}!= link_to t('.add'), add_event_visitor_rankings_path(@event, @ranker)
     %table
       %thead
         %tr
           %th{:scope => 'col'}!= VisitorRanking.human_attribute_name(:rank)
-          %th{:scope => 'col'}!= Person.human_attribute_name(:full_name)
+          %th{:scope => 'col'}!= Person.human_attribute_name(:name)
           %th{:scope => 'col'}!= t('.remove')
       %tbody
         - ranks = []
@@ -26,7 +26,7 @@
           - @ranking = ranking_fields.object
           %tr
             %td!= ranking_fields.select :rank, ranks
-            %td!= @ranking.rankable.person.full_name
+            %td!= @ranking.rankable.person.name
             %td!= ranking_fields.check_box :_destroy
             != ranking_fields.hidden_field :rankable_id
-  != ranker_form.submit t('.submit'), :disabled => (Settings.instance.disable_peer_advisors && @current_user.class == PeerAdvisor)
+  != ranker_form.submit t('.submit'), :disabled => (@event.disable_facilitators && @current_user == @ranker.person)

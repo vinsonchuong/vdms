@@ -1,0 +1,23 @@
+- content_for :title, t('.title')
+- form_for([@event, @role]) do |host_form|
+  - if @role.errors.any?
+    #errors
+      %h3!= t('.errors')
+      %ul
+        - @role.errors.full_messages.each do |message|
+          %li!= message
+  %fieldset
+    %ul
+      %li.field.required
+        != host_form.label :person_id
+        != host_form.select :person_id, @people.map {|p| [p.name, p.id]}, {}
+      %li.field.required
+        != host_form.label :default_room
+        != host_form.text_field :default_room
+      %li.field.required
+        != host_form.label :max_visitors_per_meeting
+        != host_form.select :max_visitors_per_meeting, 1..50
+      %li.field.required
+        != host_form.label :max_visitors
+        != host_form.select :max_visitors, 1..50
+    != host_form.submit t('.submit')
