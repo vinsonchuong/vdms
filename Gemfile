@@ -18,7 +18,7 @@ group :cucumber do
   gem 'cucumber', '~> 0.10', :require => false
   gem 'cucumber-rails', '~> 0.3.2', :require => false
   gem 'database_cleaner', :require => false
-  gem 'webrat', :require => false
+  gem 'webrat', :path => 'vendor/gems/webrat-0.7.3', :require => false
   gem 'rspec', '~> 1.3', :require => 'spec'
   gem 'rspec-rails', '~> 1.3', :require => false
   gem 'selenium-client'
