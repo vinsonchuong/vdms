@@ -1,11 +1,11 @@
-Feature: Staff can manage people
+Feature: Administrators can manage people
 
-  So that I can add people to the system
-  As a staff
-  I want to add faculty to the app
+  So that the app has accurate info about its users
+  As an administrator
+  I want to manage people
 
-  Background: I am signed in as a staff
-    Given the following "People" have been added:
+  Background: I am signed in as an administrator
+    Given the following people have been added:
       | ldap_id | role          | name           | email            | area_1 | area_2 | area_3 | division |
       | ID1     | administrator | Administrator1 | email1@email.com |        |        |        |          |
       | ID2     | facilitator   | Facilitator1   | email2@email.com |        |        |        |          |
@@ -13,13 +13,13 @@ Feature: Staff can manage people
       | ID4     | user          | User2          | email4@email.com | hci    | gr     | ps     | cs       |
       | ID5     | user          | User3          | email5@email.com | sp     |        |        | ee       |
       | ID6     | user          | User4          | email6@email.com | sec    | dbms   |        |          |
-    And I am registered as a "Staff"
+    And I am registered as an "Administrator"
     And I am signed in
 
   Scenario: I view a list of all people
     Given I am on the home page
     When I follow "Manage People"
-    And I should see "Administrator1"
+    Then I should see "Administrator1"
     And I should see "Facilitator1"
     And I should see "User1"
     And I should see "User2"
@@ -54,26 +54,26 @@ Feature: Staff can manage people
 
   Scenario: I see the person's name while updating his information
     Given I am on the view people page
-    When I follow "Update Info"
-    Then I should see "Administrator1"
+    When I follow "Edit Info" for the person named "User1"
+    Then I should see "User1"
 
   Scenario: I update a person's information
     Given I am on the view people page
-    When I follow "Update Info"
+    When I follow "Edit Info" for the person named "User1"
     And I fill in "Email" with "new_email@email.com"
     And I press "Update Person"
     Then I should see "Person was successfully updated."
 
   Scenario: I try to update a person with invalid information
     Given I am on the view people page
-    When I follow "Update Info"
+    When I follow "Edit Info" for the person named "User1"
     And I fill in "Name" with ""
     And I press "Update Person"
     Then I should see "Name can't be blank"
 
   Scenario: I try to update a person with invalid information twice
     Given I am on the view people page
-    When I follow "Update Info"
+    When I follow "Edit Info" for the person named "User1"
     And I fill in "Name" with ""
     And I press "Update Person"
     And I press "Update Person"
@@ -81,11 +81,11 @@ Feature: Staff can manage people
 
   Scenario: I see the faculty's name while removing him
     Given I am on the view people page
-    When I follow "Remove"
-    Then I should see "Administrator1"
+    When I follow "Remove" for the person named "User1"
+    Then I should see "User1"
 
   Scenario: I remove a faculty
     Given I am on the view people page
-    When I follow "Remove Person"
+    When I follow "Remove Person" for the person named "User1"
     And I press "Remove Person"
     Then I should see "Person was successfully removed."

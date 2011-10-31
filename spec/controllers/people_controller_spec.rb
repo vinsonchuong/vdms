@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe PeopleController do
   before(:each) do
-    @person = Factory.create(:person)
+    @person = Factory.create(:person, :ldap_id => 'person')
     @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
     CASClient::Frameworks::Rails::Filter.fake('admin')
   end
@@ -10,7 +10,7 @@ describe PeopleController do
   describe 'GET index' do
     it 'assigns to @people a list of all the People sorted by Name' do
       people = Array.new(3) {Person.new}
-      Person.stub(:find).and_return(people)
+      Person.stub(:find).and_return(@admin, people)
       get :index
       assigns[:people].should == people
     end
@@ -61,7 +61,7 @@ describe PeopleController do
 
   describe 'GET edit' do
     it 'assigns to @person the given Person' do
-      Person.stub(:find).and_return(@person)
+      Person.stub(:find).and_return(@admin, @person)
       get :edit, :id => @person.id
       assigns[:person].should == @person
     end
@@ -86,7 +86,7 @@ describe PeopleController do
 
   describe 'GET delete' do
     it 'assigns to @person the given Person' do
-      Person.stub(:find).and_return(@person)
+      Person.stub(:find).and_return(@admin, @person)
       get :delete, :id => @person.id
       assigns[:person].should == @person
     end
@@ -196,7 +196,7 @@ describe PeopleController do
 
   describe 'PUT update' do
     before(:each) do
-      Person.stub(:find).and_return(@person)
+      Person.stub(:find).and_return(@admin, @person)
     end
 
     it 'assigns to @person the given Person' do
@@ -214,14 +214,33 @@ describe PeopleController do
         @person.stub(:update_attributes).and_return(true)
       end
 
-      it 'sets a flash[:notice] message' do
-        put :update, :id => @person.id
-        flash[:notice].should == I18n.t('people.update.success')
+      context 'when signed in as an administrator' do
+        it 'sets a flash[:notice] message' do
+          put :update, :id => @person.id
+          flash[:notice].should == I18n.t('people.update.success')
+        end
+
+        it 'redirects to the View People page' do
+          put :update, :id => @person.id
+          response.should redirect_to(:action => 'index')
+        end
       end
 
-      it 'redirects to the View People page' do
-        put :update, :id => @person.id
-        response.should redirect_to(:action => 'index')
+      context 'when signed in as the given Person' do
+        before(:each) do
+          Person.stub(:find).and_return(@person, @person)
+          CASClient::Frameworks::Rails::Filter.fake(@person.ldap_id)
+        end
+
+        it 'sets a flash[:notice] message' do
+          put :update, :id => @person.id
+          flash[:notice].should == I18n.t('people.update.success_alt')
+        end
+
+        it 'redirects to the View People page' do
+          put :update, :id => @person.id
+          response.should redirect_to(root_url)
+        end
       end
     end
 
@@ -251,7 +270,7 @@ describe PeopleController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      Person.stub(:find).and_return(@person)
+      Person.stub(:find).and_return(@admin, @person)
     end
 
     it 'destroys the Person' do
@@ -277,7 +296,7 @@ describe PeopleController do
         person.should_receive(:destroy)
         person
       end
-      Person.stub(:find).and_return(people)
+      Person.stub(:find).and_return(@admin, people)
       delete :destroy_all
     end
 

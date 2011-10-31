@@ -3,7 +3,7 @@ class Person < ActiveRecord::Base
   has_many :events, :through => :event_roles, :class_name => 'Settings'
 
   validates_presence_of :name
-  validates_format_of :email, :with => /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i, :allow_blank => true
+  validates_format_of :email, :with => /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
   validates_inclusion_of :role, :in => ['user', 'facilitator', 'administrator']
 
   validate :division_inclusion

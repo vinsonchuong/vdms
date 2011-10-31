@@ -1,29 +1,20 @@
-Given /^the following "([^"]*)" have been added:$/ do |role, people|
-  @event = @event || Factory.create(:event, :name => 'Event')
-  result = case role
-    when 'People' then people.hashes.map {|p| Factory.create(:person, p)}
-    when 'Staff' then people.hashes.map {|p| Factory.create(:person, p.merge!(:role => 'administrator'))}
-    when 'Peer Advisors' then people.hashes.map {|p| Factory.create(:person, p.merge!(:role => 'facilitator'))}
-    when 'Hosts' then people.hashes.map {|p| @event.hosts.create(:person => Factory.create(:person, p))}
-    when 'Visitors' then people.hashes.map {|p| @event.visitors.create(:person => Factory.create(:person, p))}
-  end
-  instance_variable_set("@#{role.singularize.downcase.gsub(' ', '_')}", result.first)
+Given /^I am registered as (?:a|an) "([^"]*?)"$/ do |role|
+  @current_user = Factory.create(
+      :person,
+      :ldap_id => 'current_user',
+      :name => 'My Name',
+      :role => role.downcase
+  )
 end
 
-Given /the "(.*)" for (.*) "(.*) (.*)" is (.*)/ do |attrib, role, first, last, value|
-  klass = role.capitalize.constantize
-  person = klass.send(:find_by_first_name_and_last_name,first,last)
-  @event.hosts.find_by_person_id(person.id).update_attribute(attrib.downcase.gsub(/ /,'_'), value)
+Given /^the following people have been added:$/ do |people|
+  people.hashes.map {|attrs| Factory.create(:person, attrs)}
 end
 
-Given /the staff have disabled faculty from making further changes/ do
-  settings = Settings.instance
-  settings.disable_faculty = true
-  settings.save
+Given /^I want to manage the person named "([^"]*?)"$/ do |name|
+  @person = Person.find_by_name(name)
 end
 
-Given /the staff have disabled peer advisors from making further changes/ do
-  settings = Settings.instance
-  settings.disable_peer_advisors = true
-  settings.save
+When /^(?:|I )follow "([^"]*)" for the person named "([^"]*)"$/ do |link, name|
+  When %Q|I follow "#{link}" within "//*[.='#{name}']/.."|
 end

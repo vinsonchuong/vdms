@@ -58,7 +58,11 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find(params[:id])
     if @person.update_attributes(params[:person])
-      redirect_to(:people, :notice => t('people.update.success'))
+      if @person == @current_user
+        redirect_to(root_url, :notice => t('people.update.success_alt'))
+      else
+        redirect_to(:people, :notice => t('people.update.success'))
+      end
     else
       @areas = Person.areas.map {|k, v| [v, k]}.sort!
       @divisions = Person.divisions.map {|k, v| [v, k]}.sort!

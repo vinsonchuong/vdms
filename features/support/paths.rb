@@ -12,8 +12,8 @@ module NavigationHelpers
     when /the view people page/ then people_path
     when /the new person page/ then new_person_path
     when /the import people page/ then upload_people_path
-    when /the edit person page/ then edit_person_path(@staff)
-    when /the remove person page/ then delete_person_path(@staff)
+    when /the edit person page/ then edit_person_path(@person)
+    when /the remove person page/ then delete_person_path(@person)
 
     when /the view events page/ then events_path
     when /the new event page/ then new_event_path

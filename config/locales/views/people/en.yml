@@ -29,13 +29,15 @@ en:
       csv_file: "CSV File"
       submit: "Import People"
     edit:
-      title: "Update Person (%{name})"
-      short_title: "Update Info"
+      title: "Edit Person (%{name})"
+      short_title: "Edit Info"
+      alt_title: "Edit My Info"
       errors: "Errors"
       info: "Info"
       ldap_id_description: "The UID is needed to identify registered people with users who login through CalNet. It can
                             be found at the %{calnet_directory}."
       submit: "Update Person"
+      alt_submit: "Update My Info"
     delete:
       title: "Remove Person (%{name})"
       short_title: "Remove Person"

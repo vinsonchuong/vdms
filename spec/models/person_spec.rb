@@ -91,7 +91,7 @@ describe Person do
     end
 
     it 'is valid with a valid Email' do
-      ['foobar@foobar.com', ''].each do |email|
+      ['foobar@foobar.com'].each do |email|
         @person.email = email
         @person.should be_valid
       end

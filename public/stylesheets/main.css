@@ -45,14 +45,18 @@ h1 a {
   position: absolute;
   top: 193px;
 }
+#navigation ul {
+    margin-bottom:40px;
+}
+#navigation ul:last-child {
+    margin-bottom:0;
+}
 #navigation ul li a {
   display: block;
   margin-top: 5px;
   padding: 0.4em;
   width: 180px;
   border-radius: 3px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
   background: #70a8e1;
   color: white !important;
   opacity: 0.7;
@@ -81,8 +85,6 @@ h1 a {
   padding: 0.4em;
   width: 180px;
   border-radius: 3px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
   background: #70a8e1;
   color: white !important;
   opacity: 0.7;
@@ -100,8 +102,6 @@ h1 a {
   min-height: 980px;
   min-width: 660px;
   border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   background: -webkit-gradient(linear, 0% 3%, 0% 100%, from(#fcfcfc), to(#f7f7f7));
   background: -moz-linear-gradient(19% 75% 90deg,#f7f7f7, #fcfcfc 100%);
   border: #eeeeee 1px solid;
@@ -123,8 +123,6 @@ h1 a {
   margin: 0 -10px;
   padding: 10px;
   border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   border: #4ad34f 1px solid;
   background-color: #effbef;
   color: #4ad34f;
@@ -133,8 +131,6 @@ h1 a {
   margin: 0 -10px;
   padding: 10px;
   border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   border: #d3934a 1px solid;
   background-color: #fbf5ef;
   color: #d3934a;
@@ -179,8 +175,6 @@ h1 a {
   margin: 0 -10px 20px;
   padding: 0px 10px 10px;
   border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   border: #d34f4a 1px solid;
   background-color: #fbefef;
 }

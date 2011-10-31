@@ -11,7 +11,7 @@ en:
       unselect_all: "Unselect All Areas"
       filter_submit: "Filter Visitors"
       select: "Select Visitors"
-      Visitors: "Visitors"
+      visitors: "Visitors"
       select_submit: "Rank Visitors"
     edit_all:
       title: "Update Host's (%{name}) Rankings"

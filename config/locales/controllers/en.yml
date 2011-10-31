@@ -6,6 +6,7 @@ en:
       success: "People were successfully imported."
     update:
       success: "Person was successfully updated."
+      success_alt: "Your info was successfully updated."
     destroy:
       success: "Person was successfully removed."
     destroy_all:

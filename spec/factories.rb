@@ -1,5 +1,6 @@
 Factory.define :person do |p|
   p.name 'First Last'
+  p.email 'email@email.com'
   p.role 'user'
 end
 
