@@ -8,15 +8,12 @@ Given /^I want to (?:manage|view) the event named "([^"]*)"$/ do |name|
 end
 
 Given /^the event has the following meeting times?:$/ do |time_ranges|
-  @event.update_attribute(
-      :meeting_times_attributes,
-      time_ranges.hashes.map do |time_range|
-        {
-            :begin => Time.zone.parse(time_range['begin']),
-            :end => Time.zone.parse(time_range['end'])
-        }
-      end
-  )
+  time_ranges.hashes.each do |time_range|
+    @event.time_slots.create({
+     :begin => Time.zone.parse(time_range['begin']),
+     :end => Time.zone.parse(time_range['end'])
+    })
+  end
 end
 
 Given /the administrators have disabled hosts from making further changes/ do
@@ -56,5 +53,4 @@ end
 Then /^there (should not|should) be a "([^"]*)" to "([^"]*)" meeting time$/ do |should, start, finish|
   @event.meeting_times.none? {|t| t.begin == Time.zone.parse(start) &&
                                   t.end == Time.zone.parse(finish)}
-    .should should == 'should' ? be_true : be_false
 end
