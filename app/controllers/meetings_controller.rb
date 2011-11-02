@@ -1,4 +1,4 @@
-class MeetingsController < ApplicationController
+class MeetingsController < EventBaseController
   
   #before_filter :current_user_is_staff?, :only => [:tweak, :apply_tweaks, :create_all]
   before_filter :schedule_empty?, :except => :create_all

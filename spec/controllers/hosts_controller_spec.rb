@@ -9,6 +9,78 @@ describe HostsController do
     CASClient::Frameworks::Rails::Filter.fake('admin')
   end
 
+  describe 'forced profile verification' do
+    before(:each) do
+      Host.stub(:find).and_return(@host)
+    end
+
+    context 'when an unverified Host is signed in' do
+      before(:each) do
+        @host.verified = false
+        @host.person.ldap_id = 'host'
+        Person.stub(:find).and_return(@host.person)
+        CASClient::Frameworks::Rails::Filter.fake('host')
+      end
+
+      it 'does not redirect when editing a Host' do
+        get :edit, :event_id => @event.id, :id => @host.id
+        response.should render_template('edit')
+      end
+
+      it 'does not redirect when updating a Host' do
+        @host.stub(:update_attributes).and_return(false)
+        put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
+        response.should render_template('edit')
+      end
+    end
+
+    context 'when the signed in person is not an unverified Host' do
+      it 'does not redirect when indexing Hosts' do
+        get :index, :event_id => @event.id
+        response.should render_template('index')
+      end
+
+      it 'does not redirect when showing a Host' do
+        get :show, :event_id => @event.id, :id => @host.id
+        response.should render_template('show')
+      end
+
+      it 'does not redirect when newing a Host' do
+        get :new, :event_id => @event.id
+        response.should render_template('new')
+      end
+
+      it 'does not redirect when editing a Host' do
+        get :edit, :event_id => @event.id, :id => @host.id
+        response.should render_template('edit')
+      end
+
+      it 'does not redirect when deleting a Host' do
+        get :delete, :event_id => @event.id, :id => @host.id
+        response.should render_template('delete')
+      end
+
+      it 'does not redirect when creating a Host' do
+        Host.stub(:new).and_return(@host)
+        @host.stub(:save).and_return(false)
+        post :create, :host => {'foo' => 'bar'}, :event_id => @event.id
+        response.should render_template('new')
+      end
+
+      it 'does not redirect when updating a Host' do
+        @host.stub(:update_attributes).and_return(false)
+        put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
+        response.should render_template('edit')
+      end
+
+      it 'does not redirect when destroying a Host' do
+        Host.stub(:find).and_return(@host)
+        delete :destroy, :event_id => @event.id, :id => @host.id
+        response.should redirect_to(:action => 'index', :event_id => @event.id)
+      end
+    end
+  end
+
   describe 'GET index' do
     it 'assigns to @event the given Event' do
       Event.stub(:find).and_return(@event)
@@ -37,7 +109,7 @@ describe HostsController do
     end
 
     it 'assigns to @roles the given Host' do
-      @event.hosts.stub(:find).and_return(@host)
+      Host.stub(:find).and_return(@host)
       get :show, :event_id => @event.id, :id => @host.id
       assigns[:role].should == @host
     end
@@ -84,9 +156,21 @@ describe HostsController do
     end
 
     it 'assigns to @role the given Host' do
-      @event.hosts.stub(:find).and_return(@host)
+      Host.stub(:find).and_return(@host)
       get :edit, :event_id => @event.id, :id => @host.id
       assigns[:role].should == @host
+    end
+
+    it 'assigns to @areas a list of the Areas' do
+      Person.stub(:areas).and_return('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
+      get :edit, :event_id => @event.id, :id => @host.id
+      assigns[:areas].should == [['Area 1', 'A1'], ['Area 2', 'A2'], ['Area 3', 'A3']]
+    end
+
+    it 'assigns to @divisions a list of the Division names' do
+      Person.stub(:divisions).and_return('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
+      get :edit, :event_id => @event.id, :id => @host.id
+      assigns[:divisions].should == [['Division 1', 'D1'], ['Division 2', 'D2'], ['Division 3', 'D3']]
     end
 
     it 'renders the edit template' do
@@ -103,7 +187,7 @@ describe HostsController do
     end
 
     it 'assigns to @role the given Host' do
-      @event.hosts.stub(:find).and_return(@host)
+      Host.stub(:find).and_return(@host)
       get :delete, :event_id => @event.id, :id => @host.id
       assigns[:role].should == @host
     end
@@ -173,9 +257,7 @@ describe HostsController do
 
   describe 'PUT update' do
     before(:each) do
-      # can't stub @event.hosts directly
       Host.stub(:find).and_return(@host)
-      #@event.hosts.should_receive(:find)
     end
 
     it 'assigns to @role the given Role' do
@@ -183,24 +265,74 @@ describe HostsController do
       assigns[:role].should equal(@host)
     end
 
-    it 'updates the Host' do
-      @host.should_receive(:update_attributes).with('foo' => 'bar')
-      put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
+    context 'when an Administrator is signed in' do
+      it 'updates but does not verify the Host' do
+        @host.should_receive(:update_attributes).with('foo' => 'bar', 'verified' => false)
+        put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
+      end
     end
+
+    context 'when the Host is signed in' do
+      before(:each) do
+        @host.person.update_attribute(:ldap_id, 'host')
+        CASClient::Frameworks::Rails::Filter.fake('host')
+      end
+
+      it 'updates and verifies the Host' do
+        @host.should_receive(:update_attributes).with('foo' => 'bar', 'verified' => true)
+        put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
+      end
+    end
+
 
     context 'when the Host is successfully updated' do
       before(:each) do
         @host.stub(:update_attributes).and_return(true)
       end
 
-      it 'sets a flash[:notice] message' do
-        put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
-        flash[:notice].should == I18n.t('hosts.update.success')
+      context 'when signed in as the Host' do
+        before(:each) do
+          @host.person.ldap_id = 'host'
+          Person.stub(:find).and_return(@host.person)
+          CASClient::Frameworks::Rails::Filter.fake('host')
+        end
+
+        context 'when the host was unverified' do
+          before(:each) do
+            @host.verified = false
+          end
+
+          it 'redirects to the previously requested page' do
+            session[:after_verify_url] = events_url
+            put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
+            response.should redirect_to events_url
+          end
+        end
+
+        context 'when the host was verified' do
+          before(:each) do
+            @host.verified = true
+          end
+
+          it 'redirects to the show event page'
+        end
+
+        it 'sets a flash[:notice] message' do
+          put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
+          flash[:notice].should == I18n.t('hosts.update.alt_success')
+        end
       end
 
-      it 'redirects to the View Hosts page' do
-        put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
-        response.should redirect_to(:action => 'index', :event_id => @event.id)
+      context 'when signed in as someone other than the Host' do
+        it 'sets a flash[:notice] message' do
+          put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
+          flash[:notice].should == I18n.t('hosts.update.success')
+        end
+
+        it 'redirects to the View Hosts page' do
+          put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
+          response.should redirect_to(:action => 'index', :event_id => @event.id)
+        end
       end
     end
 

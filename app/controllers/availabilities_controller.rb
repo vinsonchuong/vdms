@@ -1,9 +1,8 @@
-class AvailabilitiesController < ApplicationController
+class AvailabilitiesController < EventBaseController
   # GET /events/1/hosts/1/availabilities/edit_all
   # GET /events/1/visitors/1/availabilities/edit_all
   def edit_all
     @schedulable = get_schedulable
-    @event = Event.find(params[:event_id])
 
     if @event.disable_hosts? && !@event.hosts.find_by_person_id(@current_user.id).nil? ||
        @event.disable_facilitators? && @current_user.role == 'facilitator'
@@ -20,7 +19,6 @@ class AvailabilitiesController < ApplicationController
       flash[:notice] = t(:success, :scope => [@schedulable.class.name.tableize, :update])
       redirect_to :action => 'edit_all'
     else
-      @event = Event.find(params[:event_id])
       render 'edit_all'
     end
   end

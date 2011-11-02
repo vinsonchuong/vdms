@@ -9,6 +9,78 @@ describe VisitorsController do
     CASClient::Frameworks::Rails::Filter.fake('admin')
   end
 
+  describe 'forced profile verification' do
+    before(:each) do
+      Visitor.stub(:find).and_return(@visitor)
+    end
+
+    context 'when an unverified Visitor is signed in' do
+      before(:each) do
+        @visitor.verified = false
+        @visitor.person.ldap_id = 'visitor'
+        Person.stub(:find).and_return(@visitor.person)
+        CASClient::Frameworks::Rails::Filter.fake('visitor')
+      end
+
+      it 'does not redirect when editing a Visitor' do
+        get :edit, :event_id => @event.id, :id => @visitor.id
+        response.should render_template('edit')
+      end
+
+      it 'does not redirect when updating a Visitor' do
+        @visitor.stub(:update_attributes).and_return(false)
+        put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
+        response.should render_template('edit')
+      end
+    end
+
+    context 'when the signed in person is not an unverified Visitor' do
+      it 'does not redirect when indexing Visitors' do
+        get :index, :event_id => @event.id
+        response.should render_template('index')
+      end
+
+      it 'does not redirect when showing a Visitor' do
+        get :show, :event_id => @event.id, :id => @visitor.id
+        response.should render_template('show')
+      end
+
+      it 'does not redirect when newing a Visitor' do
+        get :new, :event_id => @event.id
+        response.should render_template('new')
+      end
+
+      it 'does not redirect when editing a Visitor' do
+        get :edit, :event_id => @event.id, :id => @visitor.id
+        response.should render_template('edit')
+      end
+
+      it 'does not redirect when deleting a Visitor' do
+        get :delete, :event_id => @event.id, :id => @visitor.id
+        response.should render_template('delete')
+      end
+
+      it 'does not redirect when creating a Visitor' do
+        Visitor.stub(:new).and_return(@visitor)
+        @visitor.stub(:save).and_return(false)
+        post :create, :visitor => {'foo' => 'bar'}, :event_id => @event.id
+        response.should render_template('new')
+      end
+
+      it 'does not redirect when updating a Visitor' do
+        @visitor.stub(:update_attributes).and_return(false)
+        put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
+        response.should render_template('edit')
+      end
+
+      it 'does not redirect when destroying a Visitor' do
+        Visitor.stub(:find).and_return(@visitor)
+        delete :destroy, :event_id => @event.id, :id => @visitor.id
+        response.should redirect_to(:action => 'index', :event_id => @event.id)
+      end
+    end
+  end
+
   describe 'GET index' do
     it 'assigns to @event the given Event' do
       Event.stub(:find).and_return(@event)
@@ -37,7 +109,7 @@ describe VisitorsController do
     end
 
     it 'assigns to @roles the given Visitor' do
-      @event.visitors.stub(:find).and_return(@visitor)
+      Visitor.stub(:find).and_return(@visitor)
       get :show, :event_id => @event.id, :id => @visitor.id
       assigns[:role].should == @visitor
     end
@@ -84,9 +156,21 @@ describe VisitorsController do
     end
 
     it 'assigns to @role the given Visitor' do
-      @event.visitors.stub(:find).and_return(@visitor)
+      Visitor.stub(:find).and_return(@visitor)
       get :edit, :event_id => @event.id, :id => @visitor.id
       assigns[:role].should == @visitor
+    end
+
+    it 'assigns to @areas a list of the Areas' do
+      Person.stub(:areas).and_return('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
+      get :edit, :event_id => @event.id, :id => @visitor.id
+      assigns[:areas].should == [['Area 1', 'A1'], ['Area 2', 'A2'], ['Area 3', 'A3']]
+    end
+
+    it 'assigns to @divisions a list of the Division names' do
+      Person.stub(:divisions).and_return('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
+      get :edit, :event_id => @event.id, :id => @visitor.id
+      assigns[:divisions].should == [['Division 1', 'D1'], ['Division 2', 'D2'], ['Division 3', 'D3']]
     end
 
     it 'renders the edit template' do
@@ -103,7 +187,7 @@ describe VisitorsController do
     end
 
     it 'assigns to @role the given Visitor' do
-      @event.visitors.stub(:find).and_return(@visitor)
+      Visitor.stub(:find).and_return(@visitor)
       get :delete, :event_id => @event.id, :id => @visitor.id
       assigns[:role].should == @visitor
     end
@@ -173,9 +257,7 @@ describe VisitorsController do
 
   describe 'PUT update' do
     before(:each) do
-      # can't stub @event.visitors directly
       Visitor.stub(:find).and_return(@visitor)
-      #@event.visitors.stub(:find).and_return(@visitor)
     end
 
     it 'assigns to @role the given Role' do
@@ -183,9 +265,23 @@ describe VisitorsController do
       assigns[:role].should equal(@visitor)
     end
 
-    it 'updates the Visitor' do
-      @visitor.should_receive(:update_attributes).with('foo' => 'bar')
-      put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
+    context 'when an Administrator is signed in' do
+      it 'updates but does not verify the Host' do
+        @visitor.should_receive(:update_attributes).with('foo' => 'bar', 'verified' => false)
+        put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
+      end
+    end
+
+    context 'when the Host is signed in' do
+      before(:each) do
+        @visitor.person.update_attribute(:ldap_id, 'visitor')
+        CASClient::Frameworks::Rails::Filter.fake('visitor')
+      end
+
+      it 'updates and verifies the Host' do
+        @visitor.should_receive(:update_attributes).with('foo' => 'bar', 'verified' => true)
+        put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
+      end
     end
 
     context 'when the Visitor is successfully updated' do
@@ -193,14 +289,50 @@ describe VisitorsController do
         @visitor.stub(:update_attributes).and_return(true)
       end
 
-      it 'sets a flash[:notice] message' do
-        put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
-        flash[:notice].should == I18n.t('visitors.update.success')
+      context 'when signed in as the Visitor' do
+        before(:each) do
+          @visitor.person.ldap_id = 'visitor'
+          Person.stub(:find).and_return(@visitor.person)
+          CASClient::Frameworks::Rails::Filter.fake('visitor')
+        end
+
+        context 'when the Visitor was unverified' do
+          before(:each) do
+            @visitor.verified = false
+          end
+
+          it 'redirects to the previously requested page' do
+            session[:after_verify_url] = events_url
+            put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
+            response.should redirect_to events_url
+          end
+        end
+
+        context 'when the Visitor was verified' do
+          before(:each) do
+            @visitor.verified = true
+          end
+
+          it 'redirects to the view event page'
+        end
+
+
+        it 'sets a flash[:notice] message' do
+          put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
+          flash[:notice].should == I18n.t('visitors.update.alt_success')
+        end
       end
 
-      it 'redirects to the View Visitors page' do
-        put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
-        response.should redirect_to(:action => 'index', :event_id => @event.id)
+      context 'when signed in as someone other than the Visitor' do
+        it 'sets a flash[:notice] message' do
+          put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
+          flash[:notice].should == I18n.t('visitors.update.success')
+        end
+
+        it 'redirects to the View Visitors page' do
+          put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
+          response.should redirect_to(:action => 'index', :event_id => @event.id)
+        end
       end
     end
 
@@ -224,9 +356,7 @@ describe VisitorsController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      # can't stub @event.visitors directly
       Visitor.stub(:find).and_return(@visitor)
-      #@event.visitors.stub(:find).and_return(@visitor)
     end
 
     it 'destroys the Visitor' do

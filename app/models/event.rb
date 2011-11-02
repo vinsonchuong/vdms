@@ -63,8 +63,4 @@ class Event < ActiveRecord::Base
     times_to_remove = current_times - times
     time_slots.each {|t| t.mark_for_destruction if times_to_remove.include?((t.begin)..(t.end))}
   end
-
-  private
-
-
 end

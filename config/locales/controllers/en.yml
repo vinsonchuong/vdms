@@ -32,6 +32,7 @@ en:
       success: "Host was successfully added."
     update:
       success: "Host was successfully updated."
+      alt_success: "Your info was successfully updated."
     destroy:
       success: "Host was successfully removed."
   visitors:
@@ -39,5 +40,6 @@ en:
       success: "Visitor was successfully added."
     update:
       success: "Visitor was successfully updated."
+      alt_success: "Your info was successfully updated."
     destroy:
       success: "Visitor was successfully removed."

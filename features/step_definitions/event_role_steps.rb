@@ -1,17 +1,22 @@
-Given /^the following (hosts|visitors) have been added to the event:$/ do |role, people|
-  people.hashes.map do |attrs|
+Given /^the following (host|visitor)s? (?:has|have) been added to the event:$/ do |role, people|
+  roles = people.hashes.map do |attrs|
     attrs['person'] = Person.find_by_name(attrs['name'])
     attrs.delete('name')
-    @event.send(role).create(attrs)
+    attrs['verified'] = true
+    @event.send(role.tableize).create(attrs)
   end
+  instance_variable_set("@#{role}", roles.first) if roles.count == 1
 end
 
-Given /^I want to manage the host named "([^"]*)"$/ do |name|
-  @host = @event.hosts.find_by_person_id(Person.find_by_name(name))
+Given /^I want to manage the (host|visitor) named "([^"]*)"$/ do |role, name|
+  instance_variable_set(
+    "@#{role}",
+    @event.send(role.tableize).find_by_person_id(Person.find_by_name(name))
+  )
 end
 
-Given /^I want to manage the visitor named "([^"]*)"$/ do |name|
-  @visitor = @event.visitors.find_by_person_id(Person.find_by_name(name))
+Given /^the (host|visitor) is unverified$/ do |role|
+  instance_variable_get("@#{role}").update_attribute(:verified, false)
 end
 
 When /^(?:|I )follow "([^"]*)" for the (?:host|visitor) named "([^"]*)"$/ do |link, name|

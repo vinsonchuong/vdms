@@ -11,7 +11,10 @@ en:
       title: "Edit Visitor (%{name})"
       short_title: "Edit Info"
       errors: "Errors"
+      profile: "Profile"
+      event_preferences: "Event Preferences"
       submit: "Update Visitor"
+      alt_submit: "Update My Info"
     delete:
       title: "Remove Visitor (%{name})"
       short_title: "Remove Visitor"

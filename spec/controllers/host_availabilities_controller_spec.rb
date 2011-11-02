@@ -6,6 +6,53 @@ describe HostAvailabilitiesController do
     @host.person.update_attribute(:ldap_id, 'host')
     CASClient::Frameworks::Rails::Filter.fake('host')
     @event = @host.event
+    Event.stub(:find).and_return(@event)
+  end
+
+  describe 'forced profile verification' do
+    before(:each) do
+      Host.stub(:find).and_return(@host)
+    end
+
+    context 'when an unverified Host is signed in' do
+      before(:each) do
+        @host.update_attribute(:verified, false)
+        Person.stub(:find).and_return(@host.person)
+      end
+
+      it 'saves the requested URL before redirecting' do
+        get :edit_all, :host_id => @host.id, :event_id => @event.id
+        session[:after_verify_url].should == edit_all_event_host_availabilities_url(@event)
+      end
+
+      it 'redirects when editing availabilities' do
+        get :edit_all, :host_id => @host.id, :event_id => @event.id
+        response.should redirect_to(:controller => 'hosts', :action => 'edit', :event_id => @event.id, :id => @host.id)
+      end
+
+      it 'redirects when updating availabilities' do
+        put :update_all, :host_id => @host.id, :event_id => @event.id
+        response.should redirect_to(:controller => 'hosts', :action => 'edit', :event_id => @event.id, :id => @host.id)
+      end
+    end
+
+    context 'when the signed in person is not an unverified Host' do
+      before(:each) do
+        Person.stub(:find).and_return(Factory.create(:person, :role => 'administrator', :ldap_id => 'administrator'))
+        CASClient::Frameworks::Rails::Filter.fake('administrator')
+      end
+
+      it 'does not redirect when editing availabilities' do
+        get :edit_all, :host_id => @host.id, :event_id => @event.id
+        response.should render_template('edit_all')
+      end
+
+      it 'does not redirect when updating availabilities' do
+        @host.stub(:update_attributes).and_return(false)
+        put :update_all, :host_id => @host.id, :event_id => @event.id
+        response.should render_template('edit_all')
+      end
+    end
   end
 
   describe 'GET edit_all' do
@@ -33,6 +80,7 @@ describe HostAvailabilitiesController do
     end
 
     it 'assigns to @schedulable the Host' do
+      Host.stub(:find).and_return(@host)
       put :update_all, :host_id => @host.id, :event_id => @event.id
       assigns[:schedulable].should == @host
     end

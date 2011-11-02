@@ -2,19 +2,20 @@ class VisitorsController < RolesController
 
   private
 
-  def get_role(event)
+  def get_role
     unless params[:id].nil?
-      event.visitors.find(params[:id])
+      @event.visitors.find(params[:id])
     else
-      event.visitors.build(params[:visitor])
+      @event.visitors.build(params[:visitor])
     end
   end
 
-  def get_roles(event)
-    event.visitors
+  def get_roles
+    @event.visitors
   end
 
   def get_attributes
+    puts params.inspect
     params[:visitor]
   end
 

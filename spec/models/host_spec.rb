@@ -6,6 +6,12 @@ describe Host do
   end
 
   describe 'Attributes' do
+    it 'has a Verified flag (verified)' do
+      @host.should respond_to(:verified)
+      @host.should respond_to(:verified?)
+      @host.should respond_to(:verified=)
+    end
+
     it 'has a Default Room (default_room)' do
       @host.should respond_to(:default_room)
       @host.should respond_to(:default_room=)
@@ -55,6 +61,25 @@ describe Host do
   end
 
   describe 'Nested Attributes' do
+    describe 'Person (person)' do
+      before(:each) do
+        @person = @host.person
+      end
+
+      it 'allows nested attributes for Person (person)' do
+        @host.update_attributes(:person_attributes => {
+          :id => @person.id,
+          :name => 'New Name'
+        })
+        @person.reload.name.should == 'New Name'
+      end
+
+      it 'only allows updates' do
+        @host.update_attributes(:person_attributes => Factory.attributes_for(:person))
+        @host.reload.person.should == @person
+      end
+    end
+
     describe 'Rankings (rankings)' do
       before(:each) do
         @visitor1 = Factory.create(:visitor)
@@ -109,6 +134,10 @@ describe Host do
   context 'when building' do
     before(:each) do
       @host = Host.new
+    end
+
+    it 'is not Verified' do
+      @host.should_not be_verified
     end
 
     it 'has no Default Room (None)' do

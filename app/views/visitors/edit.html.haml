@@ -7,5 +7,35 @@
         - @role.errors.full_messages.each do |message|
           %li!= message
   %fieldset
-    %ul
-    != visitor_form.submit t('.submit')
+    - fields_for @role.person do |person_fields|
+      %h3!= t('.profile')
+      %ul
+        - unless @current_user.role == 'administrator'
+          %li.field
+            != person_fields.label :ldap_id
+            %p!= t('.ldap_id_description', :calnet_directory => link_to('CalNet Directory', 'https://calnet.berkeley.edu/directory/'))
+            != person_fields.text_field :ldap_id
+          %li.field.required
+            != person_fields.label :role
+            != person_fields.select :role, [['User', 'user'], ['Facilitator', 'facilitator'], ['Administator', 'administrator']]
+        %li.field.required
+          != person_fields.label :name
+          != person_fields.text_field :name
+        %li.field.required
+          != person_fields.label :email
+          != person_fields.text_field :email
+        %li.field
+          != person_fields.label :division
+          != person_fields.select :division, @divisions
+        %li.field
+          != person_fields.label :area_1
+          != person_fields.select :area_1, @areas, :include_blank => true
+        %li.field
+          != person_fields.label :area_2
+          != person_fields.select :area_2, @areas, :include_blank => true
+        %li.field
+          != person_fields.label :area_3
+          != person_fields.select :area_3, @areas, :include_blank => true
+  -# Need at least one visitor field for form to work correctly
+  != visitor_form.hidden_field :event_id
+  != visitor_form.submit @role == @current_role ? t('.alt_submit') : t('.submit')

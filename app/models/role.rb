@@ -1,6 +1,7 @@
 class Role < ActiveRecord::Base
   belongs_to :person
   belongs_to :event
+  accepts_nested_attributes_for :person, :update_only => true
 
   # add to spec
   validates_existence_of :person

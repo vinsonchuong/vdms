@@ -3,10 +3,10 @@ class VisitorRankingsController < RankingsController
   private
 
   def get_ranker
-    Visitor.find params[:visitor_id]
+    @event.visitors.find params[:visitor_id]
   end
 
   def get_rankables
-    Host
+    @event.hosts
   end
 end

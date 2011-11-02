@@ -6,6 +6,53 @@ describe VisitorAvailabilitiesController do
     @fac = Factory.create(:person, :ldap_id => 'fac', :role => 'facilitator')
     CASClient::Frameworks::Rails::Filter.fake('fac')
     @event = @visitor.event
+    Event.stub(:find).and_return(@event)
+  end
+
+  describe 'forced profile verification' do
+    before(:each) do
+      Visitor.stub(:find).and_return(@visitor)
+    end
+
+    context 'when an unverified Visitor is signed in' do
+      before(:each) do
+        @visitor.update_attribute(:verified, false)
+        Person.stub(:find).and_return(@visitor.person)
+      end
+
+      it 'saves the requested URL before redirecting' do
+        get :edit_all, :visitor_id => @visitor.id, :event_id => @event.id
+        session[:after_verify_url].should == edit_all_event_visitor_availabilities_url(@event)
+      end
+
+      it 'redirects when editing availabilities' do
+        get :edit_all, :visitor_id => @visitor.id, :event_id => @event.id
+        response.should redirect_to(:controller => 'visitors', :action => 'edit', :event_id => @event.id, :id => @visitor.id)
+      end
+
+      it 'redirects when updating availabilities' do
+        put :update_all, :visitor_id => @visitor.id, :event_id => @event.id
+        response.should redirect_to(:controller => 'visitors', :action => 'edit', :event_id => @event.id, :id => @visitor.id)
+      end
+    end
+
+    context 'when the signed in person is not an unverified Visitor' do
+      before(:each) do
+        Person.stub(:find).and_return(@fac)
+        CASClient::Frameworks::Rails::Filter.fake('facilitator')
+      end
+
+      it 'does not redirect when editing availabilities' do
+        get :edit_all, :visitor_id => @visitor.id, :event_id => @event.id
+        response.should render_template('edit_all')
+      end
+
+      it 'does not redirect when updating availabilities' do
+        @visitor.stub(:update_attributes).and_return(false)
+        put :update_all, :visitor_id => @visitor.id, :event_id => @event.id
+        response.should render_template('edit_all')
+      end
+    end
   end
 
   describe 'GET edit_all' do

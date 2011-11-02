@@ -7,6 +7,14 @@ class EventsController < ApplicationController
   # GET /events/1
   def show
     @event = Event.find(params[:id])
+    @current_role = @event.roles.find_by_person_id(@current_user.id)
+    session[:after_verify_url] = request.url
+    redirect_to(
+        :controller => @current_role.class.name.tableize,
+        :action => 'edit',
+        :event_id => @event.id,
+        :id => @current_role.id
+    ) unless @current_role.nil? || @current_role.verified?
   end
 
   # GET /events/new

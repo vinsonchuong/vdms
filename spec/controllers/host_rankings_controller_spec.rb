@@ -6,11 +6,77 @@ describe HostRankingsController do
     @host.person.update_attribute(:ldap_id, 'host')
     CASClient::Frameworks::Rails::Filter.fake('host')
     @event = @host.event
+    Event.stub(:find).and_return(@event)
+  end
+
+  describe 'forced profile verification' do
+    before(:each) do
+      Host.stub(:find).and_return(@host)
+    end
+
+    context 'when an unverified Host is signed in' do
+      before(:each) do
+        @host.update_attribute(:verified, false)
+        Person.stub(:find).and_return(@host.person)
+      end
+
+      it 'saves the requested URL before redirecting' do
+        get :index, :host_id => @host.id, :event_id => @event.id
+        session[:after_verify_url].should == event_host_rankings_url(@event)
+      end
+
+      it 'redirects when indexing rankings' do
+        get :index, :host_id => @host.id, :event_id => @event.id
+        response.should redirect_to(:controller => 'hosts', :action => 'edit', :event_id => @event.id, :id => @host.id)
+      end
+
+      it 'redirects when adding rankings' do
+        get :add, :host_id => @host.id, :event_id => @event.id
+        response.should redirect_to(:controller => 'hosts', :action => 'edit', :event_id => @event.id, :id => @host.id)
+      end
+
+      it 'redirects when editing rankings' do
+        get :edit_all, :host_id => @host.id, :event_id => @event.id
+        response.should redirect_to(:controller => 'hosts', :action => 'edit', :event_id => @event.id, :id => @host.id)
+      end
+
+      it 'redirects when updating rankings' do
+        put :update_all, :host_id => @host.id, :event_id => @event.id
+        response.should redirect_to(:controller => 'hosts', :action => 'edit', :event_id => @event.id, :id => @host.id)
+      end
+    end
+
+    context 'when the signed in person is not an unverified Host' do
+      before(:each) do
+        Person.stub(:find).and_return(Factory.create(:person, :role => 'administrator', :ldap_id => 'administrator'))
+        CASClient::Frameworks::Rails::Filter.fake('administrator')
+      end
+
+      it 'does not redirect when indexing rankings' do
+        get :index, :host_id => @host.id, :event_id => @event.id
+        response.should render_template('index')
+      end
+
+      it 'does not redirect when adding rankings' do
+        get :add, :host_id => @host.id, :event_id => @event.id
+        response.should render_template('add')
+      end
+
+      it 'does not redirect when editing rankings' do
+        get :edit_all, :host_id => @host.id, :event_id => @event.id
+        response.should redirect_to(:action => 'add', :host_id => @host.id, :event_id => @event.id)
+      end
+
+      it 'does not redirect when updating rankings' do
+        @host.stub(:update_attributes).and_return(false)
+        put :update_all, :host_id => @host.id, :event_id => @event.id
+        response.should render_template('edit_all')
+      end
+    end
   end
 
   describe 'GET index' do
     it 'assigns to @event the Event' do
-      Event.stub(:find).and_return(@event)
       get :index, :host_id => @host.id, :event_id => @event.id
       assigns[:event].should == @event
     end
@@ -29,7 +95,6 @@ describe HostRankingsController do
 
   describe 'GET add' do
     it 'assigns to @event the Event' do
-      Event.stub(:find).and_return(@event)
       get :add, :host_id => @host.id, :event_id => @event.id
       assigns[:event].should == @event
     end
@@ -63,7 +128,7 @@ describe HostRankingsController do
 
       it 'assigns to @rankables a list of Visitors in the selected Areas' do
         visitors = Array.new(3) {Visitor.new}
-        Visitor.should_receive(:with_areas).with('a1', 'a3').and_return(visitors)
+        @event.visitors.should_receive(:with_areas).with('a1', 'a3').and_return(visitors)
         get :add, :host_id => @host.id, :event_id => @event.id, :filter => {'a1' => '1', 'a2' => '0', 'a3' => '1'}
         assigns[:rankables].should == visitors
       end
@@ -73,7 +138,7 @@ describe HostRankingsController do
       ranked_visitor = Visitor.new
       @host.rankings.build(:rankable => ranked_visitor)
       unranked_visitors = Array.new(3) {Visitor.new}
-      Visitor.stub(:with_areas).and_return(unranked_visitors + [ranked_visitor])
+      @event.visitors.stub(:with_areas).and_return(unranked_visitors + [ranked_visitor])
       Host.stub(:find).and_return(@host)
       get :add, :host_id => @host.id, :event_id => @event.id, :filter => {'a1' => '1', 'a2' => '0', 'a3' => '1'}
       assigns[:rankables].should == unranked_visitors
@@ -87,7 +152,6 @@ describe HostRankingsController do
 
   describe 'GET edit_all' do
     it 'assigns to @event the Event' do
-      Event.stub(:find).and_return(@event)
       get :edit_all, :host_id => @host.id, :event_id => @event.id
       assigns[:event].should == @event
     end
@@ -128,7 +192,7 @@ describe HostRankingsController do
       end
 
       it 'finds the given Visitors' do
-        Visitor.should_receive(:find).with(['1', '2', '3']).and_return(@visitors)
+        @event.visitors.should_receive(:find).with(['1', '2', '3']).and_return(@visitors)
         get :edit_all, :host_id => @host.id, :event_id => @event.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
       end
 
@@ -187,7 +251,6 @@ describe HostRankingsController do
       end
 
       it 'assigns to @event the Event' do
-        Event.stub(:find).and_return(@event)
         put :update_all, :host_id => @host.id, :event_id => @event.id, :host => {'foo' => 'bar'}
         assigns[:event].should == @event
       end

@@ -20,11 +20,13 @@ end
 Factory.define :host do |h|
   h.association :person
   h.association :event
+  h.verified true
 end
 
 Factory.define :visitor do |v|
   v.association :person
   v.association :event
+  v.verified true
 end
 
 Factory.define :host_ranking do |r|

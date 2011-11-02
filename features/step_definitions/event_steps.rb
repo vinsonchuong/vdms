@@ -1,12 +1,13 @@
-Given /^the following events have been added:$/ do |events|
+Given /^the following (?:event has|events have) been added:$/ do |events|
   events = events.hashes.map {|e| Factory.create(:event, e)}
+  @event = events.first if events.count == 1
 end
 
 Given /^I want to (?:manage|view) the event named "([^"]*)"$/ do |name|
   @event = Event.find_by_name(name)
 end
 
-Given /^the event has the following meeting times:$/ do |time_ranges|
+Given /^the event has the following meeting times?:$/ do |time_ranges|
   @event.update_attribute(
       :meeting_times_attributes,
       time_ranges.hashes.map do |time_range|
@@ -46,8 +47,9 @@ When /^I add "([^"]*)" to "([^"]*)" to the meeting times$/ do |start, finish|
 end
 
 When /^I remove the "([^"]*)" to "([^"]*)" meeting time$/ do |start, finish|
+  puts @event.meeting_times.inspect
   index = @event.meeting_times.index {|t| t.begin == Time.zone.parse(start) &&
-                                          t.end = Time.zone.parse(finish)}
+                                          t.end == Time.zone.parse(finish)}
   check "event_meeting_times_attributes_#{index}__destroy"
 end
 

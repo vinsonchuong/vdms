@@ -7,8 +7,9 @@ Given /^I am registered as (?:a|an) "([^"]*?)"$/ do |role|
   )
 end
 
-Given /^the following people have been added:$/ do |people|
-  people.hashes.map {|attrs| Factory.create(:person, attrs)}
+Given /^the following (?:person has|people have) been added:$/ do |people|
+  people = people.hashes.map {|attrs| Factory.create(:person, attrs)}
+  @person = people.first if people.count == 1
 end
 
 Given /^I want to manage the person named "([^"]*?)"$/ do |name|

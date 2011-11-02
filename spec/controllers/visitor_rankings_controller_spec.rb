@@ -6,11 +6,77 @@ describe VisitorRankingsController do
     @fac = Factory.create(:person, :ldap_id => 'fac', :role => 'facilitator')
     CASClient::Frameworks::Rails::Filter.fake('fac')
     @event = @visitor.event
+    Event.stub(:find).and_return(@event)
+  end
+
+  describe 'forced profile verification' do
+    before(:each) do
+      Visitor.stub(:find).and_return(@visitor)
+    end
+
+    context 'when an unverified Visitor is signed in' do
+      before(:each) do
+        @visitor.update_attribute(:verified, false)
+        Person.stub(:find).and_return(@visitor.person)
+      end
+
+      it 'saves the requested URL before redirecting' do
+        get :index, :visitor_id => @visitor.id, :event_id => @event.id
+        session[:after_verify_url].should == event_visitor_rankings_url(@event)
+      end
+
+      it 'redirects when indexing rankings' do
+        get :index, :visitor_id => @visitor.id, :event_id => @event.id
+        response.should redirect_to(:controller => 'visitors', :action => 'edit', :event_id => @event.id, :id => @visitor.id)
+      end
+
+      it 'redirects when adding rankings' do
+        get :add, :visitor_id => @visitor.id, :event_id => @event.id
+        response.should redirect_to(:controller => 'visitors', :action => 'edit', :event_id => @event.id, :id => @visitor.id)
+      end
+
+      it 'redirects when editing rankings' do
+        get :edit_all, :visitor_id => @visitor.id, :event_id => @event.id
+        response.should redirect_to(:controller => 'visitors', :action => 'edit', :event_id => @event.id, :id => @visitor.id)
+      end
+
+      it 'redirects when updating rankings' do
+        put :update_all, :visitor_id => @visitor.id, :event_id => @event.id
+        response.should redirect_to(:controller => 'visitors', :action => 'edit', :event_id => @event.id, :id => @visitor.id)
+      end
+    end
+
+    context 'when the signed in person is not an unverified Host' do
+      before(:each) do
+        Person.stub(:find).and_return(Factory.create(:person, :role => 'administrator', :ldap_id => 'administrator'))
+        CASClient::Frameworks::Rails::Filter.fake('administrator')
+      end
+
+      it 'does not redirect when indexing rankings' do
+        get :index, :visitor_id => @visitor.id, :event_id => @event.id
+        response.should render_template('index')
+      end
+
+      it 'does not redirect when adding rankings' do
+        get :add, :visitor_id => @visitor.id, :event_id => @event.id
+        response.should render_template('add')
+      end
+
+      it 'does not redirect when editing rankings' do
+        get :edit_all, :visitor_id => @visitor.id, :event_id => @event.id
+        response.should redirect_to(:action => 'add', :visitor_id => @visitor.id, :event_id => @event.id)
+      end
+
+      it 'does not redirect when updating rankings' do
+        @visitor.stub(:update_attributes).and_return(false)
+        put :update_all, :visitor_id => @visitor.id, :event_id => @event.id
+        response.should render_template('edit_all')
+      end
+    end
   end
 
   describe 'GET index' do
     it 'assigns to @event the given Event' do
-      Event.stub(:find).and_return(@event)
       get :index, :visitor_id => @visitor.id, :event_id => @event.id
       assigns[:event].should == @event
     end
@@ -29,7 +95,6 @@ describe VisitorRankingsController do
 
   describe 'GET add' do
     it 'assigns to @event the given Event' do
-      Event.stub(:find).and_return(@event)
       get :add, :visitor_id => @visitor.id, :event_id => @event.id
       assigns[:event].should == @event
     end
@@ -55,7 +120,6 @@ describe VisitorRankingsController do
 
   describe 'GET edit_all' do
     it 'assigns to @event the given Event' do
-      Event.stub(:find).and_return(@event)
       get :edit_all, :visitor_id => @visitor.id, :event_id => @event.id
       assigns[:event].should == @event
     end
@@ -96,7 +160,7 @@ describe VisitorRankingsController do
       end
 
       it 'finds the given Hosts' do
-        Host.should_receive(:find).with(['1', '2', '3']).and_return(@hosts)
+        @event.hosts.should_receive(:find).with(['1', '2', '3']).and_return(@hosts)
         get :edit_all, :visitor_id => @visitor.id, :event_id => @event.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
       end
 
@@ -155,7 +219,6 @@ describe VisitorRankingsController do
       end
 
       it 'assigns to @event the given Event' do
-        Event.stub(:find).and_return(@event)
         put :update_all, :visitor_id => @visitor.id, :event_id => @event.id, :visitor => {'foo' => 'bar'}
         assigns[:event].should == @event
       end

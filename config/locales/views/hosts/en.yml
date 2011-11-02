@@ -11,7 +11,10 @@ en:
       title: "Edit Host (%{name})"
       short_title: "Edit Info"
       errors: "Errors"
+      profile: "Profile"
+      event_preferences: "Event Preferences"
       submit: "Update Host"
+      alt_submit: "Update My Info"
     delete:
       title: "Remove Host (%{name})"
       short_title: "Remove Host"

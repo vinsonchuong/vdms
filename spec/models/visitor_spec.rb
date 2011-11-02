@@ -5,6 +5,14 @@ describe Visitor do
     @visitor = Factory.create(:visitor)
   end
 
+  describe 'Attributes' do
+    it 'has a Verified flag (verified)' do
+      @visitor.should respond_to(:verified)
+      @visitor.should respond_to(:verified?)
+      @visitor.should respond_to(:verified=)
+    end
+  end
+
   describe 'Named Scopes' do
     it "is sorted by its Person's Name" do
       @visitor.person.update_attributes(:name => 'Aaa')
@@ -38,6 +46,25 @@ describe Visitor do
   end
 
   describe 'Nested Attributes' do
+    describe 'Person (person)' do
+      before(:each) do
+        @person = @visitor.person
+      end
+
+      it 'allows nested attributes for Person (person)' do
+        @visitor.update_attributes(:person_attributes => {
+            :id => @person.id,
+            :name => 'New Name'
+        })
+        @person.reload.name.should == 'New Name'
+      end
+
+      it 'only allows updates' do
+        @visitor.update_attributes(:person_attributes => Factory.attributes_for(:person))
+        @visitor.reload.person.should == @person
+      end
+    end
+
     describe 'Rankings (rankings)' do
       before(:each) do
         @host1 = Factory.create(:host)
@@ -91,7 +118,11 @@ describe Visitor do
 
   context 'when building' do
     before(:each) do
-      @visitor = Host.new
+      @visitor = Visitor.new
+    end
+
+    it 'is not Verified' do
+      @visitor.should_not be_verified
     end
 
     it 'has no Default Room (None)' do
