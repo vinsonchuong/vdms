@@ -35,8 +35,7 @@ Feature: Administrators can manage visitors
       | name  |
       | User1 |
       | User2 |
-    And I am registered as an "Administrator"
-    And I am signed in
+    And I am signed in as an "Administrator"
 
   Scenario: I view a list of visitors
     Given I am on the view event page
@@ -93,7 +92,7 @@ Feature: Administrators can manage visitors
     And I press "Rank Hosts"
     Then I should see "User1"
 
-  Scenario: I update an admit's faculty rankings
+  Scenario: I update a visitor's host rankings
     Given the following hosts have been added to the event:
       | name  |
       | User3 |

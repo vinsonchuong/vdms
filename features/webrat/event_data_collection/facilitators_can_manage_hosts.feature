@@ -1,10 +1,10 @@
-Feature: Administrators can manage hosts
+Feature: Facilitators can manage hosts
 
   To ensure that the hosts' information and preferences are correct
-  As an administrator
+  As a facilitator
   I want to manage hosts
 
-  Background: I am signed in as an administrator
+  Background: I am signed in as a facilitator
     Given the following people have been added:
       | ldap_id | role          | name           | email            | area_1 | area_2 | area_3 | division |
       | ID1     | administrator | Administrator1 | email1@email.com |        |        |        |          |
@@ -35,8 +35,7 @@ Feature: Administrators can manage hosts
       | name  |
       | User1 |
       | User2 |
-    And I am registered as an "Administrator"
-    And I am signed in
+    And I am signed in as a "Facilitator"
 
   Scenario: I view a list of hosts
     Given I am on the view event page
@@ -44,23 +43,6 @@ Feature: Administrators can manage hosts
     Then I should be on the view hosts page
     And I should see "User1"
     And I should see "User2"
-
-  Scenario Outline: I add a host
-    Given I am on the view hosts page
-    When I follow "Add Host"
-    And I select "<name>" from "Person"
-    And I fill in "Default Room" with "<default_room>"
-    And I select "<max_visitors_per_meeting>" from "Max Visitors per Meeting"
-    And I select "<max_visitors>" from "Max Total Visitors"
-    And I press "Add Host"
-    And I should see "<result>" 
-
-    Scenarios: with valid information
-      | name  | default_room | max_visitors_per_meeting | max_visitors | result                       |
-      | User3 | 465 Soda     | 3                        | 10           | Host was successfully added. |
-      | User4 | 310 Soda     | 2                        | 20           | Host was successfully added. |
-
-  Scenario: I add hosts by importing a CSV with valid data
 
   Scenario: I see the host's name while updating his information
     Given I want to manage the host named "User1"
@@ -142,17 +124,3 @@ Feature: Administrators can manage hosts
     And I press "Update Rankings"
     Then I should see "Host was successfully updated."
     And I should not see "User3"
-
-  Scenario: I see the hosts's name while removing him
-    Given I want to manage the host named "User1"
-    And I am on the view hosts page
-    When I follow "Remove" for the host named "User1"
-    Then I should see "User1"
-
-  Scenario: I remove a host
-    Given I want to manage the host named "User1"
-    And I am on the view hosts page
-    When I follow "Remove" for the host named "User1"
-    And I press "Remove Host"
-    Then I should see "Host was successfully removed."
-    And I should not see "User1"

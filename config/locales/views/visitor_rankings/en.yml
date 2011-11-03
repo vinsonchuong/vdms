@@ -8,6 +8,7 @@ en:
     edit_all:
       title: "Update Visitor's (%{name}) Rankings"
       short_title: "Update Rankings"
+      alt_title: "Update My Rankings"
       errors: "Errors"
       rankings: "Rankings"
       add: "Add Hosts to Rankings"

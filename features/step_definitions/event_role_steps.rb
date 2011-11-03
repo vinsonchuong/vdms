@@ -19,6 +19,20 @@ Given /^the (host|visitor) is unverified$/ do |role|
   instance_variable_get("@#{role}").update_attribute(:verified, false)
 end
 
+Given /^the (host|visitor) named "([^"]*)" has the following rankings:$/ do |role, name, rankings|
+  role = @event.send(role.tableize).find_by_person_id(Person.find_by_name(name))
+  rankings.hashes.each do |ranking|
+    ranking['rankable'] = @event.send(role.class == Host ? 'visitors' : 'hosts')
+                          .find_by_person_id(Person.find_by_name(ranking['name']).id)
+    ranking.delete('name')
+    role.rankings.create(ranking)
+  end
+end
+
+Given /I have the following rankings:/ do |rankings|
+  Given %Q|the #{@host.nil? ? 'visitor' : 'host'} named "My Name" has the following rankings:|, rankings
+end
+
 When /^(?:|I )follow "([^"]*)" for the (?:host|visitor) named "([^"]*)"$/ do |link, name|
   When %Q|I follow "#{link}" within "//*[.='#{name}']/.."|
 end
@@ -59,17 +73,8 @@ When /^I select "([^"]*)" time slots? for the visitor named "([^"]*)"$/ do |num_
   end
 end
 
-When /^I flag the visitor named "([^"]*)" for removal$/ do |name|
+When /^I flag the (?:host|visitor) named "([^"]*)" for removal$/ do |name|
   within %Q|//*[.='#{name}']/..//input[substring(@id, string-length(@id) - 6) = 'destroy']/..| do
     check /.*?/
-  end
-end
-
-Given /^the host named "([^"]*)" has the following rankings:$/ do |name, rankings|
-  host = @event.hosts.find_by_person_id(Person.find_by_name(name))
-  rankings.hashes.each do |ranking|
-    ranking['rankable'] = @event.visitors.find_by_person_id(Person.find_by_name(ranking['name']))
-    ranking.delete('name')
-    host.rankings.create(ranking)
   end
 end

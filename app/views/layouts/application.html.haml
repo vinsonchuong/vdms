@@ -52,10 +52,18 @@
                 %li!= link_to t('meetings.master.title'), event_meetings_path(@event)
                 %li!= link_to 'Meeting Statistics', statistics_event_meetings_path(@event)
                 %li.dangerous!= link_to t('meetings.create_all.title'), create_all_event_meetings_path(@event), :confirm => t('meetings.create_all.warning')
-              - unless @current_role.nil? || @current_role.class == Visitor
-                %li!= link_to t('host_availabilities.edit_all.alt_title'), edit_all_event_host_availabilities_path(@event, @current_role)
-                %li!= link_to t('host_rankings.edit_all.alt_title'), edit_all_event_host_rankings_path(@event, @current_role)
-                %li!= link_to t('faculty.view_schedule.alt_title'), event_host_meetings_path(@event, @current_role)
+              - elsif @current_user.role == 'facilitator'
+                %li!= link_to t('hosts.index.title'), event_hosts_path(@event)
+                %li!= link_to t('visitors.index.title'), event_visitors_path(@event)
+              - unless @current_role.nil?
+                - if @current_role.class == Host
+                  %li!= link_to t('host_availabilities.edit_all.alt_title'), edit_all_event_host_availabilities_path(@event, @current_role)
+                  %li!= link_to t('host_rankings.edit_all.alt_title'), edit_all_event_host_rankings_path(@event, @current_role)
+                  %li!= link_to t('faculty.view_schedule.alt_title'), event_host_meetings_path(@event, @current_role)
+                - else
+                  %li!= link_to t('visitor_availabilities.edit_all.alt_title'), edit_all_event_visitor_availabilities_path(@event, @current_role)
+                  %li!= link_to t('visitor_rankings.edit_all.alt_title'), edit_all_event_visitor_rankings_path(@event, @current_role)
+                  %li!= link_to t('admits.view_schedule.alt_title'), event_visitor_meetings_path(@event, @current_role)
     #footer
       %p By Vinson Chuong, Benson Ma, and Jacky Wu, alumni of Prof. Armando Fox's Software Engineering course at UC Berkeley.
       %p Visual design by Amber Feng.

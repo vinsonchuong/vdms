@@ -20,13 +20,10 @@ en:
       success: "Event was successfully removed."
   rankings:
     edit_all:
-      disabled: "The Staff have disabled making further changes."
+      disabled: "The administrators have disabled making further changes."
   availabilities:
     edit_all:
-      disabled: "The Staff have disabled making further changes."
-  settings:
-    update:
-      success: "Settings were successfully updated."
+      disabled: "The administrators have disabled making further changes."
   hosts:
     create:
       success: "Host was successfully added."

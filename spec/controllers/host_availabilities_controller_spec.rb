@@ -95,9 +95,23 @@ describe HostAvailabilitiesController do
         @host.stub(:update_attributes).and_return(true)
       end
 
-      it 'sets a flash[:notice] message' do
-        put :update_all, :host_id => @host.id, :host => {'foo' => 'bar'}, :event_id => @event.id
-        flash[:notice].should == I18n.t('hosts.update.success')
+      context 'when the Host is signed in' do
+        it 'sets a flash[:notice] message' do
+          put :update_all, :host_id => @host.id, :host => {'foo' => 'bar'}, :event_id => @event.id
+          flash[:notice].should == I18n.t('hosts.update.alt_success')
+        end
+      end
+
+      context 'when someone other than the Host is signed in' do
+        before(:each) do
+          @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
+          CASClient::Frameworks::Rails::Filter.fake('admin')
+        end
+
+        it 'sets a flash[:notice] message' do
+          put :update_all, :host_id => @host.id, :host => {'foo' => 'bar'}, :event_id => @event.id
+          flash[:notice].should == I18n.t('hosts.update.success')
+        end
       end
 
       it 'redirects to the Edit All Availabilities Page' do

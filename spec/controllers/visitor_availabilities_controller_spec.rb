@@ -94,9 +94,23 @@ describe VisitorAvailabilitiesController do
         @visitor.stub(:update_attributes).and_return(true)
       end
 
-      it 'sets a flash[:notice] message' do
-        put :update_all, :visitor_id => @visitor.id, :event_id => @event.id, :visitor => {'foo' => 'bar'}
-        flash[:notice].should == I18n.t('visitors.update.success')
+      context 'when the Visitor is signed in' do
+        before(:each) do
+          @visitor.person.update_attribute(:ldap_id, 'visitor')
+          CASClient::Frameworks::Rails::Filter.fake('visitor')
+        end
+
+        it 'sets a flash[:notice] message' do
+          put :update_all, :visitor_id => @visitor.id, :event_id => @event.id, :visitor => {'foo' => 'bar'}
+          flash[:notice].should == I18n.t('visitors.update.alt_success')
+        end
+      end
+
+      context 'when someone other than the Visitor is signed in' do
+        it 'sets a flash[:notice] message' do
+          put :update_all, :visitor_id => @visitor.id, :event_id => @event.id, :visitor => {'foo' => 'bar'}
+          flash[:notice].should == I18n.t('visitors.update.success')
+        end
       end
 
       it 'redirects to the Edit All Availabilities Page' do

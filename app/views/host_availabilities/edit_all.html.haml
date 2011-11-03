@@ -28,4 +28,4 @@
             %td!= "#{availability.time_slot.begin.strftime('%m/%d/%y - %I:%M%p')} to #{availability.time_slot.end.strftime('%I:%M%p')}"
             %td!= availability_fields.check_box :available
             %td!= availability_fields.text_field :room
-    != schedulable_form.submit t('.submit'), :disabled => (@event.disable_hosts && @current_user == @host.person)
+    != schedulable_form.submit t('.submit'), :disabled => (@event.disable_hosts && !@current_role.nil? && @current_role.class == Host)
