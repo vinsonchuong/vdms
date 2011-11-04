@@ -32,7 +32,8 @@ group :test do
 end
 
 group :cucumber, :development, :test do
-  gem 'sqlite3'
+  gem 'sqlite3', :platforms => [:mswin, :mingw]
+  gem 'sqlite3-ruby', '1.2.5', :require => 'sqlite3', :platforms => [:ruby]
 end
 
 group :cucumber, :test do
