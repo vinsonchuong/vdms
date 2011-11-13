@@ -1,0 +1,4 @@
+- content_for :title, t('.title', :name => @event.name)
+%p!= t('.description', :name => @event.name)
+- form_tag create_from_current_user_event_hosts_url do
+  != submit_tag t('.submit')

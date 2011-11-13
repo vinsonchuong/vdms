@@ -83,7 +83,6 @@ describe VisitorsController do
 
   describe 'GET index' do
     it 'assigns to @event the given Event' do
-      Event.stub(:find).and_return(@event)
       get :index, :event_id => @event.id
       assigns[:event].should == @event
     end
@@ -103,7 +102,6 @@ describe VisitorsController do
 
   describe 'GET show' do
     it 'assigns to @event the given Event' do
-      Event.stub(:find).and_return(@event)
       get :show, :event_id => @event.id, :id => @visitor.id
       assigns[:event].should == @event
     end
@@ -129,7 +127,6 @@ describe VisitorsController do
     end
 
     it 'assigns to @event the given Event' do
-      Event.stub(:find).and_return(@event)
       get :new, :event_id => @event.id
       assigns[:event].should == @event
     end
@@ -150,7 +147,6 @@ describe VisitorsController do
 
   describe 'GET edit' do
     it 'assigns to @event the given Event' do
-      Event.stub(:find).and_return(@event)
       get :edit, :event_id => @event.id, :id => @visitor.id
       assigns[:event].should == @event
     end
@@ -181,7 +177,6 @@ describe VisitorsController do
 
   describe 'GET delete' do
     it 'assigns to @event the given Event' do
-      Event.stub(:find).and_return(@event)
       get :delete, :event_id => @event.id, :id => @visitor.id
       assigns[:event].should == @event
     end
@@ -243,7 +238,6 @@ describe VisitorsController do
       end
 
       it 'assigns to @event the given Event' do
-        Event.stub(:find).and_return(@event)
         post :create, :visitor => {'foo' => 'bar'}, :event_id => @event.id
         assigns[:event].should == @event
       end
@@ -342,7 +336,6 @@ describe VisitorsController do
       end
 
       it 'assigns to @event the given Event' do
-        Event.stub(:find).and_return(@event)
         put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
         assigns[:event].should == @event
       end

@@ -20,6 +20,11 @@ class RolesController < EventBaseController
     @role = get_role
   end
 
+  # GET /events/1/hosts/join
+  # GET /events/1/visitors/join
+  def join
+  end
+
   # GET /events/1/hosts/1/edit
   # GET /events/1/visitors/1/edit
   def edit
@@ -46,6 +51,13 @@ class RolesController < EventBaseController
     end
   end
 
+  # POST /events/1/hosts/create_from_current_user
+  # POST /events/1/visitors/create_from_current_user
+  def create_from_current_user
+    @role = create_role(:person => @current_user)
+    redirect_to event_url(@event)
+  end
+
   # PUT /events/1/hosts/1
   # PUT /events/1/visitors/1
   def update
@@ -53,7 +65,11 @@ class RolesController < EventBaseController
     was_verified = @role.verified?
     if @role.update_attributes(get_attributes.merge(:verified => @role == @current_role))
       flash[:notice] = t(@current_role == @role ? 'update.alt_success' : 'update.success', :scope => get_i18n_scope)
-      redirect_to @current_role == @role && !was_verified ? session[:after_verify_url] : {:action => 'index'}
+      redirect_to @current_role == @role ?
+                    was_verified ?
+                      event_path(@event) :
+                      session[:after_verify_url] :
+                    {:action => 'index'}
     else
       render :action => 'edit'
     end

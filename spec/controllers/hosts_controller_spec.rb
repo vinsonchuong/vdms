@@ -83,7 +83,6 @@ describe HostsController do
 
   describe 'GET index' do
     it 'assigns to @event the given Event' do
-      Event.stub(:find).and_return(@event)
       get :index, :event_id => @event.id
       assigns[:event].should == @event
     end
@@ -103,7 +102,6 @@ describe HostsController do
 
   describe 'GET show' do
     it 'assigns to @event the given Event' do
-      Event.stub(:find).and_return(@event)
       get :show, :event_id => @event.id, :id => @host.id
       assigns[:event].should == @event
     end
@@ -129,7 +127,6 @@ describe HostsController do
     end
 
     it 'assigns to @event the given Event' do
-      Event.stub(:find).and_return(@event)
       get :new, :event_id => @event.id
       assigns[:event].should == @event
     end
@@ -148,9 +145,20 @@ describe HostsController do
     end
   end
 
+  describe 'GET join' do
+    it 'assigns to @event the given Event' do
+      get :join, :event_id => @event.id
+      assigns[:event].should == @event
+    end
+
+    it 'renders the join template' do
+      get :join, :event_id => @event.id
+      response.should render_template('join')
+    end
+  end
+
   describe 'GET edit' do
     it 'assigns to @event the given Event' do
-      Event.stub(:find).and_return(@event)
       get :edit, :event_id => @event.id, :id => @host.id
       assigns[:event].should == @event
     end
@@ -181,7 +189,6 @@ describe HostsController do
 
   describe 'GET delete' do
     it 'assigns to @event the given Event' do
-      Event.stub(:find).and_return(@event)
       get :delete, :event_id => @event.id, :id => @host.id
       assigns[:event].should == @event
     end
@@ -243,7 +250,6 @@ describe HostsController do
       end
 
       it 'assigns to @event the given Event' do
-        Event.stub(:find).and_return(@event)
         post :create, :host => {'foo' => 'bar'}, :event_id => @event.id
         assigns[:event].should == @event
       end
@@ -252,6 +258,36 @@ describe HostsController do
         post :create, :host => {'foo' => 'bar'}, :event_id => @event.id
         response.should render_template('new')
       end
+    end
+  end
+
+  describe 'POST create_from_current_user' do
+    context 'when signed in as a User who has not joined the Event' do
+      before(:each) do
+        @user = Factory.create(:person, :ldap_id => 'user', :role => 'user')
+        Person.stub(:find).and_return(@user)
+        CASClient::Frameworks::Rails::Filter.fake('user')
+      end
+
+      it 'adds the User as a Host of the Event' do
+        @event.hosts.should_receive(:create).with(:person => @user)
+        post :create_from_current_user, :event_id => @event.id
+      end
+
+      it 'redirects to the view event page' do
+        post :create_from_current_user, :event_id => @event.id
+        response.should redirect_to event_url(@event)
+      end
+    end
+
+    context 'when signed in as a User who has already joined the Event' do
+      before(:each) do
+        @host.person.ldap_id = 'host'
+        Person.stub(:find).and_return(@host.person)
+        CASClient::Frameworks::Rails::Filter.fake('host')
+      end
+
+      it 'alerts the user that he has already joined the event'
     end
   end
 
@@ -283,7 +319,6 @@ describe HostsController do
         put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
       end
     end
-
 
     context 'when the Host is successfully updated' do
       before(:each) do
@@ -342,7 +377,6 @@ describe HostsController do
       end
 
       it 'assigns to @event the given Event' do
-        Event.stub(:find).and_return(@event)
         put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
         assigns[:event].should == @event
       end

@@ -2,12 +2,18 @@ class HostsController < RolesController
 
   private
 
-  def get_role
-    unless params[:id].nil?
+  def get_role(attributes = {})
+    if !params[:id].nil?
       @event.hosts.find(params[:id])
+    elsif !params[:host].nil?
+      @event.hosts.build(params[:host].merge!(attributes))
     else
-      @event.hosts.build(params[:host])
+      @event.hosts.build(attributes)
     end
+  end
+
+  def create_role(attributes = {})
+    @event.hosts.create(attributes)
   end
 
   def get_roles

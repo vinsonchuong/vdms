@@ -7,6 +7,11 @@ en:
       title: "Add Visitor"
       errors: "Errors"
       submit: "Add Visitor"
+    join:
+      title: "Join Event (%{name}) as a Visitor"
+      short_title: "Join Event as Visitor"
+      description: "Are you sure you want to be a visitor for %{name}?"
+      submit: "Join Event"
     edit:
       title: "Edit Visitor (%{name})"
       short_title: "Edit Info"

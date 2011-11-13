@@ -11,6 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   ) do |event|
     event.resources(
       :hosts,
+      :collection => {:join => :get, :create_from_current_user => :post},
       :member => {:delete => :get}
     ) do |host|
       host.resources(
@@ -34,6 +35,7 @@ ActionController::Routing::Routes.draw do |map|
 
     event.resources(
       :visitors,
+      :collection => {:join => :get, :create_from_current_user => :post},
       :member => {:delete => :get}
     ) do |visitor|
       visitor.resources(

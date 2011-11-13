@@ -7,6 +7,11 @@ en:
       title: "Add Host"
       errors: "Errors"
       submit: "Add Host"
+    join:
+      title: "Join Event (%{name}) as a Host"
+      short_title: "Join Event as Host"
+      description: "Are you sure you want to be a host for %{name}?"
+      submit: "Join Event"
     edit:
       title: "Edit Host (%{name})"
       short_title: "Edit Info"

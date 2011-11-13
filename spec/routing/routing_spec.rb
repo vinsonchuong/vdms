@@ -145,6 +145,12 @@ describe 'Routes' do
         it 'routes POST /events/1/hosts to Hosts#create' do
           {:post => '/events/1/hosts'}.should route_to(:controller => 'hosts', :action => 'create', :event_id => '1')
         end
+        it 'routes GET /events/1/hosts/join to Hosts#join' do
+          {:get => '/events/1/hosts/join'}.should route_to(:controller => 'hosts', :action => 'join', :event_id => '1')
+        end
+        it 'routes POST /events/1/hosts/create_from_current_user to Hosts#create_from_current_user' do
+          {:post => '/events/1/hosts/create_from_current_user'}.should route_to(:controller => 'hosts', :action => 'create_from_current_user', :event_id => '1')
+        end
       end
       context 'when editing' do
         it 'routes GET /events/1/hosts/edit to Hosts#edit' do
@@ -210,6 +216,12 @@ describe 'Routes' do
         end
         it 'routes POST /events/1/visitors to Hosts#create' do
           {:post => '/events/1/visitors'}.should route_to(:controller => 'visitors', :action => 'create', :event_id => '1')
+        end
+        it 'routes GET /events/1/visitors/join to Visitors#join' do
+          {:get => '/events/1/visitors/join'}.should route_to(:controller => 'visitors', :action => 'join', :event_id => '1')
+        end
+        it 'routes POST /events/1/visitors/create_from_current_user to Visitors#create_from_current_user' do
+          {:post => '/events/1/visitors/create_from_current_user'}.should route_to(:controller => 'visitors', :action => 'create_from_current_user', :event_id => '1')
         end
       end
       context 'when editing' do
