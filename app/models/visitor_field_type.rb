@@ -1,0 +1,3 @@
+class VisitorFieldType < FieldType
+
+end

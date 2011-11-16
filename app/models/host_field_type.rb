@@ -1,0 +1,3 @@
+class HostFieldType < FieldType
+
+end
