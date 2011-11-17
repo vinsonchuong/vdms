@@ -3,6 +3,8 @@ class Event < ActiveRecord::Base
   has_many :roles
   has_many :hosts, :dependent => :destroy
   has_many :visitors, :dependent => :destroy
+  has_many :host_field_types, :dependent => :destroy
+  has_many :visitor_field_types, :dependent => :destroy
 
   validates_presence_of :name
   validates_presence_of :meeting_length

@@ -5,6 +5,7 @@ class Host < Role
     end
   end
 
+  has_many :fields, :class_name => 'HostField', :foreign_key => 'role_id', :dependent => :destroy
   has_many :rankings, :class_name => 'HostRanking', :foreign_key => 'ranker_id', :dependent => :destroy
   has_many :ranked_visitors, :source => :rankable, :through => :rankings
   has_many :ranked_one_on_one_visitors, :source => :rankable, :through => :rankings, :conditions => ['rankings.one_on_one = ?', true]
@@ -12,6 +13,8 @@ class Host < Role
   has_many :visitor_rankings, :foreign_key => 'rankable_id', :dependent => :destroy
   has_many :availabilities, :class_name => 'HostAvailability', :foreign_key => 'schedulable_id', :dependent => :destroy
   has_many :meetings, :through => :availabilities
+
+  accepts_nested_attributes_for :fields #, :reject_if => proc {|a| a['fields'] == blah blah}
   accepts_nested_attributes_for :availabilities, :reject_if => :all_blank
   accepts_nested_attributes_for :rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
 

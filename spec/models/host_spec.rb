@@ -47,6 +47,10 @@ describe Host do
       @host.should belong_to(:person)
     end
 
+    it 'has many HostFields (field)' do
+      @host.should have_many(:fields)
+    end
+
     it 'has many HostRankings (rankings)' do
       @host.should have_many(:rankings)
     end
@@ -78,6 +82,23 @@ describe Host do
         @host.update_attributes(:person_attributes => Factory.attributes_for(:person))
         @host.reload.person.should == @person
       end
+    end
+
+    describe 'Fields' do
+      before(:each) do
+        @field_type1 = Factory.create(:host_field_type)
+        @field_type2 = Factory.create(:host_field_type)
+      end
+
+      it 'allows nested attributes for Fields' do
+        @host.update_attribute(:fields_attributes, [
+          {:field_type => @field_type1, :data => 'Data1'},
+          {:field_type => @field_type1, :data => 'Data2'}
+        ])
+        @host.fields.map(&:data).should == ['Data1', 'Data2']
+      end
+
+      it 'does not allow the creation of new Fields'
     end
 
     describe 'Rankings (rankings)' do
@@ -154,6 +175,10 @@ describe Host do
   end
 
   context 'when validating' do
+    it 'is valid with valid attributes' do
+      @host.should be_valid
+    end
+
     it 'is not valid without a Default Room' do
       @host.default_room = ''
       @host.should_not be_valid

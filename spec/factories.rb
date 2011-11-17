@@ -17,6 +17,20 @@ Factory.define :time_slot do |t|
   t.association :event
 end
 
+Factory.define :host_field_type do |f|
+  f.sequence(:name) {|n| "Field#{n}"}
+  f.description 'Description'
+  f.data_type 'text'
+  f.association :event
+end
+
+Factory.define :visitor_field_type do |f|
+  f.sequence(:name) {|n| "Field#{n}"}
+  f.description 'Description'
+  f.data_type 'text'
+  f.association :event
+end
+
 Factory.define :host do |h|
   h.association :person
   h.association :event
@@ -27,6 +41,18 @@ Factory.define :visitor do |v|
   v.association :person
   v.association :event
   v.verified true
+end
+
+Factory.define :host_field do |f|
+  f.data 'Data'
+  f.association :role, :factory => :host
+  f.association :field_type, :factory => :host_field_type
+end
+
+Factory.define :visitor_field do |f|
+  f.data 'Data'
+  f.association :role, :factory => :visitor
+  f.association :field_type, :factory => :visitor_field_type
 end
 
 Factory.define :host_ranking do |r|

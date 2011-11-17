@@ -6,12 +6,15 @@ class Visitor < Role
     end
   end
 
+  has_many :fields, :class_name => 'VisitorField', :foreign_key => 'role_id', :dependent => :destroy
   has_many :rankings, :class_name => 'VisitorRanking', :foreign_key => 'ranker_id', :dependent => :destroy
   has_many :ranked_hosts, :source => :rankable, :through => :rankings
   has_many :host_rankings, :foreign_key => 'rankable_id', :dependent => :destroy
   accepts_nested_attributes_for :rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
   has_many :availabilities, :class_name => 'VisitorAvailability', :foreign_key => 'schedulable_id', :dependent => :destroy
   has_many :meetings, :through => :availabilities
+
+  accepts_nested_attributes_for :fields #, :reject_if => proc {|a| a['fields'] == blah blah}
   accepts_nested_attributes_for :availabilities, :reject_if => :all_blank, :allow_destroy => true
 
   validate do |record| # uniqueness of ranks in faculty_rankings

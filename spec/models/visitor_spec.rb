@@ -32,6 +32,10 @@ describe Visitor do
       @visitor.should belong_to(:person)
     end
 
+    it 'has many VisitorFields (fields)' do
+      @visitor.should have_many(:fields)
+    end
+
     it 'has many VisitorRankings (rankings)' do
       @visitor.should have_many(:rankings)
     end
@@ -49,6 +53,23 @@ describe Visitor do
     describe 'Person (person)' do
       before(:each) do
         @person = @visitor.person
+      end
+
+      describe 'Fields' do
+        before(:each) do
+          @field_type1 = Factory.create(:visitor_field_type)
+          @field_type2 = Factory.create(:visitor_field_type)
+        end
+
+        it 'allows nested attributes for Fields' do
+          @visitor.update_attribute(:fields_attributes, [
+              {:field_type => @field_type1, :data => 'Data1'},
+              {:field_type => @field_type1, :data => 'Data2'}
+          ])
+          @visitor.fields.map(&:data).should == ['Data1', 'Data2']
+        end
+
+        it 'does not allow the creation of new Fields'
       end
 
       it 'allows nested attributes for Person (person)' do
@@ -139,6 +160,10 @@ describe Visitor do
   end
 
   context 'when validating' do
+    it 'is valid with valid attributes' do
+      @visitor.should be_valid
+    end
+
     it 'is not valid with non-unique Ranking ranks' do
       rankings = [
           VisitorRanking.new(:rank => 1, :rankable => Factory.create(:host)),

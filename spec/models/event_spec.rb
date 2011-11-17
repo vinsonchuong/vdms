@@ -63,6 +63,14 @@ describe Event do
     it 'has many Visitors (visitors)' do
       @event.should have_many(:visitors)
     end
+
+    it 'has many HostFieldTypes (host_field_types)' do
+      @event.should have_many(:host_field_types)
+    end
+
+    it 'has many VisitorFieldTypes (visitor_field_types)' do
+      @event.should have_many(:visitor_field_types)
+    end
   end
 
   describe 'Nested Attributes' do
@@ -361,6 +369,26 @@ describe Event do
         visitor
       end
       @event.stub(:visitors).and_return(visitors)
+      @event.destroy
+    end
+
+    it 'destroys its HostFieldTypes' do
+      host_field_types = Array.new(3) do
+        host_field_types = mock_model(HostFieldType)
+        host_field_types.should_receive(:destroy)
+        host_field_types
+      end
+      @event.stub(:host_field_types).and_return(host_field_types)
+      @event.destroy
+    end
+
+    it 'destroys its VisitorFieldTypes' do
+      visitor_field_types = Array.new(3) do
+        visitor_field_types = mock_model(VisitorFieldType)
+        visitor_field_types.should_receive(:destroy)
+        visitor_field_types
+      end
+      @event.stub(:visitor_field_types).and_return(visitor_field_types)
       @event.destroy
     end
   end
