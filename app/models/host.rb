@@ -1,10 +1,4 @@
 class Host < Role
-  after_create do |record|
-    record.event.time_slots.each do |time_slot|
-      record.availabilities.create(:time_slot => time_slot, :available => false)
-    end
-  end
-
   has_many :fields, :class_name => 'HostField', :foreign_key => 'role_id', :dependent => :destroy
   has_many :rankings, :class_name => 'HostRanking', :foreign_key => 'ranker_id', :dependent => :destroy
   has_many :ranked_visitors, :source => :rankable, :through => :rankings
@@ -47,5 +41,11 @@ class Host < Role
 
   def self.attending_faculties
     Host.all.select {|faculty| faculty.time_slots.select {|time_slot| time_slot.available?}.count > 0}
+  end
+
+  private
+
+  def create_availabilities
+    event.time_slots.each {|t| availabilities.create(:time_slot => t, :available => false)}
   end
 end

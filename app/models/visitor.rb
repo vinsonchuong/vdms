@@ -1,11 +1,4 @@
 class Visitor < Role
-  after_create do |record|
-    # validate against duplicates
-    record.event.time_slots.each do |time_slot|
-      record.availabilities.create(:time_slot => time_slot, :available => true)
-    end
-  end
-
   has_many :fields, :class_name => 'VisitorField', :foreign_key => 'role_id', :dependent => :destroy
   has_many :rankings, :class_name => 'VisitorRanking', :foreign_key => 'ranker_id', :dependent => :destroy
   has_many :ranked_hosts, :source => :rankable, :through => :rankings
@@ -50,5 +43,12 @@ class Visitor < Role
   def self.unsatisfied_admits
     # Also sort them by least meetings count first
     Admit.attending_admits.select{ |admit| admit.unsatisfied? }.sort_by{ |admit| admit.meetings.count }
+  end
+
+  private
+
+  def create_availabilities
+    # validate against duplicates
+    event.time_slots.each {|t| availabilities.create(:time_slot => t, :available => true)}
   end
 end

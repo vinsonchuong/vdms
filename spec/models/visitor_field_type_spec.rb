@@ -3,6 +3,7 @@ require 'spec_helper'
 describe VisitorFieldType do
   before(:each) do
     @field_type = Factory.create(:visitor_field_type)
+    @event = @field_type.event
   end
 
   describe 'Attributes' do
@@ -35,6 +36,10 @@ describe VisitorFieldType do
   describe 'Associations' do
     it 'belongs to an Event (event)' do
       @field_type.should belong_to(:event)
+    end
+
+    it 'has many VisitorFields (fields)' do
+      @field_type.should have_many(:fields)
     end
   end
 
@@ -78,6 +83,31 @@ describe VisitorFieldType do
         @field_type = Factory.build(:host_field_type, :data_type => invalid_type)
         @field_type.should_not be_valid
       end
+    end
+  end
+
+  context 'after creating' do
+    it 'creates a corresponding VisitorField for each Visitor' do
+      new_field_type = Factory.build(:visitor_field_type, :event => @event)
+      visitors = Array.new(3) do
+        visitor = @event.visitors.build
+        visitor.fields.should_receive(:create)
+        visitor
+      end
+      @event.stub(:visitors).and_return(visitors)
+      new_field_type.save
+    end
+  end
+
+  context 'when destroying' do
+    it 'destroys its associated VisitorFields' do
+      fields = Array.new(3) do
+        field = mock_model(HostField)
+        field.should_receive(:destroy)
+        field
+      end
+      @field_type.stub(:fields).and_return(fields)
+      @field_type.destroy
     end
   end
 

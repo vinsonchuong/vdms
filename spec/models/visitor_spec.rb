@@ -3,6 +3,8 @@ require 'spec_helper'
 describe Visitor do
   before(:each) do
     @visitor = Factory.create(:visitor)
+    @event = @visitor.event
+    Event.stub(:find).and_return(@event)
   end
 
   describe 'Attributes' do
@@ -157,6 +159,14 @@ describe Visitor do
     it 'has a default Max Visitors of 100' do
       @visitor.max_visitors.should == 100
     end
+
+    it 'has a Field for each VisitorFieldType' do
+      # this code is in the Event model
+      # find a way to avoid having to hit database
+      field_types = Array.new(3) {Factory.create(:visitor_field_type, :event => @event)}
+      new_visitor = @event.visitors.build
+      new_visitor.fields.map(&:field_type).should == field_types
+    end
   end
 
   context 'when validating' do
@@ -187,6 +197,16 @@ describe Visitor do
   end
 
   context 'when destroying' do
+    it 'destroys its Fields' do
+      fields = Array.new(3) do
+        field = mock_model(VisitorField)
+        field.should_receive(:destroy)
+        field
+      end
+      @visitor.stub(:fields).and_return(fields)
+      @visitor.destroy
+    end
+
     it 'destroys its Availabilities' do
       availabilities = Array.new(3) do
         availability = mock_model(Availability)

@@ -1,8 +1,8 @@
 class Event < ActiveRecord::Base
   has_many :time_slots, :autosave => true, :dependent => :destroy
   has_many :roles
-  has_many :hosts, :dependent => :destroy
-  has_many :visitors, :dependent => :destroy
+  has_many :hosts, :after_add => :build_host_fields, :dependent => :destroy
+  has_many :visitors, :after_add => :build_visitor_fields, :dependent => :destroy
   has_many :host_field_types, :dependent => :destroy
   has_many :visitor_field_types, :dependent => :destroy
 
@@ -64,5 +64,14 @@ class Event < ActiveRecord::Base
     (times - current_times).each {|t| time_slots.build(:begin => t.begin, :end => t.end)}
     times_to_remove = current_times - times
     time_slots.each {|t| t.mark_for_destruction if times_to_remove.include?((t.begin)..(t.end))}
+  end
+
+
+  def build_host_fields(host)
+    host_field_types.each {|t| host.fields.build(:field_type => t)}
+  end
+
+  def build_visitor_fields(visitor)
+    visitor_field_types.each {|t| visitor.fields.build(:field_type => t)}
   end
 end

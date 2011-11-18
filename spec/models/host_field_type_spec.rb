@@ -3,6 +3,8 @@ require 'spec_helper'
 describe HostFieldType do
   before(:each) do
     @field_type = Factory.create(:host_field_type)
+    @event = @field_type.event
+    Event.stub(:find).and_return(@event)
   end
 
   describe 'Attributes' do
@@ -35,6 +37,10 @@ describe HostFieldType do
   describe 'Associations' do
     it 'belongs to an Event (event)' do
       @field_type.should belong_to(:event)
+    end
+
+    it 'has many HostFields (fields)' do
+      @field_type.should have_many(:fields)
     end
   end
 
@@ -78,6 +84,31 @@ describe HostFieldType do
         @field_type.data_type = invalid_type
         @field_type.should_not be_valid
       end
+    end
+  end
+
+  context 'after creating' do
+    it 'creates a corresponding HostField for each Host' do
+      new_field_type = Factory.build(:host_field_type, :event => @event)
+      hosts = Array.new(3) do
+        host = @event.hosts.build
+        host.fields.should_receive(:create)
+        host
+      end
+      @event.stub(:hosts).and_return(hosts)
+      new_field_type.save
+    end
+  end
+
+  context 'when destroying' do
+    it 'destroys its associated HostFields' do
+      fields = Array.new(3) do
+        field = mock_model(HostField)
+        field.should_receive(:destroy)
+        field
+      end
+      @field_type.stub(:fields).and_return(fields)
+      @field_type.destroy
     end
   end
 

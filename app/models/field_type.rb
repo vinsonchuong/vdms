@@ -3,8 +3,10 @@ class FieldType < ActiveRecord::Base
     self.options ||= {}
     self.extend self.data_type_module::FieldType unless self.data_type_module.nil?
   end
+  after_create :create_fields
 
   belongs_to :event
+  has_many :fields, :dependent => :destroy
 
   attr_readonly :data_type
   serialize :options, Hash

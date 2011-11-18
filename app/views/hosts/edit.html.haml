@@ -7,9 +7,9 @@
         - @role.errors.full_messages.each do |message|
           %li!= message
   %fieldset
-    - fields_for @role.person do |person_fields|
-      %h3!= t('.profile')
-      %ul
+    %h3!= t('.profile')
+    %ul
+      - fields_for @role.person do |person_fields|
         - unless @current_user.role == 'administrator'
           %li.field
             != person_fields.label :ldap_id
@@ -36,6 +36,13 @@
         %li.field
           != person_fields.label :area_3
           != person_fields.select :area_3, @areas, :include_blank => true
+      - host_form.fields_for :fields do |field_fields|
+        - field = field_fields.object
+        %li.field
+          != field_fields.send(*field.label_params)
+          - unless field.description.blank?
+            %p!= field.description
+          != field_fields.send(*field.form_helper_params)
   %fieldset
     %h3!= t('.event_preferences')
     %ul

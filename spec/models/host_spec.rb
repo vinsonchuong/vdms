@@ -3,6 +3,8 @@ require 'spec_helper'
 describe Host do
   before(:each) do
     @host = Factory.create(:host)
+    @event = @host.event
+    Event.stub(:find).and_return(@event)
   end
 
   describe 'Attributes' do
@@ -172,6 +174,14 @@ describe Host do
     it 'has a default Max Visitors of 100' do
       @host.max_visitors.should == 100
     end
+
+    it 'has a Field for each HostFieldType' do
+      # this code is in the Event model
+      # find a way to avoid having to hit database
+      field_types = Array.new(3) {Factory.create(:host_field_type, :event => @event)}
+      new_host = @event.hosts.build
+      new_host.fields.map(&:field_type).should == field_types
+    end
   end
 
   context 'when validating' do
@@ -221,6 +231,16 @@ describe Host do
   end
 
   context 'when destroying' do
+    it 'destroys its Fields' do
+      fields = Array.new(3) do
+        field = mock_model(HostField)
+        field.should_receive(:destroy)
+        field
+      end
+      @host.stub(:fields).and_return(fields)
+      @host.destroy
+    end
+
     it 'destroys its Availabilities' do
       availabilities = Array.new(3) do
         availability = mock_model(Availability)

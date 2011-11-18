@@ -44,7 +44,6 @@ When /^I add "([^"]*)" to "([^"]*)" to the meeting times$/ do |start, finish|
 end
 
 When /^I remove the "([^"]*)" to "([^"]*)" meeting time$/ do |start, finish|
-  puts @event.meeting_times.inspect
   index = @event.meeting_times.index {|t| t.begin == Time.zone.parse(start) &&
                                           t.end == Time.zone.parse(finish)}
   check "event_meeting_times_attributes_#{index}__destroy"

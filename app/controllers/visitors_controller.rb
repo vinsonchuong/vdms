@@ -21,7 +21,6 @@ class VisitorsController < RolesController
   end
 
   def get_attributes
-    puts params.inspect
     params[:visitor]
   end
 

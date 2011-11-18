@@ -10,6 +10,17 @@ module DataTypes
     end
 
     module Field
+      def label_params
+        [:label, :data, field_type.name]
+      end
+
+      def description
+        field_type.description
+      end
+
+      def form_helper_params
+        [:text_field, :data]
+      end
     end
   end
 end

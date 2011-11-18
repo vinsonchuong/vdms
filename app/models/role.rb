@@ -1,4 +1,6 @@
 class Role < ActiveRecord::Base
+  after_create :create_availabilities # add to spec
+
   belongs_to :person
   belongs_to :event
   accepts_nested_attributes_for :person, :update_only => true
