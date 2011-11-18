@@ -89,6 +89,68 @@ describe 'Routes' do
         {:delete => '/events/1'}.should route_to(:controller => 'events', :action => 'destroy', :id => '1')
       end
     end
+    describe 'HostFieldTypes' do
+      context 'when viewing' do
+        it 'routes GET /events/1/host_field_types to HostFieldTypes#index' do
+          {:get => '/events/1/host_field_types'}.should route_to(:controller => 'host_field_types', :action => 'index', :event_id => '1')
+        end
+      end
+      context 'when adding' do
+        it 'routes GET /events/1/host_field_types/new to HostFieldTypes#new' do
+          {:get => '/events/1/host_field_types/new'}.should route_to(:controller => 'host_field_types', :action => 'new', :event_id => '1')
+        end
+        it 'routes POST /events/1/host_field_types to HostFieldTypes#create' do
+          {:post => '/events/1/host_field_types'}.should route_to(:controller => 'host_field_types', :action => 'create', :event_id => '1')
+        end
+      end
+      context 'when updating' do
+        it 'routes GET /events/1/host_field_types/1/edit to HostFieldTypes#edit' do
+          {:get => '/events/1/host_field_types/1/edit'}.should route_to(:controller => 'host_field_types', :action => 'edit', :id => '1', :event_id => '1')
+        end
+        it 'routes PUT /events/1/host_field_types/1 to HostFieldTypes#update' do
+          {:put => '/events/1/host_field_types/1'}.should route_to(:controller => 'host_field_types', :action => 'update', :id => '1', :event_id => '1')
+        end
+      end
+      context 'when removing' do
+        it 'routes GET /events/1/host_field_types/1/delete to HostFieldTypes#delete' do
+          {:get => '/events/1/host_field_types/1/delete'}.should route_to(:controller => 'host_field_types', :action => 'delete', :id => '1', :event_id => '1')
+        end
+        it 'routes DELETE /events/1/host_field_types/1 to HostFieldTypes#destroy' do
+          {:delete => '/events/1/host_field_types/1'}.should route_to(:controller => 'host_field_types', :action => 'destroy', :id => '1', :event_id => '1')
+        end
+      end
+    end
+    describe 'VisitorFieldTypes' do
+      context 'when viewing' do
+        it 'routes GET /events/1/visitor_field_types to VisitorFieldTypes#index' do
+          {:get => '/events/1/visitor_field_types'}.should route_to(:controller => 'visitor_field_types', :action => 'index', :event_id => '1')
+        end
+      end
+      context 'when adding' do
+        it 'routes GET /events/1/visitor_field_types/new to VisitorFieldTypes#new' do
+          {:get => '/events/1/visitor_field_types/new'}.should route_to(:controller => 'visitor_field_types', :action => 'new', :event_id => '1')
+        end
+        it 'routes POST /events/1/visitor_field_types to VisitorFieldTypes#create' do
+          {:post => '/events/1/visitor_field_types'}.should route_to(:controller => 'visitor_field_types', :action => 'create', :event_id => '1')
+        end
+      end
+      context 'when updating' do
+        it 'routes GET /events/1/visitor_field_types/1/edit to VisitorFieldTypes#edit' do
+          {:get => '/events/1/visitor_field_types/1/edit'}.should route_to(:controller => 'visitor_field_types', :action => 'edit', :id => '1', :event_id => '1')
+        end
+        it 'routes PUT /events/1/visitor_field_types/1 to VisitorFieldTypes#update' do
+          {:put => '/events/1/visitor_field_types/1'}.should route_to(:controller => 'visitor_field_types', :action => 'update', :id => '1', :event_id => '1')
+        end
+      end
+      context 'when removing' do
+        it 'routes GET /events/1/visitor_field_types/1/delete to VisitorFieldTypes#delete' do
+          {:get => '/events/1/visitor_field_types/1/delete'}.should route_to(:controller => 'visitor_field_types', :action => 'delete', :id => '1', :event_id => '1')
+        end
+        it 'routes DELETE /events/1/visitor_field_types/1 to VisitorFieldTypes#destroy' do
+          {:delete => '/events/1/visitor_field_types/1'}.should route_to(:controller => 'visitor_field_types', :action => 'destroy', :id => '1', :event_id => '1')
+        end
+      end
+    end
     describe 'Hosts' do
       describe 'Rankings' do
         context 'when adding' do

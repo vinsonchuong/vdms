@@ -21,6 +21,16 @@ module NavigationHelpers
     when /the edit event page/ then edit_event_path(@event)
     when /the remove event page/ then delete_event_path(@event)
 
+    when /the view host fields page/ then event_host_field_types_path(@event)
+    when /the new host field page/ then new_event_host_field_type_path(@event)
+    when /the edit host field page/ then edit_event_host_field_type_path(@event, @host_field_type)
+    when /the remove host field page/ then delete_event_host_field_type_path(@event, @host_field_type)
+
+    when /the view visitor fields page/ then event_visitor_field_types_path(@event)
+    when /the new visitor field page/ then new_event_visitor_field_type_path(@event)
+    when /the edit visitor field page/ then edit_event_visitor_field_type_path(@event, @visitor_field_type)
+    when /the remove visitor field page/ then delete_event_visitor_field_type_path(@event, @visitor_field_type)
+
     when /the view hosts page/ then event_hosts_path(@event)
     when /the new host page/ then new_event_host_path(@event)
     when /the view host page/ then event_host_path(@event, @host)

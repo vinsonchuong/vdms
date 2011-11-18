@@ -1,0 +1,3 @@
+- content_for :title, t('.title')
+- form_for @field_type, :url => {:action => 'destroy'}, :html => {:method => :delete} do |field_type_form|
+  != field_type_form.submit t('.submit')

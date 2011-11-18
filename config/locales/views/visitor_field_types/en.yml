@@ -1,0 +1,24 @@
+en:
+  visitor_field_types:
+    index:
+      title: "Manage Visitor Fields"
+      actions: "Actions"
+    select_data_type:
+      title: "Select Data Type"
+      data_type: "Data Type"
+      submit: "Add Visitor Field"
+    new:
+      title: "Add Visitor Field"
+      errors: "Errors"
+      basic_info: "Basic Info"
+      options: "Options"
+      submit: "Add Visitor Field"
+    edit:
+      title: "Edit Visitor Field"
+      errors: "Errors"
+      basic_info: "Basic Info"
+      options: "Options"
+      submit: "Update Visitor Field"
+    delete:
+      title: "Remove Visitor Field"
+      submit: "Remove Visitor Field"

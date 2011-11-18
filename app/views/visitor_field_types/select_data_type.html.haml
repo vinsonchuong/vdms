@@ -1,0 +1,9 @@
+- content_for :title, t('.title')
+- form_tag new_event_visitor_field_type_url, :method => :get do
+  %fieldset
+    %ul
+      %li.field.required
+        != label_tag 'data_type', t('.data_type')
+        != select_tag 'data_type', options_for_select(@data_types)
+  != submit_tag t('.submit')
+

@@ -36,34 +36,40 @@
           - else
 
         - unless @event.nil? || @event.new_record?
-          %li
-            != link_to @event.name, event_path(@event)
-            %ul
-              - if @current_user.role == 'administrator'
-                %li!= link_to t('events.edit.title'), edit_event_path(@event)
-                %li
-                  !=link_to t('hosts.index.title'), event_hosts_path(@event)
-                  %ul
-                    !=link_to t('hosts.new.title'), new_event_host_path(@event)
-                %li
-                  !=link_to t('visitors.index.title'), event_visitors_path(@event)
-                  %ul
-                    !=link_to t('visitors.new.title'), new_event_visitor_path(@event)
-                %li!= link_to t('meetings.master.title'), event_meetings_path(@event)
-                %li!= link_to 'Meeting Statistics', statistics_event_meetings_path(@event)
-                %li.dangerous!= link_to t('meetings.create_all.title'), create_all_event_meetings_path(@event), :confirm => t('meetings.create_all.warning')
-              - elsif @current_user.role == 'facilitator'
-                %li!= link_to t('hosts.index.title'), event_hosts_path(@event)
-                %li!= link_to t('visitors.index.title'), event_visitors_path(@event)
-              - unless @current_role.nil?
-                - if @current_role.class == Host
-                  %li!= link_to t('host_availabilities.edit_all.alt_title'), edit_all_event_host_availabilities_path(@event, @current_role)
-                  %li!= link_to t('host_rankings.edit_all.alt_title'), edit_all_event_host_rankings_path(@event, @current_role)
-                  %li!= link_to t('faculty.view_schedule.alt_title'), event_host_meetings_path(@event, @current_role)
-                - else
-                  %li!= link_to t('visitor_availabilities.edit_all.alt_title'), edit_all_event_visitor_availabilities_path(@event, @current_role)
-                  %li!= link_to t('visitor_rankings.edit_all.alt_title'), edit_all_event_visitor_rankings_path(@event, @current_role)
-                  %li!= link_to t('admits.view_schedule.alt_title'), event_visitor_meetings_path(@event, @current_role)
+          %li!= link_to @event.name, event_path(@event)
+          - if @current_user.role == 'administrator'
+            %li!= link_to t('events.edit.title'), edit_event_path(@event)
+            %li
+              != link_to t('host_field_types.index.title'), event_host_field_types_path(@event)
+              %ul
+                %li!= link_to t('host_field_types.new.title'), new_event_host_field_type_path(@event)
+            %li
+              != link_to t('visitor_field_types.index.title'), event_visitor_field_types_path(@event)
+              %ul
+                %li!= link_to t('visitor_field_types.new.title'), new_event_visitor_field_type_path(@event)
+            %li
+              != link_to t('hosts.index.title'), event_hosts_path(@event)
+              %ul
+                %li!= link_to t('hosts.new.title'), new_event_host_path(@event)
+            %li
+              != link_to t('visitors.index.title'), event_visitors_path(@event)
+              %ul
+                %li!= link_to t('visitors.new.title'), new_event_visitor_path(@event)
+            %li!= link_to t('meetings.master.title'), event_meetings_path(@event)
+            %li!= link_to 'Meeting Statistics', statistics_event_meetings_path(@event)
+            %li.dangerous!= link_to t('meetings.create_all.title'), create_all_event_meetings_path(@event), :confirm => t('meetings.create_all.warning')
+          - elsif @current_user.role == 'facilitator'
+            %li!= link_to t('hosts.index.title'), event_hosts_path(@event)
+            %li!= link_to t('visitors.index.title'), event_visitors_path(@event)
+          - unless @current_role.nil?
+            - if @current_role.class == Host
+              %li!= link_to t('host_availabilities.edit_all.alt_title'), edit_all_event_host_availabilities_path(@event, @current_role)
+              %li!= link_to t('host_rankings.edit_all.alt_title'), edit_all_event_host_rankings_path(@event, @current_role)
+              %li!= link_to t('faculty.view_schedule.alt_title'), event_host_meetings_path(@event, @current_role)
+            - else
+              %li!= link_to t('visitor_availabilities.edit_all.alt_title'), edit_all_event_visitor_availabilities_path(@event, @current_role)
+              %li!= link_to t('visitor_rankings.edit_all.alt_title'), edit_all_event_visitor_rankings_path(@event, @current_role)
+              %li!= link_to t('admits.view_schedule.alt_title'), event_visitor_meetings_path(@event, @current_role)
     #footer
       %p By Vinson Chuong, Benson Ma, and Jacky Wu, alumni of Prof. Armando Fox's Software Engineering course at UC Berkeley.
       %p Visual design by Amber Feng.

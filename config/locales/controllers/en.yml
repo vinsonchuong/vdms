@@ -18,6 +18,20 @@ en:
       success: "Event was successfully updated."
     destroy:
       success: "Event was successfully removed."
+  host_field_types:
+    create:
+      success: "Host field was successfully added."
+    update:
+      success: "Host field was successfully updated."
+    destroy:
+      success: "Host field was successfully removed."
+  visitor_field_types:
+    create:
+      success: "Visitor field was successfully added."
+    update:
+      success: "Visitor field was successfully updated."
+    destroy:
+      success: "Visitor field was successfully removed."
   rankings:
     edit_all:
       disabled: "The administrators have disabled making further changes."

@@ -28,6 +28,11 @@ en:
         disable_facilitators: "Prevent Updates by Facilitators"
         disable_hosts: "Prevent Updates by Hosts"
         disable_scheduler: "Disable the \"Generate Schedule\" button"
+      field_type:
+        name: "Name"
+        description: "Description"
+        data_type: "Data Type"
+        options: "Options"
       role:
         person: "Person"
         person_id: "Person"

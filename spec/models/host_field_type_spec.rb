@@ -48,6 +48,16 @@ describe HostFieldType do
     end
   end
 
+  context 'when initializing' do
+    before(:each) do
+      @field_type = HostFieldType.find(@field_type.id)
+    end
+
+    it 'includes the corresponding DataType module' do
+      @field_type.metaclass.included_modules.should include(DataTypes::Text::FieldType)
+    end
+  end
+
   context 'when validating' do
     it 'is valid with valid attributes' do
       @field_type.should be_valid

@@ -1,0 +1,24 @@
+en:
+  host_field_types:
+    index:
+      title: "Manage Host Fields"
+      actions: "Actions"
+    select_data_type:
+      title: "Select Data Type"
+      data_type: "Data Type"
+      submit: "Add Host Field"
+    new:
+      title: "Add Host Field"
+      errors: "Errors"
+      basic_info: "Basic Info"
+      options: "Options"
+      submit: "Add Host Field"
+    edit:
+      title: "Edit Host Field"
+      errors: "Errors"
+      basic_info: "Basic Info"
+      options: "Options"
+      submit: "Update Host Field"
+    delete:
+      title: "Remove Host Field"
+      submit: "Remove Host Field"

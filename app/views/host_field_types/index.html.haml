@@ -1,0 +1,14 @@
+- content_for :title, t('.title')
+%table
+  %thead
+    %tr
+      %th{:scope => 'col'}!= HostFieldType.human_attribute_name(:name)
+      %th{:scope => 'col'}!= t('.actions')
+  %tbody
+    - @field_types.each do |field_type|
+      %tr
+        %td= field_type.name
+        %td
+          %ul
+            %li!= link_to t('host_field_types.edit.title'), edit_event_host_field_type_path(@event, field_type)
+            %li!= link_to t('host_field_types.delete.title'), delete_event_host_field_type_path(@event, field_type)
