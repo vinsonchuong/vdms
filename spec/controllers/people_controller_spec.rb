@@ -34,18 +34,6 @@ describe PeopleController do
       assigns[:person].should be_a_new_record
     end
 
-    it 'assigns to @areas a list of the Areas' do
-      Person.stub(:areas).and_return('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
-      get :new
-      assigns[:areas].should == [['Area 1', 'A1'], ['Area 2', 'A2'], ['Area 3', 'A3']]
-    end
-
-    it 'assigns to @divisions a list of the Division names' do
-      Person.stub(:divisions).and_return('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
-      get :new
-      assigns[:divisions].should == [['Division 1', 'D1'], ['Division 2', 'D2'], ['Division 3', 'D3']]
-    end
-
     it 'renders the new template' do
       get :new
       response.should render_template('new')
@@ -64,18 +52,6 @@ describe PeopleController do
       Person.stub(:find).and_return(@admin, @person)
       get :edit, :id => @person.id
       assigns[:person].should == @person
-    end
-
-    it 'assigns to @areas a list of the Areas' do
-      Person.stub(:areas).and_return('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
-      get :edit, :id => @person.id
-      assigns[:areas].should == [['Area 1', 'A1'], ['Area 2', 'A2'], ['Area 3', 'A3']]
-    end
-
-    it 'assigns to @divisions a list of the Division names' do
-      Person.stub(:divisions).and_return('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
-      get :edit, :id => @person.id
-      assigns[:divisions].should == [['Division 1', 'D1'], ['Division 2', 'D2'], ['Division 3', 'D3']]
     end
 
     it 'renders the edit template' do
@@ -132,18 +108,6 @@ describe PeopleController do
     context 'when the Person fails to be saved' do
       before(:each) do
         @person.stub(:save).and_return(false)
-      end
-
-      it 'assigns to @areas a list of the Areas' do
-        Person.stub(:areas).and_return('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
-        post :create, :person => {'foo' => 'bar'}
-        assigns[:areas].should == [['Area 1', 'A1'], ['Area 2', 'A2'], ['Area 3', 'A3']]
-      end
-
-      it 'assigns to @divisions a list of the Division names' do
-        Person.stub(:divisions).and_return('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
-        post :create, :person => {'foo' => 'bar'}
-        assigns[:divisions].should == [['Division 1', 'D1'], ['Division 2', 'D2'], ['Division 3', 'D3']]
       end
 
       it 'renders the new template' do
@@ -247,18 +211,6 @@ describe PeopleController do
     context 'when the Person fails to be saved' do
       before(:each) do
         @person.stub(:update_attributes).and_return(false)
-      end
-
-      it 'assigns to @areas a list of the Areas' do
-        Person.stub(:areas).and_return('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
-        put :update, :id => @person.id
-        assigns[:areas].should == [['Area 1', 'A1'], ['Area 2', 'A2'], ['Area 3', 'A3']]
-      end
-
-      it 'assigns to @divisions a list of the Division names' do
-        Person.stub(:divisions).and_return('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
-        put :update, :id => @person.id
-        assigns[:divisions].should == [['Division 1', 'D1'], ['Division 2', 'D2'], ['Division 3', 'D3']]
       end
 
       it 'renders the edit template' do

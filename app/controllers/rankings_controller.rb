@@ -9,15 +9,7 @@ class RankingsController < EventBaseController
   # GET /events/1/visitors/1/rankings/add
   def add
     @ranker = get_ranker
-    if params[:filter].nil?
-      @areas = Person.areas.keys.sort!.map {|a| [a, true]}
-      @rankables = get_rankables.all # Pull into model
-    else
-      @areas = params[:filter].update_values(&:to_b).to_a.sort
-      filter_areas = @areas.select {|a, c| c}.map(&:first)
-      @rankables = get_rankables.with_areas(*filter_areas)
-    end
-    @rankables -= @ranker.rankings.map(&:rankable)
+    @rankables = get_rankables.all - @ranker.rankings.map(&:rankable)
   end
 
   # GET /events/1/hosts/1/rankings/edit_all

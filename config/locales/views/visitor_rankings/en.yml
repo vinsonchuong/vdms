@@ -3,7 +3,7 @@ en:
     index:
     add:
       title: "Select Hosts to Rank"
-      host: "Host"
+      hosts: "Hosts"
       submit: "Rank Hosts"
     edit_all:
       title: "Update Visitor's (%{name}) Rankings"

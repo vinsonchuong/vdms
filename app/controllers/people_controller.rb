@@ -11,8 +11,6 @@ class PeopleController < ApplicationController
   # GET /people/new
   def new
     @person = Person.new
-    @areas = Person.areas.map {|k, v| [v, k]}.sort!
-    @divisions = Person.divisions.map {|k, v| [v, k]}.sort!
   end
 
   # GET /people/upload
@@ -22,8 +20,6 @@ class PeopleController < ApplicationController
   # GET /people/1/edit
   def edit
     @person = Person.find(params[:id])
-    @areas = Person.areas.map {|k, v| [v, k]}.sort!
-    @divisions = Person.divisions.map {|k, v| [v, k]}.sort!
   end
 
   # GET /people/1/delete
@@ -37,8 +33,6 @@ class PeopleController < ApplicationController
     if @person.save
       redirect_to(:people, :notice => t('people.create.success'))
     else
-      @areas = Person.areas.map {|k, v| [v, k]}.sort!
-      @divisions = Person.divisions.map {|k, v| [v, k]}.sort!
       render :action => 'new'
     end
   end
@@ -64,8 +58,6 @@ class PeopleController < ApplicationController
         redirect_to(:people, :notice => t('people.update.success'))
       end
     else
-      @areas = Person.areas.map {|k, v| [v, k]}.sort!
-      @divisions = Person.divisions.map {|k, v| [v, k]}.sort!
       render :action => 'edit'
     end
   end

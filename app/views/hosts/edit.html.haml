@@ -24,18 +24,6 @@
         %li.field.required
           != person_fields.label :email
           != person_fields.text_field :email
-        %li.field
-          != person_fields.label :division
-          != person_fields.select :division, @divisions
-        %li.field
-          != person_fields.label :area_1
-          != person_fields.select :area_1, @areas, :include_blank => true
-        %li.field
-          != person_fields.label :area_2
-          != person_fields.select :area_2, @areas, :include_blank => true
-        %li.field
-          != person_fields.label :area_3
-          != person_fields.select :area_3, @areas, :include_blank => true
       - host_form.fields_for :fields do |field_fields|
         - field = field_fields.object
         %li.field

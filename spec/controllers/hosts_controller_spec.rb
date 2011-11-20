@@ -169,18 +169,6 @@ describe HostsController do
       assigns[:role].should == @host
     end
 
-    it 'assigns to @areas a list of the Areas' do
-      Person.stub(:areas).and_return('A1' => 'Area 1', 'A2' => 'Area 2', 'A3' => 'Area 3')
-      get :edit, :event_id => @event.id, :id => @host.id
-      assigns[:areas].should == [['Area 1', 'A1'], ['Area 2', 'A2'], ['Area 3', 'A3']]
-    end
-
-    it 'assigns to @divisions a list of the Division names' do
-      Person.stub(:divisions).and_return('D1' => 'Division 1', 'D2' => 'Division 2', 'D3' => 'Division 3')
-      get :edit, :event_id => @event.id, :id => @host.id
-      assigns[:divisions].should == [['Division 1', 'D1'], ['Division 2', 'D2'], ['Division 3', 'D3']]
-    end
-
     it 'renders the edit template' do
       get :edit, :event_id => @event.id, :id => @host.id
       response.should render_template('edit')
@@ -390,9 +378,7 @@ describe HostsController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      # can't stub @event.hosts directly
       Host.stub(:find).and_return(@host)
-      #@event.hosts.should_receive(:find)
     end
 
     it 'destroys the Host' do

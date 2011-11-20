@@ -23,16 +23,4 @@
       %li.field.required
         != person_form.label :email
         != person_form.text_field :email
-      %li.field
-        != person_form.label :division
-        != person_form.select :division, @divisions
-      %li.field
-        != person_form.label :area_1
-        != person_form.select :area_1, @areas, :include_blank => true
-      %li.field
-        != person_form.label :area_2
-        != person_form.select :area_2, @areas, :include_blank => true
-      %li.field
-        != person_form.label :area_3
-        != person_form.select :area_3, @areas, :include_blank => true
     != person_form.submit(t('.submit'))

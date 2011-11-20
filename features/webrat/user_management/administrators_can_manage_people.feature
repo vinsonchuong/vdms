@@ -6,13 +6,13 @@ Feature: Administrators can manage people
 
   Background: I am signed in as an administrator
     Given the following people have been added:
-      | ldap_id | role          | name           | email            | area_1 | area_2 | area_3 | division |
-      | ID1     | administrator | Administrator1 | email1@email.com |        |        |        |          |
-      | ID2     | facilitator   | Facilitator1   | email2@email.com |        |        |        |          |
-      | ID3     | user          | User1          | email3@email.com | thy    | ai     |        | cs       |
-      | ID4     | user          | User2          | email4@email.com | hci    | gr     | ps     | cs       |
-      | ID5     | user          | User3          | email5@email.com | sp     |        |        | ee       |
-      | ID6     | user          | User4          | email6@email.com | sec    | dbms   |        |          |
+      | ldap_id | role          | name           | email            |
+      | ID1     | administrator | Administrator1 | email1@email.com |
+      | ID2     | facilitator   | Facilitator1   | email2@email.com |
+      | ID3     | user          | User1          | email3@email.com |
+      | ID4     | user          | User2          | email4@email.com |
+      | ID5     | user          | User3          | email5@email.com |
+      | ID6     | user          | User4          | email6@email.com |
     And I am registered as an "Administrator"
     And I am signed in
 
@@ -33,20 +33,18 @@ Feature: Administrators can manage people
     And I select "<role>" from "Role"
     And I fill in "Name" with "<name>"
     And I fill in "Email" with "<email>"
-    And I select "<division>" from "Division"
-    And I select "<area>" from "Area"
     And I press "Add Person"
     And I should see "<result>" 
 
     Scenarios: with valid information
-      | ldap_id | role | name       | email           | division               | area                        | result                         |
-      | ID1     | User | First Last | email@email.com | Computer Science       | Artificial Intelligence     | Person was successfully added. |
-      | ID2     | User | First Last | email@email.com | Electrical Engineering | Communications & Networking | Person was successfully added. |
+      | ldap_id | role | name       | email           | result                         |
+      | ID1     | User | First Last | email@email.com | Person was successfully added. |
+      | ID2     | User | First Last | email@email.com | Person was successfully added. |
 
     Scenarios: with invalid information
-      | ldap_id | role | name       | email           | division               | area                    | result                             |
-      | ID1     | User |            | email@email.com | Computer Science       | Artificial Intelligence | Name can't be blank                |
-      | ID1     | User | First Last | invalid_email   | Computer Science       | Artificial Intelligence | Email is invalid                   |
+      | ldap_id | role | name       | email           | result                             |
+      | ID1     | User |            | email@email.com | Name can't be blank                |
+      | ID1     | User | First Last | invalid_email   | Email is invalid                   |
 
   Scenario: I add people by importing a CSV with valid data
 

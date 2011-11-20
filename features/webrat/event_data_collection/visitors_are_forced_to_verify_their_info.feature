@@ -23,9 +23,6 @@ Feature: Visitors are forced to verify their info
     Given the visitor is unverified
     And I am on the home page
     When I follow "View Event"
-    And I select "Computer Science" from "Division"
-    And I select "Graphics" from "Area 1"
-    And I select "Human-Computer Interaction" from "Area 2"
     And I press "Update My Info"
     Then I should see "Your info was successfully updated"
     And I should be on the view event page

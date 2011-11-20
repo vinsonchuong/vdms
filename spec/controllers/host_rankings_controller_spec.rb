@@ -105,42 +105,13 @@ describe HostRankingsController do
       assigns[:ranker].should == @host
     end
 
-    context 'when given no filter' do
-      it 'assigns to @areas a list of the Areas, all selected' do
-        Person.stub(:areas).and_return('a1' => 'Area 1', 'a2' => 'Area 2', 'a3' => 'Area 3')
-        get :add, :host_id => @host.id, :event_id => @event.id
-        assigns[:areas].should == [['a1', true], ['a2', true], ['a3', true]]
-      end
-
-      it 'assigns to @rankables a list of Visitors' do
-        rankables = Array.new(3) {Factory.create(:visitor)}
-        Visitor.stub(:find).and_return(rankables)
-        get :add, :host_id => @host.id, :event_id => @event.id
-        assigns[:rankables].should == rankables
-      end
-    end
-
-    context 'when given a filter' do
-      it 'assigns to @areas a list areas with their selected state' do
-        get :add, :host_id => @host.id, :event_id => @event.id, :filter => {'a1' => '1', 'a2' => '0', 'a3' => '1'}
-        assigns[:areas].should == [['a1', true], ['a2', false], ['a3', true]]
-      end
-
-      it 'assigns to @rankables a list of Visitors in the selected Areas' do
-        visitors = Array.new(3) {Visitor.new}
-        @event.visitors.should_receive(:with_areas).with('a1', 'a3').and_return(visitors)
-        get :add, :host_id => @host.id, :event_id => @event.id, :filter => {'a1' => '1', 'a2' => '0', 'a3' => '1'}
-        assigns[:rankables].should == visitors
-      end
-    end
-
-    it 'removes the currently ranked Visitors from @rankables' do
+    it 'assigns @rankables a list of unranked Visitors' do
       ranked_visitor = Visitor.new
       @host.rankings.build(:rankable => ranked_visitor)
       unranked_visitors = Array.new(3) {Visitor.new}
-      @event.visitors.stub(:with_areas).and_return(unranked_visitors + [ranked_visitor])
+      Visitor.stub(:find).and_return(unranked_visitors + [ranked_visitor])
       Host.stub(:find).and_return(@host)
-      get :add, :host_id => @host.id, :event_id => @event.id, :filter => {'a1' => '1', 'a2' => '0', 'a3' => '1'}
+      get :add, :host_id => @host.id, :event_id => @event.id
       assigns[:rankables].should == unranked_visitors
     end
 

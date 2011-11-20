@@ -17,10 +17,6 @@ en:
         role: "Role"
         name: "Name"
         email: "Email"
-        division: "Division"
-        area_1: "Area 1"
-        area_2: "Area 2"
-        area_3: "Area 3"
       event:
         name: "Name"
         meeting_length: "Meeting Length"

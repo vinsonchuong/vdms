@@ -7,11 +7,11 @@ Feature: Visitors can rank hosts
   Background: I am signed in as a visitor for the event
     Given I am signed in as a "User"
     And the following people have been added:
-      | ldap_id | role          | name           | email            | area_1 | area_2 | area_3 | division |
-      | ID1     | user          | User1          | email1@email.com | thy    | ai     |        | cs       |
-      | ID2     | user          | User2          | email2@email.com | hci    | gr     | ps     | cs       |
-      | ID3     | user          | User3          | email3@email.com | sp     |        |        | ee       |
-      | ID4     | user          | User4          | email4@email.com | sec    | dbms   |        |          |
+      | ldap_id | role          | name           | email            |
+      | ID1     | user          | User1          | email1@email.com |
+      | ID2     | user          | User2          | email2@email.com |
+      | ID3     | user          | User3          | email3@email.com |
+      | ID4     | user          | User4          | email4@email.com |
     And the following event has been added:
       | name           | meeting_length | meeting_gap | max_meetings_per_visitor |
       | Visit Day 2011 | 900            | 300         | 10                       |

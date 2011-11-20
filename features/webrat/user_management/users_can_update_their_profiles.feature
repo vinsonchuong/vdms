@@ -17,8 +17,6 @@ Feature: Users can update their profiles
     Given I am on the home page
     When I follow "Edit My Info"
     And I fill in "Email" with "new_email@email.com"
-    And I select "Electrical Engineering" from "Division"
-    And I select "Artificial Intelligence" from "Area 1"
     And I press "Update My Info"
     Then I should see "Your info was successfully updated."
 

@@ -1,28 +1,10 @@
 - content_for :title, t('.title')
-#admit_filter
-  %h3!= t('.filter')
-  - form_for :filter, :html => {:method => :get, :name => 'filter_form'} do |filter_form|
-    %fieldset
-      %h4!= t('.by_area')
-      %ul
-        %li!= link_to_function(t('.select_cs'), 'select_cs(filter_form)')
-        %li!= link_to_function(t('.select_ee'), 'select_ee(filter_form)')
-        %li!= link_to_function(t('.select_all'), 'select_all(filter_form)')
-        %li!= link_to_function(t('.unselect_all'), 'unselect_all(filter_form)')
-      %ul
-        - @areas.each do |area, checked|
-          %li
-            != filter_form.check_box area, :checked => checked
-            != filter_form.label area, Person.areas[area]
-    != filter_form.submit t('.filter_submit')
-#admit_list
-  %h3!= t('.select')
-  - form_for :select, :url => {:action => 'edit_all'}, :html => {:method => :get} do |select_form|
-    %fieldset
-      %h4!= t('.visitors')
-      %ul
-        - @rankables.each do |rankable|
-          %li
-            != select_form.check_box rankable.id
-            != select_form.label rankable.id, rankable.person.name
-    != select_form.submit t('.select_submit')
+- form_for :select, :url => {:action => 'edit_all'}, :html => {:method => :get} do |select_form|
+  %fieldset
+    %h4!= t('.visitors')
+    %ul
+      - @rankables.each do |rankable|
+        %li
+          != select_form.check_box rankable.id
+          != select_form.label rankable.id, rankable.person.name
+  != select_form.submit t('.select_submit')

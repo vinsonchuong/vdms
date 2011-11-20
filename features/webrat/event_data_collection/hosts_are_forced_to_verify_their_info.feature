@@ -23,9 +23,6 @@ Feature: Hosts are forced to verify their info
     Given the host is unverified
     And I am on the home page
     When I follow "View Event"
-    And I select "Computer Science" from "Division"
-    And I select "Graphics" from "Area 1"
-    And I select "Human-Computer Interaction" from "Area 2"
     And I fill in "Default Room" with "495 Soda"
     And I select "3" from "Max Visitors per Meeting"
     And I select "15" from "Max Visitors"

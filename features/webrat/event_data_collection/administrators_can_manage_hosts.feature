@@ -6,13 +6,13 @@ Feature: Administrators can manage hosts
 
   Background: I am signed in as an administrator
     Given the following people have been added:
-      | ldap_id | role          | name           | email            | area_1 | area_2 | area_3 | division |
-      | ID1     | administrator | Administrator1 | email1@email.com |        |        |        |          |
-      | ID2     | facilitator   | Facilitator1   | email2@email.com |        |        |        |          |
-      | ID3     | user          | User1          | email3@email.com | thy    | ai     |        | cs       |
-      | ID4     | user          | User2          | email4@email.com | hci    | gr     | ps     | cs       |
-      | ID5     | user          | User3          | email5@email.com | sp     |        |        | ee       |
-      | ID6     | user          | User4          | email6@email.com | sec    | dbms   |        |          |
+      | ldap_id | role          | name           | email            |
+      | ID1     | administrator | Administrator1 | email1@email.com |
+      | ID2     | facilitator   | Facilitator1   | email2@email.com |
+      | ID3     | user          | User1          | email3@email.com |
+      | ID4     | user          | User2          | email4@email.com |
+      | ID5     | user          | User3          | email5@email.com |
+      | ID6     | user          | User4          | email6@email.com |
     And the following events have been added:
       | name      | meeting_length | meeting_gap | max_meetings_per_visitor |
       | Visit Day | 900            | 300         | 10                       |
