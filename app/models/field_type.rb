@@ -18,14 +18,15 @@ class FieldType < ActiveRecord::Base
   def self.data_types_list
     {
       'text' => 'Text',
-      'single_select' => 'Single Selection'
+      'single_select' => 'Single Selection',
+      'multiple_select' => 'Multiple Selection'
     }
   end
 
   def data_type_module
     data_type.blank? ?
       nil :
-      "DataTypes/#{data_type}".camelize.constantize
+      "data_types/#{data_type}".camelize.constantize
   rescue NameError
     nil
   end

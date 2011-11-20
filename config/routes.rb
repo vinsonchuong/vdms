@@ -3,6 +3,8 @@ ActionController::Routing::Routes.draw do |map|
                 :collection => {:upload => :get, :delete_all => :get, :import => :post, :destroy_all => :delete},
                 :member => {:delete => :get})
   map.resources(:events, :member => {:delete => :get}) do |event|
+    event.resources(:constraints, :except => [:show], :member => {:delete => :get})
+    event.resources(:goals, :except => [:show], :member => {:delete => :get})
     event.resources(:host_field_types, :except => :show, :member => {:delete => :get})
     event.resources(:visitor_field_types, :except => :show, :member => {:delete => :get})
     event.resources(:hosts, :collection => {:join => :get, :create_from_current_user => :post},

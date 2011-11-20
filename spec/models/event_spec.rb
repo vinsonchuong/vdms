@@ -52,6 +52,22 @@ describe Event do
       @event.should have_many(:time_slots)
     end
 
+    it 'has many HostFieldTypes (host_field_types)' do
+      @event.should have_many(:host_field_types)
+    end
+
+    it 'has many VisitorFieldTypes (visitor_field_types)' do
+      @event.should have_many(:visitor_field_types)
+    end
+
+    it 'has many Constraints (constraints)' do
+      @event.should have_many(:constraints)
+    end
+
+    it 'has many Goals (goals)' do
+      @event.should have_many(:goals)
+    end
+
     it 'has many Roles (roles)' do
       @event.should have_many(:roles)
     end
@@ -62,14 +78,6 @@ describe Event do
 
     it 'has many Visitors (visitors)' do
       @event.should have_many(:visitors)
-    end
-
-    it 'has many HostFieldTypes (host_field_types)' do
-      @event.should have_many(:host_field_types)
-    end
-
-    it 'has many VisitorFieldTypes (visitor_field_types)' do
-      @event.should have_many(:visitor_field_types)
     end
   end
 
@@ -352,26 +360,6 @@ describe Event do
       @event.destroy
     end
 
-    it 'destroys its Hosts' do
-      hosts = Array.new(3) do
-        host = mock_model(Host)
-        host.should_receive(:destroy)
-        host
-      end
-      @event.stub(:hosts).and_return(hosts)
-      @event.destroy
-    end
-
-    it 'destroys its Visitors' do
-      visitors = Array.new(3) do
-        visitor = mock_model(Visitor)
-        visitor.should_receive(:destroy)
-        visitor
-      end
-      @event.stub(:visitors).and_return(visitors)
-      @event.destroy
-    end
-
     it 'destroys its HostFieldTypes' do
       host_field_types = Array.new(3) do
         host_field_types = mock_model(HostFieldType)
@@ -389,6 +377,46 @@ describe Event do
         visitor_field_types
       end
       @event.stub(:visitor_field_types).and_return(visitor_field_types)
+      @event.destroy
+    end
+
+    it 'destroys its Goals' do
+      goals = Array.new(3) do
+        goal = mock_model(Goal)
+        goal.should_receive(:destroy)
+        goal
+      end
+      @event.stub(:goals).and_return(goals)
+      @event.destroy
+    end
+
+    it 'destroys its Constraints' do
+      constraints = Array.new(3) do
+        constraint = mock_model(Constraint)
+        constraint.should_receive(:destroy)
+        constraint
+      end
+      @event.stub(:constraints).and_return(constraints)
+      @event.destroy
+    end
+
+    it 'destroys its Hosts' do
+      hosts = Array.new(3) do
+        host = mock_model(Host)
+        host.should_receive(:destroy)
+        host
+      end
+      @event.stub(:hosts).and_return(hosts)
+      @event.destroy
+    end
+
+    it 'destroys its Visitors' do
+      visitors = Array.new(3) do
+        visitor = mock_model(Visitor)
+        visitor.should_receive(:destroy)
+        visitor
+      end
+      @event.stub(:visitors).and_return(visitors)
       @event.destroy
     end
   end

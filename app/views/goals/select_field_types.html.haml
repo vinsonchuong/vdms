@@ -1,0 +1,12 @@
+- content_for :title, t('.title')
+- form_for([@event, @feature], :url => new_event_goal_path(@event), :html => {:method => :get}) do |feature_form|
+  %fieldset
+    %ul
+      %li.field.required
+        != feature_form.label :host_field_type_id
+        != feature_form.select :host_field_type_id, @host_field_types
+      %li.field.required
+        != feature_form.label :visitor_field_type_id
+        != feature_form.select :visitor_field_type_id, @visitor_field_types
+  != submit_tag t('.submit')
+

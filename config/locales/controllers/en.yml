@@ -18,6 +18,20 @@ en:
       success: "Event was successfully updated."
     destroy:
       success: "Event was successfully removed."
+  constraints:
+    create:
+      success: "Constraint was successfully added."
+    update:
+      success: "Constraint was successfully updated."
+    destroy:
+      success: "Constraint was successfully removed."
+  goals:
+    create:
+      success: "Goal was successfully added."
+    update:
+      success: "Goal was successfully updated."
+    destroy:
+      success: "Goal was successfully removed."
   host_field_types:
     create:
       success: "Host field was successfully added."

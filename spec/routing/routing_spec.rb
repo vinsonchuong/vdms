@@ -89,6 +89,52 @@ describe 'Routes' do
         {:delete => '/events/1'}.should route_to(:controller => 'events', :action => 'destroy', :id => '1')
       end
     end
+    describe 'Constraints' do
+      context 'when viewing' do
+        it 'routes GET /events/1/constraints to Constraints#index' do
+          {:get => '/events/1/constraints'}.should route_to(:controller => 'constraints', :action => 'index', :event_id => '1')
+        end
+      end
+      context 'when adding' do
+        it 'routes GET /events/1/constraints/new to Constraints#new' do
+          {:get => '/events/1/constraints/new'}.should route_to(:controller => 'constraints', :action => 'new', :event_id => '1')
+        end
+        it 'routes POST /events/1/constraints to Constraints#create' do
+          {:post => '/events/1/constraints'}.should route_to(:controller => 'constraints', :action => 'create', :event_id => '1')
+        end
+      end
+      context 'when removing' do
+        it 'routes GET /events/1/constraints/1/delete to Constraints#delete' do
+          {:get => '/events/1/constraints/1/delete'}.should route_to(:controller => 'constraints', :action => 'delete', :id => '1', :event_id => '1')
+        end
+        it 'routes DELETE /events/1/constraints/1 to Constraints#destroy' do
+          {:delete => '/events/1/constraints/1'}.should route_to(:controller => 'constraints', :action => 'destroy', :id => '1', :event_id => '1')
+        end
+      end
+    end
+    describe 'Goals' do
+      context 'when viewing' do
+        it 'routes GET /events/1/goals to Goals#index' do
+          {:get => '/events/1/goals'}.should route_to(:controller => 'goals', :action => 'index', :event_id => '1')
+        end
+      end
+      context 'when adding' do
+        it 'routes GET /events/1/goals/new to Goals#new' do
+          {:get => '/events/1/goals/new'}.should route_to(:controller => 'goals', :action => 'new', :event_id => '1')
+        end
+        it 'routes POST /events/1/goals to Goals#create' do
+          {:post => '/events/1/goals'}.should route_to(:controller => 'goals', :action => 'create', :event_id => '1')
+        end
+      end
+      context 'when removing' do
+        it 'routes GET /events/1/goals/1/delete to Goals#delete' do
+          {:get => '/events/1/goals/1/delete'}.should route_to(:controller => 'goals', :action => 'delete', :id => '1', :event_id => '1')
+        end
+        it 'routes DELETE /events/1/goals/1 to Goals#destroy' do
+          {:delete => '/events/1/goals/1'}.should route_to(:controller => 'goals', :action => 'destroy', :id => '1', :event_id => '1')
+        end
+      end
+    end
     describe 'HostFieldTypes' do
       context 'when viewing' do
         it 'routes GET /events/1/host_field_types to HostFieldTypes#index' do

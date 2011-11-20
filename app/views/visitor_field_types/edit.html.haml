@@ -28,5 +28,5 @@
               != option_fields.send(*params[:label_params])
               - unless params[:description].blank?
                 %p!= params[:description]
-              != option_fields.send(*params[:form_helper_params], :value => @field_type.options[name])
+              != option_fields.send(*params[:form_helper_params])
   != field_type_form.submit t('.submit')

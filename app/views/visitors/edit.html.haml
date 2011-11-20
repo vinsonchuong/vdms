@@ -36,6 +36,15 @@
         %li.field
           != person_fields.label :area_3
           != person_fields.select :area_3, @areas, :include_blank => true
+      - visitor_form.fields_for :fields do |field_fields|
+        - field = field_fields.object
+        %li.field
+          != field_fields.label :data, field.field_type.name
+          - unless field.field_type.description.blank?
+            %p!= field.field_type.description
+          - params = field.form_helper_params
+          - if params[:type] == :single
+            != field_fields.send(*params[:args])
   -# Need at least one visitor field for form to work correctly
   != visitor_form.hidden_field :event_id
   != visitor_form.submit @role == @current_role ? t('.alt_submit') : t('.submit')

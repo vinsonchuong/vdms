@@ -48,6 +48,14 @@
               %ul
                 %li!= link_to t('visitor_field_types.new.title'), new_event_visitor_field_type_path(@event)
             %li
+              != link_to t('constraints.index.title'), event_constraints_path(@event)
+              %ul
+                %li!= link_to t('constraints.new.title'), new_event_constraint_path(@event)
+            %li
+              != link_to t('goals.index.title'), event_goals_path(@event)
+              %ul
+                %li!= link_to t('goals.new.title'), new_event_goal_path(@event)
+            %li
               != link_to t('hosts.index.title'), event_hosts_path(@event)
               %ul
                 %li!= link_to t('hosts.new.title'), new_event_host_path(@event)

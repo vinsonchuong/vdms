@@ -1,5 +1,5 @@
 module DataTypes
-  module SingleSelect
+  module MultipleSelect
     module FieldType
       def option_types
         {
@@ -13,9 +13,10 @@ module DataTypes
 
     module Field
       def form_helper_params
+        items = field_type.options['selection_items'].lines.to_a.map(&:chomp)
         {
           :type => :single,
-          :args => [:select, :data, field_type.options['selection_items'].lines.to_a.map(&:chomp)]
+          :args => [:select, :data, items, {}, :multiple => true, :size => 8]
         }
       end
     end

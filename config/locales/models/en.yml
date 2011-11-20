@@ -33,6 +33,11 @@ en:
         description: "Description"
         data_type: "Data Type"
         options: "Options"
+      feature:
+        name: "Name"
+        weight: "Weight"
+        host_field_type_id: "Host Field"
+        visitor_field_type_id: "Visitor Field"
       role:
         person: "Person"
         person_id: "Person"

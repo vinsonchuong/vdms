@@ -1,0 +1,14 @@
+- content_for :title, t('.title')
+%table
+  %thead
+    %tr
+      %th{:scope => 'col'}!= Constraint.human_attribute_name(:name)
+      %th{:scope => 'col'}!= t('.actions')
+  %tbody
+    - @features.each do |feature|
+      %tr
+        %td= feature.name
+        %td
+          %ul
+            %li!= link_to t('constraints.edit.title'), edit_event_constraint_path(@event, feature)
+            %li!= link_to t('constraints.delete.title'), delete_event_constraint_path(@event, feature)

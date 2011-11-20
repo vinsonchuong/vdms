@@ -7,6 +7,7 @@ gem 'facets', :require => false
 gem 'haml'
 gem 'rake', '~> 0.8.7'
 gem 'rubycas-client'
+gem 'simple_form', '~> 1.0.4'
 gem 'validates_existence'
 gem 'validates_timeliness', '~> 2.3'
 

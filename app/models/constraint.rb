@@ -1,0 +1,3 @@
+class Constraint < Feature
+
+end

@@ -1,0 +1,38 @@
+- content_for :title, t('.title')
+- form_for([@event, @feature]) do |feature_form|
+  - if @feature.errors.any?
+    #errors
+      %h3!= t('.errors')
+      %ul
+        - @feature.errors.full_messages.each do |message|
+          %li!= message
+  %fieldset
+    %h3!= t('.basic_info')
+    %ul
+      %li.field.required
+        != feature_form.label :name
+        != feature_form.text_field :name
+      %li.field.required
+        != feature_form.label :host_field_type_id
+        != feature_form.select :host_field_type_id, @host_field_types, {}, :disabled => true
+        != feature_form.hidden_field :host_field_type_id
+      %li.field.required
+        != feature_form.label :visitor_field_type_id
+        != feature_form.select :visitor_field_type_id, @visitor_field_types, {}, :disabled => true
+        != feature_form.hidden_field :visitor_field_type_id
+      %li.field.required
+        != feature_form.label :feature_type
+        != feature_form.select :feature_type, @feature_list.map {|k, v| [v, k]}, {}, :disabled => true
+        != feature_form.hidden_field :feature_type
+  - unless @feature.option_types.empty?
+    %fieldset
+      %h3!= t('.options')
+      %ul
+        - @feature.option_types.each do |name, params|
+          - feature_form.fields_for :options, @feature.options[name] do |option_fields|
+            %li.field
+              != option_fields.send(*params[:label_params])
+              - unless params[:description].blank?
+                %p!= params[:description]
+              != option_fields.send(*params[:form_helper_params], :value => @feature.options[name])
+  != feature_form.submit t('.submit')

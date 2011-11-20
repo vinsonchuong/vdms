@@ -1,10 +1,12 @@
 class Event < ActiveRecord::Base
   has_many :time_slots, :autosave => true, :dependent => :destroy
+  has_many :host_field_types, :dependent => :destroy
+  has_many :visitor_field_types, :dependent => :destroy
+  has_many :constraints, :dependent => :destroy
+  has_many :goals, :dependent => :destroy
   has_many :roles
   has_many :hosts, :after_add => :build_host_fields, :dependent => :destroy
   has_many :visitors, :after_add => :build_visitor_fields, :dependent => :destroy
-  has_many :host_field_types, :dependent => :destroy
-  has_many :visitor_field_types, :dependent => :destroy
 
   validates_presence_of :name
   validates_presence_of :meeting_length

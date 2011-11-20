@@ -199,13 +199,6 @@ h1 a {
   clear: both;
   overflow: auto;
 }
-#content fieldset .field ul li {
-  margin-right: 5px;
-  float: left;
-}
-#content fieldset .field ul li:last-child {
-  margin-right: 0;
-}
 #content fieldset .field > label {
   color: #4c8bd3;
   display: block;

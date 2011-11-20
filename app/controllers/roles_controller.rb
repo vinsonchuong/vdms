@@ -29,6 +29,7 @@ class RolesController < EventBaseController
   # GET /events/1/visitors/1/edit
   def edit
     @role = get_role
+    puts @role.fields.inspect
     @areas = Person.areas.map {|k, v| [v, k]}.sort!
     @divisions = Person.divisions.map {|k, v| [v, k]}.sort!
   end

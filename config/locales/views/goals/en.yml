@@ -1,0 +1,26 @@
+en:
+  goals:
+    index:
+      title: "Manage Goals"
+      actions: "Actions"
+    select_field_types:
+      title: "Select Field Types"
+      submit: "Add Goal"
+    select_feature_type:
+      title: "Select Feature Type"
+      submit: "Add Goal"
+    new:
+      title: "Add Goal"
+      errors: "Errors"
+      basic_info: "Basic Info"
+      options: "Options"
+      submit: "Add Goal"
+    edit:
+      title: "Edit Goal"
+      errors: "Errors"
+      basic_info: "Basic Info"
+      options: "Options"
+      submit: "Update Goal"
+    delete:
+      title: "Remove Goal"
+      submit: "Remove Goal"

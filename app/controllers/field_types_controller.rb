@@ -20,7 +20,6 @@ class FieldTypesController < EventBaseController
   # GET /events/1/visitor_field_types/1/edit
   def edit
     @field_type = get_field_type
-    puts @field_type.inspect
     @data_types = FieldType.data_types_list.map {|k, v| [v, k]}
   end
 

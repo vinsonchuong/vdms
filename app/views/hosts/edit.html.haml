@@ -39,10 +39,18 @@
       - host_form.fields_for :fields do |field_fields|
         - field = field_fields.object
         %li.field
-          != field_fields.send(*field.label_params)
-          - unless field.description.blank?
-            %p!= field.description
-          != field_fields.send(*field.form_helper_params)
+          != field_fields.label :data, field.field_type.name
+          - unless field.field_type.description.blank?
+            %p!= field.field_type.description
+          - params = field.form_helper_params
+          - if params[:type] == :single
+            != field_fields.send(*params[:args])
+          - else
+            %ul
+              - params[:args_list].each do |sub_list|
+                %li
+                  - sub_list.each do |args|
+                    != field_fields.send(*args)
   %fieldset
     %h3!= t('.event_preferences')
     %ul

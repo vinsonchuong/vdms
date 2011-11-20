@@ -31,6 +31,24 @@ Factory.define :visitor_field_type do |f|
   f.association :event
 end
 
+Factory.define :constraint do |c|
+  c.sequence(:name) {|n| "Constraint#{n}"}
+  c.weight 1
+  c.feature_type 'equality/equals'
+  c.association :event
+  c.association :host_field_type
+  c.association :visitor_field_type
+end
+
+Factory.define :goal do |c|
+  c.sequence(:name) {|n| "Goal#{n}"}
+  c.weight 1
+  c.feature_type 'equality/equals'
+  c.association :event
+  c.association :host_field_type
+  c.association :visitor_field_type
+end
+
 Factory.define :host do |h|
   h.association :person
   h.association :event

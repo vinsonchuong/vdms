@@ -1,0 +1,26 @@
+en:
+  constraints:
+    index:
+      title: "Manage Constraints"
+      actions: "Actions"
+    select_field_types:
+      title: "Select Field Types"
+      submit: "Add Constraint"
+    select_feature_type:
+      title: "Select Feature Type"
+      submit: "Add Constraint"
+    new:
+      title: "Add Constraint"
+      errors: "Errors"
+      basic_info: "Basic Info"
+      options: "Options"
+      submit: "Add Constraint"
+    edit:
+      title: "Edit Constraint"
+      errors: "Errors"
+      basic_info: "Basic Info"
+      options: "Options"
+      submit: "Update Constraint"
+    delete:
+      title: "Remove Constraint"
+      submit: "Remove Constraint"
