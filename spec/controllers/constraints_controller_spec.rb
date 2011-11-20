@@ -51,8 +51,7 @@ describe ConstraintsController do
 
     context 'when both field types are specified' do
       it 'renders the new template' do
-        HostFieldType.stub(:find).and_return(mock_model(HostFieldType))
-        VisitorFieldType.stub(:find).and_return(mock_model(VisitorFieldType))
+        Feature.stub(:new).and_return(@feature)
         get :new, :event_id => @event.id, :constraint => {:host_field_type_id => 1, :visitor_field_type_id => 1}
         response.should render_template('new')
       end
@@ -61,7 +60,7 @@ describe ConstraintsController do
 
   describe 'GET delete' do
     it 'assigns to @event the given Event' do
-      get :delete, :event_id => @event.id, :id => @field_type.id
+      get :delete, :event_id => @event.id, :id => @feature.id
       assigns[:event].should == @event
     end
 
@@ -72,85 +71,8 @@ describe ConstraintsController do
     end
 
     it 'renders the edit template' do
-      get :delete, :event_id => @event.id, :id => @field_type.id
+      get :delete, :event_id => @event.id, :id => @feature.id
       response.should render_template('delete')
-    end
-  end
-
-  describe 'POST create' do
-    before(:each) do
-      HostFieldType.stub(:new).and_return(@field_type)
-    end
-
-    it 'assigns to @field_type a new HostFieldType with the given parameters' do
-      @event.host_field_types.should_receive(:build).with('foo' => 'bar').and_return(@field_type)
-      post :create, :host_field_type => {'foo' => 'bar'}, :event_id => @event.id
-      assigns[:field_type].should equal(@field_type)
-    end
-
-    it 'the new HostFieldType belongs to the given Event' do
-      post :create, :host_field_type => {'foo' => 'bar'}, :event_id => @event.id
-      field_type = assigns[:field_type]
-      field_type.event.should == @event
-      @event.host_field_types.should include(field_type)
-    end
-
-    it 'saves the HostFieldType' do
-      @field_type.should_receive(:save)
-      post :create, :host_field_type => {'foo' => 'bar'}, :event_id => @event.id
-    end
-
-    context 'when the HostFieldType is successfully saved' do
-      before(:each) do
-        @field_type.stub(:save).and_return(true)
-      end
-
-      it 'sets a flash[:notice] message' do
-        post :create, :host_field_type => {'foo' => 'bar'}, :event_id => @event.id
-        flash[:notice].should == I18n.t('host_field_types.create.success')
-      end
-
-      it 'redirects to the View Host Field Types page' do
-        post :create, :host_field_type => {'foo' => 'bar'}, :event_id => @event.id
-        response.should redirect_to(:action => 'index', :event_id => @event.id)
-      end
-    end
-
-    context 'when the HostFieldType fails to be saved' do
-      before(:each) do
-        @field_type.stub(:save).and_return(false)
-      end
-
-      it 'assigns to @event the given Event' do
-        post :create, :host_field_type => {'foo' => 'bar'}, :event_id => @event.id
-        assigns[:event].should == @event
-      end
-
-      it 'renders the new template' do
-        post :create, :host_field_type => {'foo' => 'bar'}, :event_id => @event.id
-        response.should render_template('new')
-      end
-    end
-  end
-
-  describe 'DELETE destroy' do
-    before(:each) do
-      HostFieldType.stub(:find).and_return(@field_type)
-    end
-
-    it 'destroys the HostFieldType' do
-      @field_type.should_receive(:destroy)
-      delete :destroy, :event_id => @event.id, :id => @field_type.id
-    end
-
-    it 'sets a flash[:notice] message' do
-      delete :destroy, :event_id => @event.id, :id => @field_type.id
-      flash[:notice].should == I18n.t('host_field_types.destroy.success')
-    end
-
-    it 'redirects to the View Host Field Types page' do
-      delete :destroy, :event_id => @event.id, :id => @field_type.id
-      response.should redirect_to(:action => 'index', :event_id => @event.id)
     end
   end
 end
