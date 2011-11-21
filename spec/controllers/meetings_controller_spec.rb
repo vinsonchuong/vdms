@@ -4,7 +4,7 @@ describe MeetingsController do
   before(:each) do
     @event = Factory.create(:event)
     @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
-    CASClient::Frameworks::Rails::Filter.fake('admin')
+    RubyCAS::Filter.fake('admin')
   end
   describe "generating the schedule" do
     context "for staff users" do

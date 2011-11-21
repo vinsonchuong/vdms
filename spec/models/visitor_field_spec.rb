@@ -34,7 +34,7 @@ describe HostField do
     end
 
     it 'includes the corresponding DataType module' do
-      @field.metaclass.included_modules.should include(DataTypes::Text::Field)
+      @field.singleton_class.included_modules.should include(DataTypes::Text::Field)
     end
   end
 end

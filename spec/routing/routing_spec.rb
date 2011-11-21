@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe 'Routes' do
   it 'routes GET / to Events#index' do
-    pending 'route works as expected, but unable to test'
     {:get => '/'}.should route_to(:controller => 'events', :action => 'index')
   end
 
@@ -47,12 +46,6 @@ describe 'Routes' do
       end
       it 'routes DELETE /people/1 to People#destroy' do
         {:delete => '/people/1'}.should route_to(:controller => 'people', :action => 'destroy', :id => '1')
-      end
-      it 'routes GET /people/delete_all to People#delete_all' do
-        {:get => '/people/delete_all'}.should route_to(:controller => 'people', :action => 'delete_all')
-      end
-      it 'routes DELETE /people/destroy_all to People#destroy_all' do
-        {:delete => '/people/destroy_all'}.should route_to(:controller => 'people', :action => 'destroy_all')
       end
     end
   end

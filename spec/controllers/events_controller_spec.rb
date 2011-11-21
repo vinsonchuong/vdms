@@ -3,14 +3,14 @@ require 'spec_helper'
 describe EventsController do
   before(:each) do
     @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
-    CASClient::Frameworks::Rails::Filter.fake('admin')
+    RubyCAS::Filter.fake('admin')
     @event = Factory.create(:event)
   end
 
   describe 'GET index' do
     it 'assigns to @events a list of all the Events sorted by name' do
       events = Array.new(3) {Event.new}
-      Event.stub(:find).and_return(events)
+      Event.stub(:all).and_return(events)
       get :index
       assigns[:events].should == events
     end
@@ -32,7 +32,7 @@ describe EventsController do
       before(:each) do
         @host = Factory.create(:host, :event => @event, :verified => false)
         @host.person.update_attribute(:ldap_id, 'host')
-        CASClient::Frameworks::Rails::Filter.fake('host')
+        RubyCAS::Filter.fake('host')
       end
 
       it 'saves the requested URL before redirecting' do
@@ -50,7 +50,7 @@ describe EventsController do
       before(:each) do
         @visitor = Factory.create(:visitor, :event => @event, :verified => false)
         @visitor.person.update_attribute(:ldap_id, 'visitor')
-        CASClient::Frameworks::Rails::Filter.fake('visitor')
+        RubyCAS::Filter.fake('visitor')
       end
 
       it 'forces profile verification' do

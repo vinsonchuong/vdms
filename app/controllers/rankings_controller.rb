@@ -9,7 +9,7 @@ class RankingsController < EventBaseController
   # GET /events/1/visitors/1/rankings/add
   def add
     @ranker = get_ranker
-    @rankables = get_rankables.all - @ranker.rankings.map(&:rankable)
+    @rankables = get_rankables - @ranker.rankings.map(&:rankable)
   end
 
   # GET /events/1/hosts/1/rankings/edit_all

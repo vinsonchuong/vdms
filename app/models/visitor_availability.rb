@@ -5,11 +5,11 @@ class VisitorAvailability < Availability
     record.meetings.destroy_all unless record.available?
   end
 
-  belongs_to :visitor, :foreign_key => :schedulable_id
+  belongs_to :schedulable, :class_name => 'Visitor'
   has_many :meetings, :dependent => :destroy
   has_many :hosts, :through => :meetings
 
-  default_scope :joins => [:time_slot, {:visitor => :person}], :order => 'begin, name'
+  default_scope :joins => [:time_slot, {:schedulable => :person}], :order => 'begin, name'
 
-  validates_existence_of :visitor
+  validates_existence_of :schedulable
 end

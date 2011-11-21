@@ -6,20 +6,20 @@ describe HostsController do
     @event = @host.event
     Event.stub(:find).and_return(@event)
     @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
-    CASClient::Frameworks::Rails::Filter.fake('admin')
+    RubyCAS::Filter.fake('admin')
   end
 
   describe 'forced profile verification' do
     before(:each) do
-      Host.stub(:find).and_return(@host)
+      @event.hosts.stub(:find).and_return(@host)
     end
 
     context 'when an unverified Host is signed in' do
       before(:each) do
         @host.verified = false
         @host.person.ldap_id = 'host'
-        Person.stub(:find).and_return(@host.person)
-        CASClient::Frameworks::Rails::Filter.fake('host')
+        Person.stub(:find_by_ldap_id).and_return(@host.person)
+        RubyCAS::Filter.fake('host')
       end
 
       it 'does not redirect when editing a Host' do
@@ -61,7 +61,7 @@ describe HostsController do
       end
 
       it 'does not redirect when creating a Host' do
-        Host.stub(:new).and_return(@host)
+        @event.hosts.stub(:build).and_return(@host)
         @host.stub(:save).and_return(false)
         post :create, :host => {'foo' => 'bar'}, :event_id => @event.id
         response.should render_template('new')
@@ -74,7 +74,7 @@ describe HostsController do
       end
 
       it 'does not redirect when destroying a Host' do
-        Host.stub(:find).and_return(@host)
+        @event.hosts.stub(:find).and_return(@host)
         delete :destroy, :event_id => @event.id, :id => @host.id
         response.should redirect_to(:action => 'index', :event_id => @event.id)
       end
@@ -89,7 +89,7 @@ describe HostsController do
 
     it "assigns to @roles a list of the Event's Hosts sorted by Name" do
       hosts = Array.new(3) {Host.new}
-      @event.hosts.stub(:find).and_return(hosts)
+      @event.stub(:hosts).and_return(hosts)
       get :index, :event_id => @event.id
       assigns[:roles].should == hosts
     end
@@ -107,7 +107,7 @@ describe HostsController do
     end
 
     it 'assigns to @roles the given Host' do
-      Host.stub(:find).and_return(@host)
+      @event.hosts.stub(:find).and_return(@host)
       get :show, :event_id => @event.id, :id => @host.id
       assigns[:role].should == @host
     end
@@ -164,7 +164,7 @@ describe HostsController do
     end
 
     it 'assigns to @role the given Host' do
-      Host.stub(:find).and_return(@host)
+      @event.hosts.stub(:find).and_return(@host)
       get :edit, :event_id => @event.id, :id => @host.id
       assigns[:role].should == @host
     end
@@ -182,7 +182,7 @@ describe HostsController do
     end
 
     it 'assigns to @role the given Host' do
-      Host.stub(:find).and_return(@host)
+      @event.hosts.stub(:find).and_return(@host)
       get :delete, :event_id => @event.id, :id => @host.id
       assigns[:role].should == @host
     end
@@ -195,7 +195,7 @@ describe HostsController do
 
   describe 'POST create' do
     before(:each) do
-      Host.stub(:new).and_return(@host)
+      @event.hosts.stub(:build).and_return(@host)
     end
 
     it 'assigns to @role a new Host with the given parameters' do
@@ -254,7 +254,7 @@ describe HostsController do
       before(:each) do
         @user = Factory.create(:person, :ldap_id => 'user', :role => 'user')
         Person.stub(:find).and_return(@user)
-        CASClient::Frameworks::Rails::Filter.fake('user')
+        RubyCAS::Filter.fake('user')
       end
 
       it 'adds the User as a Host of the Event' do
@@ -272,7 +272,7 @@ describe HostsController do
       before(:each) do
         @host.person.ldap_id = 'host'
         Person.stub(:find).and_return(@host.person)
-        CASClient::Frameworks::Rails::Filter.fake('host')
+        RubyCAS::Filter.fake('host')
       end
 
       it 'alerts the user that he has already joined the event'
@@ -281,7 +281,7 @@ describe HostsController do
 
   describe 'PUT update' do
     before(:each) do
-      Host.stub(:find).and_return(@host)
+      @event.hosts.stub(:find).and_return(@host)
     end
 
     it 'assigns to @role the given Role' do
@@ -299,7 +299,7 @@ describe HostsController do
     context 'when the Host is signed in' do
       before(:each) do
         @host.person.update_attribute(:ldap_id, 'host')
-        CASClient::Frameworks::Rails::Filter.fake('host')
+        RubyCAS::Filter.fake('host')
       end
 
       it 'updates and verifies the Host' do
@@ -316,8 +316,8 @@ describe HostsController do
       context 'when signed in as the Host' do
         before(:each) do
           @host.person.ldap_id = 'host'
-          Person.stub(:find).and_return(@host.person)
-          CASClient::Frameworks::Rails::Filter.fake('host')
+          Person.stub(:find_by_ldap_id).and_return(@host.person)
+          RubyCAS::Filter.fake('host')
         end
 
         context 'when the host was unverified' do
@@ -378,7 +378,7 @@ describe HostsController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      Host.stub(:find).and_return(@host)
+      @event.hosts.stub(:find).and_return(@host)
     end
 
     it 'destroys the Host' do

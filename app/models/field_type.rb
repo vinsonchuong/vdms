@@ -1,8 +1,6 @@
 class FieldType < ActiveRecord::Base
-  def after_initialize
-    self.options ||= {}
-    self.extend self.data_type_module::FieldType unless self.data_type_module.nil?
-  end
+  after_initialize :include_field_type_module
+  after_initialize :set_defaults
   after_create :create_fields
 
   belongs_to :event
@@ -32,6 +30,14 @@ class FieldType < ActiveRecord::Base
   end
 
   private
+
+  def set_defaults
+    self.options ||= {}
+  end
+
+  def include_field_type_module
+    extend data_type_module::FieldType unless data_type_module.nil?
+  end
 
   def existence_of_data_type
     errors.add(:data_type, 'There is no such data type') unless self.class.data_types_list.include?(data_type)

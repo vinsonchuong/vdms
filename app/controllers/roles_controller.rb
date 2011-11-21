@@ -29,7 +29,6 @@ class RolesController < EventBaseController
   # GET /events/1/visitors/1/edit
   def edit
     @role = get_role
-    puts @role.fields.inspect
   end
 
   # GET /events/1/hosts/1/delete

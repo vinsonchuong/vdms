@@ -6,7 +6,7 @@ describe ConstraintsController do
     @event = @feature.event
     Event.stub(:find).and_return(@event)
     @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
-    CASClient::Frameworks::Rails::Filter.fake('admin')
+    RubyCAS::Filter.fake('admin')
   end
 
   describe 'GET index' do
@@ -17,7 +17,7 @@ describe ConstraintsController do
 
     it "assigns to @features a list of the Event's Constraints" do
       features = Array.new(3) {Constraint.new}
-      @event.constraints.stub(:find).and_return(features)
+      @event.stub(:constraints).and_return(features)
       get :index, :event_id => @event.id
       assigns[:features].should == features
     end

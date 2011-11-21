@@ -199,7 +199,7 @@ describe Visitor do
   context 'when destroying' do
     it 'destroys its Fields' do
       fields = Array.new(3) do
-        field = mock_model(VisitorField)
+        field = VisitorField.new
         field.should_receive(:destroy)
         field
       end
@@ -209,7 +209,7 @@ describe Visitor do
 
     it 'destroys its Availabilities' do
       availabilities = Array.new(3) do
-        availability = mock_model(Availability)
+        availability = Availability.new
         availability.should_receive(:destroy)
         availability
       end
@@ -219,7 +219,7 @@ describe Visitor do
 
     it 'destroys its Rankings' do
       rankings = Array.new(3) do
-        ranking = mock_model(VisitorRanking)
+        ranking = VisitorRanking.new
         ranking.should_receive(:destroy)
         ranking
       end
@@ -229,7 +229,7 @@ describe Visitor do
 
     it 'destroys the Visitor Rankings to which it belongs' do
       rankings = Array.new(3) do
-        ranking = mock_model(HostRanking)
+        ranking = HostRanking.new
         ranking.should_receive(:destroy)
         ranking
       end

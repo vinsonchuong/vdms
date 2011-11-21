@@ -20,12 +20,12 @@ describe Meeting do
 
   describe 'Virtual Attributes' do
     it 'has a Host (host)' do
-      @meeting.host_availability.stub(:host).and_return('Host')
+      @meeting.host_availability.stub(:schedulable).and_return('Host')
       @meeting.host.should == 'Host'
     end
 
     it 'has a Visitor (visitor)' do
-      @meeting.visitor_availability.stub(:visitor).and_return('Visitor')
+      @meeting.visitor_availability.stub(:schedulable).and_return('Visitor')
       @meeting.visitor.should == 'Visitor'
     end
 
@@ -41,7 +41,7 @@ describe Meeting do
       visitor_availability2 = Factory.create(:visitor_availability, :time_slot => @time_slot)
       Meeting.create(:host_availability => @meeting.host_availability, :visitor_availability => visitor_availability2)
       host2 = Factory.create(:host, :person => Factory.create(:person, :name => 'Aaa'))
-      host_availability2 = Factory.create(:host_availability, :host => host2, :time_slot => @time_slot)
+      host_availability2 = Factory.create(:host_availability, :schedulable => host2, :time_slot => @time_slot)
       visitor_availability3 = Factory.create(:visitor_availability, :time_slot => @time_slot)
       Meeting.create(:host_availability => host_availability2, :visitor_availability => visitor_availability3)
       Meeting.by_host.map {|m| m.host.person.name}.should == ['Aaa', 'Bbb', 'Bbb']
@@ -50,7 +50,7 @@ describe Meeting do
     it "sorts by Visitor's name" do
       @meeting.visitor.person.update_attributes(:name => 'Bbb')
       visitor2 = Factory.create(:visitor, :person => Factory.create(:person, :name => 'Aaa'))
-      visitor_availability2 = Factory.create(:visitor_availability, :visitor => visitor2, :time_slot => @time_slot)
+      visitor_availability2 = Factory.create(:visitor_availability, :schedulable => visitor2, :time_slot => @time_slot)
       host_availability2 = Factory.create(:host_availability, :time_slot => @time_slot)
       Meeting.create(:host_availability => host_availability2, :visitor_availability => visitor_availability2)
       Meeting.by_visitor.map {|m| m.visitor.person.name}.should == ['Aaa', 'Bbb']
@@ -75,7 +75,7 @@ describe Meeting do
     end
 
     it 'is not valid with a Visitor who is unavailable during the Time Slot' do
-      @meeting.visitor_availability.visitor.stub(:full_name).and_return('Visitor')
+      @meeting.visitor_availability.schedulable.stub(:full_name).and_return('Visitor')
       @meeting.visitor_availability.available = false
       @meeting.should_not be_valid
       @meeting.errors.full_messages.should include('First Last is not available from 05:00PM to 05:15PM')
@@ -104,9 +104,9 @@ describe Meeting do
   context 'after creating' do
     it 'has consistent associations' do
       host_availability = @meeting.host_availability
-      host = host_availability.host
+      host = host_availability.schedulable
       visitor_availability = @meeting.visitor_availability
-      visitor = visitor_availability.visitor
+      visitor = visitor_availability.schedulable
 
       time_slot2 = Factory.create(:time_slot)
       host_availability2 = host.availabilities.create!(:time_slot => time_slot2, :available => true)
@@ -120,15 +120,15 @@ describe Meeting do
       meeting3 = visitor2_availability.meetings.create(:host_availability => host_availability)
       host_availability.meetings.should include(meeting3)
       host.meetings.should include(meeting3)
-      visitor2_availability.visitor.meetings.should include(meeting3)
+      visitor2_availability.schedulable.meetings.should include(meeting3)
 
       host2_availability = Factory.create(:host_availability, :time_slot => @time_slot)
       visitor3_availability = Factory.create(:visitor_availability, :time_slot => @time_slot)
       meeting4 = Meeting.create(:host_availability => host2_availability, :visitor_availability => visitor3_availability)
       host2_availability.meetings.should include(meeting4)
-      host2_availability.host.meetings.should include(meeting4)
+      host2_availability.schedulable.meetings.should include(meeting4)
       visitor3_availability.meetings.should include(meeting4)
-      visitor3_availability.visitor.meetings.should include(meeting4)
+      visitor3_availability.schedulable.meetings.should include(meeting4)
     end
   end
 
@@ -138,9 +138,9 @@ describe Meeting do
       visitor_availability = @meeting.visitor_availability
       @meeting.destroy
       host_availability.meetings.should_not include(@meeting)
-      host_availability.host.meetings.should_not include(@meeting)
+      host_availability.schedulable.meetings.should_not include(@meeting)
       visitor_availability.meetings.should_not include(@meeting)
-      visitor_availability.visitor.meetings.should_not include(@meeting)
+      visitor_availability.schedulable.meetings.should_not include(@meeting)
     end
   end
 end

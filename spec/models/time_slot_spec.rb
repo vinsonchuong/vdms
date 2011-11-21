@@ -66,7 +66,7 @@ describe TimeSlot do
       ['', nil].each do |invalid_time|
         @time_slot.begin = invalid_time
         @time_slot.should_not be_valid
-        @time_slot.errors.full_messages.should include("Start Time can't be blank")
+        @time_slot.errors.full_messages.should include("Start Time is not a valid datetime")
       end
     end
 
@@ -82,7 +82,7 @@ describe TimeSlot do
       ['', nil].each do |invalid_time|
         @time_slot.end = invalid_time
         @time_slot.should_not be_valid
-        @time_slot.errors.full_messages.should include("End Time can't be blank")
+        @time_slot.errors.full_messages.should include("End Time is not a valid datetime")
       end
     end
 

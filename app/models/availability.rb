@@ -1,9 +1,10 @@
 class Availability < ActiveRecord::Base
   #attr_accessible :time_slot, :time_slot_id, :available
 
+  belongs_to :schedulable, :class_name => 'Role'
   belongs_to :time_slot
 
   default_scope :joins => :time_slot, :order => 'begin'
 
-  validates_existence_of :time_slot
+  #validates_existence_of :time_slot
 end

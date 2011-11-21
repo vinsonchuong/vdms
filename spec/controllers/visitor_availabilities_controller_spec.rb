@@ -4,20 +4,20 @@ describe VisitorAvailabilitiesController do
   before(:each) do
     @visitor = Factory.create(:visitor)
     @fac = Factory.create(:person, :ldap_id => 'fac', :role => 'facilitator')
-    CASClient::Frameworks::Rails::Filter.fake('fac')
+    RubyCAS::Filter.fake('fac')
     @event = @visitor.event
     Event.stub(:find).and_return(@event)
   end
 
   describe 'forced profile verification' do
     before(:each) do
-      Visitor.stub(:find).and_return(@visitor)
+      @event.visitors.stub(:find).and_return(@visitor)
     end
 
     context 'when an unverified Visitor is signed in' do
       before(:each) do
         @visitor.update_attribute(:verified, false)
-        Person.stub(:find).and_return(@visitor.person)
+        Person.stub(:find_by_ldap_id).and_return(@visitor.person)
       end
 
       it 'saves the requested URL before redirecting' do
@@ -38,8 +38,8 @@ describe VisitorAvailabilitiesController do
 
     context 'when the signed in person is not an unverified Visitor' do
       before(:each) do
-        Person.stub(:find).and_return(@fac)
-        CASClient::Frameworks::Rails::Filter.fake('facilitator')
+        Person.stub(:find_by_ldap_id).and_return(@fac)
+        RubyCAS::Filter.fake('facilitator')
       end
 
       it 'does not redirect when editing availabilities' do
@@ -76,7 +76,7 @@ describe VisitorAvailabilitiesController do
 
   describe 'PUT update_all' do
     before(:each) do
-      Visitor.stub(:find).and_return(@visitor)
+      @event.visitors.stub(:find).and_return(@visitor)
     end
 
     it 'assigns to @schedulable the Visitor' do
@@ -97,7 +97,7 @@ describe VisitorAvailabilitiesController do
       context 'when the Visitor is signed in' do
         before(:each) do
           @visitor.person.update_attribute(:ldap_id, 'visitor')
-          CASClient::Frameworks::Rails::Filter.fake('visitor')
+          RubyCAS::Filter.fake('visitor')
         end
 
         it 'sets a flash[:notice] message' do

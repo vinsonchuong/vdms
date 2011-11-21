@@ -4,14 +4,14 @@ describe HostAvailabilitiesController do
   before(:each) do
     @host = Factory.create(:host)
     @host.person.update_attribute(:ldap_id, 'host')
-    CASClient::Frameworks::Rails::Filter.fake('host')
+    RubyCAS::Filter.fake('host')
     @event = @host.event
     Event.stub(:find).and_return(@event)
   end
 
   describe 'forced profile verification' do
     before(:each) do
-      Host.stub(:find).and_return(@host)
+      @event.hosts.stub(:find).and_return(@host)
     end
 
     context 'when an unverified Host is signed in' do
@@ -39,7 +39,7 @@ describe HostAvailabilitiesController do
     context 'when the signed in person is not an unverified Host' do
       before(:each) do
         Person.stub(:find).and_return(Factory.create(:person, :role => 'administrator', :ldap_id => 'administrator'))
-        CASClient::Frameworks::Rails::Filter.fake('administrator')
+        RubyCAS::Filter.fake('administrator')
       end
 
       it 'does not redirect when editing availabilities' do
@@ -63,7 +63,7 @@ describe HostAvailabilitiesController do
     end
 
     it 'assigns to @schedulable the Host' do
-      Host.stub(:find).and_return(@host)
+      @event.hosts.stub(:find).and_return(@host)
       get :edit_all, :host_id => @host.id, :event_id => @event.id
       assigns[:schedulable].should == @host
     end
@@ -76,11 +76,10 @@ describe HostAvailabilitiesController do
 
   describe 'PUT update_all' do
     before(:each) do
-      Host.stub(:find).and_return(@host)
+      @event.hosts.stub(:find).and_return(@host)
     end
 
     it 'assigns to @schedulable the Host' do
-      Host.stub(:find).and_return(@host)
       put :update_all, :host_id => @host.id, :event_id => @event.id
       assigns[:schedulable].should == @host
     end
@@ -105,7 +104,7 @@ describe HostAvailabilitiesController do
       context 'when someone other than the Host is signed in' do
         before(:each) do
           @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
-          CASClient::Frameworks::Rails::Filter.fake('admin')
+          RubyCAS::Filter.fake('admin')
         end
 
         it 'sets a flash[:notice] message' do

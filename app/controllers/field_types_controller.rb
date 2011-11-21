@@ -33,7 +33,6 @@ class FieldTypesController < EventBaseController
   # POST /events/1/visitor_field_types
   def create
     @field_type = get_field_type
-    puts @field_type.inspect
     if @field_type.save
       flash[:notice] = t('create.success', :scope => get_i18n_scope)
       redirect_to :action => 'index'

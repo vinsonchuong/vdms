@@ -20,9 +20,7 @@ describe VisitorFieldType do
     it 'has a readonly Data Type (data_type)' do
       @field_type.should respond_to(:data_type)
       @field_type.should respond_to(:data_type=)
-      old_field_type = @field_type.data_type
-      @field_type.update_attribute(:data_type, 'single_select').should be_true
-      @field_type.reload.data_type.should == old_field_type
+      expect {@field_type.update_attribute(:data_type, 'single_select')}.should raise_error
     end
 
     it 'has an Options hash (options)' do
@@ -59,7 +57,7 @@ describe VisitorFieldType do
     end
 
     it 'includes the corresponding DataType module' do
-      @field_type.metaclass.included_modules.should include(DataTypes::Text::FieldType)
+      @field_type.singleton_class.included_modules.should include(DataTypes::Text::FieldType)
     end
   end
 

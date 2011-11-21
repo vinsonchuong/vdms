@@ -6,7 +6,7 @@ describe HostFieldTypesController do
     @event = @field_type.event
     Event.stub(:find).and_return(@event)
     @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
-    CASClient::Frameworks::Rails::Filter.fake('admin')
+    RubyCAS::Filter.fake('admin')
   end
 
   describe 'GET index' do
@@ -17,7 +17,7 @@ describe HostFieldTypesController do
 
     it "assigns to @field_types a list of the Event's HostFieldTypes" do
       field_types = Array.new(3) {HostFieldType.new}
-      @event.host_field_types.stub(:find).and_return(field_types)
+      @event.stub(:host_field_types).and_return(field_types)
       get :index, :event_id => @event.id
       assigns[:field_types].should == field_types
     end
@@ -169,7 +169,7 @@ describe HostFieldTypesController do
 
   describe 'PUT update' do
     before(:each) do
-      HostFieldType.stub(:find).and_return(@field_type)
+      @event.host_field_types.stub(:find).and_return(@field_type)
     end
 
     it 'assigns to @field_type the given HostFieldType' do
@@ -223,7 +223,7 @@ describe HostFieldTypesController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      HostFieldType.stub(:find).and_return(@field_type)
+      @event.host_field_types.stub(:find).and_return(@field_type)
     end
 
     it 'destroys the HostFieldType' do

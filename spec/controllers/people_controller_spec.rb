@@ -4,13 +4,13 @@ describe PeopleController do
   before(:each) do
     @person = Factory.create(:person, :ldap_id => 'person')
     @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
-    CASClient::Frameworks::Rails::Filter.fake('admin')
+    RubyCAS::Filter.fake('admin')
   end
 
   describe 'GET index' do
     it 'assigns to @people a list of all the People sorted by Name' do
       people = Array.new(3) {Person.new}
-      Person.stub(:find).and_return(@admin, people)
+      Person.stub(:all).and_return(people)
       get :index
       assigns[:people].should == people
     end
@@ -18,13 +18,6 @@ describe PeopleController do
     it 'renders the index template' do
       get :index
       response.should render_template('index')
-    end
-  end
-
-  describe 'GET delete_all' do
-    it 'renders the delete_all template' do
-      get :delete_all
-      response.should render_template('delete_all')
     end
   end
 
@@ -49,7 +42,7 @@ describe PeopleController do
 
   describe 'GET edit' do
     it 'assigns to @person the given Person' do
-      Person.stub(:find).and_return(@admin, @person)
+      Person.stub(:find).and_return(@person)
       get :edit, :id => @person.id
       assigns[:person].should == @person
     end
@@ -62,7 +55,7 @@ describe PeopleController do
 
   describe 'GET delete' do
     it 'assigns to @person the given Person' do
-      Person.stub(:find).and_return(@admin, @person)
+      Person.stub(:find).and_return(@person)
       get :delete, :id => @person.id
       assigns[:person].should == @person
     end
@@ -160,7 +153,7 @@ describe PeopleController do
 
   describe 'PUT update' do
     before(:each) do
-      Person.stub(:find).and_return(@admin, @person)
+      Person.stub(:find).and_return(@person)
     end
 
     it 'assigns to @person the given Person' do
@@ -192,8 +185,8 @@ describe PeopleController do
 
       context 'when signed in as the given Person' do
         before(:each) do
-          Person.stub(:find).and_return(@person, @person)
-          CASClient::Frameworks::Rails::Filter.fake(@person.ldap_id)
+          Person.stub(:find).and_return(@person)
+          RubyCAS::Filter.fake(@person.ldap_id)
         end
 
         it 'sets a flash[:notice] message' do
@@ -222,7 +215,7 @@ describe PeopleController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      Person.stub(:find).and_return(@admin, @person)
+      Person.stub(:find).and_return(@person)
     end
 
     it 'destroys the Person' do
@@ -237,28 +230,6 @@ describe PeopleController do
 
     it 'redirects to the View People page' do
       delete :destroy, :id => @person.id
-      response.should redirect_to(:action => 'index')
-    end
-  end
-
-  describe 'DELETE destroy_all' do
-    it 'removes all People' do
-      people = Array.new(3) do
-        person = Person.new
-        person.should_receive(:destroy)
-        person
-      end
-      Person.stub(:find).and_return(@admin, people)
-      delete :destroy_all
-    end
-
-    it 'sets a flash[:notice] message' do
-      delete :destroy_all
-      flash[:notice].should == I18n.t('people.destroy_all.success')
-    end
-
-    it 'redirects to the View People page' do
-      delete :destroy_all
       response.should redirect_to(:action => 'index')
     end
   end

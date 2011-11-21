@@ -13,7 +13,7 @@ class Visitor < Role
   validate do |record| # uniqueness of ranks in faculty_rankings
     ranks = record.rankings.reject(&:marked_for_destruction?).map(&:rank)
     if ranks.count != ranks.uniq.count
-      record.errors.add_to_base('Ranks must be unique')
+      record.errors.add(:base, 'Ranks must be unique')
     end
   end
 

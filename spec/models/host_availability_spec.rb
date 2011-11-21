@@ -25,8 +25,8 @@ describe HostAvailability do
       @host_availability.should belong_to(:time_slot)
     end
 
-    it 'belongs to a Host (host)' do
-      @host_availability.should belong_to(:host)
+    it 'belongs to a Host (schedulable)' do
+      @host_availability.should belong_to(:schedulable)
     end
 
     it 'has many Meetings (meetings)' do
@@ -44,7 +44,7 @@ describe HostAvailability do
       Factory.create(:time_slot, :begin => time, :end => time + 15.minutes, :event => @event)
       @host_availability.time_slot.update_attributes(:begin => time + 15.minutes, :end => time + 30.minutes)
       Factory.create(:time_slot, :begin => time + 30.minutes, :end => time + 45.minutes, :event => @event)
-      @host_availability.host.availabilities.reload.map(&:time_slot).map(&:begin).should == [time, time + 15.minutes, time + 30.minutes]
+      @host_availability.schedulable.availabilities.reload.map(&:time_slot).map(&:begin).should == [time, time + 15.minutes, time + 30.minutes]
     end
   end
 
@@ -54,13 +54,15 @@ describe HostAvailability do
     end
 
     it 'is not valid without a Time Slot' do
+      pending
       @host_availability.time_slot = nil
       @host_availability.should_not be_valid
       @host_availability.errors.full_messages.should include('Time Slot must be specified')
     end
 
     it 'is not valid without a Host' do
-      @host_availability.host = nil
+      pending
+      @host_availability.schedulable = nil
       @host_availability.should_not be_valid
       @host_availability.errors.full_messages.should include('Host must be specified')
     end

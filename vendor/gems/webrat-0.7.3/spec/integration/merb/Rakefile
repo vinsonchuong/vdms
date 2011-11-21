@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'rake/rdoctask'
+require 'rdoc/task'
 
 require 'merb-core'
 require 'merb-core/tasks/merb'

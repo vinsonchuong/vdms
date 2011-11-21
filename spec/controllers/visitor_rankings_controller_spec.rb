@@ -4,20 +4,20 @@ describe VisitorRankingsController do
   before(:each) do
     @visitor = Factory.create(:visitor)
     @fac = Factory.create(:person, :ldap_id => 'fac', :role => 'facilitator')
-    CASClient::Frameworks::Rails::Filter.fake('fac')
+    RubyCAS::Filter.fake('fac')
     @event = @visitor.event
     Event.stub(:find).and_return(@event)
   end
 
   describe 'forced profile verification' do
     before(:each) do
-      Visitor.stub(:find).and_return(@visitor)
+      @event.visitors.stub(:find).and_return(@visitor)
     end
 
     context 'when an unverified Visitor is signed in' do
       before(:each) do
         @visitor.update_attribute(:verified, false)
-        Person.stub(:find).and_return(@visitor.person)
+        Person.stub(:find_by_ldap_id).and_return(@visitor.person)
       end
 
       it 'saves the requested URL before redirecting' do
@@ -48,8 +48,8 @@ describe VisitorRankingsController do
 
     context 'when the signed in person is not an unverified Host' do
       before(:each) do
-        Person.stub(:find).and_return(Factory.create(:person, :role => 'administrator', :ldap_id => 'administrator'))
-        CASClient::Frameworks::Rails::Filter.fake('administrator')
+        Person.stub(:find_by_ldap_id).and_return(Factory.create(:person, :role => 'administrator', :ldap_id => 'administrator'))
+        RubyCAS::Filter.fake('administrator')
       end
 
       it 'does not redirect when indexing rankings' do
@@ -100,14 +100,14 @@ describe VisitorRankingsController do
     end
 
     it 'assigns to @ranker the Visitor' do
-      Visitor.stub(:find).and_return(@visitor)
+      @event.visitors.stub(:find).and_return(@visitor)
       get :add, :visitor_id => @visitor.id, :event_id => @event.id
       assigns[:ranker].should == @visitor
     end
 
     it 'assigns to @rankables a list of Hosts' do
       rankables = Array.new(3) {Factory.create(:host)}
-      Host.stub(:find).and_return(rankables)
+      @event.stub(:hosts).and_return(rankables)
       get :add, :visitor_id => @visitor.id, :event_id => @event.id
       assigns[:rankables].should == rankables
     end
@@ -156,7 +156,7 @@ describe VisitorRankingsController do
     context 'when the Visitor has selected new Hosts to rank' do
       before(:each) do
         @hosts = Array.new(3) {Host.new}
-        Host.stub(:find).and_return(@hosts)
+        @event.hosts.stub(:find).and_return(@hosts)
       end
 
       it 'finds the given Hosts' do
@@ -165,7 +165,7 @@ describe VisitorRankingsController do
       end
 
       it 'builds a new VisitorRanking for each given Host' do
-        Visitor.stub(:find).and_return(@visitor)
+        @event.visitors.stub(:find).and_return(@visitor)
         get :edit_all, :visitor_id => @visitor.id, :event_id => @event.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
         @visitor.rankings.map(&:rankable).should == @hosts
       end
@@ -184,7 +184,7 @@ describe VisitorRankingsController do
 
   describe 'PUT update_all' do
     before(:each) do
-      Visitor.stub(:find).and_return(@visitor)
+      @event.visitors.stub(:find).and_return(@visitor)
     end
 
     it 'assigns to @ranker the Visitor' do

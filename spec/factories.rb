@@ -1,99 +1,101 @@
-Factory.define :person do |p|
-  p.name 'First Last'
-  p.email 'email@email.com'
-  p.role 'user'
-end
+FactoryGirl.define do
+  factory :person do
+    name 'First Last'
+    email 'email@email.com'
+    role 'user'
+  end
 
-Factory.define :event do |e|
-  e.name 'Event'
-  e.meeting_length 15
-  e.meeting_gap 0
-  e.max_meetings_per_visitor 25
+  factory :event do
+    name 'Event'
+    meeting_length 15
+    meeting_gap 0
+    max_meetings_per_visitor 25
+  end
+
+  factory :host_field_type do
+    sequence(:name) {|n| "Host Field #{n}"}
+    description 'Description'
+    data_type 'text'
+    event
+  end
+
+  factory :visitor_field_type do
+    sequence(:name) {|n| "Visitor Field #{n}"}
+    description 'Description'
+    data_type 'text'
+    event
+  end
+
+  factory :constraint do
+    sequence(:name) {|n| "Constraint #{n}"}
+    weight 1
+    feature_type 'equality/equals'
+    event
+    host_field_type
+    visitor_field_type
+  end
+
+  factory :goal do
+    sequence(:name) {|n| "Goal #{n}"}
+    weight 1
+    feature_type 'equality/equals'
+    event
+    host_field_type
+    visitor_field_type
+  end
+
+  factory :host do
+    verified true
+    person
+    event
+  end
+
+  factory :visitor do
+    verified true
+    person
+    event
+  end
+
+  factory :host_field do
+    data 'Data'
+    association :role, :factory => :host
+    association :field_type, :factory => :host_field_type
+  end
+
+  factory :visitor_field do
+    data 'Data'
+    association :role, :factory => :visitor
+    association :field_type, :factory => :visitor_field_type
+  end
+
+  factory :host_ranking do
+    sequence(:rank) {|n| n}
+    association :ranker, :factory => :host
+    association :rankable, :factory => :visitor
+  end
+
+  factory :visitor_ranking do
+    sequence(:rank) {|n| n}
+    association :ranker, :factory => :visitor
+    association :rankable, :factory => :host
+  end
+
+  factory :host_availability do
+    room 'Room'
+    available true
+    time_slot
+    association :schedulable, :factory => :host
+  end
+
+  factory :visitor_availability do
+    available true
+    time_slot
+    association :schedulable, :factory => :visitor
+  end
 end
 
 Factory.define :time_slot do |t|
   t.begin {Time.zone.parse('1/1/2011')}
   t.end {Time.zone.parse('1/2/2011')}
   t.association :event
-end
-
-Factory.define :host_field_type do |f|
-  f.sequence(:name) {|n| "Field#{n}"}
-  f.description 'Description'
-  f.data_type 'text'
-  f.association :event
-end
-
-Factory.define :visitor_field_type do |f|
-  f.sequence(:name) {|n| "Field#{n}"}
-  f.description 'Description'
-  f.data_type 'text'
-  f.association :event
-end
-
-Factory.define :constraint do |c|
-  c.sequence(:name) {|n| "Constraint#{n}"}
-  c.weight 1
-  c.feature_type 'equality/equals'
-  c.association :event
-  c.association :host_field_type
-  c.association :visitor_field_type
-end
-
-Factory.define :goal do |c|
-  c.sequence(:name) {|n| "Goal#{n}"}
-  c.weight 1
-  c.feature_type 'equality/equals'
-  c.association :event
-  c.association :host_field_type
-  c.association :visitor_field_type
-end
-
-Factory.define :host do |h|
-  h.association :person
-  h.association :event
-  h.verified true
-end
-
-Factory.define :visitor do |v|
-  v.association :person
-  v.association :event
-  v.verified true
-end
-
-Factory.define :host_field do |f|
-  f.data 'Data'
-  f.association :role, :factory => :host
-  f.association :field_type, :factory => :host_field_type
-end
-
-Factory.define :visitor_field do |f|
-  f.data 'Data'
-  f.association :role, :factory => :visitor
-  f.association :field_type, :factory => :visitor_field_type
-end
-
-Factory.define :host_ranking do |r|
-  r.sequence(:rank) {|n| n}
-  r.association :ranker, :factory => :host
-  r.association :rankable, :factory => :visitor
-end
-
-Factory.define :visitor_ranking do |r|
-  r.sequence(:rank) {|n| n}
-  r.association :ranker, :factory => :visitor
-  r.association :rankable, :factory => :host
-end
-
-Factory.define :host_availability do |a|
-  a.room 'Room'
-  a.available true
-  a.association :time_slot
-  a.association :host
-end
-
-Factory.define :visitor_availability do |a|
-  a.available true
-  a.association :time_slot
-  a.association :visitor
 end

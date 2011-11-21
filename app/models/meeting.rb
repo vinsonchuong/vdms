@@ -9,8 +9,8 @@ class Meeting < ActiveRecord::Base
   belongs_to :host_availability
   belongs_to :visitor_availability
 
-  named_scope :by_host, :joins => {:host_availability => {:host => :person}}, :order => 'name'
-  named_scope :by_visitor, :joins => {:visitor_availability => {:visitor => :person}}, :order => 'name'
+  named_scope :by_host, :joins => {:host_availability => {:schedulable => :person}}, :order => 'name'
+  named_scope :by_visitor, :joins => {:visitor_availability => {:schedulable => :person}}, :order => 'name'
 
   after_save :reset_associations
 
@@ -26,11 +26,11 @@ class Meeting < ActiveRecord::Base
   end
 
   def host
-    host_availability && host_availability.host
+    host_availability && host_availability.schedulable
   end
 
   def visitor
-    visitor_availability && visitor_availability.visitor
+    visitor_availability && visitor_availability.schedulable
   end
 
   def time
@@ -51,7 +51,7 @@ class Meeting < ActiveRecord::Base
 
   # Validations
   def time_slots
-    errors.add_to_base :time_slots_must_match unless host_availability.time_slot == visitor_availability.time_slot
+    errors.add :base, :time_slots_must_match unless host_availability.time_slot == visitor_availability.time_slot
     errors.add(
       :host_availability,
       :not_available,

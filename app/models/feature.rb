@@ -1,9 +1,6 @@
 class Feature < ActiveRecord::Base
-  def after_initialize
-    self.options ||= {}
-    puts self.feature_type_module
-    self.extend self.feature_type_module unless self.feature_type_module.nil?
-  end
+  after_initialize :set_defaults
+  after_initialize :include_feature_type_module
 
   belongs_to :event
   belongs_to :host_field_type
@@ -49,6 +46,14 @@ class Feature < ActiveRecord::Base
   end
 
   private
+
+  def set_defaults
+    self.options ||= {}
+  end
+
+  def include_feature_type_module
+    extend feature_type_module unless feature_type_module.nil?
+  end
 
   def existence_of_feature_type
   end

@@ -1,9 +1,0 @@
-#!/usr/bin/env ruby
-if ARGV.any? {|arg| %w[--drb -X --generate-options -G --help -h --version -v].include?(arg)}
-  require 'rubygems' unless ENV['NO_RUBYGEMS']
-else
-  ENV["RAILS_ENV"] ||= 'test'
-  require File.expand_path(File.dirname(__FILE__) + "/../config/environment") unless defined?(RAILS_ROOT)
-end
-require 'spec/autorun'
-exit ::Spec::Runner::CommandLine.run

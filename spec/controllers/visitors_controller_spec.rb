@@ -6,20 +6,20 @@ describe VisitorsController do
     @event = @visitor.event
     Event.stub(:find).and_return(@event)
     @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
-    CASClient::Frameworks::Rails::Filter.fake('admin')
+    RubyCAS::Filter.fake('admin')
   end
 
   describe 'forced profile verification' do
     before(:each) do
-      Visitor.stub(:find).and_return(@visitor)
+      @event.visitors.stub(:find).and_return(@visitor)
     end
 
     context 'when an unverified Visitor is signed in' do
       before(:each) do
         @visitor.verified = false
         @visitor.person.ldap_id = 'visitor'
-        Person.stub(:find).and_return(@visitor.person)
-        CASClient::Frameworks::Rails::Filter.fake('visitor')
+        Person.stub(:find_by_ldap_id).and_return(@visitor.person)
+        RubyCAS::Filter.fake('visitor')
       end
 
       it 'does not redirect when editing a Visitor' do
@@ -89,7 +89,7 @@ describe VisitorsController do
 
     it "assigns to @roles a list of the Event's Visitors sorted by Name" do
       visitors = Array.new(3) {Visitor.new}
-      @event.visitors.stub(:find).and_return(visitors)
+      @event.stub(:visitors).and_return(visitors)
       get :index, :event_id => @event.id
       assigns[:roles].should == visitors
     end
@@ -107,7 +107,7 @@ describe VisitorsController do
     end
 
     it 'assigns to @roles the given Visitor' do
-      Visitor.stub(:find).and_return(@visitor)
+      @event.visitors.stub(:find).and_return(@visitor)
       get :show, :event_id => @event.id, :id => @visitor.id
       assigns[:role].should == @visitor
     end
@@ -239,7 +239,7 @@ describe VisitorsController do
 
   describe 'PUT update' do
     before(:each) do
-      Visitor.stub(:find).and_return(@visitor)
+      @event.visitors.stub(:find).and_return(@visitor)
     end
 
     it 'assigns to @role the given Role' do
@@ -257,7 +257,7 @@ describe VisitorsController do
     context 'when the Host is signed in' do
       before(:each) do
         @visitor.person.update_attribute(:ldap_id, 'visitor')
-        CASClient::Frameworks::Rails::Filter.fake('visitor')
+        RubyCAS::Filter.fake('visitor')
       end
 
       it 'updates and verifies the Host' do
@@ -274,8 +274,8 @@ describe VisitorsController do
       context 'when signed in as the Visitor' do
         before(:each) do
           @visitor.person.ldap_id = 'visitor'
-          Person.stub(:find).and_return(@visitor.person)
-          CASClient::Frameworks::Rails::Filter.fake('visitor')
+          Person.stub(:find_by_ldap_id).and_return(@visitor.person)
+          RubyCAS::Filter.fake('visitor')
         end
 
         context 'when the Visitor was unverified' do
@@ -337,7 +337,7 @@ describe VisitorsController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      Visitor.stub(:find).and_return(@visitor)
+      @event.visitors.stub(:find).and_return(@visitor)
     end
 
     it 'destroys the Visitor' do

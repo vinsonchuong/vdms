@@ -1,29 +1,78 @@
-ActionController::Routing::Routes.draw do |map|
-  map.resources(:people,
-                :collection => {:upload => :get, :delete_all => :get, :import => :post, :destroy_all => :delete},
-                :member => {:delete => :get})
-  map.resources(:events, :member => {:delete => :get}) do |event|
-    event.resources(:constraints, :except => [:show], :member => {:delete => :get})
-    event.resources(:goals, :except => [:show], :member => {:delete => :get})
-    event.resources(:host_field_types, :except => :show, :member => {:delete => :get})
-    event.resources(:visitor_field_types, :except => :show, :member => {:delete => :get})
-    event.resources(:hosts, :collection => {:join => :get, :create_from_current_user => :post},
-                    :member => {:delete => :get}) do |host|
-      host.resources(:rankings, :controller => 'host_rankings', :only => :index,
-                     :collection => {:add => :get, :edit_all => :get, :update_all => :put})
-      host.resources(:availabilities, :controller => 'host_availabilities', :except => :all,
-                     :collection => {:edit_all => :get, :update_all => :put})
-      host.resources(:meetings, :only => :index, :collection => {:tweak => :get, :apply_tweaks => :post})
+VDMSCode::Application.routes.draw do
+  resources :people do
+    collection do
+      get :upload
+      post :import
     end
-    event.resources(:visitors, :collection => {:join => :get, :create_from_current_user => :post},
-                    :member => {:delete => :get}) do |visitor|
-      visitor.resources(:rankings, :controller => 'visitor_rankings', :only => :index,
-                        :collection => {:add => :get, :edit_all => :get, :update_all => :put})
-      visitor.resources(:availabilities, :controller => 'visitor_availabilities', :except => :all,
-                        :collection => {:edit_all => :get, :update_all => :put})
-      visitor.resources(:meetings, :only => :index)
-    end
-    event.resources(:meetings, :only => :index, :collection => {:create_all => :get, :statistics => :get})
+    member { get :delete }
   end
-  map.root :events
+  resources :events do
+    member { get :delete }
+    resources :constraints, :except => :show do
+      member { get :delete }
+    end
+    resources :goals, :except => :show do
+      member { get :delete }
+    end
+    resources :host_field_types, :except => :show do
+      member { get :delete }
+    end
+    resources :visitor_field_types, :except => :show do
+      member { get :delete }
+    end
+    resources :hosts do
+      collection do
+        get :join
+        post :create_from_current_user
+      end
+      member { get :delete }
+      resources :rankings, :controller => 'host_rankings', :only => :index do
+        collection do
+          get :add
+          get :edit_all
+          put :update_all
+        end
+      end
+      resources :availabilities, :controller => 'host_availabilities', :except => :all do
+        collection do
+          get :edit_all
+          put :update_all
+        end
+      end
+      resources :meetings, :only => :index do
+        collection do
+          get :tweak
+          post :apply_tweaks
+        end
+      end
+    end
+    resources :visitors do
+      collection do
+        get :join
+        post :create_from_current_user
+      end
+      member { get :delete }
+      resources :rankings, :controller => 'visitor_rankings', :only => :index do
+        collection do
+          get :add
+          get :edit_all
+          put :update_all
+        end
+      end
+      resources :availabilities, :controller => 'visitor_availabilities', :except => :all do
+        collection do
+          get :edit_all
+          put :update_all
+        end
+      end
+      resources :meetings, :only => :index
+    end
+    resources :meetings, :only => :index do
+      collection do
+        get :create_all
+        get :statistics
+      end
+    end
+  end
+  root :to => 'events#index'
 end
