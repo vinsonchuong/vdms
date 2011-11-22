@@ -1,5 +1,5 @@
 class Ranking < ActiveRecord::Base
-  default_scope :order => 'rank'
+  default_scope order('rank')
 
   validates_numericality_of :rank, :only_integer => true, :greater_than => 0
 

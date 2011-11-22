@@ -9,8 +9,8 @@ class Meeting < ActiveRecord::Base
   belongs_to :host_availability
   belongs_to :visitor_availability
 
-  named_scope :by_host, :joins => {:host_availability => {:schedulable => :person}}, :order => 'name'
-  named_scope :by_visitor, :joins => {:visitor_availability => {:schedulable => :person}}, :order => 'name'
+  scope :by_host, joins(:host_availability => {:schedulable => :person}).order('name').readonly(false)
+  scope :by_visitor, joins(:visitor_availability => {:schedulable => :person}).order('name').readonly(false)
 
   after_save :reset_associations
 

@@ -7,8 +7,8 @@ Feature: Administrators can manage events
   Background: I am signed in as an administrator
     Given the following events have been added:
       | name           | meeting_length | meeting_gap | max_meetings_per_visitor |
-      | Tapia          | 900            | 300         | 10                       |
-      | Visit Day 2011 | 900            | 300         | 10                       |
+      | Tapia          | 900            | 600         | 10                       |
+      | Visit Day 2011 | 900            | 600         | 10                       |
     And I am signed in as an "Administrator"
 
   Scenario: I view a list of all events
@@ -27,28 +27,26 @@ Feature: Administrators can manage events
     Given I am on the home page
     When I follow "Add Event"
     And I fill in "Name" with "<name>"
-    And I fill in "Meeting Length" with "<meeting_length>"
-    And I fill in "Inter-Meeting Gap" with "<meeting_gap>"
+    And I select "<meeting_length>" from "Meeting Length"
+    And I select "<meeting_gap>" from "Inter-Meeting Gap"
     And I press "Add Event"
     Then I should see "<result>"
 
     Scenarios: with valid information
       | name  | meeting_length | meeting_gap | max_meetings_per_visitor | result                        |
-      | Event | 1200           | 300         | 8                        | Event was successfully added. |
-      | Event | 1200           | 0           | 8                        | Event was successfully added. |
+      | Event | 20             | 5           | 8                        | Event was successfully added. |
+      | Event | 20             | 0           | 8                        | Event was successfully added. |
 
     Scenarios: with invalid information
       | name  | meeting_length | meeting_gap | max_meetings_per_visitor | result                                     |
-      |       | 1200           | 300         | 8                        | Name can't be blank                        |
-      | Event |                | 300         | 8                        | Meeting Length can't be blank              |
-      | Event | 1200           |             | 8                        | Inter-Meeting Gap can't be blank           |
+      |       | 20             | 5           | 8                        | Name can't be blank                        |
 
   Scenario: I edit an event
     Given I want to manage the event named "Visit Day 2011"
     And I am on the home page
     When I follow "Edit Event" for the event named "Visit Day 2011"
-    And I fill in "Meeting Length" with "1800"
-    And I fill in "Inter-Meeting Gap" with "0"
+    And I select "30" from "Meeting Length"
+    And I select "0" from "Inter-Meeting Gap"
     And I press "Update Event"
     Then I should see "Event was successfully updated"
 

@@ -5,9 +5,11 @@
 # files.
 
 require 'spork'
- 
+
 Spork.prefork do
   require 'cucumber/rails'
+  require 'factory_girl_rails'
+  require 'factory_girl/step_definitions'
   require 'email_spec'
   require 'email_spec/cucumber'
 

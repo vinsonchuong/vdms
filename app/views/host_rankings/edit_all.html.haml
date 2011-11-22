@@ -31,7 +31,7 @@
         - (@ranker.rankings.map(&:rank) << @ranker.rankings.length).max.times {|i| ranks[i] = i + 1}
         - time_slots = []
         - [@ranker.availabilities.count, 10].max.times {|i| time_slots[i] = i + 1}
-        - ranker_form.fields_for :rankings do |ranking_fields|
+        != ranker_form.fields_for :rankings do |ranking_fields|
           - @ranking = ranking_fields.object
           %tr
             %td!= ranking_fields.select :rank, ranks

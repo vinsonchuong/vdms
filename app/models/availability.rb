@@ -4,7 +4,7 @@ class Availability < ActiveRecord::Base
   belongs_to :schedulable, :class_name => 'Role'
   belongs_to :time_slot
 
-  default_scope :joins => :time_slot, :order => 'begin'
+  default_scope joins(:time_slot).order('begin').readonly(false)
 
   #validates_existence_of :time_slot
 end

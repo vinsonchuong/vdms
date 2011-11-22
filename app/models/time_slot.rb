@@ -5,7 +5,7 @@ class TimeSlot < ActiveRecord::Base
   has_many :host_availabilities, :dependent => :destroy
   has_many :visitor_availabilities, :dependent => :destroy
 
-  default_scope :order => 'begin'
+  default_scope order('begin')
 
   after_create do |record|
     #validate against duplicates

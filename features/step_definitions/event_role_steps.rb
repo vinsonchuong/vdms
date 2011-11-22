@@ -50,31 +50,25 @@ When /^I set the room for the "([^"]*?)" to "([^"]*?)" meeting time to "([^"]*?)
 end
 
 When /^I rank the (?:visitor|host) named "([^"]*)" "([^"]*)"$/ do |name, rank|
-  within(%Q|//*[.='#{name}']/..//select[substring(@id, string-length(@id) - 3) = 'rank']/..|) do
+  within(:xpath, %Q|//*[.='#{name}']/..//select[contains(@id, 'rank')]/..|) do
     select rank
   end
 end
 
 When /^I flag the visitor named "([^"]*)" as mandatory$/ do |name|
-  within %Q|//*[.='#{name}']/..//input[substring(@id, string-length(@id) - 8) = 'mandatory']/..| do
-    check /.*?/
-  end
+  find(:xpath, %Q|//*[.='#{name}']/..//input[contains(@id, 'mandatory')]|).set(true)
 end
 
 When /^I flag the visitor named "([^"]*)" as one on one$/ do |name|
-  within %Q|//*[.='#{name}']/..//input[substring(@id, string-length(@id) - 9) = 'one_on_one']/..| do
-    check /.*?/
-  end
+  find(:xpath, %Q|//*[.='#{name}']/..//input[contains(@id, 'one_on_one')]|).set(true)
 end
 
 When /^I select "([^"]*)" time slots? for the visitor named "([^"]*)"$/ do |num_slots, name|
-  within %Q|//*[.='#{name}']/..//select[substring(@id, string-length(@id) - 4) = 'slots']/..| do
+  within(:xpath, %Q|//*[.='#{name}']/..//select[contains(@id, 'slots')]|) do
     select num_slots
   end
 end
 
 When /^I flag the (?:host|visitor) named "([^"]*)" for removal$/ do |name|
-  within %Q|//*[.='#{name}']/..//input[substring(@id, string-length(@id) - 6) = 'destroy']/..| do
-    check /.*?/
-  end
+  find(:xpath, %Q|//*[.='#{name}']/..//input[contains(@id, 'destroy')]|).set(true)
 end

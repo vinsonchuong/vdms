@@ -6,5 +6,5 @@ class Person < ActiveRecord::Base
   validates_format_of :email, :with => /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
   validates_inclusion_of :role, :in => ['user', 'facilitator', 'administrator']
 
-  default_scope :order => 'name'
+  default_scope order('name')
 end

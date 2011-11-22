@@ -17,12 +17,12 @@
         - 1.upto(@max_admits) do |i|
           %th Admit #{i}
     %tbody
-      - tweak_form.fields_for :availabilities do |availability_fields|
+      != tweak_form.fields_for :availabilities do |availability_fields|
         - availability = availability_fields.object
         %tr
           %td= availability.time_slot.begin.strftime('%I:%M%p')
           %td.room= availability.room || @faculty.default_room
-          - availability_fields.fields_for :meetings do |meeting_fields|
+          != availability_fields.fields_for :meetings do |meeting_fields|
             - meeting = meeting_fields.object
             %td
               - unless meeting.visitor.nil?

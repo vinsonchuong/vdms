@@ -10,15 +10,15 @@ class Event < ActiveRecord::Base
 
   validates_presence_of :name
   validates_presence_of :meeting_length
-  validates_numericality_of :meeting_length, :only_integer => true, :greater_than => 0
+  validates_numericality_of :meeting_length, :only_integer => true, :greater_than => 0, :allow_blank => true
   validates_presence_of :meeting_gap
-  validates_numericality_of :meeting_gap, :only_integer => true, :greater_than_or_equal_to => 0
+  validates_numericality_of :meeting_gap, :only_integer => true, :greater_than_or_equal_to => 0, :allow_blank => true
   validates_inclusion_of :disable_facilitators, :in => [true, false]
   validates_inclusion_of :disable_hosts, :in => [true, false]
   #validates_presence_of :max_meetings_per_visitor
   #validates_numericality_of :max_meetings_per_visitor, :only_integer => true, :greater_than_or_equal_to => 0
 
-  default_scope :order => 'name'
+  default_scope order('name')
 
   def meeting_times(options = {})
     times = time_slots.map {|t| (t.begin)...(t.end + meeting_gap)}
@@ -27,13 +27,15 @@ class Event < ActiveRecord::Base
     times.each_with_index do |time, i|
       time.define_singleton_method :id, lambda {i}
       time.define_singleton_method :new_record?, lambda {false}
+      time.define_singleton_method :persisted?, lambda {true}
       time.define_singleton_method :_destroy, lambda {}
     end
     if options[:include_blank]
       blank_time = ''..''
-      def blank_time.new_record?; true end
-      def blank_time.begin; nil end
-      def blank_time.end; nil end
+      blank_time.define_singleton_method :new_record?, lambda {true}
+      blank_time.define_singleton_method :persisted?, lambda {false}
+      blank_time.define_singleton_method :begin, lambda {nil}
+      blank_time.define_singleton_method :end, lambda {nil}
       times << blank_time
     end
     times

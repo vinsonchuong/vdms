@@ -9,7 +9,7 @@
   %fieldset
     %h3!= t('.profile')
     %ul
-      - fields_for @role.person do |person_fields|
+      != fields_for @role.person do |person_fields|
         - unless @current_user.role == 'administrator'
           %li.field
             != person_fields.label :ldap_id
@@ -24,7 +24,7 @@
         %li.field.required
           != person_fields.label :email
           != person_fields.text_field :email
-      - host_form.fields_for :fields do |field_fields|
+      != host_form.fields_for :fields do |field_fields|
         - field = field_fields.object
         %li.field
           != field_fields.label :data, field.field_type.name

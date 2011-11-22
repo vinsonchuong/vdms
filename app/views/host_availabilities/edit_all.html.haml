@@ -22,7 +22,7 @@
           %th{:scope => 'col'}!= HostAvailability.human_attribute_name(:available)
           %th{:scope => 'col'}!= HostAvailability.human_attribute_name(:room)
       %tbody
-        - schedulable_form.fields_for :availabilities do |availability_fields|
+        != schedulable_form.fields_for :availabilities do |availability_fields|
           - availability = availability_fields.object
           %tr
             %td!= "#{availability.time_slot.begin.strftime('%m/%d/%y - %I:%M%p')} to #{availability.time_slot.end.strftime('%I:%M%p')}"
