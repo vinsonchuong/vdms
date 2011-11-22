@@ -1,5 +1,5 @@
 - content_for :title, @current_user == @person ? t('.alt_title') : t('.title', :name => @person.name)
-- form_for @person, :url => {:action => 'update'} do |person_form|
+= form_for @person, :url => {:action => 'update'} do |person_form|
   - if @person.errors.any?
     #errors
       %h3!= t('.errors')

@@ -1,5 +1,5 @@
 - content_for :title, t('.title', :name => @role.person.name)
-- form_for([@event, @role]) do |visitor_form|
+= form_for([@event, @role]) do |visitor_form|
   - if @role.errors.any?
     #errors
       %h3!= t('.errors')
@@ -7,7 +7,7 @@
         - @role.errors.full_messages.each do |message|
           %li!= message
   %fieldset
-    != fields_for @role.person do |person_fields|
+    = fields_for @role.person do |person_fields|
       %h3!= t('.profile')
       %ul
         - unless @current_user.role == 'administrator'
@@ -24,7 +24,7 @@
         %li.field.required
           != person_fields.label :email
           != person_fields.text_field :email
-      != visitor_form.fields_for :fields do |field_fields|
+      = visitor_form.fields_for :fields do |field_fields|
         - field = field_fields.object
         %li.field
           != field_fields.label :data, field.field_type.name

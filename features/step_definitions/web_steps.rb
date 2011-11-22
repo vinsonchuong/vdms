@@ -32,7 +32,7 @@ end
 World(WithinHelpers)
 
 When /^(.*) within "(.*[^:"])"$/ do |step, parent|
-  within(:xpath, parent) { When step }
+  within(:xpath, parent) { step step }
 end
 
 # Single-line step scoper
@@ -42,7 +42,7 @@ end
 
 # Multi-line step scoper
 When /^(.*) within (.*[^:]):$/ do |step, parent, table_or_string|
-  with_scope(parent) { When "#{step}:", table_or_string }
+  with_scope(parent) { step "#{step}:", table_or_string }
 end
 
 Given /^(?:|I )am on (.+)$/ do |page_name|

@@ -1,5 +1,5 @@
 - content_for :title, t('.title')
-- form_for([@event, @feature], :url => new_event_constraint_path(@event), :html => {:method => :get}) do |feature_form|
+= form_for([@event, @feature], :url => new_event_constraint_path(@event), :html => {:method => :get}) do |feature_form|
   %fieldset
     %ul
       %li.field.required

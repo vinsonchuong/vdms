@@ -1,3 +1,3 @@
 - content_for :title, t('.title', :name => @person.name)
-- form_for @person, :url => {:action => 'destroy'}, :html => {:method => :delete} do |person_form|
+= form_for @person, :url => {:action => 'destroy'}, :html => {:method => :delete} do |person_form|
   != person_form.submit t('.submit')

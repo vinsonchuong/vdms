@@ -25,7 +25,7 @@ Given /the administrators have disabled facilitators from making further changes
 end
 
 When /^(?:|I )follow "([^"]*)" for the event named "([^"]*)"$/ do |link, name|
-  When %Q|I follow "#{link}" within "//*[.='#{name}']/.."|
+  step %Q|I follow "#{link}" within "//*[.='#{name}']/.."|
 end
 
 When /^I add "([^"]*)" to "([^"]*)" to the meeting times$/ do |start, finish|

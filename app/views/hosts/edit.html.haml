@@ -1,5 +1,5 @@
 - content_for :title, t('.title', :name => @role.person.name)
-- form_for([@event, @role]) do |host_form|
+= form_for([@event, @role]) do |host_form|
   - if @role.errors.any?
     #errors
       %h3!= t('.errors')

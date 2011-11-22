@@ -1,5 +1,5 @@
 - content_for :title, t('.title', :name => @ranker.person.name)
-- form_for @ranker, :url => {:action => 'update_all'} do |ranker_form|
+= form_for @ranker, :url => {:action => 'update_all'} do |ranker_form|
   - if @ranker.errors.any?
     #errors
       %h3!= t('.errors')
@@ -22,7 +22,7 @@
       %tbody
         - ranks = []
         - (@ranker.rankings.map(&:rank) << @ranker.rankings.length).max.times {|i| ranks[i] = i + 1}
-        != ranker_form.fields_for :rankings do |ranking_fields|
+        = ranker_form.fields_for :rankings do |ranking_fields|
           - @ranking = ranking_fields.object
           %tr
             %td!= ranking_fields.select :rank, ranks

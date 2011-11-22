@@ -1,5 +1,5 @@
 - content_for :title, t('.title')
-- form_for([@event, @field_type]) do |field_type_form|
+= form_for([@event, @field_type]) do |field_type_form|
   - if @field_type.errors.any?
     #errors
       %h3!= t('.errors')

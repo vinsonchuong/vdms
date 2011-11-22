@@ -1,5 +1,5 @@
 - content_for :title, t('.title')
-- form_for @event, :url => {:action => :update} do |event_form|
+= form_for @event, :url => {:action => :update} do |event_form|
   - if @event.errors.any?
     #errors
       %h3!= t('.errors')
@@ -38,7 +38,7 @@
       %li
         %h4 Meeting Time Ranges
         %ul
-          != event_form.fields_for :meeting_times, @meeting_times do |meeting_time_fields|
+          = event_form.fields_for :meeting_times, @meeting_times do |meeting_time_fields|
             - time = meeting_time_fields.object
             %li.field
               %ul

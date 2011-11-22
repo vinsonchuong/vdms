@@ -1,5 +1,5 @@
 - content_for :title, t('.title')
-- form_tag import_people_path, :method => :post, :multipart => true do
+= form_tag import_people_path, :method => :post, :multipart => true do
   - if !@people.nil? && @people.any?(&:invalid?)
     #errors
       %h3!= t('.errors')

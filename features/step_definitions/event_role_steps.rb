@@ -30,11 +30,11 @@ Given /^the (host|visitor) named "([^"]*)" has the following rankings:$/ do |rol
 end
 
 Given /I have the following rankings:/ do |rankings|
-  Given %Q|the #{@host.nil? ? 'visitor' : 'host'} named "My Name" has the following rankings:|, rankings
+  step %Q|the #{@host.nil? ? 'visitor' : 'host'} named "My Name" has the following rankings:|, rankings
 end
 
 When /^(?:|I )follow "([^"]*)" for the (?:host|visitor) named "([^"]*)"$/ do |link, name|
-  When %Q|I follow "#{link}" within "//*[.='#{name}']/.."|
+  step %Q|I follow "#{link}" within "//*[.='#{name}']/.."|
 end
 
 When /^I flag the "([^"]*?)" to "([^"]*?)" meeting time as available$/ do |start, finish|

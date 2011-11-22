@@ -41,7 +41,7 @@ class PeopleController < ApplicationController
   def import
     @people = Person.new_from_csv(params[:csv_file])
     if @people.all?(&:valid?)
-      @people.each {|p| p.save(false)}
+      @people.each {|p| p.save(:validate => false)}
       redirect_to(:people, :notice => t('people.import.success'))
     else
       render :action => 'upload'

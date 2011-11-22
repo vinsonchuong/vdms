@@ -1,3 +1,3 @@
 - content_for :title, t('.title')
-- form_for @feature, :url => {:action => 'destroy'}, :html => {:method => :delete} do |feature_form|
+= form_for @feature, :url => {:action => 'destroy'}, :html => {:method => :delete} do |feature_form|
   != feature_form.submit t('.submit')

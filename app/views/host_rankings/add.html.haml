@@ -1,5 +1,5 @@
 - content_for :title, t('.title')
-- form_for :select, :url => {:action => 'edit_all'}, :html => {:method => :get} do |select_form|
+= form_for :select, :url => {:action => 'edit_all'}, :html => {:method => :get} do |select_form|
   %fieldset
     %h4!= t('.visitors')
     %ul

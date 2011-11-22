@@ -1,5 +1,5 @@
 - content_for :title, t('.title')
-- form_for([@event, @feature]) do |feature_form|
+= form_for([@event, @feature]) do |feature_form|
   - if @feature.errors.any?
     #errors
       %h3!= t('.errors')
@@ -26,7 +26,7 @@
       %h3!= t('.options')
       %ul
         - @feature.option_types.each do |name, params|
-          != feature_form.fields_for :options, @feature.options[name] do |option_fields|
+          = feature_form.fields_for :options, @feature.options[name] do |option_fields|
             %li.field
               != option_fields.send(*params[:label_params])
               - unless params[:description].blank?

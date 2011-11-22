@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gem 'rails', '~> 3.0.11'
 
 gem 'cancan'
+gem 'dynamic_form'
 gem 'facets', :require => false
 gem 'haml'
 gem 'rubycas-client', '~> 2.2.1'

@@ -17,5 +17,5 @@ Given /^I want to manage the (host|visitor) field type named "([^"]*)"$/ do |rol
 end
 
 When /^(?:|I )follow "([^"]*)" for the (?:host|visitor) field type named "([^"]*)"$/ do |link, name|
-  When %Q|I follow "#{link}" within "//*[.='#{name}']/.."|
+  step %Q|I follow "#{link}" within "//*[.='#{name}']/.."|
 end
