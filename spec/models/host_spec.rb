@@ -134,7 +134,7 @@ describe Host do
         @host.update_attributes(:rankings_attributes => [
             {:id => delete_id, :_destroy => true}
         ])
-        @host.rankings.detect {|r| r.id == delete_id}.should be_marked_for_destruction
+        @host.rankings.none? {|r| r.id == delete_id}.should be_true
       end
     end
 
@@ -232,42 +232,38 @@ describe Host do
 
   context 'when destroying' do
     it 'destroys its Fields' do
-      fields = Array.new(3) do
-        field = mock_model(HostField)
+      3.times do
+        field = Factory.create(:host_field, :role => @host)
         field.should_receive(:destroy)
-        field
+        @host.fields << field
       end
-      @host.stub(:fields).and_return(fields)
       @host.destroy
     end
 
     it 'destroys its Availabilities' do
-      availabilities = Array.new(3) do
-        availability = mock_model(Availability)
+      3.times do
+        availability = Factory.create(:host_availability, :schedulable => @host)
         availability.should_receive(:destroy)
-        availability
+        @host.availabilities << availability
       end
-      @host.stub(:availabilities).and_return(availabilities)
       @host.destroy
     end
 
     it 'destroys its Rankings' do
-      rankings = Array.new(3) do
-        ranking = mock_model(HostRanking)
+      3.times do
+        ranking = Factory.create(:host_ranking, :ranker => @host)
         ranking.should_receive(:destroy)
-        ranking
+        @host.rankings << ranking
       end
-      @host.stub(:rankings).and_return(rankings)
       @host.destroy
     end
 
     it 'destroys the Visitor Rankings to which it belongs' do
-      rankings = Array.new(3) do
-        ranking = mock_model(VisitorRanking)
+      3.times do
+        ranking = Factory.create(:visitor_ranking, :rankable => @host)
         ranking.should_receive(:destroy)
-        ranking
+        @host.visitor_rankings << ranking
       end
-      @host.stub(:visitor_rankings).and_return(rankings)
       @host.destroy
     end
   end

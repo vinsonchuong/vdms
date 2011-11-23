@@ -71,12 +71,11 @@ describe VisitorAvailability do
 
   context 'when destroying' do
     it 'destroys its Meetings' do
-      meetings = Array.new(3) do
-        meeting = stub_model(Meeting)
+      3.times do
+        meeting = mock_model(Meeting).as_null_object
         meeting.should_receive(:destroy)
-        meeting
+        @availability.meetings << meeting
       end
-      @availability.stub(:meetings).and_return(meetings)
       @availability.destroy
     end
   end

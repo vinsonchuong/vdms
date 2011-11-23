@@ -11,7 +11,7 @@ describe HostRankingsController do
 
   describe 'forced profile verification' do
     before(:each) do
-      @event.hosts.stub(:find).and_return(@host)
+      @event.stub_chain(:hosts, :find).and_return(@host)
     end
 
     context 'when an unverified Host is signed in' do
@@ -100,7 +100,7 @@ describe HostRankingsController do
     end
 
     it 'assigns to @ranker the Host' do
-      @event.hosts.stub(:find).and_return(@host)
+      @event.stub_chain(:hosts, :find).and_return(@host)
       get :add, :host_id => @host.id, :event_id => @event.id
       assigns[:ranker].should == @host
     end
@@ -110,7 +110,7 @@ describe HostRankingsController do
       @host.rankings.build(:rankable => ranked_visitor)
       unranked_visitors = Array.new(3) {Visitor.new}
       @event.stub(:visitors).and_return(unranked_visitors + [ranked_visitor])
-      @event.hosts.stub(:find).and_return(@host)
+      @event.stub_chain(:hosts, :find).and_return(@host)
       get :add, :host_id => @host.id, :event_id => @event.id
       assigns[:rankables].should == unranked_visitors
     end
@@ -128,7 +128,7 @@ describe HostRankingsController do
     end
 
     it 'assigns to @ranker the Host' do
-      @event.hosts.stub(:find).and_return(@host)
+      @event.stub_chain(:hosts, :find).and_return(@host)
       get :edit_all, :host_id => @host.id, :event_id => @event.id
       assigns[:ranker].should == @host
     end
@@ -159,7 +159,7 @@ describe HostRankingsController do
     context 'when the Host has selected new Visitors to rank' do
       before(:each) do
         @visitors = Array.new(3) {Visitor.new}
-        @event.visitors.stub(:find).and_return(@visitors)
+        @event.stub_chain(:visitors, :find).and_return(@visitors)
       end
 
       it 'finds the given Visitors' do
@@ -168,7 +168,7 @@ describe HostRankingsController do
       end
 
       it 'builds a new HostRanking for each given Visitor' do
-        @event.hosts.stub(:find).and_return(@host)
+        @event.stub_chain(:hosts, :find).and_return(@host)
         get :edit_all, :host_id => @host.id, :event_id => @event.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
         @host.rankings.map(&:rankable).should == @visitors
       end
@@ -187,7 +187,7 @@ describe HostRankingsController do
 
   describe 'PUT update_all' do
     before(:each) do
-      @event.hosts.stub(:find).and_return(@host)
+      @event.stub_chain(:hosts, :find).and_return(@host)
     end
 
     it 'assigns to @ranker the Host' do

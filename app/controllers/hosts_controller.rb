@@ -21,7 +21,7 @@ class HostsController < RolesController
   end
 
   def get_attributes
-    params[:host]
+    params[:host] || {}
   end
 
   def get_i18n_scope

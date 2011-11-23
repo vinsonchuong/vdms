@@ -92,6 +92,15 @@ FactoryGirl.define do
     time_slot
     association :schedulable, :factory => :visitor
   end
+
+  factory :meeting do
+    host_availability
+    visitor_availability
+    after_build do |meeting|
+      meeting.host_availability.available = true
+      meeting.visitor_availability.available = true
+    end
+  end
 end
 
 Factory.define :time_slot do |t|

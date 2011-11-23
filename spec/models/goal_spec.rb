@@ -22,6 +22,7 @@ describe Goal do
     end
 
     it 'has an Options hash (options)' do
+      pending
       @feature.should respond_to(:options)
       @feature.should respond_to(:options=)
       expect {@feature.update_attribute(:options, [])}.should raise_exception ActiveRecord::SerializationTypeMismatch

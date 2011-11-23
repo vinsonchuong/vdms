@@ -16,7 +16,7 @@ class VisitorFieldTypesController < FieldTypesController
   end
 
   def get_attributes
-    params[:visitor_field_type]
+    params[:visitor_field_type] || {}
   end
 
   def get_i18n_scope

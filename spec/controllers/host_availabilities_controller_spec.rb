@@ -11,7 +11,7 @@ describe HostAvailabilitiesController do
 
   describe 'forced profile verification' do
     before(:each) do
-      @event.hosts.stub(:find).and_return(@host)
+      @event.stub_chain(:hosts, :find).and_return(@host)
     end
 
     context 'when an unverified Host is signed in' do
@@ -63,7 +63,7 @@ describe HostAvailabilitiesController do
     end
 
     it 'assigns to @schedulable the Host' do
-      @event.hosts.stub(:find).and_return(@host)
+      @event.stub_chain(:hosts, :find).and_return(@host)
       get :edit_all, :host_id => @host.id, :event_id => @event.id
       assigns[:schedulable].should == @host
     end
@@ -76,7 +76,7 @@ describe HostAvailabilitiesController do
 
   describe 'PUT update_all' do
     before(:each) do
-      @event.hosts.stub(:find).and_return(@host)
+      @event.stub_chain(:hosts, :find).and_return(@host)
     end
 
     it 'assigns to @schedulable the Host' do

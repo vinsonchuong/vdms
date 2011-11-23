@@ -111,6 +111,7 @@ describe HostFieldTypesController do
     end
 
     it 'assigns to @field_type a new HostFieldType with the given parameters' do
+      @event.stub_chain(:host_field_types, :build)
       @event.host_field_types.should_receive(:build).with('foo' => 'bar').and_return(@field_type)
       post :create, :host_field_type => {'foo' => 'bar'}, :event_id => @event.id
       assigns[:field_type].should equal(@field_type)
@@ -169,7 +170,7 @@ describe HostFieldTypesController do
 
   describe 'PUT update' do
     before(:each) do
-      @event.host_field_types.stub(:find).and_return(@field_type)
+      @event.stub_chain(:host_field_types, :find).and_return(@field_type)
     end
 
     it 'assigns to @field_type the given HostFieldType' do
@@ -223,7 +224,7 @@ describe HostFieldTypesController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @event.host_field_types.stub(:find).and_return(@field_type)
+      @event.stub_chain(:host_field_types, :find).and_return(@field_type)
     end
 
     it 'destroys the HostFieldType' do

@@ -25,6 +25,7 @@ describe HostFieldType do
     end
 
     it 'has an Options hash (options)' do
+      pending
       @field_type.should respond_to(:options)
       @field_type.should respond_to(:options=)
       expect {@field_type.update_attribute(:options, [])}.should raise_exception ActiveRecord::SerializationTypeMismatch
@@ -88,24 +89,23 @@ describe HostFieldType do
   context 'after creating' do
     it 'creates a corresponding HostField for each Host' do
       new_field_type = Factory.build(:host_field_type, :event => @event)
-      hosts = Array.new(3) do
-        host = @event.hosts.build
+      3.times do
+        host = Factory.create(:host, :event => @event)
+        host.stub_chain(:fields, :build)
         host.fields.should_receive(:create)
-        host
+        @event.hosts << host
       end
-      @event.stub(:hosts).and_return(hosts)
       new_field_type.save
     end
   end
 
   context 'when destroying' do
     it 'destroys its associated HostFields' do
-      fields = Array.new(3) do
-        field = mock_model(HostField)
+      3.times do
+        field = Factory.create(:host_field, :field_type => @field_type)
         field.should_receive(:destroy)
-        field
+        @field_type.fields << field
       end
-      @field_type.stub(:fields).and_return(fields)
       @field_type.destroy
     end
   end

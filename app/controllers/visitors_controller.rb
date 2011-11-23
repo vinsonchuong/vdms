@@ -21,7 +21,7 @@ class VisitorsController < RolesController
   end
 
   def get_attributes
-    params[:visitor]
+    params[:visitor] || {}
   end
 
   def get_i18n_scope

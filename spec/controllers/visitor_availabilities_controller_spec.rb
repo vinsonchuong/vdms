@@ -11,7 +11,7 @@ describe VisitorAvailabilitiesController do
 
   describe 'forced profile verification' do
     before(:each) do
-      @event.visitors.stub(:find).and_return(@visitor)
+      @event.stub_chain(:visitors, :find).and_return(@visitor)
     end
 
     context 'when an unverified Visitor is signed in' do
@@ -76,7 +76,7 @@ describe VisitorAvailabilitiesController do
 
   describe 'PUT update_all' do
     before(:each) do
-      @event.visitors.stub(:find).and_return(@visitor)
+      @event.stub_chain(:visitors, :find).and_return(@visitor)
     end
 
     it 'assigns to @schedulable the Visitor' do

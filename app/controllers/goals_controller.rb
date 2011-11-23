@@ -16,7 +16,7 @@ class GoalsController < FeaturesController
   end
 
   def get_attributes
-    params[:goal]
+    params[:goal] || {}
   end
 
   def get_i18n_scope

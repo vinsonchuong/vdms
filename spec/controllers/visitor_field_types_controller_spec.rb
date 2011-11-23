@@ -107,7 +107,8 @@ describe VisitorFieldTypesController do
 
   describe 'POST create' do
     before(:each) do
-      VisitorFieldType.stub(:new).and_return(@field_type)
+      @event.stub_chain(:visitor_field_types, :new).and_return(@field_type)
+      @event.visitor_field_types.stub(:build).and_return(@field_type)
     end
 
     it 'assigns to @field_type a new VisitorFieldType with the given parameters' do
@@ -120,7 +121,6 @@ describe VisitorFieldTypesController do
       post :create, :visitor_field_type => {'foo' => 'bar'}, :event_id => @event.id
       field_type = assigns[:field_type]
       field_type.event.should == @event
-      @event.visitor_field_types.should include(field_type)
     end
 
     it 'saves the VisitorFieldType' do
@@ -169,7 +169,7 @@ describe VisitorFieldTypesController do
 
   describe 'PUT update' do
     before(:each) do
-      @event.visitor_field_types.stub(:find).and_return(@field_type)
+      @event.stub_chain(:visitor_field_types, :find).and_return(@field_type)
     end
 
     it 'assigns to @field_type the given VisitorFieldType' do
@@ -223,7 +223,7 @@ describe VisitorFieldTypesController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @event.visitor_field_types.stub(:find).and_return(@field_type)
+      @event.stub_chain(:visitor_field_types, :find).and_return(@field_type)
     end
 
     it 'destroys the VisitorFieldType' do

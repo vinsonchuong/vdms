@@ -11,7 +11,8 @@ describe VisitorsController do
 
   describe 'forced profile verification' do
     before(:each) do
-      @event.visitors.stub(:find).and_return(@visitor)
+      @event.stub_chain(:visitors, :find).and_return(@visitor)
+      @event.visitors.stub(:build).and_return(@visitor)
     end
 
     context 'when an unverified Visitor is signed in' do
@@ -107,7 +108,7 @@ describe VisitorsController do
     end
 
     it 'assigns to @roles the given Visitor' do
-      @event.visitors.stub(:find).and_return(@visitor)
+      @event.stub_chain(:visitors, :find).and_return(@visitor)
       get :show, :event_id => @event.id, :id => @visitor.id
       assigns[:role].should == @visitor
     end
@@ -183,7 +184,8 @@ describe VisitorsController do
 
   describe 'POST create' do
     before(:each) do
-      Visitor.stub(:new).and_return(@visitor)
+      @event.stub_chain(:visitors, :new).and_return(@visitor)
+      @event.visitors.stub(:build).and_return(@visitor)
     end
 
     it 'assigns to @role a new Visitor with the given parameters' do
@@ -196,7 +198,6 @@ describe VisitorsController do
       post :create, :visitor => {'foo' => 'bar'}, :event_id => @event.id
       role = assigns[:role]
       role.event.should == @event
-      @event.visitors.should include(role)
     end
 
     it 'saves the Visitor' do
@@ -239,7 +240,7 @@ describe VisitorsController do
 
   describe 'PUT update' do
     before(:each) do
-      @event.visitors.stub(:find).and_return(@visitor)
+      @event.stub_chain(:visitors, :find).and_return(@visitor)
     end
 
     it 'assigns to @role the given Role' do
@@ -337,7 +338,7 @@ describe VisitorsController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @event.visitors.stub(:find).and_return(@visitor)
+      @event.stub_chain(:visitors, :find).and_return(@visitor)
     end
 
     it 'destroys the Visitor' do

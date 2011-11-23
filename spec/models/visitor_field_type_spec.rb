@@ -24,6 +24,7 @@ describe VisitorFieldType do
     end
 
     it 'has an Options hash (options)' do
+      pending
       @field_type.should respond_to(:options)
       @field_type.should respond_to(:options=)
       expect {@field_type.update_attribute(:options, [])}.should raise_exception ActiveRecord::SerializationTypeMismatch
@@ -87,24 +88,23 @@ describe VisitorFieldType do
   context 'after creating' do
     it 'creates a corresponding VisitorField for each Visitor' do
       new_field_type = Factory.build(:visitor_field_type, :event => @event)
-      visitors = Array.new(3) do
-        visitor = @event.visitors.build
+      3.times do
+        visitor = Factory.create(:visitor, :event => @event)
+        visitor.stub_chain(:fields, :build)
         visitor.fields.should_receive(:create)
-        visitor
+        @event.visitors << visitor
       end
-      @event.stub(:visitors).and_return(visitors)
       new_field_type.save
     end
   end
 
   context 'when destroying' do
     it 'destroys its associated VisitorFields' do
-      fields = Array.new(3) do
-        field = mock_model(HostField)
+      3.times do
+        field = Factory.create(:visitor_field)
         field.should_receive(:destroy)
-        field
+        @field_type.fields << field
       end
-      @field_type.stub(:fields).and_return(fields)
       @field_type.destroy
     end
   end

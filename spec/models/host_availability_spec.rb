@@ -80,12 +80,11 @@ describe HostAvailability do
 
   context 'when destroying' do
     it 'destroys its Meetings' do
-      meetings = Array.new(3) do
-        meeting = stub_model(Meeting)
+      3.times do
+        meeting = mock_model(Meeting).as_null_object
         meeting.should_receive(:destroy)
-        meeting
+        @host_availability.meetings << meeting
       end
-      @host_availability.stub(:meetings).and_return(meetings)
       @host_availability.destroy
     end
   end

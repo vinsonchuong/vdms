@@ -119,7 +119,7 @@ describe Visitor do
         @visitor.update_attributes(:rankings_attributes => [
             {:id => delete_id, :_destroy => true}
         ])
-        @visitor.rankings.detect {|r| r.id == delete_id}.should be_marked_for_destruction
+        @visitor.rankings.none? {|r| r.id == delete_id}.should be_true
       end
     end
 
@@ -198,42 +198,38 @@ describe Visitor do
 
   context 'when destroying' do
     it 'destroys its Fields' do
-      fields = Array.new(3) do
-        field = VisitorField.new
+      3.times do
+        field = Factory.create(:visitor_field, :role => @visitor)
         field.should_receive(:destroy)
-        field
+        @visitor.fields << field
       end
-      @visitor.stub(:fields).and_return(fields)
       @visitor.destroy
     end
 
     it 'destroys its Availabilities' do
-      availabilities = Array.new(3) do
-        availability = Availability.new
+      3.times do
+        availability = Factory.create(:visitor_availability, :schedulable => @visitor)
         availability.should_receive(:destroy)
-        availability
+        @visitor.availabilities << availability
       end
-      @visitor.stub(:availabilities).and_return(availabilities)
       @visitor.destroy
     end
 
     it 'destroys its Rankings' do
-      rankings = Array.new(3) do
-        ranking = VisitorRanking.new
+      3.times do
+        ranking = Factory.create(:visitor_ranking, :ranker => @visitor)
         ranking.should_receive(:destroy)
-        ranking
+        @visitor.rankings << ranking
       end
-      @visitor.stub(:rankings).and_return(rankings)
       @visitor.destroy
     end
 
-    it 'destroys the Visitor Rankings to which it belongs' do
-      rankings = Array.new(3) do
-        ranking = HostRanking.new
+    it 'destroys the Host Rankings to which it belongs' do
+      3.times do
+        ranking = Factory.create(:host_ranking, :rankable => @visitor)
         ranking.should_receive(:destroy)
-        ranking
+        @visitor.host_rankings << ranking
       end
-      @visitor.stub(:host_rankings).and_return(rankings)
       @visitor.destroy
     end
   end

@@ -11,7 +11,7 @@ describe VisitorRankingsController do
 
   describe 'forced profile verification' do
     before(:each) do
-      @event.visitors.stub(:find).and_return(@visitor)
+      @event.stub_chain(:visitors, :find).and_return(@visitor)
     end
 
     context 'when an unverified Visitor is signed in' do
@@ -100,7 +100,7 @@ describe VisitorRankingsController do
     end
 
     it 'assigns to @ranker the Visitor' do
-      @event.visitors.stub(:find).and_return(@visitor)
+      @event.stub_chain(:visitors, :find).and_return(@visitor)
       get :add, :visitor_id => @visitor.id, :event_id => @event.id
       assigns[:ranker].should == @visitor
     end
@@ -156,7 +156,7 @@ describe VisitorRankingsController do
     context 'when the Visitor has selected new Hosts to rank' do
       before(:each) do
         @hosts = Array.new(3) {Host.new}
-        @event.hosts.stub(:find).and_return(@hosts)
+        @event.stub_chain(:hosts, :find).and_return(@hosts)
       end
 
       it 'finds the given Hosts' do
@@ -165,7 +165,7 @@ describe VisitorRankingsController do
       end
 
       it 'builds a new VisitorRanking for each given Host' do
-        @event.visitors.stub(:find).and_return(@visitor)
+        @event.stub_chain(:visitors, :find).and_return(@visitor)
         get :edit_all, :visitor_id => @visitor.id, :event_id => @event.id, :select => {'1' => '1', '2' => '1', '3' => '1', '4' => '0'}
         @visitor.rankings.map(&:rankable).should == @hosts
       end
@@ -184,7 +184,7 @@ describe VisitorRankingsController do
 
   describe 'PUT update_all' do
     before(:each) do
-      @event.visitors.stub(:find).and_return(@visitor)
+      @event.stub_chain(:visitors, :find).and_return(@visitor)
     end
 
     it 'assigns to @ranker the Visitor' do

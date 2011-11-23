@@ -11,7 +11,8 @@ describe HostsController do
 
   describe 'forced profile verification' do
     before(:each) do
-      @event.hosts.stub(:find).and_return(@host)
+      @event.stub_chain(:hosts, :find).and_return(@host)
+      @event.hosts.stub(:build).and_return(@host)
     end
 
     context 'when an unverified Host is signed in' do
@@ -61,7 +62,7 @@ describe HostsController do
       end
 
       it 'does not redirect when creating a Host' do
-        @event.hosts.stub(:build).and_return(@host)
+        @event.stub_chain(:hosts, :build).and_return(@host)
         @host.stub(:save).and_return(false)
         post :create, :host => {'foo' => 'bar'}, :event_id => @event.id
         response.should render_template('new')
@@ -74,7 +75,7 @@ describe HostsController do
       end
 
       it 'does not redirect when destroying a Host' do
-        @event.hosts.stub(:find).and_return(@host)
+        @event.stub_chain(:hosts, :find).and_return(@host)
         delete :destroy, :event_id => @event.id, :id => @host.id
         response.should redirect_to(:action => 'index', :event_id => @event.id)
       end
@@ -107,7 +108,7 @@ describe HostsController do
     end
 
     it 'assigns to @roles the given Host' do
-      @event.hosts.stub(:find).and_return(@host)
+      @event.stub_chain(:hosts, :find).and_return(@host)
       get :show, :event_id => @event.id, :id => @host.id
       assigns[:role].should == @host
     end
@@ -164,7 +165,7 @@ describe HostsController do
     end
 
     it 'assigns to @role the given Host' do
-      @event.hosts.stub(:find).and_return(@host)
+      @event.stub_chain(:hosts, :find).and_return(@host)
       get :edit, :event_id => @event.id, :id => @host.id
       assigns[:role].should == @host
     end
@@ -182,7 +183,7 @@ describe HostsController do
     end
 
     it 'assigns to @role the given Host' do
-      @event.hosts.stub(:find).and_return(@host)
+      @event.stub_chain(:hosts, :find).and_return(@host)
       get :delete, :event_id => @event.id, :id => @host.id
       assigns[:role].should == @host
     end
@@ -195,7 +196,7 @@ describe HostsController do
 
   describe 'POST create' do
     before(:each) do
-      @event.hosts.stub(:build).and_return(@host)
+      @event.stub_chain(:hosts, :build).and_return(@host)
     end
 
     it 'assigns to @role a new Host with the given parameters' do
@@ -206,9 +207,7 @@ describe HostsController do
 
     it 'the new Host belongs to the given Event' do
       post :create, :host => {'foo' => 'bar'}, :event_id => @event.id
-      role = assigns[:role]
-      role.event.should == @event
-      @event.hosts.should include(role)
+      assigns[:role].event.should == @event
     end
 
     it 'saves the Host' do
@@ -258,6 +257,7 @@ describe HostsController do
       end
 
       it 'adds the User as a Host of the Event' do
+        @event.stub_chain(:hosts, :create)
         @event.hosts.should_receive(:create).with(:person => @user)
         post :create_from_current_user, :event_id => @event.id
       end
@@ -281,7 +281,7 @@ describe HostsController do
 
   describe 'PUT update' do
     before(:each) do
-      @event.hosts.stub(:find).and_return(@host)
+      @event.stub_chain(:hosts, :find).and_return(@host)
     end
 
     it 'assigns to @role the given Role' do
@@ -378,7 +378,7 @@ describe HostsController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @event.hosts.stub(:find).and_return(@host)
+      @event.stub_chain(:hosts, :find).and_return(@host)
     end
 
     it 'destroys the Host' do

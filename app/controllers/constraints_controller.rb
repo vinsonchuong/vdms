@@ -16,7 +16,7 @@ class ConstraintsController < FeaturesController
   end
 
   def get_attributes
-    params[:constraint]
+    params[:constraint] || {}
   end
 
   def get_i18n_scope

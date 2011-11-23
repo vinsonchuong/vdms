@@ -351,72 +351,65 @@ describe Event do
 
   context 'when destroying' do
     it 'destroys its Time Slots' do
-      time_slots = Array.new(3) do
-        time_slot = mock_model(TimeSlot)
+      3.times do
+        time_slot = Factory.create(:time_slot, :event => @event)
         time_slot.should_receive(:destroy)
-      time_slot
+        @event.time_slots << time_slot
       end
-      @event.stub(:time_slots).and_return(time_slots)
       @event.destroy
     end
 
     it 'destroys its HostFieldTypes' do
-      host_field_types = Array.new(3) do
-        host_field_types = mock_model(HostFieldType)
-        host_field_types.should_receive(:destroy)
-        host_field_types
+      3.times do
+        host_field_type = Factory.create(:host_field_type, :event => @event)
+        host_field_type.should_receive(:destroy)
+        @event.host_field_types << host_field_type
       end
-      @event.stub(:host_field_types).and_return(host_field_types)
       @event.destroy
     end
 
     it 'destroys its VisitorFieldTypes' do
-      visitor_field_types = Array.new(3) do
-        visitor_field_types = mock_model(VisitorFieldType)
-        visitor_field_types.should_receive(:destroy)
-        visitor_field_types
+      3.times do
+        visitor_field_type = Factory.create(:visitor_field_type, :event => @event)
+        visitor_field_type.should_receive(:destroy)
+        @event.visitor_field_types << visitor_field_type
       end
-      @event.stub(:visitor_field_types).and_return(visitor_field_types)
       @event.destroy
     end
 
     it 'destroys its Goals' do
-      goals = Array.new(3) do
-        goal = mock_model(Goal)
+      3.times do
+        goal = Factory.create(:goal, :event => @event)
         goal.should_receive(:destroy)
-        goal
+        @event.goals << goal
       end
-      @event.stub(:goals).and_return(goals)
       @event.destroy
     end
 
     it 'destroys its Constraints' do
-      constraints = Array.new(3) do
-        constraint = mock_model(Constraint)
+      3.times do
+        constraint = Factory.create(:constraint, :event => @event)
         constraint.should_receive(:destroy)
-        constraint
+        @event.constraints << constraint
       end
-      @event.stub(:constraints).and_return(constraints)
       @event.destroy
     end
 
     it 'destroys its Hosts' do
-      hosts = Array.new(3) do
-        host = mock_model(Host)
+      3.times do
+        host = Factory.create(:host, :event => @event)
         host.should_receive(:destroy)
-        host
+        @event.hosts << host
       end
-      @event.stub(:hosts).and_return(hosts)
       @event.destroy
     end
 
     it 'destroys its Visitors' do
-      visitors = Array.new(3) do
-        visitor = mock_model(Visitor)
+      3.times do
+        visitor = Factory.create(:visitor, :event => @event)
         visitor.should_receive(:destroy)
-        visitor
+        @event.visitors << visitor
       end
-      @event.stub(:visitors).and_return(visitors)
       @event.destroy
     end
   end
