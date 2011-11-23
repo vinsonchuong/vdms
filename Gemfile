@@ -6,6 +6,7 @@ gem 'cancan'
 gem 'dynamic_form'
 gem 'facets', :require => false
 gem 'haml'
+gem 'jquery-rails'
 gem 'rubycas-client', '~> 2.2.1'
 gem 'rubycas-client-rails'
 gem 'simple_form'
@@ -15,6 +16,12 @@ gem 'validates_timeliness'
 gem 'net-ldap'
 gem 'echoe', '~> 4.5.6'
 gem 'ucb_ldap', :path => 'vendor/gems/ucb_ldap-1.4.2'
+
+group :assets do
+  gem 'sass-rails', '~> 3.1.0'
+  gem 'coffee-rails', '~> 3.1.0'
+  gem 'uglifier'
+end
 
 group :test, :development do
   gem 'rspec-rails'
