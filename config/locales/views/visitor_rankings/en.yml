@@ -7,7 +7,7 @@ en:
       submit: "Rank Hosts"
     edit_all:
       title: "Update Visitor's (%{name}) Rankings"
-      short_title: "Update Rankings"
+      short_title: "Rankings"
       alt_title: "Update My Rankings"
       errors: "Errors"
       rankings: "Rankings"

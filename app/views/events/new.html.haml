@@ -25,4 +25,5 @@
         != event_form.label :meeting_gap
         != event_form.select :meeting_gap, sec_to_min, {}
         %span.units!= t('.minutes')
+  %fieldset
     != event_form.submit t('.submit')

@@ -5,5 +5,6 @@
       %li.field.required
         != label_tag 'data_type', t('.data_type')
         != select_tag 'data_type', options_for_select(@data_types)
-  != submit_tag t('.submit')
+  %fieldset
+    != submit_tag t('.submit')
 

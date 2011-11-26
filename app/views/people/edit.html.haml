@@ -1,26 +1,27 @@
-- content_for :title, @current_user == @person ? t('.alt_title') : t('.title', :name => @person.name)
+- content_for :title, @current_user == @person ? t('.alt_title') : t('.title')
 = form_for @person, :url => {:action => 'update'} do |person_form|
   - if @person.errors.any?
     #errors
-      %h3!= t('.errors')
+      %h3= t('.errors')
       %ul
         - @person.errors.full_messages.each do |message|
-          %li!= message
+          %li= message
   %fieldset
-    %h3!= t('.info')
+    %h3= t('.info')
     %ul
       - unless @current_user.role == 'administrator'
         %li.field
-          != person_form.label :ldap_id
-          %p!= t('.ldap_id_description', :calnet_directory => link_to('CalNet Directory', 'https://calnet.berkeley.edu/directory/'))
-          != person_form.text_field :ldap_id
+          = person_form.label :ldap_id
+          %p= t('.ldap_id_description', :calnet_directory => link_to('CalNet Directory', 'https://calnet.berkeley.edu/directory/'))
+          = person_form.text_field :ldap_id
         %li.field.required
-          != person_form.label :role
-          != person_form.select :role, [['User', 'user'], ['Facilitator', 'facilitator'], ['Administator', 'administrator']]
+          = person_form.label :role
+          = person_form.select :role, [['User', 'user'], ['Facilitator', 'facilitator'], ['Administator', 'administrator']]
       %li.field.required
-        != person_form.label :name
-        != person_form.text_field :name
+        = person_form.label :name
+        = person_form.text_field :name
       %li.field.required
-        != person_form.label :email
-        != person_form.text_field :email
-    != person_form.submit((@current_user == @person) ? t('.alt_submit') : t('.submit'))
+        = person_form.label :email
+        = person_form.text_field :email
+  %fieldset
+    = person_form.submit((@current_user == @person) ? t('.alt_submit') : t('.submit'))

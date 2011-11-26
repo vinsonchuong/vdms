@@ -6,7 +6,8 @@
         %li
           != feature_form.radio_button :feature_type, type
           != feature_form.label :feature_type, description, :value => type
-  != feature_form.hidden_field :host_field_type_id
-  != feature_form.hidden_field :visitor_field_type_id
-  != submit_tag t('.submit')
+  %fieldset
+    != feature_form.hidden_field :host_field_type_id
+    != feature_form.hidden_field :visitor_field_type_id
+    != submit_tag t('.submit')
 

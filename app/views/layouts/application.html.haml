@@ -1,84 +1,62 @@
-!!! Strict
+!!!
 %html
   %head
-    %title!= yield :title
-    != stylesheet_link_tag 'application'
-    != stylesheet_link_tag 'print', :media => 'print'
-    != stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Droid+Sans'
-    != javascript_include_tag 'application'
-    != csrf_meta_tag
+    %title= yield :title
+    = stylesheet_link_tag 'application'
+    = stylesheet_link_tag 'print', :media => 'print'
+    = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Open+Sans'
+    = csrf_meta_tag
   %body
-    %h1!= link_to 'Visit Day', root_path
-    #content
-      %h2!= yield :title
-      - unless flash[:notice].nil?
-        %p#messages!= flash[:notice]
-      - unless flash[:alert].nil?
-        %p#alerts!= flash[:alert]
-      != yield
-    #navigation
-      %ul
-        %li!= link_to t('people.edit.alt_title'), edit_person_path(@current_user)
-        - if @current_user.role != 'administrator'
-          %li!= link_to t('events.index.alt_title'), events_path
-      %ul
+    #header
+      #secondary_navigation
+        %ul#breadcrumbs
+        %ul#account_management
+          %li= link_to 'Contact Info'
+          %li= link_to 'Sign Out'
+      #title
+        %h1= link_to 'MeetingLibs', root_path
+        - unless @event.nil? or @event.new_record?
+          %span for #{@event.name}
+      %ul#primary_navigation
+        - is_administrator = @current_user.role == 'administrator'
+        - is_facilitator = @current_user.role == 'facilitator'
         - if @event.nil? || @event.new_record?
-          - if @current_user.role == 'administrator'
+          - if is_administrator
+            %li= link_to t('people.index.short_title'), people_path
+            %li= link_to t('events.index.short_title'), events_path
+        - else
+          - if is_administrator
             %li
-              !=link_to t('people.index.title'), people_path
+              = link_to t('events.show.short_title'), event_path(@event)
               %ul
-                %li!= link_to t('people.new.title'), new_person_path
-                %li!= link_to t('people.upload.title'), upload_people_path
+                %li= link_to t('events.edit.short_title'), edit_event_path(@event)
             %li
-              != link_to t('events.index.title'), events_path
+              = link_to t('hosts.index.short_title'), event_hosts_path(@event)
               %ul
-                %li!= link_to t('events.new.title'), new_event_path
+                %li= link_to t('host_field_types.index.short_title'), event_host_field_types_path(@event)
+                %li Comments
+            %li
+              = link_to t('visitors.index.short_title'), event_visitors_path(@event)
+              %ul
+                %li= link_to t('visitor_field_types.index.short_title'), event_visitor_field_types_path(@event)
+                %li= link_to 'Comments'
+            %li
+              = link_to 'Meetings'
+              %ul
+                %li= link_to 'Scheduler'
+          - elsif is_facilitator
+            %li= link_to t('hosts.index.short_title'), event_hosts_path(@event)
+            %li= link_to t('visitors.index.short_title'), event_visitors_path(@event)
+            %li= link_to 'Meetings'
           - else
-
-        - unless @event.nil? || @event.new_record?
-          %li!= link_to @event.name, event_path(@event)
-          - if @current_user.role == 'administrator'
-            %li!= link_to t('events.edit.title'), edit_event_path(@event)
-            %li
-              != link_to t('host_field_types.index.title'), event_host_field_types_path(@event)
-              %ul
-                %li!= link_to t('host_field_types.new.title'), new_event_host_field_type_path(@event)
-            %li
-              != link_to t('visitor_field_types.index.title'), event_visitor_field_types_path(@event)
-              %ul
-                %li!= link_to t('visitor_field_types.new.title'), new_event_visitor_field_type_path(@event)
-            %li
-              != link_to t('constraints.index.title'), event_constraints_path(@event)
-              %ul
-                %li!= link_to t('constraints.new.title'), new_event_constraint_path(@event)
-            %li
-              != link_to t('goals.index.title'), event_goals_path(@event)
-              %ul
-                %li!= link_to t('goals.new.title'), new_event_goal_path(@event)
-            %li
-              != link_to t('hosts.index.title'), event_hosts_path(@event)
-              %ul
-                %li!= link_to t('hosts.new.title'), new_event_host_path(@event)
-            %li
-              != link_to t('visitors.index.title'), event_visitors_path(@event)
-              %ul
-                %li!= link_to t('visitors.new.title'), new_event_visitor_path(@event)
-            %li!= link_to t('meetings.master.title'), event_meetings_path(@event)
-            %li!= link_to 'Meeting Statistics', statistics_event_meetings_path(@event)
-            %li.dangerous!= link_to t('meetings.create_all.title'), create_all_event_meetings_path(@event), :confirm => t('meetings.create_all.warning')
-          - elsif @current_user.role == 'facilitator'
-            %li!= link_to t('hosts.index.title'), event_hosts_path(@event)
-            %li!= link_to t('visitors.index.title'), event_visitors_path(@event)
-          - unless @current_role.nil?
-            - if @current_role.class == Host
-              %li!= link_to t('host_availabilities.edit_all.alt_title'), edit_all_event_host_availabilities_path(@event, @current_role)
-              %li!= link_to t('host_rankings.edit_all.alt_title'), edit_all_event_host_rankings_path(@event, @current_role)
-              %li!= link_to t('faculty.view_schedule.alt_title'), event_host_meetings_path(@event, @current_role)
-            - else
-              %li!= link_to t('visitor_availabilities.edit_all.alt_title'), edit_all_event_visitor_availabilities_path(@event, @current_role)
-              %li!= link_to t('visitor_rankings.edit_all.alt_title'), edit_all_event_visitor_rankings_path(@event, @current_role)
-              %li!= link_to t('admits.view_schedule.alt_title'), event_visitor_meetings_path(@event, @current_role)
+    #content
+      %h2= yield :title
+      - unless flash[:notice].nil?
+        %p#notice= flash[:notice]
+      - unless flash[:alert].nil?
+        %p#alert= flash[:alert]
+      != yield
     #footer
-      %p By Vinson Chuong, Benson Ma, and Jacky Wu, alumni of Prof. Armando Fox's Software Engineering course at UC Berkeley.
-      %p Visual design by Amber Feng.
-      %p Updated [INSERT TIME] - Commit [INSERT COMMIT ID]
+      %p By Vinson Chuong and Benson Ma, alumni of Prof. Armando Fox's software engineering course at UC Berkeley
+    = javascript_include_tag 'application'
+

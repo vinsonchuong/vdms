@@ -11,4 +11,5 @@
       %li.field.required
         != visitor_form.label :person_id
         != visitor_form.select :person_id, @people.map {|p| [p.name, p.id]}, {}
+  %fieldset
     != visitor_form.submit(t('.submit'))

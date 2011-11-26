@@ -1,5 +1,5 @@
 - content_for :title, t('.title')
-%table
+%table.records
   %thead
     %tr
       %th{:scope => 'col'}!= Person.human_attribute_name(:name)
@@ -10,7 +10,7 @@
         %td= visitor.person.name
         %td
           %ul
-            %li!= link_to t('visitors.edit.short_title'), edit_event_visitor_path(@event, visitor)
-            %li!= link_to t('visitor_availabilities.edit_all.short_title'), edit_all_event_visitor_availabilities_path(@event, visitor)
-            %li!= link_to t('visitor_rankings.edit_all.short_title'), edit_all_event_visitor_rankings_path(@event, visitor)
-            %li!= link_to t('visitors.delete.short_title'), delete_event_visitor_path(@event, visitor)
+            %li!= link_to t('visitors.edit.short_title'), edit_event_visitor_path(@event, visitor), :class => 'action'
+            %li!= link_to t('visitor_availabilities.edit_all.short_title'), edit_all_event_visitor_availabilities_path(@event, visitor), :class => 'action'
+            %li!= link_to t('visitor_rankings.edit_all.short_title'), edit_all_event_visitor_rankings_path(@event, visitor), :class => 'action'
+            %li!= link_to t('visitors.delete.short_title'), delete_event_visitor_path(@event, visitor), :class => 'action'

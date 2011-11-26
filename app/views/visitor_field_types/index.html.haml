@@ -1,5 +1,5 @@
 - content_for :title, t('.title')
-%table
+%table.records
   %thead
     %tr
       %th{:scope => 'col'}!= VisitorFieldType.human_attribute_name(:name)
@@ -10,5 +10,5 @@
         %td= field_type.name
         %td
           %ul
-            %li!= link_to t('visitor_field_types.edit.title'), edit_event_visitor_field_type_path(@event, field_type)
-            %li!= link_to t('visitor_field_types.delete.title'), delete_event_visitor_field_type_path(@event, field_type)
+            %li!= link_to t('visitor_field_types.edit.short_title'), edit_event_visitor_field_type_path(@event, field_type), :class => 'action'
+            %li!= link_to t('visitor_field_types.delete.short_title'), delete_event_visitor_field_type_path(@event, field_type), :class => 'action'

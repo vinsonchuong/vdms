@@ -2,7 +2,7 @@ en:
   visitor_availabilities:
     edit_all:
       title: "Update Admit's (%{name}) Availability"
-      short_title: "Update Availability"
+      short_title: "Availability"
       alt_title: "Update My Availability"
       availability: "Availability"
       select_all: "Check All Time Slots"

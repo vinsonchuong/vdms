@@ -2,7 +2,7 @@ en:
   host_availabilities:
     edit_all:
       title: "Update Faculty's (%{name}) Availability"
-      short_title: "Update Availability"
+      short_title: "Availability"
       alt_title: "Update My Availability"
       preferences: "Preferences"
       availability: "Availability"

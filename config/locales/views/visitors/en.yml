@@ -2,6 +2,7 @@ en:
   visitors:
     index:
       title: "Manage Visitors"
+      short_title: "Visitors"
       actions: "Actions"
     new:
       title: "Add Visitor"
@@ -9,7 +10,7 @@ en:
       submit: "Add Visitor"
     join:
       title: "Join Event (%{name}) as a Visitor"
-      short_title: "Join Event as Visitor"
+      short_title: "Join as Visitor"
       description: "Are you sure you want to be a visitor for %{name}?"
       submit: "Join Event"
     edit:

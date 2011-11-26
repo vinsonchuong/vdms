@@ -8,5 +8,6 @@
       %li.field.required
         != feature_form.label :visitor_field_type_id
         != feature_form.select :visitor_field_type_id, @visitor_field_types
-  != submit_tag t('.submit')
+  %fieldset
+    != submit_tag t('.submit')
 

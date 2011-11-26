@@ -1,23 +1,17 @@
 - content_for :title, t('.title')
-%table
-  %thead
-    %tr
-      %th{:scope => 'col'}!= Event.human_attribute_name(:name)
-      %th{:scope => 'col'}!= t('.actions')
-  %tbody
-    - @events.each do |event|
-      %tr
-        %td= event.name
-        %td
-          %ul
-            - is_host = !event.hosts.find_by_person_id(@current_user).nil?
-            - is_visitor = !event.visitors.find_by_person_id(@current_user).nil?
-            - is_admin = @current_user.role == 'administrator'
-            - if !is_host && !is_visitor
-              %li!= link_to t('hosts.join.short_title'), join_event_hosts_path(event)
-              %li!= link_to t('visitors.join.short_title'), join_event_visitors_path(event)
-            - if is_host || is_visitor || is_admin
-              %li!= link_to t('events.show.short_title'), event_path(event)
-            - if is_admin
-              %li!= link_to t('events.edit.title'), edit_event_path(event)
-              %li!= link_to t('events.delete.alt_title'), delete_event_path(event)
+.section
+  %h3 Your Events
+  %ol.records
+    - @user_events.each do |event|
+      %li
+        %h4= link_to event.name, event_path(event)
+.section
+  %h3 Other Events
+  %ol.records
+    - @other_events.each do |event|
+      %li
+        %h4= link_to event.name, event_path(event)
+        %ul
+          %li= link_to t('hosts.join.short_title'), join_event_hosts_path(event), :class => 'action'
+          %li= link_to t('visitors.join.short_title'), join_event_visitors_path(event), :class => 'action'
+

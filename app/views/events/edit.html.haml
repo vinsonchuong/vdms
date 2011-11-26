@@ -2,54 +2,52 @@
 = form_for @event, :url => {:action => :update} do |event_form|
   - if @event.errors.any?
     #errors
-      %h3!= t('.errors')
+      %h3= t('.errors')
       %ul
         - @event.errors.full_messages.each do |message|
-          %li!= message
+          %li= message
   %fieldset
-    %h3!= "Basic Info"
+    %h3= "Basic Info"
     %ul
       %li.field
-        != event_form.label :name
-        != event_form.text_field :name
-    %h3!= t('.data_entry_permissions')
-    %p!= t('.data_entry_permissions_description')
+        = event_form.label :name
+        = event_form.text_field :name
+  %fieldset
+    %h3= t('.data_entry_permissions')
+    %p= t('.data_entry_permissions_description')
     %ul
       %li.field
-        != event_form.label :disable_facilitators
-        != event_form.check_box :disable_facilitators
+        = event_form.label :disable_facilitators
+        = event_form.check_box :disable_facilitators
       %li.field
-        != event_form.label :disable_hosts
-        != event_form.check_box :disable_hosts
+        = event_form.label :disable_hosts
+        = event_form.check_box :disable_hosts
   %fieldset
     - sec_to_min = []
     - 121.times {|i| sec_to_min[i] = [i, i * 60]}
-    %h3!= t('.meeting_times')
-    %p!= t('.meeting_times_description')
+    %h3= t('.meeting_times')
+    %p= t('.meeting_times_description')
     %ul
       %li.field
-        != event_form.label :meeting_length
-        != event_form.select :meeting_length, sec_to_min, {}
-        %span.units!= t('.minutes')
+        = event_form.label :meeting_length
+        = event_form.select :meeting_length, sec_to_min, {}
+        %span.units= t('.minutes')
       %li.field
-        != event_form.label :meeting_gap
-        != event_form.select :meeting_gap, sec_to_min, {}
+        = event_form.label :meeting_gap
+        = event_form.select :meeting_gap, sec_to_min, {}
         %span.units!= t('.minutes')
       %li
         %h4 Meeting Time Ranges
         %ul
           = event_form.fields_for :meeting_times, @meeting_times do |meeting_time_fields|
             - time = meeting_time_fields.object
-            %li.field
-              %ul
-                %li
-                  != meeting_time_fields.label :begin, nil, :class => 'hidden'
-                  != meeting_time_fields.datetime_select :begin, :include_blank => true
-                %li
-                  != meeting_time_fields.label :end
-                  != meeting_time_fields.time_select :end, :include_blank => true
-                - unless time.begin.blank? || time.end.blank?
-                  %li
-                    != meeting_time_fields.check_box :_destroy
-                    != meeting_time_fields.label :_destroy, t('.remove')
-    != event_form.submit t('.submit')
+            %li.field.inline
+              = meeting_time_fields.label :begin, :class => 'hidden'
+              = meeting_time_fields.datetime_select :begin, :include_blank => true
+              = meeting_time_fields.label :end, 'to'
+              = meeting_time_fields.time_select :end, :include_blank => true
+              - unless time.begin.blank? || time.end.blank?
+                = meeting_time_fields.check_box :_destroy
+                = meeting_time_fields.label :_destroy, t('.remove')
+  %fieldset
+    = event_form.submit t('.submit')

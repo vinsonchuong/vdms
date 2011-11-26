@@ -3,10 +3,11 @@ en:
     index:
       title: "Manage Events"
       alt_title: "View Events"
+      short_title: "Events"
       actions: "Actions"
     show:
       title: "View Event (%{name})"
-      short_title: "View Event"
+      short_title: "Event"
     new:
       title: "Add Event"
       errors: "Errors"
@@ -23,6 +24,7 @@ en:
       submit: "Add Event"
     edit:
       title: "Edit Event"
+      short_title: "Settings"
       errors: "Errors"
       data_entry_permissions: "Data Entry Permissions"
       data_entry_permissions_description: "Prevents the checked roles from updating availability and rankings."

@@ -2,6 +2,7 @@ en:
   hosts:
     index:
       title: "Manage Hosts"
+      short_title: "Hosts"
       actions: "Actions"
     new:
       title: "Add Host"
@@ -9,12 +10,12 @@ en:
       submit: "Add Host"
     join:
       title: "Join Event (%{name}) as a Host"
-      short_title: "Join Event as Host"
+      short_title: "Join as Host"
       description: "Are you sure you want to be a host for %{name}?"
       submit: "Join Event"
     edit:
       title: "Edit Host (%{name})"
-      short_title: "Edit Info"
+      short_title: "Profile"
       errors: "Errors"
       profile: "Profile"
       event_preferences: "Event Preferences"
@@ -22,5 +23,5 @@ en:
       alt_submit: "Update My Info"
     delete:
       title: "Remove Host (%{name})"
-      short_title: "Remove Host"
+      short_title: "Remove"
       submit: "Remove Host"

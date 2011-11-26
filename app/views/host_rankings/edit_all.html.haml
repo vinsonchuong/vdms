@@ -41,4 +41,5 @@
             %td!= ranking_fields.check_box :one_on_one, {}, "true", "false"
             %td!= ranking_fields.check_box :_destroy
             != ranking_fields.hidden_field :rankable_id
-  != ranker_form.submit t('.submit'), :disabled => (@event.disable_hosts && @current_user == @host.person)
+  %fieldset
+    != ranker_form.submit t('.submit'), :disabled => (@event.disable_hosts && @current_user == @host.person)

@@ -51,4 +51,5 @@
       %li.field.required
         != host_form.label :max_visitors
         != host_form.select :max_visitors, 1..50
+  %fieldset
     != host_form.submit @role == @current_role ? t('.alt_submit') : t('.submit')

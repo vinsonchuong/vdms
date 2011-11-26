@@ -33,6 +33,7 @@
           - params = field.form_helper_params
           - if params[:type] == :single
             != field_fields.send(*params[:args])
-  -# Need at least one visitor field for form to work correctly
-  != visitor_form.hidden_field :event_id
-  != visitor_form.submit @role == @current_role ? t('.alt_submit') : t('.submit')
+  %fieldset
+    -# Need at least one visitor field for form to work correctly
+    != visitor_form.hidden_field :event_id
+    != visitor_form.submit @role == @current_role ? t('.alt_submit') : t('.submit')

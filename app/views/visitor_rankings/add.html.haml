@@ -7,4 +7,5 @@
         %li
           != select_form.check_box rankable.id
           != select_form.label rankable.id, rankable.person.name
-  != select_form.submit t('.submit')
+  %fieldset
+    != select_form.submit t('.submit')

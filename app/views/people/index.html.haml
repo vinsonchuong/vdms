@@ -1,10 +1,10 @@
 - content_for :title, t('.title')
-%table
+%table.records
   %thead
     %tr
-      %th{:scope => 'col'}!= Person.human_attribute_name(:name)
-      %th{:scope => 'col'}!= Person.human_attribute_name(:email)
-      %th{:scope => 'col'}!= t('.actions')
+      %th{:scope => 'col'}= Person.human_attribute_name(:name)
+      %th{:scope => 'col'}= Person.human_attribute_name(:email)
+      %th{:scope => 'col'}= t('.actions')
   %tbody
     - @people.each do |person|
       %tr
@@ -12,5 +12,5 @@
         %td= person.email
         %td
           %ul
-            %li!= link_to t('people.edit.short_title'), edit_person_path(person)
-            %li!= link_to t('people.delete.short_title'), delete_person_path(person)
+            %li= link_to t('people.edit.short_title'), edit_person_path(person), :class => 'action'
+            %li= link_to t('people.delete.short_title'), delete_person_path(person), :class => 'action'

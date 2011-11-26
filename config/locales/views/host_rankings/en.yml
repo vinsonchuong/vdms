@@ -15,7 +15,7 @@ en:
       select_submit: "Rank Visitors"
     edit_all:
       title: "Update Host's (%{name}) Rankings"
-      short_title: "Update Rankings"
+      short_title: "Rankings"
       alt_title: "Update My Rankings"
       errors: "Errors"
       rankings: "Rankings"

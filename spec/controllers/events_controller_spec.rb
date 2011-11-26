@@ -8,11 +8,22 @@ describe EventsController do
   end
 
   describe 'GET index' do
-    it 'assigns to @events a list of all the Events sorted by name' do
+    it "assigns to @user_events a list of the current user's Events" do
       events = Array.new(3) {Event.new}
-      Event.stub(:all).and_return(events)
+      @admin.stub(:events).and_return(events)
+      Person.stub(:find_by_ldap_id).and_return(@admin)
       get :index
-      assigns[:events].should == events
+      assigns[:user_events].should == events
+    end
+
+    it 'assigns to @other_events a list of Events that the current user has not joined' do
+      user_events = Array.new(3) {Event.new}
+      @admin.stub(:events).and_return(user_events)
+      Person.stub(:find_by_ldap_id).and_return(@admin)
+      other_events = Array.new(3) {Event.new}
+      Event.stub(:all).and_return(user_events + other_events)
+      get :index
+      assigns[:other_events].should == other_events
     end
 
     it 'renders the index template' do

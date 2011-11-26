@@ -2,6 +2,7 @@ en:
   host_field_types:
     index:
       title: "Manage Host Fields"
+      short_title: "Fields"
       actions: "Actions"
     select_data_type:
       title: "Select Data Type"
@@ -15,10 +16,12 @@ en:
       submit: "Add Host Field"
     edit:
       title: "Edit Host Field"
+      short_title: "Edit"
       errors: "Errors"
       basic_info: "Basic Info"
       options: "Options"
       submit: "Update Host Field"
     delete:
       title: "Remove Host Field"
+      short_title: "Remove"
       submit: "Remove Host Field"

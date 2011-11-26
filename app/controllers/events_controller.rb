@@ -1,7 +1,8 @@
 class EventsController < ApplicationController
   # GET /events
   def index
-    @events = Event.all
+    @user_events = @current_user.events
+    @other_events = Event.all - @user_events
   end
 
   # GET /events/1

@@ -35,4 +35,5 @@
               - unless params[:description].blank?
                 %p!= params[:description]
               != option_fields.send(*params[:form_helper_params], :value => @feature.options[name])
-  != feature_form.submit t('.submit')
+  %fieldset
+    != feature_form.submit t('.submit')

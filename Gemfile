@@ -25,6 +25,7 @@ end
 
 group :test, :development do
   gem 'rspec-rails'
+  gem 'ruby-debug19', :require => 'ruby-debug'
   gem 'sqlite3', :platforms => [:mswin, :mingw]
   gem 'sqlite3-ruby', '1.2.5', :require => 'sqlite3', :platforms => [:ruby]
 end
@@ -38,5 +39,5 @@ group :test do
   gem 'email_spec'
   gem 'launchy'
   gem 'shoulda'
-  gem 'spork'
+  gem 'spork', '~> 0.9.0.rc9'
 end

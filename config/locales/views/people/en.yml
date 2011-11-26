@@ -2,6 +2,7 @@ en:
   people:
     index:
       title: "Manage People"
+      short_title: "People"
       actions: "Actions"
     delete_all:
       title: "Remove All People"
@@ -29,9 +30,9 @@ en:
       csv_file: "CSV File"
       submit: "Import People"
     edit:
-      title: "Edit Person (%{name})"
-      short_title: "Edit Info"
-      alt_title: "Edit My Info"
+      title: "Edit Profile"
+      short_title: "Edit Profile"
+      alt_title: "Your Profile"
       errors: "Errors"
       info: "Info"
       ldap_id_description: "The UID is needed to identify registered people with users who login through CalNet. It can
@@ -40,5 +41,5 @@ en:
       alt_submit: "Update My Info"
     delete:
       title: "Remove Person (%{name})"
-      short_title: "Remove Person"
+      short_title: "Remove"
       submit: "Remove Person"

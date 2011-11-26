@@ -1,5 +1,5 @@
 - content_for :title, t('.title')
-%table
+%table.records
   %thead
     %tr
       %th{:scope => 'col'}!= Goal.human_attribute_name(:name)
@@ -12,5 +12,5 @@
         %td= feature.weight
         %td
           %ul
-            %li!= link_to t('goals.edit.title'), edit_event_goal_path(@event, feature)
-            %li!= link_to t('goals.delete.title'), delete_event_goal_path(@event, feature)
+            %li!= link_to t('goals.edit.title'), edit_event_goal_path(@event, feature), :class => 'action'
+            %li!= link_to t('goals.delete.title'), delete_event_goal_path(@event, feature), :class => 'action'

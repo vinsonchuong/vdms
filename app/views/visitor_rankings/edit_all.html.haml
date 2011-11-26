@@ -29,4 +29,5 @@
             %td!= @ranking.rankable.person.name
             %td!= ranking_fields.check_box :_destroy
             != ranking_fields.hidden_field :rankable_id
-  != ranker_form.submit t('.submit'), :disabled => (@event.disable_facilitators && @current_user == @ranker.person)
+  %fieldset
+    != ranker_form.submit t('.submit'), :disabled => (@event.disable_facilitators && @current_user == @ranker.person)
