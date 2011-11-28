@@ -161,6 +161,12 @@ a.action {
   .hidden {
     display: none !important;
   }
+  .stack > * {
+    display: none;
+  }
+  .stack > .active {
+    display: block;
+  }
 
   p#notice, p#alert {
     background-color: $light_gray;

@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gem 'rails', '~> 3.1.3'
 
 gem 'cancan'
+gem 'coffee-filter'
 gem 'dynamic_form'
 gem 'facets', :require => false
 gem 'haml'
@@ -15,7 +16,6 @@ gem 'validates_existence'
 gem 'validates_timeliness'
 
 # gem 'haml-rails' # view scaffolds generate HAML instead
-# gem 'coffee-filter' # allows CoffeeScript inside Haml views
 # gem 'coffeebeans' # allows CoffeeScript views (an alternative to .js.erb)
 
 # Vendorized and patched for Ruby 1.9
@@ -34,7 +34,6 @@ end
 
 group :test, :development do
   gem 'rspec-rails'
-  gem 'ruby-debug19', :require => 'ruby-debug'
   gem 'sqlite3', :platforms => [:mswin, :mingw]
   gem 'sqlite3-ruby', '1.2.5', :require => 'sqlite3', :platforms => [:ruby] # remove after Fall 2011
 end

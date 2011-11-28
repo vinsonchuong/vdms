@@ -1,0 +1,27 @@
+<h1>New Host</h1>
+
+<a data-type="back">Back</a>
+
+<form>
+  
+  <label>
+    <span>Name</span>
+    <input 
+      type="text" name="name" 
+      value="<%= @name %>" required
+ autofocus>
+      <br />
+  </label>
+  
+  <label>
+    <span>Email</span>
+    <input 
+      type="text" name="email" 
+      value="<%= @email %>" required
+>
+      <br />
+  </label>
+  
+  <button>Create</button>
+
+</form>

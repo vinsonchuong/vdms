@@ -1,10 +1,12 @@
 class RolesController < EventBaseController
   skip_before_filter :verify_role, :only => [:edit, :update]
+  respond_to :html, :json
 
   # GET /events/1/hosts
   # GET /events/1/visitors
   def index
     @roles = get_roles
+    respond_with @roles
   end
 
   # GET /events/1/hosts/1

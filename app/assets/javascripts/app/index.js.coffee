@@ -14,11 +14,13 @@
 class App extends Spine.Controller
   constructor: ->
     super
+
+    Spine.Model.host = '/events/' + @event_id
+
+    switch @type
+      when 'hosts' then @append(@hosts = new App.Hosts)
     
-    # Initialize controllers:
-    #  @append(@items = new App.Items)
-    #  ...
-    
-    Spine.Route.setup()    
+    Spine.Route.setup()
+    window.app = this
 
 window.App = App

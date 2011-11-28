@@ -13,4 +13,11 @@ class Role < ActiveRecord::Base
   scope :with_areas, lambda {|*areas|
     joins(:person).where('area_1 IN(?) or area_2 IN(?) or area_3 IN (?)', areas, areas, areas)
   }
+
+  def as_json(options = {})
+    super.merge!(
+      :name => person.name,
+      :email => person.email
+    )
+  end
 end
