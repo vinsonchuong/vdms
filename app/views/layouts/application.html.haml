@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %title= yield :title
+    %title= content_for?(:title) ? yield(:title) : 'MeetingLibs'
     = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'print', :media => 'print'
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Open+Sans'
@@ -50,7 +50,8 @@
             %li= link_to 'Meetings'
           - else
     #content
-      %h2= yield :title
+      - if content_for?(:title)
+        %h2= yield :title
       - unless flash[:notice].nil?
         %p#notice= flash[:notice]
       - unless flash[:alert].nil?

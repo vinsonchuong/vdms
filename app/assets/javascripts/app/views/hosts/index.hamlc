@@ -1,3 +1,4 @@
+%h2 Manage Hosts
 %table.records
   %thead
     %tr

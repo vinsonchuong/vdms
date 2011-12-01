@@ -238,6 +238,16 @@ a.action {
     }
   }
 
+  .listInput {
+    li > * {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    & + .ui-button, li > .ui-button {
+      padding: 0.3em;
+    }
+  }
+
   fieldset {
     margin: $vmargin 0;
     &:first-of-type {

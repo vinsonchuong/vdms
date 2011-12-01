@@ -1,3 +1,4 @@
+%h2 Edit Hosts
 %form{id: 'edit_host_form'}
   %fieldset
     %h3 Contact Info
