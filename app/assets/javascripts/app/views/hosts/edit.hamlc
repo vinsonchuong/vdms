@@ -25,9 +25,12 @@
                 %option= option
           - else if field_type.data_type == 'multiple_select'
             - field_name += '[]'
-            %label{for: field_name}= field_type.name
-            %select{id: field_name, name: field_name, multiple: 'multiple'}
-              - for option in field_type.options.selection_items
-                %option= option
+            %label= field_type.name
+            %ul
+              - for option, optionNo in field_type.options.selection_items
+                - id = 'option_' + optionNo
+                %li
+                  %input{type: 'checkbox', name: field_name, id: id, value: option}
+                  %label{for: id}= option
   %fieldset
     %button Update

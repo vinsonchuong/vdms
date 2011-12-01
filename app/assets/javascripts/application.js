@@ -5,3 +5,8 @@
 //= require vendor
 //= require hamlcoffee
 //= require app
+
+var afterRender =  function() {
+  $('a.action, button').button();
+};
+$(afterRender);

@@ -18,6 +18,7 @@ class New extends Spine.Controller
     
   render: ->
     @html @view('hosts/new')
+    afterRender()
 
   back: ->
     @navigate '/'
@@ -44,6 +45,7 @@ class Edit extends Spine.Controller
   render: ->
     @html @view('hosts/edit')(host: @item)
     $('#edit_host_form').fromObject(data: @item.attributes())
+    afterRender()
 
   back: ->
     @navigate '/'
@@ -68,7 +70,8 @@ class Index extends Spine.Controller
   render: =>
     hosts = Host.all()
     @html @view('hosts/index')(hosts: hosts)
-    
+    afterRender()
+
   edit: (e) ->
     item = $(e.target).item()
     @navigate '', item.id, 'edit'
