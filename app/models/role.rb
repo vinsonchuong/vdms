@@ -15,9 +15,6 @@ class Role < ActiveRecord::Base
   }
 
   def as_json(options = {})
-    super.merge!(
-      :name => person.name,
-      :email => person.email
-    )
+    super(options.merge!(:include => [:person, :fields]))
   end
 end

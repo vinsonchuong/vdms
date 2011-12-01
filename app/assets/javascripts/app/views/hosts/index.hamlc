@@ -1,18 +1,19 @@
 %table.records
   %thead
     %tr
-      %th{:scope => 'col'} Name
-      %th{:scope => 'col'} Email
-      %th{:scope => 'col'} Actions
+      %th{scope: 'col'} Name
+      %th{scope: 'col'} Email
+      %th{scope: 'col'} Actions
   %tbody
     - for host in @hosts
       %tr.item{'data-id' => host.id}
-        %td= host.name
-        %td= host.email
+        %td= host.person.name
+        %td= host.person.email
         %td
           %ul
             %li
-              %a.action{:href => '#', 'data-type' => 'edit'} Edit
+              %a.action{'data-type' => 'edit'} Edit
             %li
-              %a.action{:href => '#', 'data-type' => 'destroy'} Remove
-%a{:href => '#', 'data-type' => 'new'} New Host
+              %a.action{'data-type' => 'destroy'} Remove
+
+-# %a{'data-type' => 'new'} New Host

@@ -1,5 +1,6 @@
 $ = jQuery.sub()
 Host = App.Host
+HostFieldType = App.HostFieldType
 
 $.fn.item = ->
   elementID   = $(@).data('id')
@@ -19,12 +20,12 @@ class New extends Spine.Controller
     @html @view('hosts/new')
 
   back: ->
-    @navigate '/hosts'
+    @navigate '/'
 
   submit: (e) ->
     e.preventDefault()
     host = Host.fromForm(e.target).save()
-    @navigate '/hosts', host.id if host
+    @navigate '/' if host
 
 class Edit extends Spine.Controller
   events:
@@ -39,52 +40,30 @@ class Edit extends Spine.Controller
   change: (id) ->
     @item = Host.find(id)
     @render()
-    
+
   render: ->
-    @html @view('hosts/edit')(@item)
+    @html @view('hosts/edit')(host: @item)
+    $('#edit_host_form').fromObject(data: @item.attributes())
 
   back: ->
-    @navigate '/hosts'
+    @navigate '/'
 
   submit: (e) ->
     e.preventDefault()
     @item.fromForm(e.target).save()
-    @navigate '/hosts'
-
-class Show extends Spine.Controller
-  events:
-    'click [bata-type=edit]': 'edit'
-    'click [data-type=back]': 'back'
-
-  constructor: ->
-    super
-    @active (params) ->
-      @change(params.id)
-
-  change: (id) ->
-    @item = Host.find(id)
-    @render()
-
-  render: ->
-    @html @view('hosts/show')(@item)
-
-  edit: ->
-    @navigate '/hosts', @item.id, 'edit'
-
-  back: ->
-    @navigate '/hosts'
+    @navigate '/'
 
 class Index extends Spine.Controller
   events:
     'click [data-type=edit]':    'edit'
     'click [data-type=destroy]': 'destroy'
-    'click [data-type=show]':    'show'
     'click [data-type=new]':     'new'
 
   constructor: ->
     super
     Host.bind 'refresh change', @render
     Host.fetch()
+    HostFieldType.fetch()
     
   render: =>
     hosts = Host.all()
@@ -92,31 +71,25 @@ class Index extends Spine.Controller
     
   edit: (e) ->
     item = $(e.target).item()
-    @navigate '/hosts', item.id, 'edit'
+    @navigate '', item.id, 'edit'
     
   destroy: (e) ->
     item = $(e.target).item()
     item.destroy() if confirm('Sure?')
     
-  show: (e) ->
-    item = $(e.target).item()
-    @navigate '/hosts', item.id
-    
   new: ->
-    @navigate '/hosts/new'
+    @navigate '/new'
     
 class App.Hosts extends Spine.Stack
   controllers:
     index: Index
     edit:  Edit
-    show:  Show
     new:   New
     
   routes:
-    '/hosts/new':      'new'
-    '/hosts/:id/edit': 'edit'
-    '/hosts/:id':      'show'
-    '/hosts':          'index'
+    '/new':      'new'
+    '/:id/edit': 'edit'
+    '/':         'index'
     
   default: 'index'
   className: 'stack hosts'

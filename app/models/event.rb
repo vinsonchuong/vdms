@@ -72,10 +72,12 @@ class Event < ActiveRecord::Base
 
 
   def build_host_fields(host)
-    host_field_types.each {|t| host.fields.build(:field_type => t)}
+    # more tests
+    (host_field_types - host.fields.map(&:field_type)).each {|t| host.fields.build(:field_type => t)}
   end
 
   def build_visitor_fields(visitor)
-    visitor_field_types.each {|t| visitor.fields.build(:field_type => t)}
+    # more tests
+    (visitor_field_types - visitor.fields.map(&:field_type)).each {|t| visitor.fields.build(:field_type => t)}
   end
 end

@@ -1,8 +1,11 @@
 class FieldTypesController < EventBaseController
+  respond_to :html, :json
+
   # GET /events/1/host_field_types
   # GET /events/1/visitor_field_types
   def index
     @field_types = get_field_types
+    respond_with @field_types
   end
 
   # GET /events/1/host_field_types/new

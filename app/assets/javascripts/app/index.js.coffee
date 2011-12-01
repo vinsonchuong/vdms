@@ -17,6 +17,7 @@ class App extends Spine.Controller
 
     Spine.Model.host = '/events/' + @event_id
 
+    @navigate '/'
     switch @type
       when 'hosts' then @append(@hosts = new App.Hosts)
     

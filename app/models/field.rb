@@ -1,6 +1,8 @@
 class Field < ActiveRecord::Base
   after_initialize :include_feature_type_module
 
+  serialize :data
+
   private
 
   def include_feature_type_module
