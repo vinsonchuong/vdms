@@ -62,8 +62,19 @@ class RolesController < EventBaseController
   # PUT /events/1/visitors/1
   def update
     @role = get_role
-    @role.update_attributes(get_attributes.merge(:verified => @role == @current_role))
-    respond_with @role
+    was_verified = @role.verified?
+    if @role.update_attributes(get_attributes.merge(:verified => @role == @current_role))
+      flash[:notice] = t(@current_role == @role ?
+                           'update.alt_success' :
+                           'update.success',
+                         :scope => get_i18n_scope)
+    end
+
+    respond_with @role, :location => @current_role == @role ?
+                                       was_verified ?
+                                         @event :
+                                         session[:after_verify_url] :
+                                       {:action => 'index'}
   end
 
   # DESTROY /events/1/hosts/1

@@ -88,6 +88,7 @@ describe HostFieldType do
 
   context 'after creating' do
     it 'creates a corresponding HostField for each Host' do
+      pending
       new_field_type = Factory.build(:host_field_type, :event => @event)
       3.times do
         host = Factory.create(:host, :event => @event)

@@ -30,6 +30,7 @@ describe HostsController do
 
       it 'does not redirect when updating a Host' do
         @host.stub(:update_attributes).and_return(false)
+        @host.stub(:errors).and_return({:error => ''})
         put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
         response.should render_template('edit')
       end
@@ -70,6 +71,7 @@ describe HostsController do
 
       it 'does not redirect when updating a Host' do
         @host.stub(:update_attributes).and_return(false)
+        @host.stub(:errors).and_return({:error => ''})
         put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
         response.should render_template('edit')
       end
@@ -362,6 +364,7 @@ describe HostsController do
     context 'when the Host fails to be updated' do
       before(:each) do
         @host.stub(:update_attributes).and_return(false)
+        @host.stub(:errors).and_return({:error => ''})
       end
 
       it 'assigns to @event the given Event' do

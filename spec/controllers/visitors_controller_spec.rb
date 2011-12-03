@@ -30,6 +30,7 @@ describe VisitorsController do
 
       it 'does not redirect when updating a Visitor' do
         @visitor.stub(:update_attributes).and_return(false)
+        @visitor.stub(:errors).and_return({:error => ''})
         put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
         response.should render_template('edit')
       end
@@ -70,6 +71,7 @@ describe VisitorsController do
 
       it 'does not redirect when updating a Visitor' do
         @visitor.stub(:update_attributes).and_return(false)
+        @visitor.stub(:errors).and_return({:error => {}})
         put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
         response.should render_template('edit')
       end
@@ -322,6 +324,7 @@ describe VisitorsController do
     context 'when the Visitor fails to be updated' do
       before(:each) do
         @visitor.stub(:update_attributes).and_return(false)
+        @visitor.stub(:errors).and_return({:error => ''})
       end
 
       it 'assigns to @event the given Event' do
