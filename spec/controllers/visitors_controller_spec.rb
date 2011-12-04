@@ -65,6 +65,7 @@ describe VisitorsController do
       it 'does not redirect when creating a Visitor' do
         Visitor.stub(:new).and_return(@visitor)
         @visitor.stub(:save).and_return(false)
+        @visitor.stub(:errors).and_return(:error => 'foo')
         post :create, :visitor => {'foo' => 'bar'}, :event_id => @event.id
         response.should render_template('new')
       end
@@ -226,6 +227,7 @@ describe VisitorsController do
     context 'when the Visitor fails to be saved' do
       before(:each) do
         @visitor.stub(:save).and_return(false)
+        @visitor.stub(:errors).and_return(:error => 'foo')
       end
 
       it 'assigns to @event the given Event' do
@@ -324,7 +326,7 @@ describe VisitorsController do
     context 'when the Visitor fails to be updated' do
       before(:each) do
         @visitor.stub(:update_attributes).and_return(false)
-        @visitor.stub(:errors).and_return({:error => ''})
+        @visitor.stub(:errors).and_return(:error => '')
       end
 
       it 'assigns to @event the given Event' do

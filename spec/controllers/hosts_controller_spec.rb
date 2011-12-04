@@ -65,6 +65,7 @@ describe HostsController do
       it 'does not redirect when creating a Host' do
         @event.stub_chain(:hosts, :build).and_return(@host)
         @host.stub(:save).and_return(false)
+        @host.stub(:errors).and_return(:error => 'foo')
         post :create, :host => {'foo' => 'bar'}, :event_id => @event.id
         response.should render_template('new')
       end
@@ -236,6 +237,7 @@ describe HostsController do
     context 'when the Host fails to be saved' do
       before(:each) do
         @host.stub(:save).and_return(false)
+        @host.stub(:errors).and_return(:error => 'foo')
       end
 
       it 'assigns to @event the given Event' do

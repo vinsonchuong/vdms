@@ -6,13 +6,14 @@ class RolesController < EventBaseController
   # GET /events/1/visitors
   def index
     @roles = get_roles
-    respond_with @roles
+    respond_with @event, @roles
   end
 
   # GET /events/1/hosts/1
   # GET /events/1/visitors/1
   def show
     @role = get_role
+    respond_with @event, @role
   end
 
   # GET /events/1/hosts/new
@@ -20,6 +21,7 @@ class RolesController < EventBaseController
   def new
     @people = Person.all
     @role = get_role
+    respond_with @event, @role
   end
 
   # GET /events/1/hosts/join
@@ -31,24 +33,22 @@ class RolesController < EventBaseController
   # GET /events/1/visitors/1/edit
   def edit
     @role = get_role
+    respond_with @event, @role
   end
 
   # GET /events/1/hosts/1/delete
   # GET /events/1/visitors/1/delete
   def delete
     @role = get_role
+    respond_with @event, @role
   end
 
   # POST /events/1/hosts
   # POST /events/1/visitors
   def create
     @role = get_role
-    if @role.save
-      flash[:notice] = t('create.success', :scope => get_i18n_scope)
-      redirect_to :action => 'index'
-    else
-      render :action => 'new'
-    end
+    flash[:notice] = t('create.success', :scope => get_i18n_scope) if @role.save
+    respond_with @event, @role, :location => {:action => 'index'}
   end
 
   # POST /events/1/hosts/create_from_current_user
@@ -69,19 +69,19 @@ class RolesController < EventBaseController
                            'update.success',
                          :scope => get_i18n_scope)
     end
-
-    respond_with @role, :location => @current_role == @role ?
-                                       was_verified ?
-                                         @event :
-                                         session[:after_verify_url] :
-                                       {:action => 'index'}
+    respond_with @event, @role, :location => @current_role == @role ?
+                                               was_verified ?
+                                                 @event :
+                                                 session[:after_verify_url] :
+                                               {:action => 'index'}
   end
 
   # DESTROY /events/1/hosts/1
   # DESTROY /events/1/visitors/1
   def destroy
+    @role = get_role
     get_role.destroy
     flash[:notice] = t('destroy.success', :scope => get_i18n_scope)
-    redirect_to :action => 'index'
+    respond_with @event, @role
   end
 end

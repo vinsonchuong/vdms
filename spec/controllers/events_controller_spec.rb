@@ -165,6 +165,7 @@ describe EventsController do
     context 'when the Event fails to be saved' do
       before(:each) do
         @event.stub(:save).and_return(false)
+        @event.stub(:errors).and_return(:error => 'foo')
       end
 
       it 'renders the new template' do
@@ -207,6 +208,7 @@ describe EventsController do
       context 'when the Event fails to be saved' do
         before(:each) do
           @event.stub(:update_attributes).and_return(false)
+          @event.stub(:errors).and_return(:error => '')
         end
 
         it 'renders the edit template' do

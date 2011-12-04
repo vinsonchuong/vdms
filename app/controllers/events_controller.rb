@@ -1,4 +1,6 @@
 class EventsController < ApplicationController
+  respond_to :html, :json
+
   # GET /events
   def index
     @user_events = @current_user.events

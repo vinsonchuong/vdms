@@ -69,6 +69,7 @@ describe VisitorRankingsController do
 
       it 'does not redirect when updating rankings' do
         @visitor.stub(:update_attributes).and_return(false)
+        @visitor.stub(:errors).and_return(:error => '')
         put :update_all, :visitor_id => @visitor.id, :event_id => @event.id
         response.should render_template('edit_all')
       end
@@ -216,6 +217,7 @@ describe VisitorRankingsController do
     context 'the Visitor fails to be saved' do
       before(:each) do
         @visitor.stub(:update_attributes).and_return(false)
+        @visitor.stub(:errors).and_return(:error => '')
       end
 
       it 'assigns to @event the given Event' do

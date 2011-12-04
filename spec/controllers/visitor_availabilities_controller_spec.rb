@@ -49,6 +49,7 @@ describe VisitorAvailabilitiesController do
 
       it 'does not redirect when updating availabilities' do
         @visitor.stub(:update_attributes).and_return(false)
+        @visitor.stub(:errors).and_return(:error => '')
         put :update_all, :visitor_id => @visitor.id, :event_id => @event.id
         response.should render_template('edit_all')
       end
@@ -122,6 +123,7 @@ describe VisitorAvailabilitiesController do
     context 'the Host fails to be saved' do
       before(:each) do
         @visitor.stub(:update_attributes).and_return(false)
+        @visitor.stub(:errors).and_return(:error => '')
       end
 
       it 'assigns to @event the given Event' do

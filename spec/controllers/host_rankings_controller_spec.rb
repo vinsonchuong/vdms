@@ -69,6 +69,7 @@ describe HostRankingsController do
 
       it 'does not redirect when updating rankings' do
         @host.stub(:update_attributes).and_return(false)
+        @host.stub(:errors).and_return(:error => '')
         put :update_all, :host_id => @host.id, :event_id => @event.id
         response.should render_template('edit_all')
       end
@@ -219,6 +220,7 @@ describe HostRankingsController do
     context 'the Host fails to be saved' do
       before(:each) do
         @host.stub(:update_attributes).and_return(false)
+        @host.stub(:errors).and_return(:error => '')
       end
 
       it 'assigns to @event the Event' do

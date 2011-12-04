@@ -148,6 +148,7 @@ describe HostFieldTypesController do
     context 'when the HostFieldType fails to be saved' do
       before(:each) do
         @field_type.stub(:save).and_return(false)
+        @field_type.stub(:errors).and_return(:error => 'foo')
       end
 
       it 'assigns to @event the given Event' do
@@ -202,6 +203,7 @@ describe HostFieldTypesController do
     context 'when the HostFieldType fails to be updated' do
       before(:each) do
         @field_type.stub(:update_attributes).and_return(false)
+        @field_type.stub(:errors).and_return(:error => '')
       end
 
       it 'assigns to @event the given Event' do

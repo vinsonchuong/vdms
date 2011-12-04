@@ -101,6 +101,7 @@ describe PeopleController do
     context 'when the Person fails to be saved' do
       before(:each) do
         @person.stub(:save).and_return(false)
+        @person.stub(:errors).and_return(:error => 'foo')
       end
 
       it 'renders the new template' do
@@ -204,6 +205,7 @@ describe PeopleController do
     context 'when the Person fails to be saved' do
       before(:each) do
         @person.stub(:update_attributes).and_return(false)
+        @person.stub(:errors).and_return(:error => '')
       end
 
       it 'renders the edit template' do

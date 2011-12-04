@@ -1,16 +1,16 @@
 class PeopleController < ApplicationController
+  respond_to :html, :json
+
   # GET /people
   def index
     @people = Person.all
-  end
-
-  # GET /people/delete_all
-  def delete_all
+    respond_with @people
   end
 
   # GET /people/new
   def new
     @person = Person.new
+    respond_with @person
   end
 
   # GET /people/upload
@@ -20,21 +20,20 @@ class PeopleController < ApplicationController
   # GET /people/1/edit
   def edit
     @person = Person.find(params[:id])
+    respond_with @person
   end
 
   # GET /people/1/delete
   def delete
     @person = Person.find(params[:id])
+    respond_with @person
   end
 
   # POST /people
   def create
     @person = Person.new(params[:person])
-    if @person.save
-      redirect_to(:people, :notice => t('people.create.success'))
-    else
-      render :action => 'new'
-    end
+    flash[:notice] = t('people.create.success') if @person.save
+    respond_with @person, :location => :people
   end
 
   # POST /people/import
@@ -52,25 +51,18 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find(params[:id])
     if @person.update_attributes(params[:person])
-      if @person == @current_user
-        redirect_to(root_url, :notice => t('people.update.success_alt'))
-      else
-        redirect_to(:people, :notice => t('people.update.success'))
-      end
-    else
-      render :action => 'edit'
+      flash[:notice] = @person == @current_user ?
+                         t('people.update.success_alt') :
+                         t('people.update.success')
     end
+    respond_with @person, :location => @person == @current_user ? root_url : {:action => 'index'}
   end
 
   # DELETE /people/1
   def destroy
-    Person.find(params[:id]).destroy
-    redirect_to(:people, :notice => t('people.destroy.success'))
-  end
-
-  # DELETE /people/destroy_all
-  def destroy_all
-    Person.destroy_all
-    redirect_to(:people, :notice => t('people.destroy_all.success'))
+    @person = Person.find(params[:id])
+    @person.destroy
+    flash[:notice] = t('people.destroy.success')
+    respond_with(@person)
   end
 end
