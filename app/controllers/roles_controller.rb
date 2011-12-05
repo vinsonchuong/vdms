@@ -47,7 +47,7 @@ class RolesController < EventBaseController
   # POST /events/1/visitors
   def create
     @role = get_role
-    flash[:notice] = t('create.success', :scope => get_i18n_scope) if @role.save
+    flash[:notice] = t('create.success', :scope => get_i18n_scope) if @role.save and not request.xhr?
     respond_with @event, @role, :location => {:action => 'index'}
   end
 
@@ -63,7 +63,7 @@ class RolesController < EventBaseController
   def update
     @role = get_role
     was_verified = @role.verified?
-    if @role.update_attributes(get_attributes.merge(:verified => @role == @current_role))
+    if @role.update_attributes(get_attributes.merge(:verified => @role == @current_role)) and not request.xhr?
       flash[:notice] = t(@current_role == @role ?
                            'update.alt_success' :
                            'update.success',
@@ -81,7 +81,7 @@ class RolesController < EventBaseController
   def destroy
     @role = get_role
     get_role.destroy
-    flash[:notice] = t('destroy.success', :scope => get_i18n_scope)
+    flash[:notice] = t('destroy.success', :scope => get_i18n_scope) unless request.xhr?
     respond_with @event, @role
   end
 end

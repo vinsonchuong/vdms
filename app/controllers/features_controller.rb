@@ -46,7 +46,7 @@ class FeaturesController < EventBaseController
   def create
     @feature = get_feature
     if @feature.save
-      flash[:notice] = t('create.success', :scope => get_i18n_scope)
+      flash[:notice] = t('create.success', :scope => get_i18n_scope) unless request.xhr?
     else
       @host_field_types = @event.host_field_types.map {|t| [t.name, t.id]}
       @visitor_field_types = @event.visitor_field_types.map {|t| [t.name, t.id]}
@@ -60,7 +60,7 @@ class FeaturesController < EventBaseController
   def update
     @feature = get_feature
     if @feature.update_attributes(get_attributes)
-      flash[:notice] = t('update.success', :scope => get_i18n_scope)
+      flash[:notice] = t('update.success', :scope => get_i18n_scope) unless request.xhr?
     else
       @host_field_types = @event.host_field_types.map {|t| [t.name, t.id]}
       @visitor_field_types = @event.visitor_field_types.map {|t| [t.name, t.id]}
@@ -74,7 +74,7 @@ class FeaturesController < EventBaseController
   def destroy
     @feature = get_feature
     @feature.destroy
-    flash[:notice] = t('destroy.success', :scope => get_i18n_scope)
+    flash[:notice] = t('destroy.success', :scope => get_i18n_scope) unless request.xhr?
     respond_with @event, @feature
   end
 end

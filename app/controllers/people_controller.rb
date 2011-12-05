@@ -32,7 +32,7 @@ class PeopleController < ApplicationController
   # POST /people
   def create
     @person = Person.new(params[:person])
-    flash[:notice] = t('people.create.success') if @person.save
+    flash[:notice] = t('people.create.success') if @person.save and not request.xhr?
     respond_with @person, :location => :people
   end
 
@@ -50,7 +50,7 @@ class PeopleController < ApplicationController
   # PUT /people/1
   def update
     @person = Person.find(params[:id])
-    if @person.update_attributes(params[:person])
+    if @person.update_attributes(params[:person]) and not request.xhr?
       flash[:notice] = @person == @current_user ?
                          t('people.update.success_alt') :
                          t('people.update.success')
@@ -62,7 +62,7 @@ class PeopleController < ApplicationController
   def destroy
     @person = Person.find(params[:id])
     @person.destroy
-    flash[:notice] = t('people.destroy.success')
+    flash[:notice] = t('people.destroy.success') unless request.xhr?
     respond_with(@person)
   end
 end

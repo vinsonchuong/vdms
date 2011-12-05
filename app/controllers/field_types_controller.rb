@@ -39,7 +39,7 @@ class FieldTypesController < EventBaseController
   def create
     @field_type = get_field_type
     @data_types = FieldType.data_types_list.map {|k, v| [v, k]}
-    if @field_type.save
+    if @field_type.save and not request.xhr?
       flash[:notice] = t('create.success', :scope => get_i18n_scope)
     end
     respond_with @event, @field_type, :location => {:action => 'index'}
@@ -50,7 +50,7 @@ class FieldTypesController < EventBaseController
   def update
     @field_type = get_field_type
     @data_types = FieldType.data_types_list.map {|k, v| [v, k]}
-    if @field_type.update_attributes(get_attributes)
+    if @field_type.update_attributes(get_attributes) and not request.xhr?
       flash[:notice] = t('update.success', :scope => get_i18n_scope)
     end
     respond_with @event, @field_type, :location => {:action => 'index'}
@@ -61,7 +61,7 @@ class FieldTypesController < EventBaseController
   def destroy
     @field_type = get_field_type
     @field_type.destroy
-    flash[:notice] = t('destroy.success', :scope => get_i18n_scope)
+    flash[:notice] = t('destroy.success', :scope => get_i18n_scope) unless request.xhr?
     respond_with @event, @field_type
   end
 end
