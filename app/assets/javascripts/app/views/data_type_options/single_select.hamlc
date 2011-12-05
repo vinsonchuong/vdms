@@ -1,0 +1,15 @@
+%fieldset
+  %h3 Options
+  %ul
+    %li.field.required
+      %label Selection Items
+      %ul.listInput{id: "#{@prefix}_options_selection_items"}
+    %li.field.required
+      %label Presentation
+      %ul
+        %li
+          %input{type: 'radio', id: "#{@prefix}_options_presentation_drop_down", name: 'options.presentation', value: 'drop_down', checked: 'checked'}
+          %label{for: "#{@prefix}_options_presentation_drop_down"} Drop Down Menu
+        %li
+          %input{type: 'radio', id: "#{@prefix}_options_presentation_radios", name: 'options.presentation', value: 'radios'}
+          %label{for: "#{@prefix}_options_presentation_drop_down"} Radio Buttons

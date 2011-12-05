@@ -70,6 +70,32 @@ a.action {
     box-shadow: inset 0 0 3px rgba(0,0,0, 0.4);
   }
 }
+.dialog {
+  display: none;
+}
+.ui-dialog {
+  .ui-dialog-titlebar {
+    border-radius: 0;
+    padding: ($vmargin / 2) ($hmargin / 2);
+    .ui-dialog-titlebar-close {
+      display: inline-block;
+      float: right;
+    }
+  }
+  .ui-dialog-content {
+    border: {
+      top: none;
+      bottom: none;
+    }
+    padding: ($vmargin / 2) ($hmargin / 2);
+  }
+  .ui-dialog-buttonpane {
+    padding: ($vmargin / 2) ($hmargin / 2);
+    .ui-dialog-buttonset {
+      float: right;
+    }
+  }
+}
 #header {
   @include clearfix;
   border-bottom: 1px solid $gray;
@@ -191,6 +217,26 @@ a.action {
     }
     &:last-child {
       margin-bottom: 0;
+    }
+  }
+
+  ul#actions {
+    @include clearfix;
+    border: {
+      top: 1px solid $medium_gray;
+      bottom: 1px solid $medium_gray;
+    }
+    margin: ($vmargin / 2) 0;
+    padding: ($vmargin / 2) 0;
+    li {
+      float: left;
+      margin: 0 $hmargin;
+      &:first-child {
+        margin-left: 0;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 

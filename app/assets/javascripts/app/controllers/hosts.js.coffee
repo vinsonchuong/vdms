@@ -66,7 +66,7 @@ class Index extends Spine.Controller
     Host.bind 'refresh change', @render
     Host.fetch()
     HostFieldType.fetch()
-    
+
   render: =>
     hosts = Host.all()
     @html @view('hosts/index')(hosts: hosts)

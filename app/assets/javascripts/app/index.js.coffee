@@ -18,9 +18,11 @@ class App extends Spine.Controller
     Spine.Model.host = '/events/' + @event_id
 
     @navigate '/'
+
     switch @type
       when 'hosts' then @append(@hosts = new App.Hosts)
-    
+      when 'host_field_types' then @append(@host_field_types = new App.HostFieldTypes)
+
     Spine.Route.setup()
     window.app = this
 

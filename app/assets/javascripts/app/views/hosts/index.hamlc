@@ -16,5 +16,3 @@
               %a.action{'data-type' => 'edit'} Edit
             %li
               %a.action{'data-type' => 'destroy'} Remove
-
--# %a{'data-type' => 'new'} New Host

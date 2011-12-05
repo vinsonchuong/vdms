@@ -1,0 +1,24 @@
+%h2 Manage Host Fields
+%ul#actions
+  %li
+    %a.action{'data-type' => 'new'} New
+%table.records
+  %thead
+    %tr
+      %th{scope: 'col'} Name
+      %th{scope: 'col'} Description
+      %th{scope: 'col'} Actions
+  %tbody
+    - for host_field_type in @host_field_types
+      %tr.item{'data-id' => host_field_type.id}
+        %td= host_field_type.name
+        %td= host_field_type.description
+        %td
+          %ul
+            %li
+              %a.action{'data-type' => 'edit'} Edit
+            %li
+              %a.action{'data-type' => 'destroy'} Remove
+#confirm_delete.dialog{title: 'Remove Host Field?'}
+  %p Are you sure you want to permanently remove this host field?
+

@@ -1,0 +1,6 @@
+%fieldset
+  %h3 Options
+  %ul
+    %li.field.required
+      %label Selection Items
+      %ul.listInput{id: "#{@prefix}_options_selection_items"}
