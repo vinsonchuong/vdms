@@ -1,14 +1,5 @@
-- content_for :title, t('.title')
-%table.records
-  %thead
-    %tr
-      %th{:scope => 'col'}!= VisitorFieldType.human_attribute_name(:name)
-      %th{:scope => 'col'}!= t('.actions')
-  %tbody
-    - @field_types.each do |field_type|
-      %tr
-        %td= field_type.name
-        %td
-          %ul
-            %li!= link_to t('visitor_field_types.edit.short_title'), edit_event_visitor_field_type_path(@event, field_type), :class => 'action'
-            %li!= link_to t('visitor_field_types.delete.short_title'), delete_event_visitor_field_type_path(@event, field_type), :class => 'action'
+- content_for :javascript do
+  :coffeescript
+    jQuery ->
+      new App {el: $('#content'), type: 'visitor_field_types', event_id: #{@event.id}}
+      return

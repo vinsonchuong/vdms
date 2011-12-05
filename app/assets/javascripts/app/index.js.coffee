@@ -22,6 +22,7 @@ class App extends Spine.Controller
     switch @type
       when 'hosts' then @append(@hosts = new App.Hosts)
       when 'host_field_types' then @append(@host_field_types = new App.HostFieldTypes)
+      when 'visitor_field_types' then @append(@visitor_field_types = new App.VisitorFieldTypes)
 
     Spine.Route.setup()
     window.app = this

@@ -1,0 +1,28 @@
+%h2 Edit Visitor Field
+%form#edit
+  %fieldset
+    %h3 Basic Info
+    %ul
+      %li.field.required
+        %label{for: 'edit_name'} Name
+        %input{id: 'edit_name', name: 'name', type: 'text', required: 'required', size: 30}
+      %li.field.required
+        %label{for: 'edit_description'} Description
+        %textarea{id: 'edit_description', name: 'description', required: 'required', cols: 30, rows: 5}
+      %li.field.required
+        %label Data Type
+        %ul
+          %li
+            %input#edit_data_type_text{type: 'radio', name: 'data_type', value: 'text', checked: 'checked'}
+            %label{for: 'edit_data_type_text'} Text
+          %li
+            %input#edit_data_type_single_select{type: 'radio', name: 'data_type', value: 'single_select'}
+            %label{for: 'edit_data_type_single_select'} Single Selection
+          %li
+            %input#edit_data_type_multiple_select{type: 'radio', name: 'data_type', value: 'multiple_select'}
+            %label{for: 'edit_data_type_multiple_select'} Multiple Selection
+  #edit_options
+  %fieldset
+    %button{type: 'submit'} Update Visitor Field
+    %span or
+    %a{'data-type' => 'back'} Cancel

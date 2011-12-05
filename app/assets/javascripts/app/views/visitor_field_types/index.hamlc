@@ -1,0 +1,24 @@
+%h2 Manage Visitor Fields
+%ul#actions
+  %li
+    %a.action{'data-type' => 'new'} New
+%table.records
+  %thead
+    %tr
+      %th{scope: 'col'} Name
+      %th{scope: 'col'} Description
+      %th{scope: 'col'} Actions
+  %tbody
+    - for visitor_field_type in @visitor_field_types
+      %tr.item{'data-id' => visitor_field_type.id}
+        %td= visitor_field_type.name
+        %td= visitor_field_type.description
+        %td
+          %ul
+            %li
+              %a.action{'data-type' => 'edit'} Edit
+            %li
+              %a.action{'data-type' => 'destroy'} Remove
+#confirm_delete.dialog{title: 'Remove Visitor Field?'}
+  %p Are you sure you want to permanently remove this visitor field?
+
