@@ -1,5 +1,5 @@
-class App.Host extends Spine.Model
-  @configure 'Host', 'person', 'fields'
+class App.Visitor extends Spine.Model
+  @configure 'Visitor', 'person', 'fields'
   @extend Spine.Model.Ajax
 
   @new_attributes: {}
@@ -26,4 +26,4 @@ class App.Host extends Spine.Model
     delete data.fields
     data.person_attributes = data.person
     delete data.person
-    {host: data}
+    {visitor: data}

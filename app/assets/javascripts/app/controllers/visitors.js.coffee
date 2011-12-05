@@ -1,11 +1,11 @@
 $ = jQuery.sub()
-Host = App.Host
-HostFieldType = App.HostFieldType
+Visitor = App.Visitor
+VisitorFieldType = App.VisitorFieldType
 
 $.fn.item = ->
   elementID   = $(@).data('id')
   elementID or= $(@).parents('[data-id]').data('id')
-  Host.find(elementID)
+  Visitor.find(elementID)
 
 class New extends Spine.Controller
   events:
@@ -17,9 +17,9 @@ class New extends Spine.Controller
     @active @render
     
   render: ->
-    @item = new Host
-    @html @view('hosts/new')(host: @item)
-    $('#new').fromObject(data: Host.new_attributes)
+    @item = new Visitor
+    @html @view('visitor/new')(visitor: @item)
+    $('#new').fromObject(data: Visitor.new_attributes)
     afterRender()
 
   back: ->
@@ -27,8 +27,8 @@ class New extends Spine.Controller
 
   submit: (e) ->
     e.preventDefault()
-    host = Host.fromForm(e.target).save()
-    @navigate '/' if host
+    visitor = Visitor.fromForm(e.target).save()
+    @navigate '/' if visitor
 
 class Edit extends Spine.Controller
   events:
@@ -41,11 +41,11 @@ class Edit extends Spine.Controller
       @change(params.id)
       
   change: (id) ->
-    @item = Host.find(id)
+    @item = Visitor.find(id)
     @render()
 
   render: ->
-    @html @view('hosts/edit')(host: @item)
+    @html @view('visitors/edit')(visitor: @item)
     $('#edit').fromObject(data: @item.attributes())
     afterRender()
 
@@ -65,13 +65,13 @@ class Index extends Spine.Controller
 
   constructor: ->
     super
-    Host.bind 'refresh change', @render
-    Host.fetch()
-    HostFieldType.fetch()
+    Visitor.bind 'refresh change', @render
+    Visitor.fetch()
+    VisitorFieldType.fetch()
 
   render: =>
-    hosts = Host.all()
-    @html @view('hosts/index')(hosts: hosts)
+    visitors = Visitor.all()
+    @html @view('visitors/index')(visitors: visitors)
     afterRender()
 
   edit: (e) ->
@@ -82,7 +82,7 @@ class Index extends Spine.Controller
     item = $(e.target).item()
     dialog = $('#confirm_delete')
     dialog.dialog('option', 'buttons',
-      'Remove Host': ->
+      'Remove Visitor': ->
         item.destroy()
         $(this).dialog('close')
       'Cancel': ->
@@ -93,7 +93,7 @@ class Index extends Spine.Controller
   new: ->
     @navigate '/new'
     
-class App.Hosts extends Spine.Stack
+class App.Visitor extends Spine.Stack
   controllers:
     index: Index
     edit:  Edit
@@ -105,4 +105,4 @@ class App.Hosts extends Spine.Stack
     '/':         'index'
     
   default: 'index'
-  className: 'stack hosts'
+  className: 'stack visitors'

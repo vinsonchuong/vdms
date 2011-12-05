@@ -1,19 +1,19 @@
-%h2 Edit Host
-%form#edit
+%h2 New Host
+%form#new
   %fieldset
     %h3 Contact Info
     %ul
       %li.field.required
-        %label{for: 'edit_person_name'} Name
-        %input{id: 'edit_person_name', name: 'person.name', type: 'text', size: 30}
+        %label{for: 'new_person_name'} Name
+        %input{id: 'new_person_name', name: 'person.name', type: 'text', size: 30}
       %li.field.required
-        %label{for: 'edit_person_email'} Email
-        %input{id: 'edit_person_email', name: 'person.email', type: 'text', size: 30}
+        %label{for: 'new_person_email'} Email
+        %input{id: 'new_person_email', name: 'person.email', type: 'text', size: 30}
   %fieldset
     %h3 Preferences
     %ul
       - for field, fieldNo in @host.fields
-        - field_id = "edit_fields_#{fieldNo}_data"
+        - field_id = "new_fields_#{fieldNo}_data"
         - field_name = "fields[#{fieldNo}].data"
         - field_type = App.HostFieldType.find(field.field_type_id)
         %li.field
@@ -35,9 +35,8 @@
                   %input{type: 'checkbox', name: field_name, id: id, value: option}
                   %label{for: id}= option
           -# Hack to bypass but in form2js's skipEmpty option
-          %input{type: 'hidden', name: "fields[#{fieldNo}].id"}
           %input{type: 'hidden', name: "fields[#{fieldNo}].field_type_id"}
   %fieldset
-    %button{type: 'submit'} Update Host
+    %button{type: 'submit'} Add Host
     %span or
     %a{'data-type' => 'back'} Cancel
