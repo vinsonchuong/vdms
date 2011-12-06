@@ -19,7 +19,12 @@ class New extends Spine.Controller
     
   render: ->
     @item = new Visitor
-    @html @view('visitor/new')(visitor: @item)
+    @html @view('visitors/new')(
+      helper:
+        render_data_type: (data_type, params) =>
+          @view("data_type_input/" + data_type)(params)
+      visitor: @item
+    )
     $('#new').fromObject(data: Visitor.new_attributes)
     afterRender()
 
@@ -46,7 +51,12 @@ class Edit extends Spine.Controller
     @render()
 
   render: ->
-    @html @view('visitors/edit')(visitor: @item)
+    @html @view('visitors/edit')(
+      helper:
+        render_data_type: (data_type, params) =>
+          @view("data_type_input/" + data_type)(params)
+      visitor: @item
+    )
     $('#edit').fromObject(data: @item.attributes())
     afterRender()
 
@@ -102,6 +112,11 @@ class Index extends Spine.Controller
   render: =>
     visitors = Visitor.all()
     @html @view('visitors/index')(visitors: visitors)
+    $('#confirm_delete').dialog(
+      autoOpen: false
+      modal: true
+      resizable: false
+    )
     afterRender()
 
   edit: (e) ->

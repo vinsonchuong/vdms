@@ -1,4 +1,6 @@
 class Person < ActiveRecord::Base
+  after_initialize :set_defaults
+
   has_many :event_roles , :class_name => 'Role'
   has_many :events, :through => :event_roles
 
@@ -7,4 +9,10 @@ class Person < ActiveRecord::Base
   validates_inclusion_of :role, :in => ['user', 'facilitator', 'administrator']
 
   default_scope order('name')
+
+  private
+
+  def set_defaults
+    self.role ||= 'user'
+  end
 end

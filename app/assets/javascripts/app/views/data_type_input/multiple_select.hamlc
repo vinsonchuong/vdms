@@ -1,0 +1,7 @@
+- @name += '[]'
+%label= @field_name
+%ul
+  - for option, optionNo in @selection_items
+    %li
+      %input{type: 'checkbox', name: @name, id: "#{@id}_#{optionNo}", value: option}
+      %label{for: "#{@id}_#{optionNo}"}= option

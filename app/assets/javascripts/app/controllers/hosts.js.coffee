@@ -19,7 +19,12 @@ class New extends Spine.Controller
     
   render: ->
     @item = new Host
-    @html @view('hosts/new')(host: @item)
+    @html @view('hosts/new')(
+      helper:
+        render_data_type: (data_type, params) =>
+          @view("data_type_input/" + data_type)(params)
+      host: @item
+    )
     $('#new').fromObject(data: Host.new_attributes)
     afterRender()
 
@@ -35,7 +40,7 @@ class Edit extends Spine.Controller
   events:
     'click [data-type=back]': 'back'
     'submit form': 'submit'
-  
+
   constructor: ->
     super
     @active (params) ->
@@ -46,7 +51,12 @@ class Edit extends Spine.Controller
     @render()
 
   render: ->
-    @html @view('hosts/edit')(host: @item)
+    @html @view('hosts/edit')(
+      helper:
+        render_data_type: (data_type, params) =>
+          @view("data_type_input/" + data_type)(params)
+      host: @item
+    )
     $('#edit').fromObject(data: @item.attributes())
     afterRender()
 
@@ -102,6 +112,11 @@ class Index extends Spine.Controller
   render: =>
     hosts = Host.all()
     @html @view('hosts/index')(hosts: hosts)
+    $('#confirm_delete').dialog(
+      autoOpen: false
+      modal: true
+      resizable: false
+    )
     afterRender()
 
   edit: (e) ->

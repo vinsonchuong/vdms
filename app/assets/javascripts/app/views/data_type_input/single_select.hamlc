@@ -1,0 +1,15 @@
+- if @presentation == 'drop_down'
+  %label{for: @id}= @field_name
+  %select{id: @id, name: @name}
+    - for option in @selection_items
+      %option= option
+- else if @presentation == 'radios'
+  %label= @field_name
+  %ul
+    - for option, optionNo in @selection_items
+      %li
+        - if optionNo
+          %input{type: 'radio', id: @id, name: @name, value: option}
+        - else
+          %input{type: 'radio', id: @id, name: @name, value: option, checked: 'checked'}
+        %label{for: "#{@id}_#{optionNo}"}= option

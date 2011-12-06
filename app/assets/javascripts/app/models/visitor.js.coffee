@@ -13,7 +13,7 @@ class App.Visitor extends Spine.Model
     super(attrs)
 
   constructor: (attrs = {}) ->
-    super($.extend(true, {}, App.Host.new_attributes, attrs))
+    super($.extend(true, {}, App.Visitor.new_attributes, attrs))
 
   fromForm: (form) ->
     data = $(form).toObject()

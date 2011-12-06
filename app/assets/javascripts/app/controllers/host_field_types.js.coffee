@@ -40,12 +40,12 @@ class Edit extends Spine.Controller
     'click [data-type=back]': 'back'
     'change input[name="data_type"]': 'update_options'
     'submit form': 'submit'
-  
+
   constructor: ->
     super
     @active (params) ->
       @change(params.id)
-      
+
   change: (id) ->
     @item = HostFieldType.find(id)
     @render()
