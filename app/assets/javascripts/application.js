@@ -6,7 +6,17 @@
 //= require hamlcoffee
 //= require app
 
-var afterRender =  function() {
-  $('a.action, button').button();
-};
+var
+  afterRender =  function() {
+    $('a.action, button').button();
+  },
+  showSpinner = function() {
+    $('body').append($('<div class="ui-widget-overlay"></div>'));
+    $('body').spin({lines: 8, length: 24, width: 12, radius: 18, trail: 50, speed: 1, shadow: true, color: '#ff932b'});
+  },
+  hideSpinner = function() {
+    $('body').spin(false);
+    $('.ui-widget-overlay').remove();
+  }
+;
 $(afterRender);
