@@ -1,12 +1,12 @@
 $ = jQuery.sub()
-Goal = App.Goal
+Constraint = App.Constraint
 HostFieldType = App.HostFieldType
 VisitorFieldType = App.VisitorFieldType
 
 $.fn.item = ->
   elementID   = $(@).data('id')
   elementID or= $(@).parents('[data-id]').data('id')
-  Goal.find(elementID)
+  Constraint.find(elementID)
 
 class New extends Spine.Controller
   events:
@@ -23,7 +23,7 @@ class New extends Spine.Controller
   render: ->
     host_field_types = HostFieldType.all()
     visitor_field_types = VisitorFieldType.all()
-    @html @view('goals/new')(host_field_types: host_field_types, visitor_field_types: visitor_field_types)
+    @html @view('constraints/new')(host_field_types: host_field_types, visitor_field_types: visitor_field_types)
     @update_feature_types()
     @update_options()
     afterRender()
@@ -86,8 +86,8 @@ class New extends Spine.Controller
 
   submit: (e) ->
     e.preventDefault()
-    goal = Goal.fromForm(e.target).save()
-    @navigate '/' if goal
+    constraint = Constraint.fromForm(e.target).save()
+    @navigate '/' if constraint
 
 class Edit extends Spine.Controller
   events:
@@ -103,13 +103,13 @@ class Edit extends Spine.Controller
       @change(params.id)
 
   change: (id) ->
-    @item = Goal.find(id)
+    @item = Constraint.find(id)
     @render()
 
   render: ->
     host_field_types = HostFieldType.all()
     visitor_field_types = VisitorFieldType.all()
-    @html @view('goals/edit')(goal: @item, host_field_types: host_field_types, visitor_field_types: visitor_field_types)
+    @html @view('constraints/edit')(constraint: @item, host_field_types: host_field_types, visitor_field_types: visitor_field_types)
     $('#edit', @el).fromObject(data: @item.attributes())
     @update_feature_types()
     $('#edit', @el).fromObject(data: @item.attributes())
@@ -150,7 +150,7 @@ class Edit extends Spine.Controller
         {name: 'They should not be the same.', value: 'not_equal'}
       ]
     $('#edit_feature_types', @el).html(@view("feature_type_options/feature_types")(
-      id_prefix: 'edit_goal',
+      id_prefix: 'edit_constraint',
       feature_types: feature_types
     ))
 
@@ -186,14 +186,14 @@ class Index extends Spine.Controller
 
   constructor: ->
     super
-    Goal.bind 'refresh change', @render
-    Goal.fetch()
+    Constraint.bind 'refresh change', @render
+    Constraint.fetch()
     HostFieldType.fetch()
     VisitorFieldType.fetch()
 
   render: =>
-    goals = Goal.all()
-    @html @view('goals/index')(goals: goals)
+    constraints = Constraint.all()
+    @html @view('constraints/index')(constraints: constraints)
     $('#confirm_delete').dialog(
       autoOpen: false
       modal: true
@@ -209,7 +209,7 @@ class Index extends Spine.Controller
     item = $(e.target).item()
     dialog = $('#confirm_delete')
     dialog.dialog('option', 'buttons',
-      'Remove Goal': ->
+      'Remove Constraint': ->
         item.destroy()
         $(this).dialog('close')
       'Cancel': ->
@@ -220,7 +220,7 @@ class Index extends Spine.Controller
   new: ->
     @navigate '/new'
     
-class App.Goals extends Spine.Stack
+class App.Constraints extends Spine.Stack
   controllers:
     index: Index
     edit:  Edit
@@ -232,4 +232,4 @@ class App.Goals extends Spine.Stack
     '/':         'index'
 
   default: 'index'
-  className: 'stack goals'
+  className: 'stack constraints'

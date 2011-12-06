@@ -8,7 +8,7 @@
         - for host_value in @host_field_type.options.selection_items
           - for visitor_value in @visitor_field_type.options.selection_items
             %li
-              - if @goal? and (e for e in @goal.options.combinations when e.host_value == host_value and e.visitor_value == visitor_value).length
+              - if @feature? and (e for e in @feature.options.combinations when e.host_value == host_value and e.visitor_value == visitor_value).length
                 %input{type: 'checkbox', id: "#{@prefix}_options_combinations_#{combinationNo}", checked: 'checked'}
                 %input{type: 'hidden', name: "options.combinations[#{combinationNo}][host_value]", value: "#{host_value}"}
                 %input{type: 'hidden', name: "options.combinations[#{combinationNo}][visitor_value]", value: "#{visitor_value}"}

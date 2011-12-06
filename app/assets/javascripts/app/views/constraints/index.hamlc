@@ -1,0 +1,22 @@
+%h2 Manage Constraints
+%ul#actions
+  %li
+    %a.action{'data-type' => 'new'} New
+%table.records
+  %thead
+    %tr
+      %th{scope: 'col'} Name
+      %th{scope: 'col'} Actions
+  %tbody
+    - for constraint in @constraints
+      %tr.item{'data-id' => constraint.id}
+        %td= constraint.name
+        %td
+          %ul
+            %li
+              %a.action{'data-type' => 'edit'} Edit
+            %li
+              %a.action{'data-type' => 'destroy'} Remove
+#confirm_delete.dialog{title: 'Remove Constraint?'}
+  %p Are you sure you want to permanently remove this constraint?
+

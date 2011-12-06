@@ -1,14 +1,5 @@
-- content_for :title, t('.title')
-%table.records
-  %thead
-    %tr
-      %th{:scope => 'col'}!= Constraint.human_attribute_name(:name)
-      %th{:scope => 'col'}!= t('.actions')
-  %tbody
-    - @features.each do |feature|
-      %tr
-        %td= feature.name
-        %td
-          %ul
-            %li!= link_to t('constraints.edit.title'), edit_event_constraint_path(@event, feature), :class => 'action'
-            %li!= link_to t('constraints.delete.title'), delete_event_constraint_path(@event, feature), :class => 'action'
+- content_for :javascript do
+  :coffeescript
+    jQuery ->
+      new App {el: $('#content'), type: 'constraints', event_id: #{@event.id}}
+      return

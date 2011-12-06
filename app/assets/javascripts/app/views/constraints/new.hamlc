@@ -1,0 +1,24 @@
+%h2 New Constraint
+%form#new
+  %fieldset
+    %h3 Basic Info
+    %ul
+      %li.field.required
+        %label{for: 'new_name'} Name
+        %input{id: 'new_name', name: 'name', type: 'text', required: 'required', size: 30}
+      %li.field.required
+        %label{for: 'new_host_field_type_id'} Host Field
+        %select{id: 'new_host_field_type_id', name: 'host_field_type_id'}
+          - for field_type in @host_field_types
+            %option{value: field_type.id}= field_type.name
+      %li.field.required
+        %label{for: 'new_visitor_field_type_id'} Visitor Field
+        %select{id: 'new_visitor_field_type_id', name: 'visitor_field_type_id'}
+          - for field_type in @visitor_field_types
+            %option{value: field_type.id}= field_type.name
+  #new_feature_types
+  #new_options
+  %fieldset
+    %button{type: 'submit'} Create Constraint
+    %span or
+    %a{'data-type' => 'back'} Cancel
