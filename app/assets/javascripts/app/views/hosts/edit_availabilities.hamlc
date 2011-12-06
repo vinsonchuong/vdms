@@ -1,11 +1,25 @@
 %h2 Edit Host Availabilities
 %form#edit_availabilities
   %fieldset
+    %h3 Basic Info
+    %ul
+      %li.field.required
+        %label{for: 'edit_availabilities_default_room'} Default Meeting Location
+        %input{id: 'edit_availabilities_default_room', name: 'default_room', type: 'text', size: 30}
+      %li.field.required
+        %label{for: 'edit_availabilities_max_visitors_per_meeting'} Max Visitors per Meeting
+        %input{id: 'edit_availabilities_max_visitors_per_meeting', name: 'max_visitors_per_meeting', type: 'number', size: 30}
+      %li.field.required
+        %label{for: 'edit_availabilities_max_visitors'} Max Total Visitors
+        %input{id: 'edit_availabilities_max_visitors', name: 'max_visitors', type: 'number', size: 30}
+  %fieldset
+    %h3 Time Slots
     %table.records
       %thead
         %tr
           %th{:scope => 'col'} Time Slot
           %th{:scope => 'col'} Available?
+          %th{:scope => 'col'} Different Location?
       %tbody
         - for availability, availabilityNo in @host.availabilities
           - id_prefix = "edit_availabilities_#{availabilityNo}"
@@ -25,6 +39,8 @@
               -# Hack to bypass but in form2js's skipEmpty option
               %input{type: 'hidden', name: "#{name_prefix}.id"}
               %input{type: 'hidden', name: "#{name_prefix}.time_slot_id"}
+            %td
+              %input{id: "#{id_prefix}_room", name: "#{name_prefix}.room", type: 'text'}
   %fieldset
     %button{type: 'submit'} Update Host Availabilities
     %span or
