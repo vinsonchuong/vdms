@@ -15,7 +15,7 @@ class Index extends Spine.Controller
 
   constructor: ->
     super
-    Host.bind 'refresh change', @render
+    Meeting.bind 'refresh change', @render
     Host.fetch()
     Visitor.fetch()
     TimeSlot.fetch()

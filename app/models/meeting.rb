@@ -11,6 +11,7 @@ class Meeting < ActiveRecord::Base
 
   scope :by_host, joins(:host_availability => {:schedulable => :person}).order('name').readonly(false)
   scope :by_visitor, joins(:visitor_availability => {:schedulable => :person}).order('name').readonly(false)
+  default_scope order('score DESC')
 
   after_save :reset_associations
 
@@ -27,7 +28,94 @@ class Meeting < ActiveRecord::Base
 
   ### Meeting Generator for CS 260 ###
   def self.generate(event)
+    Meeting.select {|m| m.host.event == event}.each(&:destroy)
+    pairings = event.hosts
+      .product(event.visitors)
+      .select {|p| self.satisfies_constraints?(event, p[0], p[1])}
+      .map {|p| p + [self.score_pairing(event, p[0], p[1])]}
+      .sort {|p, q| q[2] <=> p[2]}
 
+    host_availabilities_lookup = {}
+    event.hosts.each do |host|
+      availabilities_lookup = host_availabilities_lookup[host] = {}
+      host.availabilities.select(&:available?)
+        .each {|a| availabilities_lookup[a] = true}
+    end
+    visitor_availabilities_lookup = {}
+    event.visitors.each do |visitor|
+      availabilities_lookup = visitor_availabilities_lookup[visitor] = {}
+      visitor.availabilities.select(&:available?)
+      .each {|a| availabilities_lookup[a] = true}
+    end
+    pairings.each do |host, visitor, score|
+      next if host_availabilities_lookup[host].empty? or visitor_availabilities_lookup[visitor].empty?
+      host_availability, visitor_availability = self.find_matching_availabilities(
+                                                  event,
+                                                  host_availabilities_lookup[host].keys,
+                                                  visitor_availabilities_lookup[visitor].keys
+                                                )
+      next if host_availability.nil? or visitor_availability.nil?
+      Meeting.create(
+        :host_availability => host_availability,
+        :visitor_availability => visitor_availability,
+        :score => score
+      )
+      host_availabilities_lookup[host].delete(host_availability)
+      visitor_availabilities_lookup[visitor].delete(visitor_availability)
+    end
+    return
+  end
+
+  def self.satisfies_constraints?(event, host, visitor)
+    event.constraints.each do |constraint|
+      host_field = host.fields.find_by_field_type_id(constraint.host_field_type_id)
+      visitor_field = visitor.fields.find_by_field_type_id(constraint.visitor_field_type_id)
+      return false if host_field.data.nil? or visitor_field.data.nil?
+      case constraint.feature_type
+        when 'equal'
+          return false if host_field.data != visitor_field.data
+        when 'not_equal'
+          return false if host_field.data == visitor_field.data
+        when 'intersect'
+          return false if (host_field.data & visitor_field.data).empty?
+        when 'not_intersect'
+          return false unless (host_field.data & visitor_field.data).empty?
+        when 'combination'
+          return false unless constraint.options['combinations'].include?('host_value' => host_field.data,
+                                                                          'visitor_value' => visitor_field.data)
+      end
+    end
+    true
+  end
+
+  def self.score_pairing(event, host, visitor)
+    score = 0
+    event.goals.each do |goal|
+      host_field = host.fields.find_by_field_type_id(goal.host_field_type_id)
+      visitor_field = visitor.fields.find_by_field_type_id(goal.visitor_field_type_id)
+      next if host_field.data.nil? or visitor_field.data.nil?
+      case goal.feature_type
+        when 'equal'
+          score += goal.weight if host_field.data == visitor_field.data
+        when 'not_equal'
+          score += goal.weight if host_field.data != visitor_field.data
+        when 'intersect'
+          score += goal.weight unless (host_field.data & visitor_field.data).empty?
+        when 'not_intersect'
+          score += goal.weight if (host_field.data & visitor_field.data).empty?
+        when 'combination'
+          score += goal.weight if goal.options['combinations'].include?('host_value' => host_field.data,
+                                                                        'visitor_value' => visitor_field.data)
+      end
+    end
+    score
+  end
+
+  def self.find_matching_availabilities(event, host_availabilities, visitor_availabilities)
+    time_slot = (host_availabilities.map(&:time_slot) & visitor_availabilities.map(&:time_slot)).first
+    host_availability = host_availabilities.detect {|a| a.time_slot == time_slot}
+    visitor_availability = visitor_availabilities.detect {|a| a.time_slot == time_slot}
+    [host_availability, visitor_availability]
   end
   ### Meeting Generator for CS 260 ###
 
