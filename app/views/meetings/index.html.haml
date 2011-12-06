@@ -1,0 +1,5 @@
+- content_for :javascript do
+  :coffeescript
+    jQuery ->
+      new App {el: $('#content'), type: 'meetings', event_id: #{@event.id}}
+      return

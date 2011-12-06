@@ -20,10 +20,16 @@ class Meeting < ActiveRecord::Base
   validate :meeting_caps, :if => Proc.new {|m| m.errors[:host_availability].blank? && m.errors[:visitor_availability].blank?}
   validate :conflicts, :if => Proc.new {|m| m.errors[:host_availability].blank? && m.errors[:visitor_availability].blank?}
 
-  def self.generate
-    MeetingsScheduler.delete_old_meetings!
-    MeetingsScheduler.create_meetings_from_ranking_scores!
+  #def self.generate
+  #  MeetingsScheduler.delete_old_meetings!
+  #  MeetingsScheduler.create_meetings_from_ranking_scores!
+  #end
+
+  ### Meeting Generator for CS 260 ###
+  def self.generate(event)
+
   end
+  ### Meeting Generator for CS 260 ###
 
   def host
     host_availability && host_availability.schedulable
@@ -87,5 +93,14 @@ class Meeting < ActiveRecord::Base
       :begin => meeting.time.begin.strftime('%I:%M%p'),
       :end => meeting.time.end.strftime('%I:%M%p')
     ) unless meeting.nil?
+  end
+
+  def as_json(options = {})
+    {
+      host_id: host_availability.schedulable_id,
+      visitor_id: visitor_availability.schedulable_id,
+      time_slot_id: host_availability.time_slot_id,
+      score: score
+    }
   end
 end

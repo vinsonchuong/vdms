@@ -1,0 +1,18 @@
+%h2 Meetings
+%ul#actions
+  %li
+    %a.action{'data-type' => 'generate'} Generate
+%table.records
+  %thead
+    %tr
+      %th{scope: 'col'} Host
+      %th{scope: 'col'} Visitor
+      %th{scope: 'col'} Score
+  %tbody
+    - for meeting in @meetings
+      %tr.item{'data-id' => meeting.id}
+        %td= App.Host.find(meeting.host_id)
+        %td= App.Visitor.find(meeting.visitor_id)
+        %td= meeting.score
+#confirm_generate.dialog{title: 'Generate Schedule?'}
+  %p Are you sure you want to generate a new schedule?

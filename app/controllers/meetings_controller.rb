@@ -1,7 +1,8 @@
 class MeetingsController < EventBaseController
-  
+  respond_to :html, :json
+
   #before_filter :current_user_is_staff?, :only => [:tweak, :apply_tweaks, :create_all]
-  before_filter :schedule_empty?, :except => :create_all
+  #before_filter :schedule_empty?, :except => :create_all
 
   # GET /events/1/meetings/
   # GET /events/1/hosts/1/meetings/
@@ -10,9 +11,16 @@ class MeetingsController < EventBaseController
   # If called with an admit_id, show that admit's meetings
   # If neither, show the master schedule of meetings
   def index
-    params[:host_id] ? for_faculty(params[:host_id]) :
-      params[:visitor_id] ? for_admit(params[:visitor_id]) :
-      master
+    @meetings = Meeting.select {|m| m.host.event == @event}
+    respond_with @event, @meetings
+    #params[:host_id] ? for_faculty(params[:host_id]) :
+    #  params[:visitor_id] ? for_admit(params[:visitor_id]) :
+    #  master
+  end
+
+  def generate
+    Meeting.generate(@event)
+    head :ok
   end
 
   # Show the master schedule

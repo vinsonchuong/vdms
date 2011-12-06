@@ -26,6 +26,7 @@ class App extends Spine.Controller
       when 'visitor_field_types' then @append(@visitor_field_types = new App.VisitorFieldTypes)
       when 'goals' then @append(@goals = new App.Goals)
       when 'constraints' then @append(@constraints = new App.Constraints)
+      when 'meetings' then @append(@goals = new App.Meetings)
 
     Spine.Route.setup()
     window.app = this

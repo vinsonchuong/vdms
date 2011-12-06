@@ -70,6 +70,7 @@ VDMSCode::Application.routes.draw do
     end
     resources :meetings, :only => :index do
       collection do
+        post :generate
         get :create_all
         get :statistics
       end
