@@ -1,0 +1,43 @@
+%h2 Edit Visitor
+%form#edit
+  %fieldset
+    %h3 Contact Info
+    %ul
+      %li.field.required
+        %label{for: 'edit_person_name'} Name
+        %input{id: 'edit_person_name', name: 'person.name', type: 'text', size: 30}
+      %li.field.required
+        %label{for: 'edit_person_email'} Email
+        %input{id: 'edit_person_email', name: 'person.email', type: 'text', size: 30}
+  %fieldset
+    %h3 Preferences
+    %ul
+      - for field, fieldNo in @visitor.fields
+        - field_id = "edit_fields_#{fieldNo}_data"
+        - field_name = "fields[#{fieldNo}].data"
+        - field_type = App.VisitorFieldType.find(field.field_type_id)
+        %li.field
+          - if field_type.data_type == 'text'
+            %label{for: field_id}= field_type.name
+            %input{id: field_id, name: field_name, type: 'text', size: 30}
+          - else if field_type.data_type == 'single_select'
+            %label{for: field_id}= field_type.name
+            %select{id: field_id, name: field_name}
+              - for option in field_type.options.selection_items
+                %option= option
+          - else if field_type.data_type == 'multiple_select'
+            - field_name += '[]'
+            %label= field_type.name
+            %ul
+              - for option, optionNo in field_type.options.selection_items
+                - id = field_id + '_' + optionNo
+                %li
+                  %input{type: 'checkbox', name: field_name, id: id, value: option}
+                  %label{for: id}= option
+          -# Hack to bypass but in form2js's skipEmpty option
+          %input{type: 'hidden', name: "fields[#{fieldNo}].id"}
+          %input{type: 'hidden', name: "fields[#{fieldNo}].field_type_id"}
+  %fieldset
+    %button{type: 'submit'} Update Visitor
+    %span or
+    %a{'data-type' => 'back'} Cancel

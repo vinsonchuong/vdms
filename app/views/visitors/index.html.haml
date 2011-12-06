@@ -1,16 +1,5 @@
-- content_for :title, t('.title')
-%table.records
-  %thead
-    %tr
-      %th{:scope => 'col'}!= Person.human_attribute_name(:name)
-      %th{:scope => 'col'}!= t('.actions')
-  %tbody
-    - @roles.each do |visitor|
-      %tr
-        %td= visitor.person.name
-        %td
-          %ul
-            %li!= link_to t('visitors.edit.short_title'), edit_event_visitor_path(@event, visitor), :class => 'action'
-            %li!= link_to t('visitor_availabilities.edit_all.short_title'), edit_all_event_visitor_availabilities_path(@event, visitor), :class => 'action'
-            %li!= link_to t('visitor_rankings.edit_all.short_title'), edit_all_event_visitor_rankings_path(@event, visitor), :class => 'action'
-            %li!= link_to t('visitors.delete.short_title'), delete_event_visitor_path(@event, visitor), :class => 'action'
+- content_for :javascript do
+  :coffeescript
+    jQuery ->
+      new App {el: $('#content'), type: 'visitors', event_id: #{@event.id}}
+      return

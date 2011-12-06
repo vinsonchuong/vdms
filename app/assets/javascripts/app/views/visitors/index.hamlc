@@ -1,4 +1,4 @@
-%h2 Manage Hosts
+%h2 Manage Visitors
 %ul#actions
   %li
     %a.action{'data-type' => 'new'} New
@@ -9,10 +9,10 @@
       %th{scope: 'col'} Email
       %th{scope: 'col'} Actions
   %tbody
-    - for host in @hosts
-      %tr.item{'data-id' => host.id}
-        %td= host.person.name
-        %td= host.person.email
+    - for visitor in @visitors
+      %tr.item{'data-id' => visitor.id}
+        %td= visitor.person.name
+        %td= visitor.person.email
         %td
           %ul
             %li
@@ -21,5 +21,5 @@
               %a.action{'data-type' => 'edit_availabilities'} Availabilities
             %li
               %a.action{'data-type' => 'destroy'} Remove
-#confirm_delete.dialog{title: 'Remove Host?'}
-  %p Are you sure you want to permanently remove this host?
+#confirm_delete.dialog{title: 'Remove Visitor?'}
+  %p Are you sure you want to permanently remove this visitor?

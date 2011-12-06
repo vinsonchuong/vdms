@@ -8,6 +8,7 @@ VDMSCode::Application.routes.draw do
   end
   resources :events do
     member { get :delete }
+    resources :time_slots, :only => :index
     resources :constraints, :except => :show do
       member { get :delete }
     end

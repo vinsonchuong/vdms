@@ -1,0 +1,31 @@
+%h2 Edit Visitor Availabilities
+%form#edit_availabilities
+  %fieldset
+    %table.records
+      %thead
+        %tr
+          %th{:scope => 'col'} Time Slot
+          %th{:scope => 'col'} Available?
+      %tbody
+        - for availability, availabilityNo in @visitor.availabilities
+          - id_prefix = "edit_availabilities_#{availabilityNo}"
+          - name_prefix = "availabilities[#{availabilityNo}]"
+          %tr
+            - date_format = 'yyyy-MM-dd hh:mmtt'
+            - time_slot = App.TimeSlot.find(availability.time_slot_id)
+            %td= "#{Date.parse(time_slot.begin).toString(date_format)} to #{Date.parse(time_slot.begin).toString(date_format)}"
+            %td
+              %ul
+                %li
+                  %input{id: "#{id_prefix}_available_true", type: 'radio', name: "#{name_prefix}.available", value: '1'}
+                  %label{for: "#{id_prefix}_available_true"} Yes
+                %li
+                  %input{id: "#{id_prefix}_available_false", type: 'radio', name: "#{name_prefix}.available", value: '0'}
+                  %label{for: "#{id_prefix}_available_false"} No
+              -# Hack to bypass but in form2js's skipEmpty option
+              %input{type: 'hidden', name: "#{name_prefix}.id"}
+              %input{type: 'hidden', name: "#{name_prefix}.time_slot_id"}
+  %fieldset
+    %button{type: 'submit'} Update Visitor Availabilities
+    %span or
+    %a{'data-type' => 'back'} Cancel

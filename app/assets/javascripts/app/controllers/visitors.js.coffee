@@ -1,4 +1,5 @@
 $ = jQuery.sub()
+TimeSlot = App.TimeSlot
 Visitor = App.Visitor
 VisitorFieldType = App.VisitorFieldType
 
@@ -34,12 +35,12 @@ class Edit extends Spine.Controller
   events:
     'click [data-type=back]': 'back'
     'submit form': 'submit'
-  
+
   constructor: ->
     super
     @active (params) ->
       @change(params.id)
-      
+
   change: (id) ->
     @item = Visitor.find(id)
     @render()
@@ -57,15 +58,44 @@ class Edit extends Spine.Controller
     @item.fromForm(e.target).save()
     @navigate '/'
 
+class EditAvailabilities extends Spine.Controller
+  events:
+    'click [data-type=back]': 'back'
+    'submit form': 'submit'
+  
+  constructor: ->
+    super
+    @active (params) ->
+      @change(params.id)
+      
+  change: (id) ->
+    @item = Visitor.find(id)
+    @render()
+
+  render: ->
+    @html @view('visitors/edit_availabilities')(visitor: @item)
+    $('#edit_availabilities').fromObject(data: @item.attributes())
+    afterRender()
+
+  back: ->
+    @navigate '/'
+
+  submit: (e) ->
+    e.preventDefault()
+    @item.fromForm(e.target).save()
+    @navigate '/'
+
 class Index extends Spine.Controller
   events:
-    'click [data-type=edit]':    'edit'
+    'click [data-type=edit]': 'edit'
+    'click [data-type=edit_availabilities]': 'edit_availabilities'
     'click [data-type=destroy]': 'destroy'
-    'click [data-type=new]':     'new'
+    'click [data-type=new]': 'new'
 
   constructor: ->
     super
     Visitor.bind 'refresh change', @render
+    TimeSlot.fetch()
     Visitor.fetch()
     VisitorFieldType.fetch()
 
@@ -77,7 +107,11 @@ class Index extends Spine.Controller
   edit: (e) ->
     item = $(e.target).item()
     @navigate '', item.id, 'edit'
-    
+
+  edit_availabilities: (e) ->
+    item = $(e.target).item()
+    @navigate '', item.id, 'edit_availabilities'
+
   destroy: (e) ->
     item = $(e.target).item()
     dialog = $('#confirm_delete')
@@ -92,17 +126,19 @@ class Index extends Spine.Controller
 
   new: ->
     @navigate '/new'
-    
-class App.Visitor extends Spine.Stack
+
+class App.Visitors extends Spine.Stack
   controllers:
     index: Index
-    edit:  Edit
-    new:   New
+    edit: Edit
+    edit_availabilities: EditAvailabilities
+    new: New
     
   routes:
-    '/new':      'new'
+    '/new': 'new'
     '/:id/edit': 'edit'
-    '/':         'index'
+    '/:id/edit_availabilities': 'edit_availabilities'
+    '/': 'index'
     
   default: 'index'
   className: 'stack visitors'

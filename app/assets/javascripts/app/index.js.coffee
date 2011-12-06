@@ -21,6 +21,7 @@ class App extends Spine.Controller
 
     switch @type
       when 'hosts' then @append(@hosts = new App.Hosts)
+      when 'visitors' then @append(@visitors = new App.Visitors)
       when 'host_field_types' then @append(@host_field_types = new App.HostFieldTypes)
       when 'visitor_field_types' then @append(@visitor_field_types = new App.VisitorFieldTypes)
 
