@@ -1,0 +1,12 @@
+%fieldset
+  %h3 Feature Type
+  %ul
+    %li.field.required
+      %ul
+      - for feature, featureNo in @feature_types
+        %li
+          - if featureNo
+            %input{type: 'radio', id: "#{@id_prefix}_feature_type_#{featureNo}", name: 'feature_type', value: feature.value}
+          - else
+            %input{type: 'radio', id: "#{@id_prefix}_feature_type_#{featureNo}", name: 'feature_type', value: feature.value, checked: 'checked'}
+          %label{for: "#{@id_prefix}_feature_type_#{featureNo}"}= feature.name

@@ -2,6 +2,7 @@ en:
   goals:
     index:
       title: "Manage Goals"
+      short_title: "Goals"
       actions: "Actions"
     select_field_types:
       title: "Select Field Types"

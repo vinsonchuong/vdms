@@ -41,6 +41,8 @@
             %li
               = link_to 'Meetings'
               %ul
+                %li= link_to t('goals.index.short_title'), event_goals_path(@event)
+                %li= link_to t('constraints.index.short_title'), event_constraints_path(@event)
                 %li= link_to 'Scheduler'
           - elsif is_facilitator
             %li= link_to t('hosts.index.short_title'), event_hosts_path(@event)

@@ -1,0 +1,20 @@
+%fieldset
+  %h3 Options
+  %ul
+    %li.field.required
+      %label Valid Combinations (host, visitor)
+      %ul
+        - combinationNo = 0
+        - for host_value in @host_field_type.options.selection_items
+          - for visitor_value in @visitor_field_type.options.selection_items
+            %li
+              - if @goal? and (e for e in @goal.options.combinations when e.host_value == host_value and e.visitor_value == visitor_value).length
+                %input{type: 'checkbox', id: "#{@prefix}_options_combinations_#{combinationNo}", checked: 'checked'}
+                %input{type: 'hidden', name: "options.combinations[#{combinationNo}][host_value]", value: "#{host_value}"}
+                %input{type: 'hidden', name: "options.combinations[#{combinationNo}][visitor_value]", value: "#{visitor_value}"}
+              - else
+                %input{type: 'checkbox', id: "#{@prefix}_options_combinations_#{combinationNo}"}
+                %input{type: 'hidden', name: "options.combinations[#{combinationNo}][host_value]", value: "#{host_value}", disabled: 'disabled'}
+                %input{type: 'hidden', name: "options.combinations[#{combinationNo}][visitor_value]", value: "#{visitor_value}", disabled: 'disabled'}
+              %label{for: "#{@prefix}_options_combinations_#{combinationNo}"}!= "#{host_value} and #{visitor_value}"
+            - combinationNo += 1

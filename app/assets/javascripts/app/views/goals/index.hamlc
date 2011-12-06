@@ -1,0 +1,24 @@
+%h2 Manage Goals
+%ul#actions
+  %li
+    %a.action{'data-type' => 'new'} New
+%table.records
+  %thead
+    %tr
+      %th{scope: 'col'} Name
+      %th{scope: 'col'} Weight
+      %th{scope: 'col'} Actions
+  %tbody
+    - for goal in @goals
+      %tr.item{'data-id' => goal.id}
+        %td= goal.name
+        %td= goal.weight * 100 + '%'
+        %td
+          %ul
+            %li
+              %a.action{'data-type' => 'edit'} Edit
+            %li
+              %a.action{'data-type' => 'destroy'} Remove
+#confirm_delete.dialog{title: 'Remove Goal?'}
+  %p Are you sure you want to permanently remove this goal?
+

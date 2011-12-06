@@ -2,6 +2,7 @@ en:
   constraints:
     index:
       title: "Manage Constraints"
+      short_title: "Constraints"
       actions: "Actions"
     select_field_types:
       title: "Select Field Types"
