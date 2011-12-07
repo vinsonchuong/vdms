@@ -36,6 +36,7 @@ class Index extends Spine.Controller
     dialog.dialog('option', 'buttons',
       'Generate': ->
         $(this).dialog('close')
+        Meeting.refresh([], clear: true)
         showSpinner()
         $.post('/events/1/meetings/generate', ->
           Meeting.fetch()

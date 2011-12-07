@@ -185,6 +185,7 @@ class Meeting < ActiveRecord::Base
 
   def as_json(options = {})
     {
+      id: id,
       host_id: host_availability.schedulable_id,
       visitor_id: visitor_availability.schedulable_id,
       time_slot_id: host_availability.time_slot_id,
