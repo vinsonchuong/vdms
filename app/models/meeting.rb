@@ -77,9 +77,13 @@ class Meeting < ActiveRecord::Base
         when 'not_equal'
           return false if host_field.data == visitor_field.data
         when 'intersect'
-          return false if (host_field.data & visitor_field.data).empty?
+          host_field_data = host_field.data.class == Array ? host_field.data : [host_field.data]
+          visitor_field_data = visitor_field.data.class == Array ? visitor_field.data : [visitor_field.data]
+          return false if (host_field_data & visitor_field.data).empty?
         when 'not_intersect'
-          return false unless (host_field.data & visitor_field.data).empty?
+          host_field_data = host_field.data.class == Array ? host_field.data : [host_field.data]
+          visitor_field_data = visitor_field.data.class == Array ? visitor_field.data : [visitor_field.data]
+          return false unless (host_field_data & visitor_field_data).empty?
         when 'combination'
           return false unless constraint.options['combinations'].include?('host_value' => host_field.data,
                                                                           'visitor_value' => visitor_field.data)
@@ -100,9 +104,13 @@ class Meeting < ActiveRecord::Base
         when 'not_equal'
           score += goal.weight if host_field.data != visitor_field.data
         when 'intersect'
-          score += goal.weight unless (host_field.data & visitor_field.data).empty?
+          host_field_data = host_field.data.class == Array ? host_field.data : [host_field.data]
+          visitor_field_data = visitor_field.data.class == Array ? visitor_field.data : [visitor_field.data]
+          score += goal.weight unless (host_field_data & visitor_field_data).empty?
         when 'not_intersect'
-          score += goal.weight if (host_field.data & visitor_field.data).empty?
+          host_field_data = host_field.data.class == Array ? host_field.data : [host_field.data]
+          visitor_field_data = visitor_field.data.class == Array ? visitor_field.data : [visitor_field.data]
+          score += goal.weight if (host_field_data & visitor_field_data).empty?
         when 'combination'
           score += goal.weight if goal.options['combinations'].include?('host_value' => host_field.data,
                                                                         'visitor_value' => visitor_field.data)
