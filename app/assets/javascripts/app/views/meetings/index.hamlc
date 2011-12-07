@@ -8,11 +8,26 @@
       %th{scope: 'col'} Host
       %th{scope: 'col'} Visitor
       %th{scope: 'col'} Score
+      %th{scope: 'col'} Actions
   %tbody
     - for meeting in @meetings
       %tr.item{'data-id' => meeting.id}
-        %td= App.Host.find(meeting.host_id).person.name
-        %td= App.Visitor.find(meeting.visitor_id).person.name
+        %td
+          - host = App.Host.find(meeting.host_id)
+          = host.person.name
+          %dl{style: 'display:none;'}
+            - for field in host.fields
+              != @helper.render_host_field(field)
+        %td
+          - visitor = App.Visitor.find(meeting.visitor_id)
+          = visitor.person.name
+          %dl{style: 'display:none;'}
+            - for field in visitor.fields
+              != @helper.render_visitor_field(field)
         %td= meeting.score
+        %td=
+          %ul
+            %li
+              %a.action{'data-type' => 'view'} Preferences
 #confirm_generate.dialog{title: 'Generate Schedule?'}
   %p Are you sure you want to generate a new schedule?

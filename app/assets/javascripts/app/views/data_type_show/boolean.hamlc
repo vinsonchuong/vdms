@@ -1,0 +1,2 @@
+%dt= @name
+%dd= if @data == true then 'Yes' else 'No'

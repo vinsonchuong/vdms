@@ -284,6 +284,28 @@ a.action {
     }
   }
 
+  dl {
+    margin-top: $vmargin;
+    dt {
+      color: $blue;
+    }
+    dd {
+      margin: {
+        left: $hmargin;
+        bottom: ($vmargin / 2);
+      }
+      &:last-child {
+        margin-bottom: 0;
+      }
+      ul {
+        li {
+          display: block !important;
+          margin: 0;
+        }
+      }
+    }
+  }
+
   .listInput {
     li > * {
       display: inline-block;

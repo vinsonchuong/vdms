@@ -1,0 +1,5 @@
+%dt= @name
+%dd
+  %ul
+    - for item in @data
+      %li= item
