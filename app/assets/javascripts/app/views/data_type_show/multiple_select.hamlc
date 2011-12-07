@@ -1,5 +1,6 @@
 %dt= @name
 %dd
   %ul
-    - for item in @data
-      %li= item
+    - if @data?
+      - for item in @data
+        %li= item

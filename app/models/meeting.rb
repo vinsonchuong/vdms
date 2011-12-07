@@ -70,21 +70,23 @@ class Meeting < ActiveRecord::Base
     event.constraints.each do |constraint|
       host_field = host.fields.find_by_field_type_id(constraint.host_field_type_id)
       visitor_field = visitor.fields.find_by_field_type_id(constraint.visitor_field_type_id)
-      return false if host_field.data.nil? or visitor_field.data.nil?
       case constraint.feature_type
         when 'equal'
           return false if host_field.data != visitor_field.data
         when 'not_equal'
           return false if host_field.data == visitor_field.data
         when 'intersect'
+          return false if host_field.data.nil? or visitor_field.data.nil?
           host_field_data = host_field.data.class == Array ? host_field.data : [host_field.data]
           visitor_field_data = visitor_field.data.class == Array ? visitor_field.data : [visitor_field.data]
-          return false if (host_field_data & visitor_field.data).empty?
+          return false if (host_field_data & visitor_field_data).empty?
         when 'not_intersect'
+          next if host_field.data.nil? or visitor_field.data.nil?
           host_field_data = host_field.data.class == Array ? host_field.data : [host_field.data]
           visitor_field_data = visitor_field.data.class == Array ? visitor_field.data : [visitor_field.data]
           return false unless (host_field_data & visitor_field_data).empty?
         when 'range_intersect'
+          return false if host_field.data.nil? or visitor_field.data.nil?
           host_field_data = host_field.data.class == String ?
             (host_field.data.to_i)..(host_field.data.to_i) :
             (host_field.data['min'].to_i)..(host_field.data['max'].to_i)
@@ -93,6 +95,7 @@ class Meeting < ActiveRecord::Base
             (visitor_field.data['min'].to_i)..(visitor_field.data['max'].to_i)
           return false unless host_field_data.overlap?(visitor_field_data)
         when 'range_not_intersect'
+          next if host_field.data.nil? or visitor_field.data.nil?
           host_field_data = host_field.data.class == String ?
             (host_field.data.to_i)..(host_field.data.to_i) :
             (host_field.data['min'].to_i)..(host_field.data['max'].to_i)
@@ -114,21 +117,26 @@ class Meeting < ActiveRecord::Base
     event.goals.each do |goal|
       host_field = host.fields.find_by_field_type_id(goal.host_field_type_id)
       visitor_field = visitor.fields.find_by_field_type_id(goal.visitor_field_type_id)
-      next if host_field.data.nil? or visitor_field.data.nil?
       case goal.feature_type
         when 'equal'
           score += goal.weight if host_field.data == visitor_field.data
         when 'not_equal'
           score += goal.weight if host_field.data != visitor_field.data
         when 'intersect'
+          next if host_field.data.nil? or visitor_field.data.nil?
           host_field_data = host_field.data.class == Array ? host_field.data : [host_field.data]
           visitor_field_data = visitor_field.data.class == Array ? visitor_field.data : [visitor_field.data]
           score += goal.weight unless (host_field_data & visitor_field_data).empty?
         when 'not_intersect'
-          host_field_data = host_field.data.class == Array ? host_field.data : [host_field.data]
-          visitor_field_data = visitor_field.data.class == Array ? visitor_field.data : [visitor_field.data]
-          score += goal.weight if (host_field_data & visitor_field_data).empty?
+          if host_field.data.nil? or visitor_field.data.nil?
+            score += goal.weight
+          else
+            host_field_data = host_field.data.class == Array ? host_field.data : [host_field.data]
+            visitor_field_data = visitor_field.data.class == Array ? visitor_field.data : [visitor_field.data]
+            score += goal.weight if (host_field_data & visitor_field_data).empty?
+          end
         when 'range_intersect'
+          next if host_field.data.nil? or visitor_field.data.nil?
           host_field_data = host_field.data.class == String ?
               (host_field.data.to_i)..(host_field.data.to_i) :
               (host_field.data['min'].to_i)..(host_field.data['max'].to_i)
@@ -137,13 +145,17 @@ class Meeting < ActiveRecord::Base
               (visitor_field.data['min'].to_i)..(visitor_field.data['max'].to_i)
           score += goal.weight if host_field_data.overlap?(visitor_field_data)
         when 'range_not_intersect'
-          host_field_data = host_field.data.class == String ?
-              (host_field.data.to_i)..(host_field.data.to_i) :
-              (host_field.data['min'].to_i)..(host_field.data['max'].to_i)
-          visitor_field_data = visitor_field.data.class == String ?
-              (visitor_field.data.to_i)..(visitor_field.data.to_i) :
-              (visitor_field.data['min'].to_i)..(visitor_field.data['max'].to_i)
-          score += goal.weight unless host_field_data.overlap?(visitor_field_data)
+          if host_field.data.nil? or visitor_field.data.nil?
+            score += goal.weight
+          else
+            host_field_data = host_field.data.class == String ?
+                (host_field.data.to_i)..(host_field.data.to_i) :
+                (host_field.data['min'].to_i)..(host_field.data['max'].to_i)
+            visitor_field_data = visitor_field.data.class == String ?
+                (visitor_field.data.to_i)..(visitor_field.data.to_i) :
+                (visitor_field.data['min'].to_i)..(visitor_field.data['max'].to_i)
+            score += goal.weight unless host_field_data.overlap?(visitor_field_data)
+          end
         when 'combination'
           # to_s for booleans
           score += goal.weight if goal.options['combinations'].include?('host_value' => host_field.data.to_s,

@@ -17,10 +17,10 @@
             %td
               %ul
                 %li
-                  %input{id: "#{id_prefix}_available_true", type: 'radio', name: "#{name_prefix}.available", value: '1'}
+                  %input{id: "#{id_prefix}_available_true", type: 'radio', name: "#{name_prefix}.available", value: 'true'}
                   %label{for: "#{id_prefix}_available_true"} Yes
                 %li
-                  %input{id: "#{id_prefix}_available_false", type: 'radio', name: "#{name_prefix}.available", value: '0'}
+                  %input{id: "#{id_prefix}_available_false", type: 'radio', name: "#{name_prefix}.available", value: 'false'}
                   %label{for: "#{id_prefix}_available_false"} No
               -# Hack to bypass but in form2js's skipEmpty option
               %input{type: 'hidden', name: "#{name_prefix}.id"}
