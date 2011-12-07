@@ -50,11 +50,23 @@ class New extends Spine.Controller
         {name: 'They should not overlap.', value: 'not_intersect'}
         {name: 'They should have specific combinations', value: 'combination'}
       ]
-    else if host_data_type == 'single_select' and visitor_data_type == 'single_select'
+    else if (host_data_type == 'single_select' and visitor_data_type == 'single_select') or
+            (host_data_type == 'boolean' and visitor_data_type == 'boolean')
       feature_types = [
         {name: 'They should be the same.', value: 'equal'},
         {name: 'They should not be the same.', value: 'not_equal'},
         {name: 'They should have specific combinations', value: 'combination'}
+      ]
+    else if (host_data_type == 'number' and visitor_data_type == 'number_range') or
+            (host_data_type == 'number_range' and visitor_data_type == 'number')
+      feature_types = [
+        {name: 'They should overlap.', value: 'range_intersect'},
+        {name: 'They should not overlap.', value: 'range_not_intersect'}
+      ]
+    else if host_data_type == 'number_range' and visitor_data_type == 'number_range'
+      feature_types = [
+        {name: 'They should overlap.', value: 'range_intersect'},
+        {name: 'They should not overlap.', value: 'range_not_intersect'}
       ]
     else
       feature_types = [
@@ -138,11 +150,23 @@ class Edit extends Spine.Controller
         {name: 'They should not overlap.', value: 'not_intersect'}
         {name: 'They should have specific combinations', value: 'combination'}
       ]
-    else if host_data_type == 'single_select' and visitor_data_type == 'single_select'
+    else if (host_data_type == 'single_select' and visitor_data_type == 'single_select') or
+            (host_data_type == 'boolean' and visitor_data_type == 'boolean')
       feature_types = [
         {name: 'They should be the same.', value: 'equal'},
         {name: 'They should not be the same.', value: 'not_equal'},
         {name: 'They should have specific combinations', value: 'combination'}
+      ]
+    else if (host_data_type == 'number' and visitor_data_type == 'number_range') or
+            (host_data_type == 'number_range' and visitor_data_type == 'number')
+      feature_types = [
+        {name: 'They should overlap.', value: 'range_intersect'},
+        {name: 'They should not overlap.', value: 'range_not_intersect'}
+      ]
+    else if host_data_type == 'number_range' and visitor_data_type == 'number_range'
+      feature_types = [
+        {name: 'They should overlap.', value: 'range_intersect'},
+        {name: 'They should not overlap.', value: 'range_not_intersect'}
       ]
     else
       feature_types = [

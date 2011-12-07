@@ -1,0 +1,9 @@
+%fieldset
+  %h3 Options
+  %ul
+    %li.field.required
+      %label{for: "#{@prefix}_options_min"} Minimum
+      %input{id: "#{@prefix}_options_min", name: 'options.min', type: 'number'}
+    %li.field.required
+      %label{for: "#{@prefix}_options_max"} Maximum
+      %input{id: "#{@prefix}_options_max", name: 'options.max', type: 'number'}

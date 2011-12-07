@@ -84,9 +84,26 @@ class Meeting < ActiveRecord::Base
           host_field_data = host_field.data.class == Array ? host_field.data : [host_field.data]
           visitor_field_data = visitor_field.data.class == Array ? visitor_field.data : [visitor_field.data]
           return false unless (host_field_data & visitor_field_data).empty?
+        when 'range_intersect'
+          host_field_data = host_field.data.class == String ?
+            (host_field.data.to_i)..(host_field.data.to_i) :
+            (host_field.data['min'].to_i)..(host_field.data['max'].to_i)
+          visitor_field_data = visitor_field.data.class == String ?
+            (visitor_field.data.to_i)..(visitor_field.data.to_i) :
+            (visitor_field.data['min'].to_i)..(visitor_field.data['max'].to_i)
+          return false unless host_field_data.overlap?(visitor_field_data)
+        when 'range_not_intersect'
+          host_field_data = host_field.data.class == String ?
+            (host_field.data.to_i)..(host_field.data.to_i) :
+            (host_field.data['min'].to_i)..(host_field.data['max'].to_i)
+          visitor_field_data = visitor_field.data.class == String ?
+            (visitor_field.data.to_i)..(visitor_field.data.to_i) :
+            (visitor_field.data['min'].to_i)..(visitor_field.data['max'].to_i)
+          return false if host_field_data.overlap?(visitor_field_data)
         when 'combination'
-          return false unless constraint.options['combinations'].include?('host_value' => host_field.data,
-                                                                          'visitor_value' => visitor_field.data)
+          # to_s for booleans
+          return false unless constraint.options['combinations'].include?('host_value' => host_field.data.to_s,
+                                                                          'visitor_value' => visitor_field.data.to_s)
       end
     end
     true
@@ -111,9 +128,26 @@ class Meeting < ActiveRecord::Base
           host_field_data = host_field.data.class == Array ? host_field.data : [host_field.data]
           visitor_field_data = visitor_field.data.class == Array ? visitor_field.data : [visitor_field.data]
           score += goal.weight if (host_field_data & visitor_field_data).empty?
+        when 'range_intersect'
+          host_field_data = host_field.data.class == String ?
+              (host_field.data.to_i)..(host_field.data.to_i) :
+              (host_field.data['min'].to_i)..(host_field.data['max'].to_i)
+          visitor_field_data = visitor_field.data.class == String ?
+              (visitor_field.data.to_i)..(visitor_field.data.to_i) :
+              (visitor_field.data['min'].to_i)..(visitor_field.data['max'].to_i)
+          score += goal.weight if host_field_data.overlap?(visitor_field_data)
+        when 'range_not_intersect'
+          host_field_data = host_field.data.class == String ?
+              (host_field.data.to_i)..(host_field.data.to_i) :
+              (host_field.data['min'].to_i)..(host_field.data['max'].to_i)
+          visitor_field_data = visitor_field.data.class == String ?
+              (visitor_field.data.to_i)..(visitor_field.data.to_i) :
+              (visitor_field.data['min'].to_i)..(visitor_field.data['max'].to_i)
+          score += goal.weight unless host_field_data.overlap?(visitor_field_data)
         when 'combination'
-          score += goal.weight if goal.options['combinations'].include?('host_value' => host_field.data,
-                                                                        'visitor_value' => visitor_field.data)
+          # to_s for booleans
+          score += goal.weight if goal.options['combinations'].include?('host_value' => host_field.data.to_s,
+                                                                        'visitor_value' => visitor_field.data.to_s)
       end
     end
     score

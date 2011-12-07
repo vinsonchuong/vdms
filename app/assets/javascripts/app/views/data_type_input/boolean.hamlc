@@ -1,0 +1,8 @@
+%label= @field_name
+%ul
+  %li
+    %input{type: 'radio', id: "#{@id}_#{0}", name: @name, value: 'true', checked: 'checked'}
+    %label{for: "#{@id}_0"} Yes
+  %li
+    %input{type: 'radio', id: "#{@id}_#{1}", name: @name, value: 'false', checked: 'checked'}
+    %label{for: "#{@id}_0"} No

@@ -4,9 +4,16 @@
     %li.field.required
       %label Valid Combinations (host, visitor)
       %ul
+        - if @host_field_type.options.selection_items? and @visitor_field_type.options.selection_items?
+          - boolean = false
+          - host_items = @host_field_type.options.selection_items
+          - visitor_items = @visitor_field_type.options.selection_items
+        - else
+          - boolean = true
+          - host_items = visitor_items = ['true', 'false']
         - combinationNo = 0
-        - for host_value in @host_field_type.options.selection_items
-          - for visitor_value in @visitor_field_type.options.selection_items
+        - for host_value in host_items
+          - for visitor_value in visitor_items
             %li
               - if @feature? and (e for e in @feature.options.combinations when e.host_value == host_value and e.visitor_value == visitor_value).length
                 %input{type: 'checkbox', id: "#{@prefix}_options_combinations_#{combinationNo}", checked: 'checked'}
@@ -16,5 +23,8 @@
                 %input{type: 'checkbox', id: "#{@prefix}_options_combinations_#{combinationNo}"}
                 %input{type: 'hidden', name: "options.combinations[#{combinationNo}][host_value]", value: "#{host_value}", disabled: 'disabled'}
                 %input{type: 'hidden', name: "options.combinations[#{combinationNo}][visitor_value]", value: "#{visitor_value}", disabled: 'disabled'}
-              %label{for: "#{@prefix}_options_combinations_#{combinationNo}"}!= "#{host_value} and #{visitor_value}"
+              - if boolean is true
+                %label{for: "#{@prefix}_options_combinations_#{combinationNo}"}!= "#{if host_value == 'true' then 'Yes' else 'No'} and #{if visitor_value == 'true' then 'Yes' else 'No'}"
+              - else
+                %label{for: "#{@prefix}_options_combinations_#{combinationNo}"}!= "#{host_value} and #{visitor_value}"
             - combinationNo += 1

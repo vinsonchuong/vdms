@@ -21,6 +21,18 @@
           %li
             %input#edit_data_type_multiple_select{type: 'radio', name: 'data_type', value: 'multiple_select'}
             %label{for: 'edit_data_type_multiple_select'} Multiple Selection
+          %li
+            %input#edit_data_type_boolean{type: 'radio', name: 'data_type', value: 'boolean'}
+            %label{for: 'edit_data_type_boolean'} Yes / No
+          %li
+            %input#edit_data_type_number{type: 'radio', name: 'data_type', value: 'number'}
+            %label{for: 'edit_data_type_number'} Number
+          %li
+            %input#edit_data_type_number_range{type: 'radio', name: 'data_type', value: 'number_range'}
+            %label{for: 'edit_data_type_number_range'} Range of Numbers
+          %li
+            %input#edit_data_type_location{type: 'radio', name: 'data_type', value: 'location'}
+            %label{for: 'edit_data_type_location'} Location
   #edit_options
   %fieldset
     %button{type: 'submit'} Update Visitor Field

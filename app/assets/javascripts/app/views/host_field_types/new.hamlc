@@ -21,6 +21,18 @@
           %li
             %input#new_data_type_multiple_select{type: 'radio', name: 'data_type', value: 'multiple_select'}
             %label{for: 'new_data_type_multiple_select'} Multiple Selection
+          %li
+            %input#new_data_type_boolean{type: 'radio', name: 'data_type', value: 'boolean'}
+            %label{for: 'new_data_type_boolean'} Yes / No
+          %li
+            %input#new_data_type_number{type: 'radio', name: 'data_type', value: 'number'}
+            %label{for: 'new_data_type_number'} Number
+          %li
+            %input#new_data_type_number_range{type: 'radio', name: 'data_type', value: 'number_range'}
+            %label{for: 'new_data_type_number_range'} Range of Numbers
+          %li
+            %input#new_data_type_location{type: 'radio', name: 'data_type', value: 'location'}
+            %label{for: 'new_data_type_location'} Location
   #new_options
   %fieldset
     %button{type: 'submit'} Create Host Field

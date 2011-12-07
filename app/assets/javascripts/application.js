@@ -9,6 +9,9 @@
 var
   afterRender =  function() {
     $('a.action, button').button();
+    $('input.location').each(function() {
+      new google.maps.places.Autocomplete(this);
+    });
   },
   showSpinner = function() {
     $('body').append($('<div class="ui-widget-overlay"></div>'));

@@ -1,0 +1,2 @@
+%label{for: @id}= @field_name
+%input{id: @id, name: @name, type: 'number', min: @min, max: @max}

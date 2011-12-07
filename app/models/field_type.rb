@@ -17,7 +17,11 @@ class FieldType < ActiveRecord::Base
     {
       'text' => 'Text',
       'single_select' => 'Single Selection',
-      'multiple_select' => 'Multiple Selection'
+      'multiple_select' => 'Multiple Selection',
+      'boolean' => 'Yes / No',
+      'number' => 'Number',
+      'number_range' => 'Range of Numbers',
+      'location' => 'Location'
     }
   end
 

@@ -254,10 +254,16 @@ var js2form = (function()
         {
             result = [{ name: "", value: null }];
         }
-        else if (typeof obj == 'string' || typeof obj == 'number' || typeof obj == 'date' || typeof obj == 'boolean')
+        else if (typeof obj == 'string' || typeof obj == 'number' || typeof obj == 'date')
         {
             result = [
                 { name: "", value : obj }
+            ];
+        }
+        else if (typeof obj == 'boolean')
+        {
+            result = [
+              { name: "", value : obj + ''}
             ];
         }
         else if (obj instanceof Array)
