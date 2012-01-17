@@ -34,8 +34,7 @@ end
 
 group :test, :development do
   gem 'rspec-rails'
-  gem 'sqlite3', :platforms => [:mswin, :mingw]
-  gem 'sqlite3-ruby', '1.2.5', :require => 'sqlite3', :platforms => [:ruby] # remove after Fall 2011
+  gem 'sqlite3'
 end
 group :test do
   gem 'capybara'
