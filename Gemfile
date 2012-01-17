@@ -12,6 +12,7 @@ gem 'rubycas-client', '~> 2.2.1'
 gem 'rubycas-client-rails'
 gem 'simple_form'
 gem 'spine-rails'
+gem 'thin'
 gem 'validates_existence'
 gem 'validates_timeliness'
 
