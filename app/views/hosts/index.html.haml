@@ -1,5 +1,5 @@
 - content_for :javascript do
   :coffeescript
     jQuery ->
-      new App {el: $('#content'), type: 'hosts', event_id: #{@event.id}}
+      new App {el: $('#content'), type: 'hosts', event_id: #{@event.id}, disable_meeting_location_override: #{@event.disable_meeting_location_override}}
       return

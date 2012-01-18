@@ -15,6 +15,7 @@ class Event < ActiveRecord::Base
   validates_numericality_of :meeting_gap, :only_integer => true, :greater_than_or_equal_to => 0, :allow_blank => true
   validates_inclusion_of :disable_facilitators, :in => [true, false]
   validates_inclusion_of :disable_hosts, :in => [true, false]
+  validates_inclusion_of :disable_meeting_location_override, :in => [true, false]
   #validates_presence_of :max_meetings_per_visitor
   #validates_numericality_of :max_meetings_per_visitor, :only_integer => true, :greater_than_or_equal_to => 0
 

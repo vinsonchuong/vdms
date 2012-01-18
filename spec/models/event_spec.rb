@@ -31,6 +31,11 @@ describe Event do
       @event.should respond_to(:disable_hosts=)
     end
 
+    it 'has a Prevent Meeting Location Override flag (disable_meeting_location_override)' do
+      @event.should respond_to(:disable_meeting_location_override)
+      @event.should respond_to(:disable_meeting_location_override=)
+    end
+
     it 'has a Max Meetings per Visitor (max_meetings_per_visitor)' do
       @event.should respond_to(:max_meetings_per_visitor)
       @event.should respond_to(:max_meetings_per_visitor=)
@@ -331,6 +336,11 @@ describe Event do
 
     it 'is not valid without a Prevent Hosts From Making Changes flag' do
       @event.disable_hosts = nil
+      @event.should_not be_valid
+    end
+
+    it 'is not valid without a Prevent Meeting Location Override flag' do
+      @event.disable_meeting_location_override = nil
       @event.should_not be_valid
     end
 

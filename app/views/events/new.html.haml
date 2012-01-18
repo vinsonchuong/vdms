@@ -2,27 +2,30 @@
 = form_for @event, {:action => :create} do |event_form|
   - if @event.errors.any?
     #errors
-      %h3!= t('.errors')
+      %h3= t('.errors')
       %ul
         - @event.errors.full_messages.each do |message|
-          %li!= message
+          %li= message
   %fieldset
     - sec_to_min = []
     - 721.times {|i| sec_to_min[i] = [i, i * 60]}
     %h3!= "Basic Info"
     %ul
       %li.field
-        != event_form.label :name
-        != event_form.text_field :name
-    %h3!= t('.meeting_times')
+        = event_form.label :name
+        = event_form.text_field :name
+    %h3 Meeting Time Slots
     %ul
       %li.field
-        != event_form.label :meeting_length
-        != event_form.select :meeting_length, sec_to_min[1..-1], {}
-        %span.units!= t('.minutes')
+        = event_form.label :disable_meeting_location_override, 'Prevent Hosts from Changing their Meeting Locations per Time Slot'
+        = event_form.check_box :disable_meeting_location_override
       %li.field
-        != event_form.label :meeting_gap
-        != event_form.select :meeting_gap, sec_to_min, {}
-        %span.units!= t('.minutes')
+        = event_form.label :meeting_length
+        = event_form.select :meeting_length, sec_to_min[1..-1], {}
+        %span.units= t('.minutes')
+      %li.field
+        = event_form.label :meeting_gap
+        = event_form.select :meeting_gap, sec_to_min, {}
+        %span.units= t('.minutes')
   %fieldset
-    != event_form.submit t('.submit')
+    = event_form.submit t('.submit')

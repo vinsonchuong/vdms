@@ -25,8 +25,11 @@
   %fieldset
     - sec_to_min = []
     - 721.times {|i| sec_to_min[i] = [i, i * 60]}
-    %h3= t('.meeting_times')
+    %h3 Meeting Time Slots
     %ul
+      %li.field
+        = event_form.label :disable_meeting_location_override, 'Prevent Hosts from Changing their Meeting Locations per Time Slot'
+        = event_form.check_box :disable_meeting_location_override
       %li.field
         = event_form.label :meeting_length
         = event_form.select :meeting_length, sec_to_min[1..-1], {}
@@ -35,8 +38,8 @@
         = event_form.label :meeting_gap
         = event_form.select :meeting_gap, sec_to_min, {}
         %span.units!= t('.minutes')
-      %li
-        %h4 Meeting Time Ranges
+      %li.field
+        %label Meeting Time Ranges
         %p The times over which meetings can be scheduled.
         %ul
           = event_form.fields_for :meeting_times, @meeting_times do |meeting_time_fields|
