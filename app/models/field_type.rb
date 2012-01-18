@@ -6,7 +6,6 @@ class FieldType < ActiveRecord::Base
   belongs_to :event
   has_many :fields, :dependent => :destroy
 
-  attr_readonly :data_type
   serialize :options, Hash
 
   validates_presence_of :name

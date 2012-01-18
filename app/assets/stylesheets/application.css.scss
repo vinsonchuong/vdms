@@ -141,9 +141,7 @@ a.action {
     }
   }
   #title {
-    display: inline-block;
-    vertical-align: middle;
-    width: $bwidth / 2 - $hmargin;
+    float: left;
     h1 a {
       color: $blue;
       font-size: 2.3em;
@@ -160,8 +158,7 @@ a.action {
   }
   #primary_navigation {
     @include clearfix;
-    display: inline-block;
-    vertical-align: middle;
+    float: right;
     & > li {
       float: left;
       margin: 0 $hmargin;
@@ -170,6 +167,9 @@ a.action {
       }
       &:last-child {
         margin-right: 0;
+      }
+      & > ul {
+        margin-left: $hmargin;
       }
     }
   }

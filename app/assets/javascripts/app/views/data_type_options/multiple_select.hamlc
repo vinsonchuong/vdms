@@ -2,5 +2,5 @@
   %h3 Options
   %ul
     %li.field.required
-      %label Selection Items
+      %label Choices
       %ul.listInput{id: "#{@prefix}_options_selection_items"}

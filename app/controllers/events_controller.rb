@@ -38,7 +38,7 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(params[:event])
     if @event.save
-      redirect_to(:events, :notice => t('events.create.success'))
+      redirect_to(@event, :notice => t('events.create.success'))
     else
       render :action => 'new'
     end

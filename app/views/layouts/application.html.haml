@@ -11,8 +11,7 @@
       #secondary_navigation
         %ul#breadcrumbs
         %ul#account_management
-          %li= link_to 'Contact Info'
-          %li= link_to 'Sign Out'
+          -#%li= link_to 'Sign Out'
       #title
         %h1= link_to 'MeetingLibs', root_path
         - unless @event.nil? or @event.new_record?
@@ -20,33 +19,37 @@
       %ul#primary_navigation
         - is_administrator = @current_user.role == 'administrator'
         - is_facilitator = @current_user.role == 'facilitator'
-        - if @event.nil? || @event.new_record?
-          - if is_administrator
-            %li= link_to t('people.index.short_title'), people_path
-            %li= link_to t('events.index.short_title'), events_path
-        - else
+        - unless @event.nil? || @event.new_record?
           - if is_administrator
             %li
-              = link_to t('events.show.short_title'), event_path(@event)
+              %span Event
               %ul
-                %li= link_to t('events.edit.short_title'), edit_event_path(@event)
+                %li= link_to 'Edit Settings', edit_event_path(@event)
             %li
-              = link_to t('hosts.index.short_title'), event_hosts_path(@event)
+              %span Hosts
               %ul
-                %li= link_to t('host_field_types.index.short_title'), event_host_field_types_path(@event)
+                %li= link_to 'Manage Hosts', event_hosts_path(@event)
+                %li= link_to 'Manage Survey', event_host_field_types_path(@event)
             %li
-              = link_to t('visitors.index.short_title'), event_visitors_path(@event)
+              %span Visitors
               %ul
-                %li= link_to t('visitor_field_types.index.short_title'), event_visitor_field_types_path(@event)
+                %li= link_to 'Manage Visitors', event_visitors_path(@event)
+                %li= link_to 'Manage Survey', event_visitor_field_types_path(@event)
             %li
-              = link_to 'Meetings', event_meetings_path(@event)
+              %span Meetings
               %ul
-                %li= link_to t('goals.index.short_title'), event_goals_path(@event)
-                %li= link_to t('constraints.index.short_title'), event_constraints_path(@event)
+                %li= link_to 'Manage Meetings', event_meetings_path(@event)
+                %li= link_to 'Manage Goals', event_goals_path(@event)
+                %li= link_to 'Manage Constraints', event_constraints_path(@event)
           - elsif is_facilitator
-            %li= link_to t('hosts.index.short_title'), event_hosts_path(@event)
-            %li= link_to t('visitors.index.short_title'), event_visitors_path(@event)
-            %li= link_to 'Meetings'
+            %li
+              %span Hosts
+              %ul
+                %li= link_to 'Manage Hosts', event_hosts_path(@event)
+            %li
+              %span Visitors
+              %ul
+                %li= link_to 'Manage Visitors', event_visitors_path(@event)
           - else
     #content
       - if content_for?(:title)

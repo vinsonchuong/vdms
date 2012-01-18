@@ -100,7 +100,7 @@ class Index extends Spine.Controller
     item = $(e.target).item()
     dialog = $('#confirm_delete')
     dialog.dialog('option', 'buttons',
-      'Remove Visitor Field': ->
+      'Remove Question': ->
         item.destroy()
         $(this).dialog('close')
       'Cancel': ->

@@ -158,7 +158,7 @@ describe EventsController do
 
       it 'redirects to the View Meeting page' do
         post :create, :event => {'foo' => 'bar'}
-        response.should redirect_to(:action => 'index')
+        response.should redirect_to(:action => 'show', :id => @event.id)
       end
     end
 

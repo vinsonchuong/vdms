@@ -10,7 +10,13 @@ var
   afterRender =  function() {
     $('a.action, button').button();
     $('input.location').each(function() {
-      new google.maps.places.Autocomplete(this);
+      var
+        autocomplete = new google.maps.places.Autocomplete(this),
+        $this = $(this)
+      ;
+      google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        $this.siblings('.location_id').val(autocomplete.getPlace().id);
+      });
     });
   },
   showSpinner = function() {

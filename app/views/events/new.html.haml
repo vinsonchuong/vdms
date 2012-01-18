@@ -8,18 +8,17 @@
           %li!= message
   %fieldset
     - sec_to_min = []
-    - 121.times {|i| sec_to_min[i] = [i, i * 60]}
+    - 721.times {|i| sec_to_min[i] = [i, i * 60]}
     %h3!= "Basic Info"
     %ul
       %li.field
         != event_form.label :name
         != event_form.text_field :name
     %h3!= t('.meeting_times')
-    %p!= t('.meeting_times_description')
     %ul
       %li.field
         != event_form.label :meeting_length
-        != event_form.select :meeting_length, sec_to_min, {}
+        != event_form.select :meeting_length, sec_to_min[1..-1], {}
         %span.units!= t('.minutes')
       %li.field
         != event_form.label :meeting_gap

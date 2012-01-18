@@ -18,12 +18,6 @@ describe HostFieldType do
       @field_type.should respond_to(:description=)
     end
 
-    it 'has a readonly Data Type (data_type)' do
-      @field_type.should respond_to(:data_type)
-      @field_type.should respond_to(:data_type=)
-      expect {@field_type.update_attribute(:data_type, 'single_select')}.should raise_error
-    end
-
     it 'has an Options hash (options)' do
       pending
       @field_type.should respond_to(:options)

@@ -1,4 +1,7 @@
 - content_for :title, t('.title')
+- if @current_user.role == 'administrator'
+  %ul#actions
+    %li!= link_to 'New', new_event_path, :class => 'action'
 .section
   %h3 Your Events
   %ol.records

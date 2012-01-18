@@ -1,2 +1,4 @@
-%label{for: @id}= @field_name
-%input.location{id: @id, name: @name, type: 'text', size: 60}
+%label{for: "#{@id}_name1"}= @field_name
+%p Please search by location name or address and then select one of the suggestions.
+%input.location{id: "#{@id}_name", name: "#{@name}.name", type: 'text', size: 60}
+%input.location_id{id: "#{@id}_id", name: "#{@name}.id", type: 'hidden'}
