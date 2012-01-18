@@ -45,6 +45,6 @@ group :test do
   gem 'factory_girl_rails'
   gem 'email_spec'
   gem 'launchy'
-  gem 'shoulda'
+  gem 'shoulda', '>= 3.0.0.beta2'
   gem 'spork', '~> 0.9.0.rc9'
 end
