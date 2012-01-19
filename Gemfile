@@ -32,3 +32,19 @@ group :assets do
   gem 'sass-rails', '~> 3.1.0'
   gem 'uglifier'
 end
+
+group :test, :development do
+  gem 'rspec-rails', "~> 2.7.0"
+  gem 'sqlite3'
+end
+group :test do
+  gem 'capybara'
+  gem 'cucumber-rails'
+  gem 'cucumber-rails-training-wheels'
+  gem 'database_cleaner'
+  gem 'factory_girl_rails'
+  gem 'email_spec'
+  gem 'launchy'
+  gem 'shoulda', '>= 3.0.0.beta2'
+  gem 'spork', '~> 0.9.0.rc9'
+end
