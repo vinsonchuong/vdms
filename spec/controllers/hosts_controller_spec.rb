@@ -9,82 +9,6 @@ describe HostsController do
     RubyCAS::Filter.fake('admin')
   end
 
-  describe 'forced profile verification' do
-    before(:each) do
-      @event.stub_chain(:hosts, :find).and_return(@host)
-      @event.hosts.stub(:build).and_return(@host)
-    end
-
-    context 'when an unverified Host is signed in' do
-      before(:each) do
-        @host.verified = false
-        @host.person.ldap_id = 'host'
-        Person.stub(:find_by_ldap_id).and_return(@host.person)
-        RubyCAS::Filter.fake('host')
-      end
-
-      it 'does not redirect when editing a Host' do
-        get :edit, :event_id => @event.id, :id => @host.id
-        response.should render_template('edit')
-      end
-
-      it 'does not redirect when updating a Host' do
-        @host.stub(:update_attributes).and_return(false)
-        @host.stub(:errors).and_return({:error => ''})
-        put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
-        response.should render_template('edit')
-      end
-    end
-
-    context 'when the signed in person is not an unverified Host' do
-      it 'does not redirect when indexing Hosts' do
-        get :index, :event_id => @event.id
-        response.should render_template('index')
-      end
-
-      it 'does not redirect when showing a Host' do
-        get :show, :event_id => @event.id, :id => @host.id
-        response.should render_template('show')
-      end
-
-      it 'does not redirect when newing a Host' do
-        get :new, :event_id => @event.id
-        response.should render_template('new')
-      end
-
-      it 'does not redirect when editing a Host' do
-        get :edit, :event_id => @event.id, :id => @host.id
-        response.should render_template('edit')
-      end
-
-      it 'does not redirect when deleting a Host' do
-        get :delete, :event_id => @event.id, :id => @host.id
-        response.should render_template('delete')
-      end
-
-      it 'does not redirect when creating a Host' do
-        @event.stub_chain(:hosts, :build).and_return(@host)
-        @host.stub(:save).and_return(false)
-        @host.stub(:errors).and_return(:error => 'foo')
-        post :create, :host => {'foo' => 'bar'}, :event_id => @event.id
-        response.should render_template('new')
-      end
-
-      it 'does not redirect when updating a Host' do
-        @host.stub(:update_attributes).and_return(false)
-        @host.stub(:errors).and_return({:error => ''})
-        put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
-        response.should render_template('edit')
-      end
-
-      it 'does not redirect when destroying a Host' do
-        @event.stub_chain(:hosts, :find).and_return(@host)
-        delete :destroy, :event_id => @event.id, :id => @host.id
-        response.should redirect_to(:action => 'index', :event_id => @event.id)
-      end
-    end
-  end
-
   describe 'GET index' do
     it 'assigns to @event the given Event' do
       get :index, :event_id => @event.id
@@ -293,25 +217,6 @@ describe HostsController do
       assigns[:role].should equal(@host)
     end
 
-    context 'when an Administrator is signed in' do
-      it 'updates but does not verify the Host' do
-        @host.should_receive(:update_attributes).with('foo' => 'bar', 'verified' => false)
-        put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
-      end
-    end
-
-    context 'when the Host is signed in' do
-      before(:each) do
-        @host.person.update_attribute(:ldap_id, 'host')
-        RubyCAS::Filter.fake('host')
-      end
-
-      it 'updates and verifies the Host' do
-        @host.should_receive(:update_attributes).with('foo' => 'bar', 'verified' => true)
-        put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
-      end
-    end
-
     context 'when the Host is successfully updated' do
       before(:each) do
         @host.stub(:update_attributes).and_return(true)
@@ -324,24 +229,9 @@ describe HostsController do
           RubyCAS::Filter.fake('host')
         end
 
-        context 'when the host was unverified' do
-          before(:each) do
-            @host.verified = false
-          end
-
-          it 'redirects to the previously requested page' do
-            session[:after_verify_url] = events_url
-            put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
-            response.should redirect_to events_url
-          end
-        end
-
-        context 'when the host was verified' do
-          before(:each) do
-            @host.verified = true
-          end
-
-          it 'redirects to the show event page'
+        it 'redirects to the show event page' do
+          put :update, :host => {'foo' => 'bar'}, :event_id => @event.id, :id => @host.id
+          response.should redirect_to(:controller => 'events', :action => 'show', :id => @event.id)
         end
 
         it 'sets a flash[:notice] message' do

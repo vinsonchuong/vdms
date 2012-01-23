@@ -39,45 +39,6 @@ describe EventsController do
       assigns[:event].should == @event
     end
 
-    context 'when an unverified Host is signed in' do
-      before(:each) do
-        @host = Factory.create(:host, :event => @event, :verified => false)
-        @host.person.update_attribute(:ldap_id, 'host')
-        RubyCAS::Filter.fake('host')
-      end
-
-      it 'saves the requested URL before redirecting' do
-        get :show, :id => @event.id
-        session[:after_verify_url].should == event_url(@event)
-      end
-
-      it 'forces profile verification' do
-        get :show, :id => @event.id
-        response.should redirect_to(edit_event_host_url(@event, @host))
-      end
-    end
-
-    context 'when an unverified Visitor is signed in' do
-      before(:each) do
-        @visitor = Factory.create(:visitor, :event => @event, :verified => false)
-        @visitor.person.update_attribute(:ldap_id, 'visitor')
-        RubyCAS::Filter.fake('visitor')
-      end
-
-      it 'forces profile verification' do
-        get :show, :id => @event.id
-        response.should redirect_to(edit_event_visitor_url(@event, @visitor))
-      end
-    end
-
-    context 'when the signed in Person is neither an unverified Host nor an unverified Visitor' do
-      it 'does not force profile verification' do
-        get :show, :id => @event.id
-        response.should render_template('show')
-      end
-    end
-
-
     it 'renders the show template' do
       get :show, :id => @event.id
       response.should render_template('show')

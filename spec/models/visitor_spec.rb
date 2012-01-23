@@ -83,7 +83,7 @@ describe Visitor do
       end
 
       it 'only allows updates' do
-        @visitor.update_attributes(:person_attributes => Factory.attributes_for(:person))
+        @visitor.update_attributes(:person_attributes => Factory.build(:person).attributes)
         @visitor.reload.person.should == @person
       end
     end

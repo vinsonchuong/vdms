@@ -9,82 +9,6 @@ describe VisitorsController do
     RubyCAS::Filter.fake('admin')
   end
 
-  describe 'forced profile verification' do
-    before(:each) do
-      @event.stub_chain(:visitors, :find).and_return(@visitor)
-      @event.visitors.stub(:build).and_return(@visitor)
-    end
-
-    context 'when an unverified Visitor is signed in' do
-      before(:each) do
-        @visitor.verified = false
-        @visitor.person.ldap_id = 'visitor'
-        Person.stub(:find_by_ldap_id).and_return(@visitor.person)
-        RubyCAS::Filter.fake('visitor')
-      end
-
-      it 'does not redirect when editing a Visitor' do
-        get :edit, :event_id => @event.id, :id => @visitor.id
-        response.should render_template('edit')
-      end
-
-      it 'does not redirect when updating a Visitor' do
-        @visitor.stub(:update_attributes).and_return(false)
-        @visitor.stub(:errors).and_return({:error => ''})
-        put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
-        response.should render_template('edit')
-      end
-    end
-
-    context 'when the signed in person is not an unverified Visitor' do
-      it 'does not redirect when indexing Visitors' do
-        get :index, :event_id => @event.id
-        response.should render_template('index')
-      end
-
-      it 'does not redirect when showing a Visitor' do
-        get :show, :event_id => @event.id, :id => @visitor.id
-        response.should render_template('show')
-      end
-
-      it 'does not redirect when newing a Visitor' do
-        get :new, :event_id => @event.id
-        response.should render_template('new')
-      end
-
-      it 'does not redirect when editing a Visitor' do
-        get :edit, :event_id => @event.id, :id => @visitor.id
-        response.should render_template('edit')
-      end
-
-      it 'does not redirect when deleting a Visitor' do
-        get :delete, :event_id => @event.id, :id => @visitor.id
-        response.should render_template('delete')
-      end
-
-      it 'does not redirect when creating a Visitor' do
-        Visitor.stub(:new).and_return(@visitor)
-        @visitor.stub(:save).and_return(false)
-        @visitor.stub(:errors).and_return(:error => 'foo')
-        post :create, :visitor => {'foo' => 'bar'}, :event_id => @event.id
-        response.should render_template('new')
-      end
-
-      it 'does not redirect when updating a Visitor' do
-        @visitor.stub(:update_attributes).and_return(false)
-        @visitor.stub(:errors).and_return({:error => {}})
-        put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
-        response.should render_template('edit')
-      end
-
-      it 'does not redirect when destroying a Visitor' do
-        Visitor.stub(:find).and_return(@visitor)
-        delete :destroy, :event_id => @event.id, :id => @visitor.id
-        response.should redirect_to(:action => 'index', :event_id => @event.id)
-      end
-    end
-  end
-
   describe 'GET index' do
     it 'assigns to @event the given Event' do
       get :index, :event_id => @event.id
@@ -252,25 +176,6 @@ describe VisitorsController do
       assigns[:role].should equal(@visitor)
     end
 
-    context 'when an Administrator is signed in' do
-      it 'updates but does not verify the Host' do
-        @visitor.should_receive(:update_attributes).with('foo' => 'bar', 'verified' => false)
-        put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
-      end
-    end
-
-    context 'when the Host is signed in' do
-      before(:each) do
-        @visitor.person.update_attribute(:ldap_id, 'visitor')
-        RubyCAS::Filter.fake('visitor')
-      end
-
-      it 'updates and verifies the Host' do
-        @visitor.should_receive(:update_attributes).with('foo' => 'bar', 'verified' => true)
-        put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
-      end
-    end
-
     context 'when the Visitor is successfully updated' do
       before(:each) do
         @visitor.stub(:update_attributes).and_return(true)
@@ -283,24 +188,9 @@ describe VisitorsController do
           RubyCAS::Filter.fake('visitor')
         end
 
-        context 'when the Visitor was unverified' do
-          before(:each) do
-            @visitor.verified = false
-          end
-
-          it 'redirects to the previously requested page' do
-            session[:after_verify_url] = events_url
-            put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
-            response.should redirect_to events_url
-          end
-        end
-
-        context 'when the Visitor was verified' do
-          before(:each) do
-            @visitor.verified = true
-          end
-
-          it 'redirects to the view event page'
+        it 'redirects to the view event page' do
+          put :update, :visitor => {'foo' => 'bar'}, :event_id => @event.id, :id => @visitor.id
+          response.should redirect_to(:controller => 'events', :action => 'show', :id => @event.id)
         end
 
 

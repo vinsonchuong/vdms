@@ -1,5 +1,4 @@
 class RolesController < EventBaseController
-  skip_before_filter :verify_role, :only => [:edit, :update]
   respond_to :html, :json
 
   # GET /events/1/hosts
@@ -62,17 +61,14 @@ class RolesController < EventBaseController
   # PUT /events/1/visitors/1
   def update
     @role = get_role
-    was_verified = @role.verified?
-    if @role.update_attributes(get_attributes.merge(:verified => @role == @current_role)) and not request.xhr?
+    if @role.update_attributes(get_attributes) and not request.xhr?
       flash[:notice] = t(@current_role == @role ?
                            'update.alt_success' :
                            'update.success',
                          :scope => get_i18n_scope)
     end
-    respond_with @event, @role, :location => @current_role == @role ?
-                                               was_verified ?
-                                                 @event :
-                                                 session[:after_verify_url] :
+    respond_with @event, @role, :location => @current_user.role == 'user' ?
+                                               @event :
                                                {:action => 'index'}
   end
 

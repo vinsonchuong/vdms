@@ -81,7 +81,7 @@ describe Host do
       end
 
       it 'only allows updates' do
-        @host.update_attributes(:person_attributes => Factory.attributes_for(:person))
+        @host.update_attributes(:person_attributes => Factory.build(:person).attributes)
         @host.reload.person.should == @person
       end
     end
