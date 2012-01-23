@@ -52,4 +52,5 @@ end
 group :production do
   # Needed for asset pipeline on Heroku, remove after switching to Cedar stack
   gem 'therubyracer-heroku', '>= 0.8.1.pre3'
+  gem 'pg'
 end
