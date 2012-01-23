@@ -17,6 +17,9 @@ var
       google.maps.event.addListener(autocomplete, 'place_changed', function() {
         $this.siblings('.location_id').val(autocomplete.getPlace().id);
       });
+      $('select.filter').each(function() {
+        $(this).multiselect().multiselectfilter();
+      })
     });
   },
   showSpinner = function() {

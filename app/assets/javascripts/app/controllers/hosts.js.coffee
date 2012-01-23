@@ -2,6 +2,7 @@ $ = jQuery.sub()
 TimeSlot = App.TimeSlot
 Host = App.Host
 HostFieldType = App.HostFieldType
+Visitor = App.Visitor
 
 $.fn.item = ->
   elementID   = $(@).data('id')
@@ -108,6 +109,7 @@ class Index extends Spine.Controller
     TimeSlot.fetch()
     Host.fetch()
     HostFieldType.fetch()
+    Visitor.fetch()
 
   render: =>
     hosts = Host.all()

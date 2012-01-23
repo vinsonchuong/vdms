@@ -20,7 +20,9 @@ class FieldType < ActiveRecord::Base
       'boolean' => 'Yes / No',
       'number' => 'Number',
       'number_range' => 'Range of Numbers',
-      'location' => 'Location'
+      'location' => 'Location',
+      'hosts' => 'List of Hosts',
+      'visitors' => 'List of Visitors'
     }
   end
 

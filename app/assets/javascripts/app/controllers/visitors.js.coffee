@@ -1,5 +1,6 @@
 $ = jQuery.sub()
 TimeSlot = App.TimeSlot
+Host = App.Host
 Visitor = App.Visitor
 VisitorFieldType = App.VisitorFieldType
 
@@ -106,6 +107,7 @@ class Index extends Spine.Controller
     super
     Visitor.bind 'refresh change', @render
     TimeSlot.fetch()
+    Host.fetch()
     Visitor.fetch()
     VisitorFieldType.fetch()
 

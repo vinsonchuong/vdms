@@ -30,6 +30,12 @@
           %li
             %input#edit_data_type_location{type: 'radio', name: 'data_type', value: 'location'}
             %label{for: 'edit_data_type_location'} Address
+          %li
+            %input#edit_data_type_hosts{type: 'radio', name: 'data_type', value: 'hosts'}
+            %label{for: 'edit_data_type_hosts'} List of Hosts
+          %li
+            %input#edit_data_type_visitors{type: 'radio', name: 'data_type', value: 'visitors'}
+            %label{for: 'edit_data_type_visitors'} List of Visitors
   #edit_options
   %fieldset
     %button{type: 'submit'} Update Question

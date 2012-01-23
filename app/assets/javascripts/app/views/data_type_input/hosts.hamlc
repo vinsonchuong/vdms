@@ -1,0 +1,5 @@
+- @name += '[]'
+%label{for: @id}= @field_name
+%select.filter{id: @id, name: @name, multiple: 'multiple', style: 'width:400px;'}
+  - for host in App.Host.all()
+    %option{value: host.person.name}= host.person.name
