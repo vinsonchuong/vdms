@@ -39,9 +39,42 @@ describe EventsController do
       assigns[:event].should == @event
     end
 
-    it 'renders the show template' do
-      get :show, :id => @event.id
-      response.should render_template('show')
+    context 'if the current user has not joined the event and is a user' do
+      before(:each) do
+        @user = Factory.create(:person, :ldap_id => 'user')
+        RubyCAS::Filter.fake('user')
+      end
+
+      it 'redirects to the join page' do
+        get :show, :id => @event.id
+        response.should redirect_to(:action => 'join', :id => @event.id)
+      end
+    end
+
+    context 'if the current user is an administrator or facilitator' do
+      it 'renders the show template' do
+        get :show, :id => @event.id
+        response.should render_template('show')
+      end
+    end
+  end
+
+  describe 'GET join' do
+    context 'when the current user has already joined the event' do
+      before(:each) do
+        @event.hosts.create(:person => @admin)
+      end
+
+      it 'redirects to the show event page' do
+        get :join, :id => @event.id
+        response.should redirect_to :action => 'show', :id => @event.id
+      end
+    end
+    context 'when the current user has not yet joined the event' do
+      it 'renders the join template' do
+        get :join, :id => @event.id
+        response.should render_template('join')
+      end
     end
   end
 

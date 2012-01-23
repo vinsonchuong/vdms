@@ -184,9 +184,9 @@ describe HostsController do
         RubyCAS::Filter.fake('user')
       end
 
-      it 'adds the User as a Host of the Event' do
+      it 'adds the User as a verified Host of the Event' do
         @event.stub_chain(:hosts, :create)
-        @event.hosts.should_receive(:create).with(:person => @user)
+        @event.hosts.should_receive(:create).with(:person => @user, :verified => true)
         post :create_from_current_user, :event_id => @event.id
       end
 

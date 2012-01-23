@@ -7,7 +7,10 @@ VDMSCode::Application.routes.draw do
     member { get :delete }
   end
   resources :events do
-    member { get :delete }
+    member do
+      get :delete
+      get :join
+    end
     resources :time_slots, :only => :index
     resources :constraints, :except => :show do
       member { get :delete }

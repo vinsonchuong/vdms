@@ -1,5 +1,6 @@
 class RolesController < EventBaseController
   respond_to :html, :json
+  skip_before_filter :show_join_prompt, :only => [:join, :create_from_current_user]
 
   # GET /events/1/hosts
   # GET /events/1/visitors
@@ -53,8 +54,8 @@ class RolesController < EventBaseController
   # POST /events/1/hosts/create_from_current_user
   # POST /events/1/visitors/create_from_current_user
   def create_from_current_user
-    @role = create_role(:person => @current_user)
-    redirect_to event_url(@event)
+    @role = create_role(:person => @current_user, :verified => true)
+    redirect_to event_url(@event), :notice => "You have joined the event as a #{@role.class.name}"
   end
 
   # PUT /events/1/hosts/1

@@ -58,6 +58,11 @@ describe 'Routes' do
         {:get => '/events/1'}.should route_to(:controller => 'events', :action => 'show', :id => '1')
       end
     end
+    context 'when joining' do
+      it 'routes GET /events/1/join to Events#join' do
+        {:get => '/events/1/join'}.should route_to(:controller => 'events', :action => 'join', :id => '1')
+      end
+    end
     context 'when adding' do
       it 'routes GET /events/new to Events#new' do
         {:get => '/events/new'}.should route_to(:controller => 'events', :action => 'new')
