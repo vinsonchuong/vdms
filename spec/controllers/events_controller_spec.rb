@@ -78,6 +78,13 @@ describe EventsController do
     end
   end
 
+  describe 'GET unjoin' do
+    it 'renders the unjoin template' do
+      get :unjoin, :id => @event.id
+      response.should render_template('unjoin')
+    end
+  end
+
   describe 'GET new' do
     it 'assigns to @event a new Event' do
       get :new

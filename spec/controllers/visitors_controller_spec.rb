@@ -3,6 +3,7 @@ require 'spec_helper'
 describe VisitorsController do
   before(:each) do
     @visitor = Factory.create(:visitor)
+    @visitor.person.update_attribute(:ldap_id, 'visitor')
     @event = @visitor.event
     Event.stub(:find).and_return(@event)
     @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
@@ -183,7 +184,6 @@ describe VisitorsController do
 
       context 'when signed in as the Visitor' do
         before(:each) do
-          @visitor.person.ldap_id = 'visitor'
           Person.stub(:find_by_ldap_id).and_return(@visitor.person)
           RubyCAS::Filter.fake('visitor')
         end
@@ -249,6 +249,26 @@ describe VisitorsController do
     it 'redirects to the View Visitors page' do
       delete :destroy, :event_id => @event.id, :id => @visitor.id
       response.should redirect_to(:action => 'index', :event_id => @event.id)
+    end
+  end
+
+  describe 'DELETE destroy_from_current_user' do
+    context 'when signed in as a User who has joined the Event' do
+      before(:each) do
+        Person.stub(:find).and_return(@visitor.person)
+        RubyCAS::Filter.fake('visitor')
+        @event.stub_chain(:roles, :find_by_person_id).and_return(@visitor)
+      end
+
+      it 'unregisters the User from the Event' do
+        @visitor.should_receive(:destroy)
+        delete :destroy_from_current_user, :event_id => @event.id
+      end
+    end
+
+    it 'redirects to the view event page' do
+      delete :destroy_from_current_user, :event_id => @event.id
+      response.should redirect_to event_url(@event)
     end
   end
 end

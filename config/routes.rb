@@ -10,6 +10,7 @@ VDMSCode::Application.routes.draw do
     member do
       get :delete
       get :join
+      get :unjoin
     end
     resources :time_slots, :only => :index
     resources :constraints, :except => :show do
@@ -28,6 +29,7 @@ VDMSCode::Application.routes.draw do
       collection do
         get :join
         post :create_from_current_user
+        delete :destroy_from_current_user
       end
       member { get :delete }
       resources :rankings, :controller => 'host_rankings', :only => :index do
@@ -54,6 +56,7 @@ VDMSCode::Application.routes.draw do
       collection do
         get :join
         post :create_from_current_user
+        delete :destroy_from_current_user
       end
       member { get :delete }
       resources :rankings, :controller => 'visitor_rankings', :only => :index do

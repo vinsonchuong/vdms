@@ -81,4 +81,11 @@ class RolesController < EventBaseController
     flash[:notice] = t('destroy.success', :scope => get_i18n_scope) unless request.xhr?
     respond_with @event, @role
   end
+
+  # DELETE /events/1/hosts/destroy_from_current_user
+  # DELETE /events/1/visitors/destroy_from_current_user
+  def destroy_from_current_user
+    @current_role.nil? or @current_role.destroy
+    redirect_to event_url(@event), :notice => 'You have unregistered from the event.'
+  end
 end

@@ -62,6 +62,9 @@ describe 'Routes' do
       it 'routes GET /events/1/join to Events#join' do
         {:get => '/events/1/join'}.should route_to(:controller => 'events', :action => 'join', :id => '1')
       end
+      it 'routes GET /events/1/unjoin to Events#unjoin' do
+        {:get => '/events/1/unjoin'}.should route_to(:controller => 'events', :action => 'unjoin', :id => '1')
+      end
     end
     context 'when adding' do
       it 'routes GET /events/new to Events#new' do
@@ -273,6 +276,9 @@ describe 'Routes' do
         it 'routes DELETE /events/1/hosts/1 to Hosts#destroy' do
           {:delete => '/events/1/hosts/1'}.should route_to(:controller => 'hosts', :action => 'destroy', :event_id => '1', :id => '1')
         end
+        it 'routes DELETE /events/1/hosts/destroy_from_current_user to Hosts#destroy_from_current_user' do
+          {:delete => '/events/1/hosts/destroy_from_current_user'}.should route_to(:controller => 'hosts', :action => 'destroy_from_current_user', :event_id => '1')
+        end
       end
     end
     describe 'Visitors' do
@@ -344,6 +350,9 @@ describe 'Routes' do
         end
         it 'routes DELETE /events/1/visitors/1 to Visitors#destroy' do
           {:delete => '/events/1/visitors/1'}.should route_to(:controller => 'visitors', :action => 'destroy', :event_id => '1', :id => '1')
+        end
+        it 'routes DELETE /events/1/visitors/destroy_from_current_user to Visitors#destroy_from_current_user' do
+          {:delete => '/events/1/visitors/destroy_from_current_user'}.should route_to(:controller => 'visitors', :action => 'destroy_from_current_user', :event_id => '1')
         end
       end
     end

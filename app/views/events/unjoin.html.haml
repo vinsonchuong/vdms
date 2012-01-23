@@ -1,0 +1,9 @@
+- content_for :title, 'Unregister from Event'
+%p Are you sure you want to unregister from the event? You will not be scheduled for any meetings.
+.section
+  - if @current_role.class == Host
+    = form_tag destroy_from_current_user_event_hosts_url(@event), :method => 'delete', :class => 'inline' do
+      != submit_tag 'Unregister from Event'
+  - else
+    = form_tag destroy_from_current_user_event_visitors_url(@event), :method => 'delete', :class => 'inline' do
+      != submit_tag 'Unregister from Event'

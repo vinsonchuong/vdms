@@ -1,1 +1,9 @@
-- content_for :title, t('.title', :name => @event.name)
+- content_for :title, 'Event Info'
+.section
+  %h3 Actions
+  %ul
+    - if @current_role.nil?
+      %li= link_to 'Join Event', join_event_path(@event)
+    - else
+      %li= link_to 'Edit Profile', edit_event_host_path(@event, @current_role)
+      %li= link_to 'Unregister from Event', unjoin_event_path(@event)

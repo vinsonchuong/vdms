@@ -3,6 +3,7 @@ require 'spec_helper'
 describe HostsController do
   before(:each) do
     @host = Factory.create(:host)
+    @host.person.update_attribute(:ldap_id, 'host')
     @event = @host.event
     Event.stub(:find).and_return(@event)
     @admin = Factory.create(:person, :ldap_id => 'admin', :role => 'administrator')
@@ -198,7 +199,6 @@ describe HostsController do
 
     context 'when signed in as a User who has already joined the Event' do
       before(:each) do
-        @host.person.ldap_id = 'host'
         Person.stub(:find).and_return(@host.person)
         RubyCAS::Filter.fake('host')
       end
@@ -224,7 +224,6 @@ describe HostsController do
 
       context 'when signed in as the Host' do
         before(:each) do
-          @host.person.ldap_id = 'host'
           Person.stub(:find_by_ldap_id).and_return(@host.person)
           RubyCAS::Filter.fake('host')
         end
@@ -289,6 +288,26 @@ describe HostsController do
     it 'redirects to the View Hosts page' do
       delete :destroy, :event_id => @event.id, :id => @host.id
       response.should redirect_to(:action => 'index', :event_id => @event.id)
+    end
+  end
+
+  describe 'DELETE destroy_from_current_user' do
+    context 'when signed in as a User who has joined the Event' do
+      before(:each) do
+        Person.stub(:find).and_return(@host.person)
+        RubyCAS::Filter.fake('host')
+        @event.stub_chain(:roles, :find_by_person_id).and_return(@host)
+      end
+
+      it 'unregisters the User from the Event' do
+        @host.should_receive(:destroy)
+        delete :destroy_from_current_user, :event_id => @event.id
+      end
+    end
+
+    it 'redirects to the view event page' do
+      delete :destroy_from_current_user, :event_id => @event.id
+      response.should redirect_to event_url(@event)
     end
   end
 end

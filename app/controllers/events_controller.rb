@@ -22,6 +22,11 @@ class EventsController < ApplicationController
     redirect_to @event unless @event.roles.find_by_person_id(@current_user.id).nil?
   end
 
+  # GET /events/1/unjoin
+  def unjoin
+    @event = Event.find(params[:id])
+  end
+
   # GET /events/new
   def new
     @event = Event.new
