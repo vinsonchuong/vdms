@@ -48,3 +48,8 @@ group :test do
   gem 'shoulda', '>= 3.0.0.beta2'
   gem 'spork', '~> 0.9.0.rc9'
 end
+
+group :production do
+  # Needed for asset pipeline on Heroku, remove after switching to Cedar stack
+  gem 'therubyracer-heroku', '>= 0.8.1.pre3'
+end

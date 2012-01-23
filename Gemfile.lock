@@ -200,6 +200,7 @@ GEM
       tilt (~> 1.1, != 1.3.0)
     sqlite3 (1.3.5)
     term-ansicolor (1.0.7)
+    therubyracer-heroku (0.8.1.pre3)
     thin (1.3.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -253,6 +254,7 @@ DEPENDENCIES
   spine-rails
   spork (~> 0.9.0.rc9)
   sqlite3
+  therubyracer-heroku (>= 0.8.1.pre3)
   thin
   ucb_ldap!
   uglifier
