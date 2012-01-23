@@ -1,4 +1,4 @@
-- content_for :title, t('.title', :name => @role.person.name)
+- content_for :title, 'Edit Host Profile'
 = form_for([@event, @role]) do |host_form|
   - if @role.errors.any?
     #errors
@@ -10,7 +10,7 @@
     %h3!= t('.profile')
     %ul
       != fields_for @role.person do |person_fields|
-        - unless @current_user.role == 'administrator'
+        - if @current_user.role == 'administrator'
           %li.field
             != person_fields.label :ldap_id
             %p!= t('.ldap_id_description', :calnet_directory => link_to('CalNet Directory', 'https://calnet.berkeley.edu/directory/'))
@@ -39,7 +39,7 @@
                 %li
                   - sub_list.each do |args|
                     != field_fields.send(*args)
-  %fieldset
+  -#%fieldset
     %h3!= t('.event_preferences')
     %ul
       %li.field.required
@@ -52,4 +52,4 @@
         != host_form.label :max_visitors
         != host_form.select :max_visitors, 1..50
   %fieldset
-    != host_form.submit @role == @current_role ? t('.alt_submit') : t('.submit')
+    != host_form.submit 'Update Profile'
