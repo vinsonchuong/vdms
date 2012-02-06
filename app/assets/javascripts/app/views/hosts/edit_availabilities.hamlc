@@ -1,4 +1,7 @@
-%h2 Edit Host Availabilities
+- if app.role_id?
+  %h2 Edit Availabilities
+- else
+  %h2 Edit Host Availabilities
 %form#edit_availabilities
   %fieldset
     %h3 Basic Info
@@ -48,6 +51,9 @@
               %td
                 %input{id: "#{id_prefix}_room", name: "#{name_prefix}.room", type: 'text'}
   %fieldset
-    %button{type: 'submit'} Update Host Availabilities
+    - if app.role_id?
+      %button{type: 'submit'} Update Availabilities
+    - else
+      %button{type: 'submit'} Update Host Availabilities
     %span or
     %a{'data-type' => 'back'} Cancel

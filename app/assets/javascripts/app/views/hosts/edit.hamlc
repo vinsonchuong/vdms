@@ -1,4 +1,7 @@
-%h2 Edit Host
+- if app.role_id?
+  %h2 Edit Profile
+- else
+  %h2 Edit Host
 %form#edit
   %fieldset
     %h3 Contact Info
@@ -19,12 +22,16 @@
         - id_prefix = "edit_fields_#{fieldNo}"
         - name_prefix = "fields[#{fieldNo}]"
         - field_type = App.HostFieldType.find(field.field_type_id)
-        %li.field
-          != @helper.render_data_type(field_type.data_type, $.extend({id: "#{id_prefix}_data", name: "#{name_prefix}.data", field_name: field_type.name}, field_type.options))
-          -# Hack to bypass but in form2js's skipEmpty option
-          %input{type: 'hidden', name: "#{name_prefix}.id"}
-          %input{type: 'hidden', name: "#{name_prefix}.field_type_id"}
+        - if field_type.options.visible == 'yes'
+          %li.field
+            != @helper.render_data_type(field_type.data_type, $.extend({id: "#{id_prefix}_data", name: "#{name_prefix}.data", field_name: field_type.name}, field_type.options))
+            -# Hack to bypass but in form2js's skipEmpty option
+            %input{type: 'hidden', name: "#{name_prefix}.id"}
+            %input{type: 'hidden', name: "#{name_prefix}.field_type_id"}
   %fieldset
-    %button{type: 'submit'} Update Host
+    - if app.role_id?
+      %button{type: 'submit'} Update Profile
+    - else
+      %button{type: 'submit'} Update Host
     %span or
     %a{'data-type' => 'back'} Cancel

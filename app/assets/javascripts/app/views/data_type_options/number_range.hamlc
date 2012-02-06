@@ -7,3 +7,22 @@
     %li.field.required
       %label{for: "#{@prefix}_options_max"} Maximum
       %input{id: "#{@prefix}_options_max", name: 'options.max', type: 'number'}
+    %li.field.required
+      %label Answer Required
+      %ul
+        %li
+          %input{type: 'radio', id: "#{@prefix}_options_required_0", name: 'options.required', value: 'yes', checked: 'checked'}
+          %label{for: "#{@prefix}_options_required_0"} Yes
+        %li
+          %input{type: 'radio', id: "#{@prefix}_options_required_1", name: 'options.required', value: 'no'}
+          %label{for: "#{@prefix}_options_required_1"} No
+    %li.field.required
+      %label Visible to Hosts/Visitors
+      %ul
+        %li
+          %input{type: 'radio', id: "#{@prefix}_options_visible_0", name: 'options.visible', value: 'yes', checked: 'checked'}
+          %label{for: "#{@prefix}_options_visible_0"} Yes, show hosts/visitors the question
+        %li
+          %input{type: 'radio', id: "#{@prefix}_options_visible_1", name: 'options.visible', value: 'no'}
+          %label{for: "#{@prefix}_options_visible_1"} No, internal use only
+

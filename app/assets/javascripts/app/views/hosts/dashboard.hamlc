@@ -1,0 +1,10 @@
+%h2 Dashboard
+.section
+  %h3 Host Actions
+  %ul
+    %li
+      %a{'data-type' => 'edit_profile'} Edit Profile
+    -#%li
+      %a{'data-type' => 'edit_availabilities'} Edit Availabilities
+    %li
+      %a{href: "/events/#{app.event_id}/unjoin"} Unregister from Event
