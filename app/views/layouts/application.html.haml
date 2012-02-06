@@ -24,6 +24,7 @@
             %li
               %span Event
               %ul
+                %li= link_to 'Dashboard', event_path(@event)
                 %li= link_to 'Edit Settings', edit_event_path(@event)
             %li
               %span Hosts
@@ -42,6 +43,10 @@
                 %li= link_to 'Manage Goals', event_goals_path(@event)
                 %li= link_to 'Manage Constraints', event_constraints_path(@event)
           - elsif is_facilitator
+            %li
+              %span Event
+              %ul
+                %li= link_to 'Dashboard', event_path(@event)
             %li
               %span Hosts
               %ul
