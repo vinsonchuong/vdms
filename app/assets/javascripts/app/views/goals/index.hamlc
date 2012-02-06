@@ -6,13 +6,15 @@
   %thead
     %tr
       %th{scope: 'col'} Name
-      %th{scope: 'col'} Weight
+      %th{scope: 'col'} Importance
       %th{scope: 'col'} Actions
   %tbody
     - for goal in @goals
       %tr.item{'data-id' => goal.id}
         %td= goal.name
-        %td= goal.weight * 100 + '%'
+        %td
+          - importance = {1:'Neutral', 2:'Less Important', 3:'Important', 4:'Very Important'}
+          = importance[goal.weight]
         %td
           %ul
             %li
@@ -21,4 +23,3 @@
               %a.action{'data-type' => 'destroy'} Remove
 #confirm_delete.dialog{title: 'Remove Goal?'}
   %p Are you sure you want to permanently remove this goal?
-
