@@ -23,5 +23,9 @@
       %li.field.required
         = person_form.label :email
         = person_form.text_field :email
+      %li.field
+        = person_form.label :phone
+        = person_form.text_field :phone
+  %fieldset
   %fieldset
     = person_form.submit((@current_user == @person) ? t('.alt_submit') : t('.submit'))

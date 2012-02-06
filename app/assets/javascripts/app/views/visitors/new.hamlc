@@ -9,6 +9,9 @@
       %li.field.required
         %label{for: 'new_person_email'} Email
         %input{id: 'new_person_email', name: 'person.email', type: 'email', size: 30}
+      %li.field
+        %label{for: 'new_person_phone'} Phone
+        %input{id: 'new_person_phone', name: 'person.phone', type: 'phone', size: 30}
   %fieldset
     %h3 Preferences
     %ul

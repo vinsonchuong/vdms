@@ -21,6 +21,11 @@ describe Person do
       @person.should respond_to(:email=)
     end
 
+    it 'has a Phone Number (phone)' do
+      @person.should respond_to(:phone)
+      @person.should respond_to(:phone=)
+    end
+
     it 'has a Role (role)' do
       @person.should respond_to(:role)
       @person.should respond_to(:role=)

@@ -24,6 +24,9 @@
         %li.field.required
           != person_fields.label :email
           != person_fields.text_field :email
+        %li.field
+          = person_fields.label :phone
+          = person_fields.text_field :phone
       -#= visitor_form.fields_for :fields do |field_fields|
         - field = field_fields.object
         %li.field
