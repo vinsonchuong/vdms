@@ -1,7 +1,7 @@
 %h2 Manage Visitor Survey
 %ul#actions
   %li
-    %a.action{'data-type' => 'new'} New
+    %a.action{'data-type' => 'new'} New Question
 %table.records
   %thead
     %tr
@@ -10,7 +10,7 @@
   %tbody
     - for visitor_field_type in @visitor_field_types
       %tr.item{'data-id' => visitor_field_type.id}
-        %td= visitor_field_type.question
+        %td= visitor_field_type.name
         %td
           %ul
             %li
@@ -19,4 +19,3 @@
               %a.action{'data-type' => 'destroy'} Remove
 #confirm_delete.dialog{title: 'Remove Question?'}
   %p Are you sure you want to permanently remove this question?
-
