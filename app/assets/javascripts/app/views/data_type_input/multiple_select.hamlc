@@ -1,7 +1,6 @@
-- @name += '[]'
-%label= @field_name
+%label= @question
 %ul
   - for option, optionNo in @selection_items
     %li
-      %input{type: 'checkbox', name: @name, id: "#{@id}_#{optionNo}", value: option}
-      %label{for: "#{@id}_#{optionNo}"}= option
+      %input{type: 'checkbox', name: "#{@name}.answer[]", id: "#{@id}_answer_#{optionNo}", value: option}
+      %label{for: "#{@id}_answer_#{optionNo}"}= option

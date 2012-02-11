@@ -1,4 +1,4 @@
-%label= @field_name
+%label= @question
 %input{name: "#{@name}.min", type: 'number', min: @min, max: @max}
 %span to
 %input{name: "#{@name}.max", type: 'number', min: @min, max: @max}

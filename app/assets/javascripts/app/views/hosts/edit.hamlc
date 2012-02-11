@@ -7,8 +7,11 @@
     %h3 Contact Info
     %ul
       %li.field.required
-        %label{for: 'edit_person_name'} Name
-        %input{id: 'edit_person_name', name: 'person.name', type: 'text', size: 30}
+        %label{for: 'edit_person_last_name'} Last Name
+        %input{id: 'edit_person_last_name', name: 'person.last_name', type: 'text', size: 30}
+      %li.field.required
+        %label{for: 'edit_person_first_name'} First Name
+        %input{id: 'edit_person_first_name', name: 'person.first_name', type: 'text', size: 30}
       %li.field.required
         %label{for: 'edit_person_email'} Email
         %input{id: 'edit_person_email', name: 'person.email', type: 'email', size: 30}
@@ -22,9 +25,9 @@
         - id_prefix = "edit_fields_#{fieldNo}"
         - name_prefix = "fields[#{fieldNo}]"
         - field_type = App.HostFieldType.find(field.field_type_id)
-        - if field_type.options.visible == 'yes'
+        - if (not app.role_id?) or field_type.options.visible == 'yes'
           %li.field
-            != @helper.render_data_type(field_type.data_type, $.extend({id: "#{id_prefix}_data", name: "#{name_prefix}.data", field_name: field_type.name}, field_type.options))
+            != @helper.render_data_type(field_type.data_type, $.extend({id: "#{id_prefix}_data", name: "#{name_prefix}.data", question: field_type.description}, field_type.options))
             -# Hack to bypass but in form2js's skipEmpty option
             %input{type: 'hidden', name: "#{name_prefix}.id"}
             %input{type: 'hidden', name: "#{name_prefix}.field_type_id"}

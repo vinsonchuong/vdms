@@ -4,13 +4,16 @@
     %h3 Contact Info
     %ul
       %li.field.required
-        %label{for: 'new_person_name'} Name
-        %input{id: 'new_person_name', name: 'person.name', type: 'text', size: 30}
+        %label{for: 'new_person_last_name'} Last Name
+        %input{id: 'new_person_last_name', name: 'person.last_name', type: 'text', size: 30}
+      %li.field.required
+        %label{for: 'new_person_first_name'} First Name
+        %input{id: 'new_person_first_name', name: 'person.first_name', type: 'text', size: 30}
       %li.field.required
         %label{for: 'new_person_email'} Email
         %input{id: 'new_person_email', name: 'person.email', type: 'email', size: 30}
       %li.field
-        %label{for: 'new_person_phone'} Phone
+        %label{for: 'new_person_phone'} Cell Phone
         %input{id: 'new_person_phone', name: 'person.phone', type: 'phone', size: 30}
   %fieldset
     %h3 Preferences
@@ -20,8 +23,11 @@
         - name_prefix = "fields[#{fieldNo}]"
         - field_type = App.VisitorFieldType.find(field.field_type_id)
         %li.field
-          != @helper.render_data_type(field_type.data_type, $.extend({id: "#{id_prefix}_data", name: "#{name_prefix}.data", field_name: field_type.name}, field_type.options))
+          != @helper.render_data_type(field_type.data_type, $.extend({id: "#{id_prefix}_data", name: "#{name_prefix}.data", question: field_type.description}, field_type.options))
           -# Hack to bypass but in form2js's skipEmpty option
+          - if field_type.options.comment == 'yes'
+            %p{for: "#{id_prefix}_data_comments"} Additional Comments:
+            %textarea{id: "#{id_prefix}_data_comments", name: "#{name_prefix}.data.comments", rows: 3, cols: 50}
           %input{type: 'hidden', name: "fields[#{fieldNo}].field_type_id"}
   %fieldset
     %button{type: 'submit'} Add Visitor

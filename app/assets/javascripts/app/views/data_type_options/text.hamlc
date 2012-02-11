@@ -2,6 +2,15 @@
   %h3 Options
   %ul
     %li.field.required
+      %label Presentation
+      %ul
+        %li
+          %input{type: 'radio', id: "#{@prefix}_options_presentation_input", name: 'options.presentation', value: 'input', checked: 'checked'}
+          %label{for: "#{@prefix}_options_presentation_input"} Single-Line Textbox
+        %li
+          %input{type: 'radio', id: "#{@prefix}_options_presentation_textarea", name: 'options.presentation', value: 'textarea'}
+          %label{for: "#{@prefix}_options_presentation_textarea"} Multiple-Line Textbox
+    %li.field.required
       %label Answer Required
       %ul
         %li
@@ -10,6 +19,15 @@
         %li
           %input{type: 'radio', id: "#{@prefix}_options_required_1", name: 'options.required', value: 'no'}
           %label{for: "#{@prefix}_options_required_1"} No
+    %li.field.required
+      %label Include Comment Box
+      %ul
+        %li
+          %input{type: 'radio', id: "#{@prefix}_options_comment_0", name: 'options.comment', value: 'yes', checked: 'checked'}
+          %label{for: "#{@prefix}_options_comment_0"} Yes
+        %li
+          %input{type: 'radio', id: "#{@prefix}_options_comment_1", name: 'options.comment', value: 'no'}
+          %label{for: "#{@prefix}_options_comment_1"} No
     %li.field.required
       %label Visible to Hosts/Visitors
       %ul

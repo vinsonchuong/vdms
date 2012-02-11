@@ -5,13 +5,15 @@
 %table.records
   %thead
     %tr
-      %th{scope: 'col'} Name
+      %th{scope: 'col'} Last Name
+      %th{scope: 'col'} First Name
       %th{scope: 'col'} Email
       %th{scope: 'col'} Actions
   %tbody
     - for host in @hosts
       %tr.item{'data-id' => host.id}
-        %td= host.person.name
+        %td= host.person.last_name
+        %td= host.person.first_name
         %td= host.person.email
         %td
           %ul

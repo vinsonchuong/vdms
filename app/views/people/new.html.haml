@@ -18,8 +18,11 @@
           != person_form.label :role
           != person_form.select :role, [['User', 'user'], ['Facilitator', 'facilitator'], ['Administator', 'administrator']]
       %li.field.required
-        != person_form.label :name
-        != person_form.text_field :name
+        != person_form.label :last_name
+        != person_form.text_field :last_name
+      %li.field.required
+        != person_form.label :first_name
+        != person_form.text_field :first_name
       %li.field.required
         != person_form.label :email
         != person_form.text_field :email

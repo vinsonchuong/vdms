@@ -10,7 +10,7 @@ class HostAvailability < Availability
   has_many :visitors, :through => :meetings
   accepts_nested_attributes_for :meetings, :reject_if => :all_blank, :allow_destroy => true
 
-  default_scope joins(:time_slot).joins(:schedulable => :person).order('begin, name').readonly(false)
+  default_scope joins(:time_slot).joins(:schedulable => :person).order('begin, last_name, first_name').readonly(false)
 
   validates_existence_of :schedulable
 end

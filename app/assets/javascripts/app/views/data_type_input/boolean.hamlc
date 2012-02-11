@@ -1,8 +1,8 @@
-%label= @field_name
+%label= @question
 %ul
   %li
-    %input{type: 'radio', id: "#{@id}_0", name: @name, value: 'yes', checked: 'checked'}
-    %label{for: "#{@id}_0"} Yes
+    %input{type: 'radio', id: "#{@id}_answer_0", name: "#{@name}.answer", value: 'yes', checked: 'checked'}
+    %label{for: "#{@id}_answer_0"} Yes
   %li
-    %input{type: 'radio', id: "#{@id}_1", name: @name, value: 'no'}
-    %label{for: "#{@id}_1"} No
+    %input{type: 'radio', id: "#{@id}_answer_1", name: "#{@name}.answer", value: 'no'}
+    %label{for: "#{@id}_answer_1"} No

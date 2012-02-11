@@ -11,6 +11,15 @@
           %input{type: 'radio', id: "#{@prefix}_options_required_1", name: 'options.required', value: 'no'}
           %label{for: "#{@prefix}_options_required_1"} No
     %li.field.required
+      %label Include Comment Box
+      %ul
+        %li
+          %input{type: 'radio', id: "#{@prefix}_options_comment_0", name: 'options.comment', value: 'yes', checked: 'checked'}
+          %label{for: "#{@prefix}_options_comment_0"} Yes
+        %li
+          %input{type: 'radio', id: "#{@prefix}_options_comment_1", name: 'options.comment', value: 'no'}
+          %label{for: "#{@prefix}_options_comment_1"} No
+    %li.field.required
       %label Visible to Hosts/Visitors
       %ul
         %li

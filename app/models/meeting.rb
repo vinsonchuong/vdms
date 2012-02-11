@@ -9,8 +9,8 @@ class Meeting < ActiveRecord::Base
   belongs_to :host_availability
   belongs_to :visitor_availability
 
-  scope :by_host, joins(:host_availability => {:schedulable => :person}).order('name').readonly(false)
-  scope :by_visitor, joins(:visitor_availability => {:schedulable => :person}).order('name').readonly(false)
+  scope :by_host, joins(:host_availability => {:schedulable => :person}).order('last_name', 'first_name').readonly(false)
+  scope :by_visitor, joins(:visitor_availability => {:schedulable => :person}).order('last_name', 'first_name').readonly(false)
   default_scope order('score DESC')
 
   after_save :reset_associations
@@ -203,14 +203,14 @@ class Meeting < ActiveRecord::Base
     errors.add(
       :host_availability,
       :not_available,
-      :name => host.person.name,
+      :name => host.person.first_name + ' ' + host.person.last_name,
       :begin => time.begin.strftime('%I:%M%p'),
       :end => time.end.strftime('%I:%M%p')
     ) unless host_availability.available?
     errors.add(
       :visitor_availability,
       :not_available,
-      :name => visitor.person.name,
+      :name => visitor.person.first_name + ' ' + visitor.person.last_name,
       :begin => time.begin.strftime('%I:%M%p'),
       :end => time.end.strftime('%I:%M%p')
     ) unless visitor_availability.available?
@@ -220,7 +220,7 @@ class Meeting < ActiveRecord::Base
     errors.add(
       :host_availability,
       :per_meeting_cap_exceeded,
-      :name => host.person.name,
+      :name => host.person.first_name + ' ' + host.person.last_name,
       :max => host.max_visitors_per_meeting
     ) if host_availability.meetings.count >= host.max_visitors_per_meeting
   end
@@ -230,8 +230,8 @@ class Meeting < ActiveRecord::Base
     errors.add(
       :visitor_availability,
       :conflict,
-      :visitor_name => visitor.person.name,
-      :host_name => meeting.host.person.name,
+      :visitor_name => visitor.person.first_name + ' ' + visitor.person.last_name,
+      :host_name => meeting.host.person.first_name + ' ' + meeting.host.person.last_name,
       :begin => meeting.time.begin.strftime('%I:%M%p'),
       :end => meeting.time.end.strftime('%I:%M%p')
     ) unless meeting.nil?

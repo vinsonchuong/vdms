@@ -32,11 +32,13 @@ describe Host do
 
   describe 'Named Scopes' do
     it "is sorted by its Person's Name" do
-      @host.person.update_attributes(:name => 'Bbb')
-      Factory.create(:host, :person => Factory.create(:person, :name => 'Ccc'))
-      Factory.create(:host, :person => Factory.create(:person, :name => 'Aaa'))
-      Factory.create(:host, :person => Factory.create(:person, :name => 'Ddd'))
-      Host.all.map(&:person).map(&:name).should == ['Aaa', 'Bbb', 'Ccc', 'Ddd']
+      @host.person.update_attributes(:last_name => 'Aaa', :first_name => 'Aaa')
+      Factory.create(:host, :person => Factory.create(:person, :last_name => 'Aaa', :first_name => 'Bbb'))
+      Factory.create(:host, :person => Factory.create(:person, :last_name => 'Ccc', :first_name => 'Ccc'))
+      Factory.create(:host, :person => Factory.create(:person, :last_name => 'Ddd', :first_name => 'Ddd'))
+      Host.all.map(&:person).map {|p| p.first_name + ' ' + p.last_name}.should == [
+          'Aaa Aaa', 'Bbb Aaa', 'Ccc Ccc', 'Ddd Ddd'
+      ]
     end
   end
 
@@ -75,7 +77,8 @@ describe Host do
       it 'allows nested attributes for Person (person)' do
         @host.update_attributes(:person_attributes => {
           :id => @person.id,
-          :name => 'New Name'
+          :first_name => 'New',
+          :last_name => 'Name'
         })
         @person.reload.name.should == 'New Name'
       end

@@ -11,9 +11,14 @@ describe Person do
       @person.should respond_to(:ldap_id=)
     end
 
-    it 'has a Name (name)' do
-      @person.should respond_to(:name)
-      @person.should respond_to(:name=)
+    it 'has a Last Name (last_name)' do
+      @person.should respond_to(:last_name)
+      @person.should respond_to(:last_name=)
+    end
+
+    it 'has a First Name (first_name)' do
+      @person.should respond_to(:first_name)
+      @person.should respond_to(:first_name=)
     end
 
     it 'has an Email (email)' do
@@ -44,11 +49,10 @@ describe Person do
 
   describe 'Named Scopes' do
     it 'is sorted by Name' do
-      @person.update_attributes(:name => 'Aaa')
-      Factory.create(:person, :name => 'Ccc')
-      Factory.create(:person, :name => 'Bbb')
-      Factory.create(:person, :name => 'Aaa')
-      Person.all.map(&:name).should == ['Aaa', 'Aaa', 'Bbb', 'Ccc']
+      @person.update_attributes(:last_name => 'Aaa', :first_name => 'Aaa')
+      Factory.create(:person, :last_name => 'Aaa', :first_name => 'Bbb')
+      Factory.create(:person, :last_name => 'Bbb', :first_name => 'Bbb')
+      Person.all.map(&:name).should == ['Aaa Aaa', 'Bbb Aaa', 'Bbb Bbb']
     end
   end
 
@@ -57,10 +61,16 @@ describe Person do
       @person.should be_valid
     end
 
-    it 'is not valid without a Name' do
-      @person.name = ''
+    it 'is not valid without a Last Name' do
+      @person.last_name = ''
       @person.should_not be_valid
-      @person.errors.full_messages.should include("Name can't be blank")
+      @person.errors.full_messages.should include("Last Name can't be blank")
+    end
+
+    it 'is not valid without a First Name' do
+      @person.first_name = ''
+      @person.should_not be_valid
+      @person.errors.full_messages.should include("First Name can't be blank")
     end
 
     it 'is valid with a valid Email' do

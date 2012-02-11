@@ -1,2 +1,2 @@
-%label{for: @id}= @field_name
-%input{id: @id, name: @name, type: 'number', min: @min, max: @max}
+%label{for: "#{@id}_answer"}= @question
+%input{id: "#{@id}_answer", name: "#{@name}.answer", type: 'number', min: @min, max: @max}

@@ -15,7 +15,8 @@ en:
       person:
         ldap_id: "CalNet UID"
         role: "Role"
-        name: "Name"
+        last_name: "Last Name"
+        first_name: "First Name"
         email: "Email"
       event:
         name: "Name"

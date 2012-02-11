@@ -17,11 +17,13 @@ describe Visitor do
 
   describe 'Named Scopes' do
     it "is sorted by its Person's Name" do
-      @visitor.person.update_attributes(:name => 'Aaa')
-      Factory.create(:visitor, :person => Factory.create(:person, :name => 'Ccc'))
-      Factory.create(:visitor, :person => Factory.create(:person, :name => 'Bbb'))
-      Factory.create(:visitor, :person => Factory.create(:person, :name => 'Ddd'))
-      Visitor.all.map(&:person).map(&:name).should == ['Aaa', 'Bbb', 'Ccc', 'Ddd']
+      @visitor.person.update_attributes(:last_name => 'Aaa', :first_name => 'Aaa')
+      Factory.create(:visitor, :person => Factory.create(:person, :last_name => 'Aaa', :first_name => 'Bbb'))
+      Factory.create(:visitor, :person => Factory.create(:person, :last_name => 'Ccc', :first_name => 'Ccc'))
+      Factory.create(:visitor, :person => Factory.create(:person, :last_name => 'Ddd', :first_name => 'Ddd'))
+      Visitor.all.map(&:person).map {|p| p.first_name + ' ' + p.last_name}.should == [
+        'Aaa Aaa', 'Bbb Aaa', 'Ccc Ccc', 'Ddd Ddd'
+      ]
     end
   end
 
@@ -76,8 +78,9 @@ describe Visitor do
 
       it 'allows nested attributes for Person (person)' do
         @visitor.update_attributes(:person_attributes => {
-            :id => @person.id,
-            :name => 'New Name'
+          :id => @person.id,
+          :first_name => 'New',
+          :last_name => 'Name'
         })
         @person.reload.name.should == 'New Name'
       end
