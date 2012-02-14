@@ -5,7 +5,11 @@ class RolesController < EventBaseController
   # GET /events/1/hosts
   # GET /events/1/visitors
   def index
-    @roles = get_roles
+    if params[:id].blank?
+      @roles = get_roles
+    else
+      @roles = [get_role]
+    end
     respond_with @event, @roles
   end
 

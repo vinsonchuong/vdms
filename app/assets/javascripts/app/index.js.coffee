@@ -14,6 +14,7 @@
 class App extends Spine.Controller
   constructor: ->
     super
+    window.app = this
 
     Spine.Model.host = '/events/' + @event_id
 
@@ -37,6 +38,5 @@ class App extends Spine.Controller
       when 'meetings' then @append(@goals = new App.Meetings)
 
     Spine.Route.setup()
-    window.app = this
 
 window.App = App
