@@ -16,46 +16,47 @@
         %h1= link_to 'MeetingLibs', root_path
         - unless @event.nil? or @event.new_record?
           %span for #{@event.name}
-      %ul#primary_navigation
-        - is_administrator = @current_user.role == 'administrator'
-        - is_facilitator = @current_user.role == 'facilitator'
-        - unless @event.nil? || @event.new_record?
-          - if is_administrator
-            %li
-              %span Event
-              %ul
-                %li= link_to 'Dashboard', event_path(@event)
-                %li= link_to 'Edit Settings', edit_event_path(@event)
-            %li
-              %span Hosts
-              %ul
-                %li= link_to 'Manage Hosts', event_hosts_path(@event)
-                %li= link_to 'Manage Survey', event_host_field_types_path(@event)
-            %li
-              %span Visitors
-              %ul
-                %li= link_to 'Manage Visitors', event_visitors_path(@event)
-                %li= link_to 'Manage Survey', event_visitor_field_types_path(@event)
-            %li
-              %span Meetings
-              %ul
-                -#%li= link_to 'Manage Meetings', event_meetings_path(@event)
-                %li= link_to 'Manage Goals', event_goals_path(@event)
-                %li= link_to 'Manage Constraints', event_constraints_path(@event)
-          - elsif is_facilitator
-            %li
-              %span Event
-              %ul
-                %li= link_to 'Dashboard', event_path(@event)
-            %li
-              %span Hosts
-              %ul
-                %li= link_to 'Manage Hosts', event_hosts_path(@event)
-            %li
-              %span Visitors
-              %ul
-                %li= link_to 'Manage Visitors', event_visitors_path(@event)
-          - else
+      - if @auth_token.nil?
+        %ul#primary_navigation
+          - is_administrator = @current_user.role == 'administrator'
+          - is_facilitator = @current_user.role == 'facilitator'
+          - unless @event.nil? || @event.new_record?
+            - if is_administrator
+              %li
+                %span Event
+                %ul
+                  %li= link_to 'Dashboard', event_path(@event)
+                  %li= link_to 'Edit Settings', edit_event_path(@event)
+              %li
+                %span Hosts
+                %ul
+                  %li= link_to 'Manage Hosts', event_hosts_path(@event)
+                  %li= link_to 'Manage Survey', event_host_field_types_path(@event)
+              %li
+                %span Visitors
+                %ul
+                  %li= link_to 'Manage Visitors', event_visitors_path(@event)
+                  %li= link_to 'Manage Survey', event_visitor_field_types_path(@event)
+              %li
+                %span Meetings
+                %ul
+                  -#%li= link_to 'Manage Meetings', event_meetings_path(@event)
+                  %li= link_to 'Manage Goals', event_goals_path(@event)
+                  %li= link_to 'Manage Constraints', event_constraints_path(@event)
+            - elsif is_facilitator
+              %li
+                %span Event
+                %ul
+                  %li= link_to 'Dashboard', event_path(@event)
+              %li
+                %span Hosts
+                %ul
+                  %li= link_to 'Manage Hosts', event_hosts_path(@event)
+              %li
+                %span Visitors
+                %ul
+                  %li= link_to 'Manage Visitors', event_visitors_path(@event)
+            - else
     #content
       - if content_for?(:title)
         %h2= yield :title

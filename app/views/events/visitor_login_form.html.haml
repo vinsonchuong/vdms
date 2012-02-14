@@ -1,0 +1,11 @@
+- content_for :title, 'Login as a Visitor'
+%p Please login using the username provided in the invitation email.
+.section
+  = form_tag visitor_login_event_url(@event), :method => 'get' do
+    %fieldset
+      %ul
+        %li.field
+          = label_tag 'auth_token', 'Username'
+          = text_field_tag 'auth_token'
+    %fieldset
+      = submit_tag 'Login'

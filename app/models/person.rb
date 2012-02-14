@@ -3,6 +3,10 @@ class Person < ActiveRecord::Base
 
   has_many :event_roles , :class_name => 'Role'
   has_many :events, :through => :event_roles
+  has_many :host_roles, :class_name => 'Host'
+  has_many :host_events, :through => :host_roles, :source => :event
+  has_many :visitor_roles, :class_name => 'Visitor'
+  has_many :visitor_events, :through => :visitor_roles, :source => :event
 
   validates_presence_of :first_name
   validates_presence_of :last_name

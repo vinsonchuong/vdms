@@ -1,4 +1,7 @@
 class EventsController < ApplicationController
+  prepend_before_filter :process_token, :only => [:show, :visitor_login]
+  prepend_before_filter :skip_cas, :only => [:visitor_login_form, :visitor_login]
+
   # GET /events
   def index
     @user_events = @current_user.events
@@ -7,13 +10,29 @@ class EventsController < ApplicationController
 
   # GET /events/1
   def show
-    @event = Event.find(params[:id])
     @current_role = @event.roles.find_by_person_id(@current_user.id)
     redirect_to(
         :controller => 'events',
         :action => 'join',
         :id => @event.id
     ) if @current_role.nil? and @current_user.role == 'user'
+  end
+
+  # GET /events/1/visitor_login_form
+  def visitor_login_form
+    @current_user = Person.new
+    @event = Event.find(params[:id])
+  end
+
+  # GET /events/1/visitor_login
+  def visitor_login
+    @event = Event.find(params[:id])
+    if @auth_token.blank?
+      flash[:alert] = 'The authentication token is invalid.'
+      render :action => 'visitor_login_form'
+    else
+      redirect_to event_path(@event, :auth_token => @auth_token)
+    end
   end
 
   # GET /events/1/join
@@ -80,5 +99,24 @@ class EventsController < ApplicationController
   def destroy
     Event.find(params[:id]).destroy
     redirect_to(:events, :notice => t('events.destroy.success'))
+  end
+
+  private
+
+  def skip_cas
+    @skip_cas = true
+  end
+
+  def process_token
+    @event = Event.find(params[:id])
+    auth_token = params[:auth_token] || request.headers['auth_token']
+    unless auth_token.blank?
+      user = Person.find(:first, :conditions => ['lower(email) = ?', auth_token])
+      if not user.nil? and user.visitor_events.include?(@event)
+        @skip_cas = true
+        @current_user = user
+        @auth_token = auth_token
+      end
+    end
   end
 end

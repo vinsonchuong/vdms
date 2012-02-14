@@ -11,6 +11,8 @@ VDMSCode::Application.routes.draw do
       get :delete
       get :join
       get :unjoin
+      get :visitor_login_form
+      get :visitor_login
     end
     resources :time_slots, :only => :index
     resources :constraints, :except => :show do

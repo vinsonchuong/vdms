@@ -12,5 +12,6 @@
           el: $('#content'),
           type: '#{@current_role.class.name.underscore + '_dashboard'}',
           event_id: #{@event.id},
-          role_id: #{@current_role.id}
+          role_id: #{@current_role.id},
+          auth_token: '#{@auth_token}'
         return

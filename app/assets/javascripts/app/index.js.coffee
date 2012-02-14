@@ -17,6 +17,12 @@ class App extends Spine.Controller
 
     Spine.Model.host = '/events/' + @event_id
 
+    if @auth_token? and @auth_token != ''
+      $.ajaxSetup
+        data: 'auth_token=' + @auth_token
+        headers:
+          auth_token: @auth_token
+
     @navigate '/'
 
     switch @type

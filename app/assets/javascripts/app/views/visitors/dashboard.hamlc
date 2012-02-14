@@ -6,5 +6,12 @@
       %a{'data-type' => 'edit_profile'} Edit Profile
     -#%li
       %a{'data-type' => 'edit_availabilities'} Edit Availabilities
-    %li
-      %a{href: "/events/#{app.event_id}/unjoin"} Unregister from Event
+    - if app.auth_token? and app.auth_token != ''
+      %li
+        %a{href: "/events/#{app.event_id}/visitor_login_form"} Log Out
+    - else
+      %li
+        %a{href: "/events/#{app.event_id}/unjoin"} Unregister from Event
+.section
+  %h3 Housing Assignment
+  %p No assignment has been made yet.
