@@ -342,8 +342,9 @@ a.action {
         margin-bottom: 0;
       }
       & > label {
-        color: $blue;
+        color: $black;
         display: block;
+        font-weight: bold;
       }
       &.required > label:after {
         content: " (Required)";
