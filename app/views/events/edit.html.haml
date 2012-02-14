@@ -44,7 +44,7 @@
         %ul
           = event_form.fields_for :meeting_times, @meeting_times do |meeting_time_fields|
             - time = meeting_time_fields.object
-            %li.field.inline
+            %li.field.single_line
               = meeting_time_fields.label :begin, :class => 'hidden'
               = meeting_time_fields.datetime_select :begin, :include_blank => true
               = meeting_time_fields.label :end, 'to'

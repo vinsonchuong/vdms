@@ -17,6 +17,8 @@ class Visitor < Role
     end
   end
 
+  default_scope joins(:person).order('people.last_name', 'people.first_name')
+
   def meeting_at_time(time)
     meetings.find_by_time(time)
   end

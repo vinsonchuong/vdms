@@ -359,7 +359,7 @@ a.action {
     .field_with_errors {
       color: $orange;
     }
-    .field.inline {
+    .field.single_line {
       & > label {
         color: $black;
         display: inline;

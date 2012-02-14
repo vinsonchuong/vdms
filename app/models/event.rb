@@ -69,16 +69,17 @@ class Event < ActiveRecord::Base
     (times - current_times).each {|t| time_slots.build(:begin => t.begin, :end => t.end)}
     times_to_remove = current_times - times
     time_slots.each {|t| t.mark_for_destruction if times_to_remove.include?((t.begin)..(t.end))}
+    save
   end
 
 
   def build_host_fields(host)
     # more tests
-    (host_field_types - host.fields.map(&:field_type)).each {|t| host.fields.create(:field_type => t)}
+    (host_field_types - host.fields.map(&:field_type)).each {|t| host.fields.build(:field_type => t)}
   end
 
   def build_visitor_fields(visitor)
     # more tests
-    (visitor_field_types - visitor.fields.map(&:field_type)).each {|t| visitor.fields.create(:field_type => t)}
+    (visitor_field_types - visitor.fields.map(&:field_type)).each {|t| visitor.fields.build(:field_type => t)}
   end
 end
