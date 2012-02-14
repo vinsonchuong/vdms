@@ -19,7 +19,7 @@
           %ul
             %li
               %a.action{'data-type' => 'edit'} Profile
-            %li
+            -#%li
               %a.action{'data-type' => 'edit_availabilities'} Availabilities
             %li
               %a.action{'data-type' => 'destroy'} Remove
