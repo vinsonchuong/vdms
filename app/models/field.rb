@@ -3,6 +3,8 @@ class Field < ActiveRecord::Base
 
   serialize :data
 
+  default_scope joins(:field_type).order('field_types.sort_order')
+
   private
 
   def include_feature_type_module
