@@ -1,5 +1,6 @@
 class VisitorFieldType < FieldType
 
+  default_scope order('sort_order')
   private
 
   def create_fields
