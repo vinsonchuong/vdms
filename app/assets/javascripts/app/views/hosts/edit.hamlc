@@ -31,6 +31,10 @@
             -# Hack to bypass but in form2js's skipEmpty option
             %input{type: 'hidden', name: "#{name_prefix}.id"}
             %input{type: 'hidden', name: "#{name_prefix}.field_type_id"}
+        - else
+          %li.hidden
+            %input{type: 'hidden', name: "#{name_prefix}.id"}
+            %input{type: 'hidden', name: "#{name_prefix}.field_type_id"}
   %fieldset
     - if app.role_id?
       %button{type: 'submit'} Update Profile

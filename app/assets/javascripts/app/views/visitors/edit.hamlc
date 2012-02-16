@@ -33,7 +33,10 @@
             - if field_type.options.comment == 'yes'
               %p{for: "#{id_prefix}_data_comments"} Additional Comments:
               %textarea{id: "#{id_prefix}_data_comments", name: "#{name_prefix}.data.comments", rows: 3, cols: 50}
-            %input{type: 'hidden', name: "fields[#{fieldNo}].field_type_id"}
+            %input{type: 'hidden', name: "#{name_prefix}.id"}
+            %input{type: 'hidden', name: "#{name_prefix}.field_type_id"}
+        - else
+          %li.hidden
             %input{type: 'hidden', name: "#{name_prefix}.id"}
             %input{type: 'hidden', name: "#{name_prefix}.field_type_id"}
   %fieldset
