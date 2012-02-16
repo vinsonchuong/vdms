@@ -11,10 +11,14 @@ class EditProfile extends Spine.Controller
 
   constructor: ->
     super
-    @active @render
+    @active () ->
+      @change()
+
+  change: () ->
+    @item = Visitor.find(app.role_id)
+    @render()
 
   render: ->
-    @item = Visitor.find(app.role_id)
     @html @view('visitors/edit')(
       helper:
         render_data_type: (data_type, params) =>
@@ -39,10 +43,14 @@ class EditAvailabilities extends Spine.Controller
 
   constructor: ->
     super
-    @active @render
+    @active () ->
+      @change()
+
+  change: () ->
+    @item = Visitor.find(app.role_id)
+    @render()
 
   render: ->
-    @item = Visitor.find(app.role_id)
     @html @view('visitors/edit_availabilities')(visitor: @item)
     $('#edit_availabilities').fromObject(data: @item.attributes())
     afterRender()
