@@ -64,9 +64,9 @@ class Index extends Spine.Controller
     super
     Visitor.bind 'refresh change', @render
     TimeSlot.fetch()
-    Visitor.fetch({id: app.role_id})
     VisitorFieldType.fetch()
     Host.fetch()
+    Visitor.fetch({id: app.role_id})
 
   render: =>
     @html @view('visitors/dashboard')()

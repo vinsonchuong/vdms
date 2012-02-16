@@ -64,9 +64,9 @@ class Index extends Spine.Controller
     super
     Host.bind 'refresh change', @render
     TimeSlot.fetch()
-    Host.fetch({id: app.role_id})
     HostFieldType.fetch()
     Visitor.fetch()
+    Host.fetch({id: app.role_id})
 
   render: =>
     @html @view('hosts/dashboard')()
