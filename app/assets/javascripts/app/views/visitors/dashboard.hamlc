@@ -1,5 +1,7 @@
 %h2 Dashboard
 %p= 'If this is your first time logging in, please remember to visit the "Edit Profile" page below and fill in your contact information and preferences. If you have any questions or run into any issues, please contact Sam Rifkin at rifkin@eecs.berkeley.edu.'
+%br
+%p= 'If the "Preferences" section of the "Edit Profile" page does not show, please refresh the page and try again.'
 .section
   %h3 Visitor Actions
   %ul

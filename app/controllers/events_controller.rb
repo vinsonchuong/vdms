@@ -27,8 +27,9 @@ class EventsController < ApplicationController
   # GET /events/1/visitor_login
   def visitor_login
     @event = Event.find(params[:id])
-    if @auth_token.blank?
-      flash[:alert] = 'The authentication token is invalid.'
+    if @current_user.nil?
+      @current_user = Person.new
+      flash[:alert] = 'We do not recognize this username.'
       render :action => 'visitor_login_form'
     else
       redirect_to event_path(@event, :auth_token => @auth_token)
