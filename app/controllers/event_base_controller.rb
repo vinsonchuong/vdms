@@ -7,7 +7,7 @@ class EventBaseController < ApplicationController
   private
 
   def process_token
-    auth_token = params[:auth_token] || request.headers['auth_token']
+    auth_token = params[:auth_token] || request.headers['X-AUTH-TOKEN']
     unless auth_token.blank?
       user = Person.find(:first, :conditions => ['lower(email) = ?', auth_token])
       if not user.nil? and user.visitor_events.include?(@event)

@@ -11,7 +11,7 @@ class Role < ActiveRecord::Base
 
   default_scope joins(:person).readonly(false)
   scope :with_areas, lambda {|*areas|
-    joins(:person).where('area_1 IN(?) or area_2 IN(?) or area_3 IN (?)', areas, areas, areas)
+    joins(:person).where('area_1 IN(?) or area_2 IN(?) or area_3 IN (?)', areas, areas, areas).readonly(false)
   }
 
   def as_json(options = {})

@@ -3,7 +3,7 @@ class Field < ActiveRecord::Base
 
   serialize :data
 
-  default_scope joins(:field_type).order('field_types.sort_order')
+  default_scope joins(:field_type).order('field_types.sort_order').readonly(false)
 
   private
 

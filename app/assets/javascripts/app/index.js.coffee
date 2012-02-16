@@ -22,7 +22,7 @@ class App extends Spine.Controller
       $.ajaxSetup
         data: 'auth_token=' + @auth_token
         headers:
-          auth_token: @auth_token
+          'X-AUTH-TOKEN': @auth_token
 
     @navigate '/'
 

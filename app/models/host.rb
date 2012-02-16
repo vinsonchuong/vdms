@@ -24,7 +24,7 @@ class Host < Role
     end
   end
 
-  default_scope joins(:person).order('people.last_name', 'people.first_name')
+  default_scope joins(:person).order('people.last_name', 'people.first_name').readonly(false)
 
   def available_at?(time)
     availabilities.any?{ |a| a.time_slot.begin == time and a.available? }
