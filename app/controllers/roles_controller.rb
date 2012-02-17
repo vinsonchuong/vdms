@@ -59,6 +59,7 @@ class RolesController < EventBaseController
   # POST /events/1/visitors/create_from_current_user
   def create_from_current_user
     @role = create_role(:person => @current_user, :verified => true)
+    @role.save
     redirect_to event_url(@event), :notice => "You have joined the event as a #{@role.class.name}"
   end
 
