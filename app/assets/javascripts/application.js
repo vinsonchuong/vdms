@@ -17,10 +17,17 @@ var
       google.maps.event.addListener(autocomplete, 'place_changed', function() {
         $this.siblings('.location_id').val(autocomplete.getPlace().id);
       });
-      $('select.filter').each(function() {
-        $(this).multiselect().multiselectfilter();
-      })
     });
+    $('select.filter').each(function() {
+      $(this).multiselect({
+        selectedText: function(numChecked, totalItems, items) {
+          items = $.map(items, function(item) {
+            return $(item).attr('title');
+          });
+          return items.join('<br />');
+        }
+      }).multiselectfilter();
+    })
   },
   showSpinner = function() {
     $('body').append($('<div class="ui-widget-overlay"></div>'));
