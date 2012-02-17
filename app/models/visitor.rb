@@ -10,6 +10,8 @@ class Visitor < Role
   accepts_nested_attributes_for :fields #, :reject_if => proc {|a| a['fields'] == blah blah}
   accepts_nested_attributes_for :availabilities, :reject_if => :all_blank, :allow_destroy => true
 
+  default_scope joins(:person).order('people.last_name', 'people.first_name').readonly(false)
+
   validate do |record| # uniqueness of ranks in faculty_rankings
     ranks = record.rankings.reject(&:marked_for_destruction?).map(&:rank)
     if ranks.count != ranks.uniq.count
