@@ -1,4 +1,4 @@
 %label{for: "#{@id}_answer"}= @question
 %select.filter{id: "#{@id}_answer", name: "#{@name}.answer[]", multiple: 'multiple', style: 'width:400px;'}
   - for host in App.Host.all()
-    %option{value: host.person.name}= host.person.name
+    %option{value: host.id}= host.person.first_name + ' ' + host.person.last_name
