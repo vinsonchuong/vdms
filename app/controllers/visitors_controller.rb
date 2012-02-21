@@ -27,4 +27,8 @@ class VisitorsController < RolesController
   def get_i18n_scope
     :visitors
   end
+
+  def get_csv_column_names()
+    ['Last Name', 'First Name', 'Email', 'Phone'] + @event.visitor_field_types.map(&:name)
+  end
 end

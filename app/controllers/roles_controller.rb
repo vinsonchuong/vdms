@@ -1,10 +1,21 @@
+require 'csv'
+
 class RolesController < EventBaseController
-  respond_to :html, :json
+  respond_to :html, :json, :csv
   skip_before_filter :show_join_prompt, :only => [:join, :create_from_current_user]
 
   # GET /events/1/hosts
   # GET /events/1/visitors
   def index
+    if params[:format] == 'csv'
+      headers.merge!({
+        'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+        'Content-Type' => 'text/csv',
+        'Content-Disposition' => "attachment; filename=\"data.csv\"",
+        'Content-Transfer-Encoding' => 'binary'
+      })
+      @column_names = get_csv_column_names
+    end
     if params[:id].blank?
       @roles = get_roles
     else

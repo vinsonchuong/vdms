@@ -1,7 +1,8 @@
 %h2 Manage Visitors
 %ul#actions
   %li
-    %a.action{'data-type' => 'new'} New
+    %a.action{href: "/events/#{app.event_id}/visitors.csv"} Export to CSV
+    %a.action{'data-type' => 'new'} New Visitor
 %table.records
   %thead
     %tr

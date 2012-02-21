@@ -27,4 +27,8 @@ class HostsController < RolesController
   def get_i18n_scope
     :hosts
   end
+
+  def get_csv_column_names()
+    ['Last Name', 'First Name', 'Email', 'Phone'] + @event.host_field_types.map(&:name)
+  end
 end
