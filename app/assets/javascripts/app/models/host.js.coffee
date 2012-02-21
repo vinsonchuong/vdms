@@ -1,5 +1,5 @@
 class App.Host extends Spine.Model
-  @configure 'Host', 'availabilities', 'person', 'fields', 'default_room', 'max_visitors_per_meeting', 'max_visitors'
+  @configure 'Host', 'availabilities', 'person', 'fields', 'location', 'location_id', 'default_room', 'max_visitors_per_meeting', 'max_visitors'
   @extend Spine.Model.Ajax
 
   @new_attributes: {}

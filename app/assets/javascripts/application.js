@@ -15,7 +15,7 @@ var
         $this = $(this)
       ;
       google.maps.event.addListener(autocomplete, 'place_changed', function() {
-        $this.siblings('.location_id').val(autocomplete.getPlace().id);
+        $this.parents('.field').children('.location_id').val(autocomplete.getPlace().id);
       });
     });
     $('select.filter').each(function() {

@@ -78,6 +78,15 @@ class RolesController < EventBaseController
   def register
     @role = get_role
     @role.person.ldap_id = session[:cas_user]
+    if @event.id == 4
+      if @role.location_id.blank?
+        @role.errors.add(:location, 'Please search for your address and select one of the suggestions.')
+        render :registration_form and return
+      elsif @event.hosts.where(location_id: @role.location_id).count > 0
+        @role.errors.add(:location, 'Someone else has registered using this address. Only one person may register for any given address.')
+        render :registration_form and return
+      end
+    end
     if @role.save
       redirect_to event_url(@event), :notice => 'You have successfully registered'
     else
