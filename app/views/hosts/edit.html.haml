@@ -9,7 +9,7 @@
   %fieldset
     %h3!= t('.profile')
     %ul
-      != fields_for @role.person do |person_fields|
+      != fields_for :person do |person_fields|
         - if @current_user.role == 'administrator'
           %li.field
             != person_fields.label :ldap_id

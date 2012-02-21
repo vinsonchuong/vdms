@@ -2,7 +2,7 @@ require 'csv'
 
 class RolesController < EventBaseController
   respond_to :html, :json, :csv
-  skip_before_filter :show_join_prompt, :only => [:join, :create_from_current_user]
+  skip_before_filter :show_join_prompt, :only => [:registration_form, :register, :join, :create_from_current_user]
 
   # GET /events/1/hosts
   # GET /events/1/visitors
@@ -39,6 +39,13 @@ class RolesController < EventBaseController
     respond_with @event, @role
   end
 
+  # GET /events/1/hosts/registration_form
+  # GET /events/1/visitors/registration_form
+  def registration_form
+    redirect_to join_event_url(@event) unless @current_user.new_record?
+    @role = get_role(:person => @current_user)
+  end
+
   # GET /events/1/hosts/join
   # GET /events/1/visitors/join
   def join
@@ -64,6 +71,18 @@ class RolesController < EventBaseController
     @role = get_role
     flash[:notice] = t('create.success', :scope => get_i18n_scope) if @role.save and not request.xhr?
     respond_with @event, @role, :location => {:action => 'index'}
+  end
+
+  # POST /events/1/register
+  # POST /events/1/register
+  def register
+    @role = get_role
+    @role.person.ldap_id = session[:cas_user]
+    if @role.save
+      redirect_to event_url(@event), :notice => 'You have successfully registered'
+    else
+      render :registration_form
+    end
   end
 
   # POST /events/1/hosts/create_from_current_user

@@ -1,0 +1,27 @@
+- content_for :title, 'Register as Host'
+= form_for([@event, @role], :url => register_event_hosts_path(@event)) do |host_form|
+  - if @role.errors.any?
+    #errors
+      %h3!= t('.errors')
+      %ul
+        - @role.errors.full_messages.each do |message|
+          %li!= message
+  %fieldset
+    %ul
+      != host_form.fields_for :person do |person_fields|
+        %li.hidden
+          != person_fields.hidden_field :ldap_id
+        %li.field.required
+          != person_fields.label :last_name
+          != person_fields.text_field :last_name
+        %li.field.required
+          != person_fields.label :first_name
+          != person_fields.text_field :first_name
+        %li.field.required
+          != person_fields.label :email
+          != person_fields.text_field :email
+        %li.field
+          = person_fields.label :phone
+          = person_fields.text_field :phone
+  %fieldset
+    != host_form.submit 'Register'

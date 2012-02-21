@@ -29,6 +29,8 @@ VDMSCode::Application.routes.draw do
     end
     resources :hosts do
       collection do
+        get :registration_form
+        post :register
         get :join
         post :create_from_current_user
         delete :destroy_from_current_user
