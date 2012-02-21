@@ -49,6 +49,7 @@ class RolesController < EventBaseController
   # GET /events/1/hosts/join
   # GET /events/1/visitors/join
   def join
+    redirect_to event_url(@event) unless @current_role.blank? || @current_role.new_record?
   end
 
   # GET /events/1/hosts/1/edit
