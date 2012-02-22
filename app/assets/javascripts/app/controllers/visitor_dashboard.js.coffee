@@ -70,6 +70,7 @@ class Index extends Spine.Controller
 
   constructor: ->
     super
+    showSpinner()
     Visitor.bind 'refresh change', @render
     TimeSlot.fetch()
     VisitorFieldType.fetch()
@@ -79,6 +80,7 @@ class Index extends Spine.Controller
   render: =>
     @html @view('visitors/dashboard')()
     afterRender()
+    hideSpinner()
 
   edit_profile: () ->
     @navigate '/edit_profile'

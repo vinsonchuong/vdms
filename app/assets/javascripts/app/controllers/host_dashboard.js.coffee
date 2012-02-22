@@ -70,6 +70,7 @@ class Index extends Spine.Controller
 
   constructor: ->
     super
+    showSpinner()
     Host.bind 'refresh change', @render
     TimeSlot.fetch()
     HostFieldType.fetch()
@@ -79,6 +80,7 @@ class Index extends Spine.Controller
   render: =>
     @html @view('hosts/dashboard')()
     afterRender()
+    hideSpinner()
 
   edit_profile: () ->
     @navigate '/edit_profile'

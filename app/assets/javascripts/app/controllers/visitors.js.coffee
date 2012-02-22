@@ -105,6 +105,7 @@ class Index extends Spine.Controller
 
   constructor: ->
     super
+    showSpinner()
     Visitor.bind 'refresh change', @render
     TimeSlot.fetch()
     Host.fetch()
@@ -120,6 +121,7 @@ class Index extends Spine.Controller
       resizable: false
     )
     afterRender()
+    hideSpinner()
 
   edit: (e) ->
     item = $(e.target).item()
