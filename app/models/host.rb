@@ -31,6 +31,21 @@ class Host < Role
     end
   end
 
+  def as_csv_row()
+    data = [
+        self.person.last_name,
+        self.person.first_name,
+        self.person.email,
+        self.person.phone,
+    ]
+    self.fields.each do |field|
+      item = field.data && field.data[:answer]
+      item = item.join('; ') if item.is_a?(Array)
+      data << item
+    end
+    data
+  end
+
   def available_at?(time)
     availabilities.any?{ |a| a.time_slot.begin == time and a.available? }
     # incorrect code

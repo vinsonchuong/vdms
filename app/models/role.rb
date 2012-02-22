@@ -17,19 +17,4 @@ class Role < ActiveRecord::Base
   def as_json(options = {})
     super(options.merge!(:include => [:person, :fields, :availabilities]))
   end
-
-  def as_csv_row()
-    data = [
-        self.person.last_name,
-        self.person.first_name,
-        self.person.email,
-        self.person.phone,
-    ]
-    self.fields.each do |field|
-      item = field.data && field.data[:answer]
-      item = item.join('; ') if item.is_a?(Array)
-      data << item
-    end
-    data
-  end
 end

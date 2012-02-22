@@ -29,6 +29,6 @@ class HostsController < RolesController
   end
 
   def get_csv_column_names()
-    ['Last Name', 'First Name', 'Email', 'Phone'] + @event.host_field_types.map(&:name)
+    ['Last Name', 'First Name', 'Email', 'Phone', 'Location'] + @event.host_field_types.map(&:name)
   end
 end
