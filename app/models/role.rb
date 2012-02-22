@@ -6,9 +6,6 @@ class Role < ActiveRecord::Base
 
   accepts_nested_attributes_for :person, :update_only => true
 
-  #default_scope joins(:person).order('people.last_name', 'people.first_name').readonly(false)
-  default_scope joins(:person).readonly(false)
-
   # add to spec
   validates_existence_of :person
   validates_existence_of :event

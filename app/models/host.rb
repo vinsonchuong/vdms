@@ -12,6 +12,8 @@ class Host < Role
   accepts_nested_attributes_for :availabilities, :reject_if => :all_blank
   accepts_nested_attributes_for :rankings, :reject_if => proc {|attr| attr['rank'].blank?}, :allow_destroy => true
 
+  default_scope joins(:person).order('last_name', 'first_name').readonly(false)
+
   validates_presence_of :default_room
   validates_presence_of :max_visitors_per_meeting
   validates_numericality_of :max_visitors_per_meeting, :only_integer => true, :greater_than => 0
