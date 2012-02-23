@@ -84,8 +84,7 @@ class RolesController < EventBaseController
         @role.errors.add(:location, 'Please search for your address and select one of the suggestions.')
         render :registration_form and return
       elsif @event.hosts.where(location_id: @role.location_id).count > 0
-        @role.errors.add(:location, 'Someone else has registered using this address. Only one person may register for any given address.')
-        render :registration_form and return
+        flash[:alert] = 'Warning: Someone else has registered using this address.'
       end
     end
     if @role.save
