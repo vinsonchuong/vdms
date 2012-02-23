@@ -16,7 +16,7 @@ class EventsController < ApplicationController
         :action => 'join',
         :id => @event.id
     ) if @current_role.nil? and @current_user.role == 'user'
-    if !@current_role.nil? and @event.hosts.where(location_id: @current_role.location_id).count > 1
+    if !@current_role.nil? and !@current_role.location_id.blank? and @event.hosts.where(location_id: @current_role.location_id).count > 1
       flash[:alert] = 'Warning: Someone else has registered using your address.'
     end
   end
