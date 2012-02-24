@@ -4,7 +4,6 @@ class FieldType < ActiveRecord::Base
   after_create :create_fields
 
   belongs_to :event
-  has_many :fields, :dependent => :destroy
 
   serialize :options, Hash
 

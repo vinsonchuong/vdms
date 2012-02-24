@@ -1,4 +1,5 @@
 class VisitorFieldType < FieldType
+  has_many :fields, class_name: 'VisitorField', foreign_key: 'field_type_id', dependent: :destroy
 
   private
 
