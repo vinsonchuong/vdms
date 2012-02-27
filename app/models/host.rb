@@ -31,17 +31,28 @@ class Host < Role
     end
   end
 
-  def as_csv_row()
+  def as_csv_row(spans)
     data = [
         self.person.last_name,
         self.person.first_name,
         self.person.email,
         self.person.phone,
+        self.location
     ]
     self.fields.each do |field|
       item = field.data && field.data[:answer]
-      item = item.join('; ') if item.is_a?(Array)
-      data << item
+      if ['hosts', 'visitors', 'multiple_select'].include? field.field_type.data_type
+        item = [] if item.blank?
+        if ['hosts', 'visitors'].include? field.field_type.data_type
+          item.map! {|id| Role.find(id).person.name}
+        end
+        data.concat(item).concat([''] * (spans[field.field_type.name] - item.length))
+      else
+        data << item
+      end
+      if field.field_type.options['comment'] == 'yes'
+        data << (field.data && !field.data[:comments].blank? ? field.data[:comments] : '')
+      end
     end
     data
   end

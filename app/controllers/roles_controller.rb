@@ -14,7 +14,7 @@ class RolesController < EventBaseController
         'Content-Disposition' => "attachment; filename=\"data.csv\"",
         'Content-Transfer-Encoding' => 'binary'
       })
-      @column_names = get_csv_column_names
+      @column_names, @column_spans = get_csv_columns
     end
     if params[:id].blank?
       @roles = get_roles

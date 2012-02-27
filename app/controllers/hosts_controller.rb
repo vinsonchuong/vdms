@@ -28,7 +28,23 @@ class HostsController < RolesController
     :hosts
   end
 
-  def get_csv_column_names()
-    ['Last Name', 'First Name', 'Email', 'Phone', 'Location'] + @event.host_field_types.map(&:name)
+  def get_csv_columns()
+    names = ['Last Name', 'First Name', 'Email', 'Phone', 'Location']
+    spans = {}
+    @event.host_field_types.each do |field_type|
+      if ['multiple_select', 'hosts', 'visitors'].include? field_type.data_type
+        num = field_type.fields.map {|f| (not f.data.blank? and f.data['answer'].is_a?(Array)) ?
+                                           f.data['answer'].length :
+                                           0}.max
+        names.concat((1..num).map {|i| field_type.name + ' ' + i.to_s})
+        spans[field_type.name] = num
+      else
+        names << field_type.name
+      end
+      if field_type.options['comment'] == 'yes'
+        names << field_type.name + ' - ' + 'Comments'
+      end
+    end
+    [names, spans]
   end
 end
