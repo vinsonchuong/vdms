@@ -17,7 +17,7 @@ class EventsController < ApplicationController
         :id => @event.id
     ) if @current_role.nil? and @current_user.role == 'user'
     if !@current_role.nil? and !@current_role.location_id.blank? and @event.hosts.where(location_id: @current_role.location_id).count > 1
-      flash[:alert] = 'Warning: Someone else has registered using your address.'
+      flash[:alert] = 'Warning: Someone else at your address is also registered to host. Please check that you can accommodate your combined capacities (the "How many admits you are willing to host?" question).'
     end
   end
 
