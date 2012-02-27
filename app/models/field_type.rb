@@ -11,7 +11,7 @@ class FieldType < ActiveRecord::Base
   validates_presence_of :data_type
   validate :existence_of_data_type
 
-  default_scope order('sort_order')
+  default_scope order('sort_order', 'id')
 
   def self.data_types_list
     {
