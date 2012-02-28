@@ -18,11 +18,12 @@
       %li.field
         %label{for: 'edit_person_phone'} Phone
         %input{id: 'edit_person_phone', name: 'person.phone', type: 'phone', size: 30}
-      %li.field
-        %label{for: 'edit_location'} Address
-        %p Please search by address and then select one of the suggestions.
-        %input.location{id: 'edit_location', name: 'location', type: 'text', size: 50}
-        %input.location_id{id: 'edit_location_id', name: 'location_id', type: 'hidden'}
+      - if app.event_id == 4
+        %li.field
+          %label{for: 'edit_location'} Address
+          %p Please search by address and then select one of the suggestions.
+          %input.location{id: 'edit_location', name: 'location', type: 'text', size: 50}
+          %input.location_id{id: 'edit_location_id', name: 'location_id', type: 'hidden'}
   %fieldset
     %h3 Preferences
     %ul

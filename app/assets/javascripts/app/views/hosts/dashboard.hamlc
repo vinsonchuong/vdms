@@ -4,7 +4,19 @@
   %ul
     %li
       %a{'data-type' => 'edit_profile'} Edit Profile
-    -#%li
-      %a{'data-type' => 'edit_availabilities'} Edit Availabilities
-    %li
-      %a{href: "/events/#{app.event_id}/unjoin"} Unregister from Event
+    - if app.event_id == 5
+      %li
+        %a{'data-type' => 'edit_availabilities'} Edit Availabilities
+      %li
+        %a{'data-type' => 'edit_rankings'} Edit Rankings
+    - if app.event_id == 4
+      %li
+        %a{href: "/events/#{app.event_id}/unjoin"} Unregister from Event
+.section
+  - if app.event_id == 4
+    %h3 Housing Assignments
+    %p No housing assignments have been made yet.
+  - if app.event_id == 5
+    %h3 Meetings
+    %p No meetings have been scheduled yet.
+
