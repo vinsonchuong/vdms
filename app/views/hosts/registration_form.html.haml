@@ -20,13 +20,15 @@
         %li.field.required
           != person_fields.label :email
           != person_fields.text_field :email
-        %li.field
-          = person_fields.label :phone
-          = person_fields.text_field :phone
-      %li.field.required
-        = host_form.label :location, 'Address'
-        %p Please search by address and then select one of the suggestions.
-        = host_form.text_field :location, :class => 'location', :size => 50
-        = host_form.hidden_field :location_id, :class => 'location_id'
+        - if @event.id == 4
+          %li.field
+            = person_fields.label :phone
+            = person_fields.text_field :phone
+      - if @event.id == 4
+        %li.field.required
+          = host_form.label :location, 'Address'
+          %p Please search by address and then select one of the suggestions.
+          = host_form.text_field :location, :class => 'location', :size => 50
+          = host_form.hidden_field :location_id, :class => 'location_id'
   %fieldset
     != host_form.submit 'Register'
