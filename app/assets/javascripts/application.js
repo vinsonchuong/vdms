@@ -28,6 +28,11 @@ var
         }
       }).multiselectfilter();
     });
+    $('form').keypress(
+      function(e) {
+        if (e.which == 13) e.preventDefault();
+      }
+    );
   },
   showSpinner = function() {
     $('body').append($('<div class="ui-widget-overlay"></div>'));
