@@ -60,7 +60,9 @@ class EditAvailabilities extends Spine.Controller
 
   submit: (e) ->
     e.preventDefault()
-    @item.fromForm(e.target).save()
+    @item.fromForm(e.target)
+    unless @item.save()
+      return alert(@item.validate())
     @navigate '/'
 
 class EditRankings extends Spine.Controller

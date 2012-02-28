@@ -20,6 +20,7 @@ class Host < Role
   )
 
   validates_presence_of :default_room
+  validates_presence_of :default_building
   validates_presence_of :max_visitors_per_meeting
   validates_numericality_of :max_visitors_per_meeting, :only_integer => true, :greater_than => 0
   validates_presence_of :max_visitors

@@ -12,13 +12,29 @@
             Meeting Location
           - else
             Default Meeting Location
-        %input.location{id: 'edit_availabilities_default_room', name: 'default_room', type: 'text', size: 30}
+        %input{id: 'edit_availabilities_default_room', name: 'default_room', type: 'text', size: 10}
+        %select{id: 'edit_availabilities_default_building', name: 'default_building'}
+          %option Cory Hall
+          %option Soda Hall
+          %option Sutardja Dai Hall
+          %option Hearst Mining Building
+          %option Evans Hall
+          %option BWRC, 2108 Allston Way, Suite 200
+          %option ICSI, 1947 Center Street, Suite 600
+          %option Lawrence Berkeley Lab
+          %option Davis Hall
+          %option Etcheverry Hall
+          %option McLaughlin Hall
       %li.field.required
         %label{for: 'edit_availabilities_max_visitors_per_meeting'} Max Visitors per Meeting
-        %input{id: 'edit_availabilities_max_visitors_per_meeting', name: 'max_visitors_per_meeting', type: 'number', size: 30}
+        %select{id: 'edit_availabilities_max_visitors_per_meeting', name: 'max_visitors_per_meeting'}
+          - for num in (num for num in [1..5])
+            %option= num
       %li.field.required
         %label{for: 'edit_availabilities_max_visitors'} Max Total Visitors
-        %input{id: 'edit_availabilities_max_visitors', name: 'max_visitors', type: 'number', size: 30}
+        %select{id: 'edit_availabilities_max_visitors', name: 'max_visitors'}
+          - for num in (num for num in [1..100])
+            %option= num
   %fieldset
     %h3 Time Slots
     %table.records
@@ -33,23 +49,34 @@
           - id_prefix = "edit_availabilities_#{availabilityNo}"
           - name_prefix = "availabilities[#{availabilityNo}]"
           %tr
-            - date_format = 'yyyy-MM-dd hh:mmtt'
             - time_slot = App.TimeSlot.find(availability.time_slot_id)
-            %td= "#{Date.parse(time_slot.begin).toString(date_format)} to #{Date.parse(time_slot.begin).toString(date_format)}"
+            %td= "#{Date.parse(time_slot.begin).toString('hh:mmtt')} to #{Date.parse(time_slot.end).toString('hh:mmtt')}"
             %td
               %ul
                 %li
-                  %input{id: "#{id_prefix}_available_true", type: 'radio', name: "#{name_prefix}.available", value: 'true'}
-                  %label{for: "#{id_prefix}_available_true"} Yes
-                %li
-                  %input{id: "#{id_prefix}_available_false", type: 'radio', name: "#{name_prefix}.available", value: 'false'}
-                  %label{for: "#{id_prefix}_available_false"} No
+                  - if availability.available
+                    %input{type: 'checkbox', name: "#{name_prefix}.available", value: '1', checked: 'checked'}
+                  - else
+                    %input{type: 'checkbox', name: "#{name_prefix}.available", value: '1'}
               -# Hack to bypass but in form2js's skipEmpty option
               %input{type: 'hidden', name: "#{name_prefix}.id"}
               %input{type: 'hidden', name: "#{name_prefix}.time_slot_id"}
             - unless app.disable_meeting_location_override
               %td
-                %input{id: "#{id_prefix}_room", name: "#{name_prefix}.room", type: 'text'}
+                %input{id: "#{id_prefix}_room", name: "#{name_prefix}.room", type: 'text', size: 10}
+                %select{id: "#{id_prefix}_building", name: "#{name_prefix}.building"}
+                  %option
+                  %option Cory Hall
+                  %option Soda Hall
+                  %option Sutardja Dai Hall
+                  %option Hearst Mining Building
+                  %option Evans Hall
+                  %option BWRC, 2108 Allston Way, Suite 200
+                  %option ICSI, 1947 Center Street, Suite 600
+                  %option Lawrence Berkeley Lab
+                  %option Davis Hall
+                  %option Etcheverry Hall
+                  %option McLaughlin Hall
   %fieldset
     - if app.role_id?
       %button{type: 'submit'} Update Availabilities

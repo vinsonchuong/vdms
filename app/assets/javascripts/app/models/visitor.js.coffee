@@ -21,6 +21,12 @@ class App.Visitor extends Spine.Model
 
   toJSON: ->
     data = @attributes()
+
+    if data.availabilities?
+      for availability in data.availabilities
+        if not availability.available?
+          availability.available = false
+
     delete data.id
     data.person_attributes = data.person
     delete data.person

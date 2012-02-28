@@ -14,17 +14,15 @@
           - id_prefix = "edit_availabilities_#{availabilityNo}"
           - name_prefix = "availabilities[#{availabilityNo}]"
           %tr
-            - date_format = 'yyyy-MM-dd hh:mmtt'
             - time_slot = App.TimeSlot.find(availability.time_slot_id)
-            %td= "#{Date.parse(time_slot.begin).toString(date_format)} to #{Date.parse(time_slot.begin).toString(date_format)}"
+            %td= "#{Date.parse(time_slot.begin).toString('hh:mmtt')} to #{Date.parse(time_slot.end).toString('hh:mmtt')}"
             %td
               %ul
                 %li
-                  %input{id: "#{id_prefix}_available_true", type: 'radio', name: "#{name_prefix}.available", value: 'true'}
-                  %label{for: "#{id_prefix}_available_true"} Yes
-                %li
-                  %input{id: "#{id_prefix}_available_false", type: 'radio', name: "#{name_prefix}.available", value: 'false'}
-                  %label{for: "#{id_prefix}_available_false"} No
+                  - if availability.available
+                    %input{type: 'checkbox', name: "#{name_prefix}.available", value: '1', checked: 'checked'}
+                  - else
+                    %input{type: 'checkbox', name: "#{name_prefix}.available", value: '1'}
               -# Hack to bypass but in form2js's skipEmpty option
               %input{type: 'hidden', name: "#{name_prefix}.id"}
               %input{type: 'hidden', name: "#{name_prefix}.time_slot_id"}

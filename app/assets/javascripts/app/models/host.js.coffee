@@ -1,5 +1,5 @@
 class App.Host extends Spine.Model
-  @configure 'Host', 'person', 'availabilities', 'rankings', 'fields', 'location', 'location_id', 'default_room', 'max_visitors_per_meeting', 'max_visitors'
+  @configure 'Host', 'person', 'availabilities', 'rankings', 'fields', 'location', 'location_id', 'default_room', 'default_building', 'max_visitors_per_meeting', 'max_visitors'
   @extend Spine.Model.Ajax
 
   @new_attributes: {}
@@ -21,6 +21,19 @@ class App.Host extends Spine.Model
 
   toJSON: ->
     data = @attributes()
+
+    if data.availabilities?
+      for availability in data.availabilities
+        if not availability.available?
+          availability.available = false
+
+    if data.rankings?
+      for ranking in data.rankings
+        if not ranking.mandatory?
+          ranking.mandatory = false
+        if not ranking.one_on_one?
+          ranking.one_on_one = false
+
     delete data.id
     data.person_attributes = data.person
     delete data.person
@@ -31,3 +44,6 @@ class App.Host extends Spine.Model
     data.fields_attributes = data.fields
     delete data.fields
     {host: data}
+
+  validate: ->
+    'Please enter a default meeting location.' if @default_room == 'None'
