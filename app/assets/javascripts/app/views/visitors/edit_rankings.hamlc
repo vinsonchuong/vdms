@@ -1,0 +1,44 @@
+- if app.role_id?
+  %h2 Edit Rankings
+- else
+  %h2 Edit Visitor's Rankings
+%p To change the rank of a host, drag and drop the corresponding row.
+%ul#actions
+  %li
+    %a.action{'data-type' => 'add_rankings'} Add Hosts
+%form#edit_rankings
+  %fieldset
+    %table.records
+      %thead
+        %tr
+          %th{:scope => 'col'} Remove
+          %th{:scope => 'col'} Rank
+          %th{:scope => 'col'} Name
+          %th{:scope => 'col'} Division-Area
+      %tbody
+        - for ranking, rankingNo in @visitor.rankings
+          - id_prefix = "edit_rankings#{rankingNo}"
+          - name_prefix = "rankings[#{rankingNo}]"
+          %tr.item{'data-id' => ranking.id}
+            - host = App.Host.find(ranking.rankable_id)
+            %td
+              %input.destroy{type: 'checkbox', name: "#{name_prefix}._destroy", value: '1'}
+            %td
+              %span.rank= "#{ranking.rank}"
+              - if ranking._destroy
+                %input.rank{id: "#{id_prefix}_rank", name: "#{name_prefix}.rank", type: 'hidden', checked: 'checked'}
+              - else
+                %input.rank{id: "#{id_prefix}_rank", name: "#{name_prefix}.rank", type: 'hidden'}
+              %input{type: 'hidden', name: "#{name_prefix}.id"}
+              %input{type: 'hidden', name: "#{name_prefix}.rankable_id"}
+            %td= "#{host.person.first_name + ' ' + host.person.last_name}"
+            %td
+              - if host.fields[0].data? and host.fields[0].data.answer?
+                = "#{host.fields[0].data.answer}"
+  %fieldset
+    - if app.role_id?
+      %button{type: 'submit'} Update Rankings
+    - else
+      %button{type: 'submit'} Update Visitor's Rankings
+    %span or
+    %a{'data-type' => 'back'} Cancel

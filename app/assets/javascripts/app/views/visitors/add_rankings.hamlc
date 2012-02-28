@@ -1,0 +1,17 @@
+%h2 Add Hosts
+%ul#actions
+  %li
+    %select#area_filter{multiple: 'multiple', style: 'width:400px;'}
+      - for area in @areas
+        %option{value: area}= area
+  %li
+    %a.action{'data-type' => 'submit'} Add Selected Hosts
+  %li
+    %a.action{'data-type' => 'back'} Cancel
+%table.records#add_rankings
+  %thead
+    %tr
+      %th{scope: 'col'}
+      %th{scope: 'col'} Name
+      %th{scope: 'col'} Division-Area
+  %tbody

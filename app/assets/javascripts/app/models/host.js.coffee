@@ -1,5 +1,5 @@
 class App.Host extends Spine.Model
-  @configure 'Host', 'availabilities', 'person', 'fields', 'location', 'location_id', 'default_room', 'max_visitors_per_meeting', 'max_visitors'
+  @configure 'Host', 'person', 'availabilities', 'rankings', 'fields', 'location', 'location_id', 'default_room', 'max_visitors_per_meeting', 'max_visitors'
   @extend Spine.Model.Ajax
 
   @new_attributes: {}
@@ -22,10 +22,12 @@ class App.Host extends Spine.Model
   toJSON: ->
     data = @attributes()
     delete data.id
-    data.availabilities_attributes = data.availabilities
-    delete data.availabilities
-    data.fields_attributes = data.fields
-    delete data.fields
     data.person_attributes = data.person
     delete data.person
+    data.availabilities_attributes = data.availabilities
+    delete data.availabilities
+    data.rankings_attributes = data.rankings
+    delete data.rankings
+    data.fields_attributes = data.fields
+    delete data.fields
     {host: data}

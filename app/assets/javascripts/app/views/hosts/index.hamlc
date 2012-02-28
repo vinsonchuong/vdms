@@ -20,8 +20,11 @@
           %ul
             %li
               %a.action{'data-type' => 'edit'} Profile
-            -#%li
-              %a.action{'data-type' => 'edit_availabilities'} Availabilities
+            - if app.event_id == 5
+              %li
+                %a.action{'data-type' => 'edit_availabilities'} Availabilities
+              %li
+                %a.action{'data-type' => 'edit_rankings'} Rankings
             %li
               %a.action{'data-type' => 'destroy'} Remove
 #confirm_delete.dialog{title: 'Remove Host?'}

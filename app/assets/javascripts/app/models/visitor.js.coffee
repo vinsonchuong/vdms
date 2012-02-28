@@ -1,5 +1,5 @@
 class App.Visitor extends Spine.Model
-  @configure 'Visitor', 'availabilities', 'person', 'fields'
+  @configure 'Visitor', 'person', 'availabilities', 'rankings', 'fields'
   @extend Spine.Model.Ajax
 
   @new_attributes: {}
@@ -22,10 +22,12 @@ class App.Visitor extends Spine.Model
   toJSON: ->
     data = @attributes()
     delete data.id
-    data.availabilities_attributes = data.availabilities
-    delete data.availabilities
-    data.fields_attributes = data.fields
-    delete data.fields
     data.person_attributes = data.person
     delete data.person
+    data.availabilities_attributes = data.availabilities
+    delete data.availabilities
+    data.rankings_attributes = data.rankings
+    delete data.rankings
+    data.fields_attributes = data.fields
+    delete data.fields
     {visitor: data}

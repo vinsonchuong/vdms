@@ -1,0 +1,61 @@
+- if app.role_id?
+  %h2 Edit Rankings
+- else
+  %h2 Edit Host's Rankings
+%p To change the rank of a visitor, drag and drop the corresponding row.
+%ul#actions
+  %li
+    %a.action{'data-type' => 'add_rankings'} Add Visitors
+%form#edit_rankings
+  %fieldset
+    %table.records
+      %thead
+        %tr
+          %th{:scope => 'col'} Remove
+          %th{:scope => 'col'} Rank
+          %th{:scope => 'col'} Name
+          %th{:scope => 'col'} Division-Area
+          %th{:scope => 'col'} Mandatory
+          %th{:scope => 'col'} # Time Slots
+          %th{:scope => 'col'} One-on-One
+      %tbody
+        - for ranking, rankingNo in @host.rankings
+          - id_prefix = "edit_rankings#{rankingNo}"
+          - name_prefix = "rankings[#{rankingNo}]"
+          %tr.item{'data-id' => ranking.id}
+            - visitor = App.Visitor.find(ranking.rankable_id)
+            %td
+              %input.destroy{type: 'checkbox', name: "#{name_prefix}._destroy", value: '1'}
+            %td
+              %span.rank= "#{ranking.rank}"
+              - if ranking._destroy
+                %input.rank{id: "#{id_prefix}_rank", name: "#{name_prefix}.rank", type: 'hidden', checked: 'checked'}
+              - else
+                %input.rank{id: "#{id_prefix}_rank", name: "#{name_prefix}.rank", type: 'hidden'}
+              %input{type: 'hidden', name: "#{name_prefix}.id"}
+              %input{type: 'hidden', name: "#{name_prefix}.rankable_id"}
+            %td= "#{visitor.person.first_name + ' ' + visitor.person.last_name}"
+            %td
+              - if visitor.fields[0].data? and visitor.fields[0].data.answer?
+                = "#{visitor.fields[0].data.answer}"
+            %td
+              - if ranking.mandatory
+                %input{type: 'checkbox', name: "#{name_prefix}.mandatory", value: '1', checked: 'checked'}
+              - else
+                %input{type: 'checkbox', name: "#{name_prefix}.mandatory", value: '1'}
+            %td
+              %select{name: "#{name_prefix}.num_time_slots"}
+                %option 1
+                %option 2
+                %option 3
+                %option 4
+                %option 5
+            %td
+              %input{type: 'checkbox', name: "#{name_prefix}.one_on_one", value: '1', checked: 'checked'}
+  %fieldset
+    - if app.role_id?
+      %button{type: 'submit'} Update Rankings
+    - else
+      %button{type: 'submit'} Update Host's Rankings
+    %span or
+    %a{'data-type' => 'back'} Cancel

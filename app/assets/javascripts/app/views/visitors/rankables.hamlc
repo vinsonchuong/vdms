@@ -1,0 +1,8 @@
+- for rankable in @rankables
+  %tr.item
+    %td
+      %input{type: 'checkbox', name: 'rankables[]', value: rankable.id}
+    %td= rankable.person.first_name + ' ' + rankable.person.last_name
+    %td
+      - if rankable.fields[0].data? and rankable.fields[0].data.answer?
+        = "#{rankable.fields[0].data.answer}"
