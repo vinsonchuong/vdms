@@ -61,9 +61,11 @@ class EditAvailabilities extends Spine.Controller
   submit: (e) ->
     e.preventDefault()
     @item.fromForm(e.target)
-    unless @item.save()
-      return alert(@item.validate())
-    @navigate '/'
+    if @item.default_room == 'None'
+      alert 'Please specify a default meeting location.'
+    else
+      @item.save()
+      @navigate '/'
 
 class EditRankings extends Spine.Controller
   events:
@@ -109,7 +111,6 @@ class EditRankings extends Spine.Controller
 
   add_rankings: ->
     @data = $('#edit_rankings').toObject()
-    @item.fromForm $('#edit_rankings')
     @navigate '/add_rankings', data: @data
 
   back: ->

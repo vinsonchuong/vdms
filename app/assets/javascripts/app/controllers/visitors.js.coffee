@@ -140,7 +140,6 @@ class EditRankings extends Spine.Controller
 
   add_rankings: ->
     @data = $('#edit_rankings').toObject()
-    @item.fromForm $('#edit_rankings')
     @navigate '', @item.id, 'add_rankings', data: @data
 
   back: ->

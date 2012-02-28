@@ -44,6 +44,3 @@ class App.Host extends Spine.Model
     data.fields_attributes = data.fields
     delete data.fields
     {host: data}
-
-  validate: ->
-    'Please enter a default meeting location.' if @default_room == 'None'
