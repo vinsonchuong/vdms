@@ -21,6 +21,29 @@ class EventsController < ApplicationController
     end
   end
 
+  # GET /events/1/facilitator_login_form
+  def facilitator_login_form
+    @event = Event.find(params[:id])
+    @person = Person.new
+    unless @current_user.new_record?
+      @current_user.update_attribute :role, 'facilitator' unless @current_user.role == 'administrator'
+      redirect_to @event
+    end
+  end
+
+  # POST /events/1/facilitator_login
+  def facilitator_login
+    @event = Event.find(params[:id])
+    @person = Person.new(params[:person])
+    @person.ldap_id = @current_user.ldap_id
+    @person.role = 'facilitator'
+    if @person.save
+      redirect_to @event
+    else
+      render :action => 'facilitator_login_form'
+    end
+  end
+
   # GET /events/1/visitor_login_form
   def visitor_login_form
     @current_user = Person.new

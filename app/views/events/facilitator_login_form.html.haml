@@ -1,0 +1,22 @@
+- content_for :title, 'Register as Peer Advisor'
+= form_for @person, :url => facilitator_login_event_url(@event) do |person_form|
+  - if @person.errors.any?
+    #errors
+      %h3!= t('.errors')
+      %ul
+        - @person.errors.full_messages.each do |message|
+          %li!= message
+  %fieldset
+    %h3 Contact Info
+    %ul
+      %li.field.required
+        != person_form.label :last_name
+        != person_form.text_field :last_name
+      %li.field.required
+        != person_form.label :first_name
+        != person_form.text_field :first_name
+      %li.field.required
+        != person_form.label :email
+        != person_form.text_field :email
+  %fieldset
+    != person_form.submit('Register')
