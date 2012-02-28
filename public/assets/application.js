@@ -30135,7 +30135,7 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
         start = Date.parse(time_slot.begin).toString('hh:mmtt');
         finish = Date.parse(time_slot.end).toString('hh:mmtt');
         if (start === '12:00PM' || start === '12:30PM') {
-          $o.push("          <td>" + ($e($c("" + start + " to " + finish))) + "</td>");
+          $o.push("          <td>" + ($e($c("" + start + " to " + finish + " (ignore if not in CS)"))) + "</td>");
         } else {
           $o.push("          <td>" + ($e($c("" + start + " to " + finish))) + "</td>");
         }

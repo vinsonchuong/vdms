@@ -26909,7 +26909,9 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
     AddRankings.prototype.events = {
       'click [data-type=back]': 'back',
       'click [data-type=submit]': 'submit',
-      'change #area_filter': 'filter'
+      'change #area_filter': 'filter',
+      'multiselectcheckall #area_filter': 'filter',
+      'multiselectuncheckall #area_filter': 'filter'
     };
 
     function AddRankings() {
@@ -26947,7 +26949,11 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
       $('#add_rankings tbody').html(this.view('hosts/rankables')({
         rankables: this.rankables
       }));
-      return afterRender();
+      afterRender();
+      return $('select#area_filter').multiselect({
+        noneSelectedText: 'Filter by Area',
+        selectedList: 6
+      }).multiselectfilter();
     };
 
     AddRankings.prototype.back = function() {
@@ -27558,7 +27564,9 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
     AddRankings.prototype.events = {
       'click [data-type=back]': 'back',
       'click [data-type=submit]': 'submit',
-      'change #area_filter': 'filter'
+      'change #area_filter': 'filter',
+      'multiselectcheckall #area_filter': 'filter',
+      'multiselectuncheckall #area_filter': 'filter'
     };
 
     function AddRankings() {
@@ -27596,7 +27604,11 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
       $('#add_rankings tbody').html(this.view('hosts/rankables')({
         rankables: this.rankables
       }));
-      return afterRender();
+      afterRender();
+      return $('select#area_filter').multiselect({
+        noneSelectedText: 'Filter by Area',
+        selectedList: 6
+      }).multiselectfilter();
     };
 
     AddRankings.prototype.back = function() {
@@ -28561,7 +28573,9 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
     AddRankings.prototype.events = {
       'click [data-type=back]': 'back',
       'click [data-type=submit]': 'submit',
-      'change #area_filter': 'filter'
+      'change #area_filter': 'filter',
+      'multiselectcheckall #area_filter': 'filter',
+      'multiselectuncheckall #area_filter': 'filter'
     };
 
     function AddRankings() {
@@ -28599,7 +28613,11 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
       $('#add_rankings tbody').html(this.view('visitors/rankables')({
         rankables: this.rankables
       }));
-      return afterRender();
+      afterRender();
+      return $('select#area_filter').multiselect({
+        noneSelectedText: 'Filter by Area',
+        selectedList: 6
+      }).multiselectfilter();
     };
 
     AddRankings.prototype.back = function() {
@@ -29686,7 +29704,7 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
   }
   window.JST['app/views/hosts/edit_availabilities'] = function(context) {
     return (function() {
-      var $c, $e, $o, availability, availabilityNo, id_prefix, name_prefix, num, time_slot, _i, _j, _len, _len2, _len3, _ref2, _ref3, _ref4;
+      var $c, $e, $o, availability, availabilityNo, finish, id_prefix, name_prefix, num, start, time_slot, _i, _j, _len, _len2, _len3, _ref2, _ref3, _ref4;
       $e = HAML.escape;
       $c = HAML.cleanValue;
       $o = [];
@@ -29739,7 +29757,14 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
         name_prefix = "availabilities[" + availabilityNo + "]";
         $o.push("        <tr>");
         time_slot = App.TimeSlot.find(availability.time_slot_id);
-        $o.push("          <td>" + ($e($c("" + (Date.parse(time_slot.begin).toString('hh:mmtt')) + " to " + (Date.parse(time_slot.end).toString('hh:mmtt'))))) + "</td>\n          <td>\n            <ul>\n              <li>");
+        start = Date.parse(time_slot.begin).toString('hh:mmtt');
+        finish = Date.parse(time_slot.end).toString('hh:mmtt');
+        if (start === '12:00PM' || start === '12:30PM') {
+          $o.push("          <td>" + ($e($c("" + start + " to " + finish + " (ignore if not in CS)"))) + "</td>");
+        } else {
+          $o.push("          <td>" + ($e($c("" + start + " to " + finish))) + "</td>");
+        }
+        $o.push("          <td>\n            <ul>\n              <li>");
         if (availability.available) {
           $o.push("                <input type='checkbox' name='" + name_prefix + ".available' value='1' checked='checked'>");
         } else {
@@ -30090,7 +30115,7 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
   }
   window.JST['app/views/visitors/edit_availabilities'] = function(context) {
     return (function() {
-      var $c, $e, $o, availability, availabilityNo, id_prefix, name_prefix, time_slot, _len, _ref2;
+      var $c, $e, $o, availability, availabilityNo, finish, id_prefix, name_prefix, start, time_slot, _len, _ref2;
       $e = HAML.escape;
       $c = HAML.cleanValue;
       $o = [];
@@ -30107,7 +30132,14 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
         name_prefix = "availabilities[" + availabilityNo + "]";
         $o.push("        <tr>");
         time_slot = App.TimeSlot.find(availability.time_slot_id);
-        $o.push("          <td>" + ($e($c("" + (Date.parse(time_slot.begin).toString('hh:mmtt')) + " to " + (Date.parse(time_slot.end).toString('hh:mmtt'))))) + "</td>\n          <td>\n            <ul>\n              <li>");
+        start = Date.parse(time_slot.begin).toString('hh:mmtt');
+        finish = Date.parse(time_slot.end).toString('hh:mmtt');
+        if (start === '12:00PM' || start === '12:30PM') {
+          $o.push("          <td>" + ($e($c("" + start + " to " + finish + " (ignore if not in CS)"))) + "</td>");
+        } else {
+          $o.push("          <td>" + ($e($c("" + start + " to " + finish))) + "</td>");
+        }
+        $o.push("          <td>\n            <ul>\n              <li>");
         if (availability.available) {
           $o.push("                <input type='checkbox' name='" + name_prefix + ".available' value='1' checked='checked'>");
         } else {
@@ -30287,10 +30319,6 @@ var
         }
       }).multiselectfilter();
     });
-    $('select#area_filter').multiselect({
-      noneSelectedText: 'Filter by Area',
-      selectedList: 6
-    }).multiselectfilter()
   },
   showSpinner = function() {
     $('body').append($('<div class="ui-widget-overlay"></div>'));
