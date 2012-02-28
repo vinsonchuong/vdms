@@ -157,6 +157,8 @@ class AddRankings extends Spine.Controller
     'click [data-type=back]': 'back'
     'click [data-type=submit]': 'submit'
     'change #area_filter': 'filter'
+    'multiselectcheckall #area_filter': 'filter'
+    'multiselectuncheckall #area_filter': 'filter'
 
   constructor: ->
     super
@@ -179,6 +181,10 @@ class AddRankings extends Spine.Controller
     @html @view('visitors/add_rankings')(visitors: @data, rankables: @rankables, areas: @areas)
     $('#add_rankings tbody').html(@view('visitors/rankables')(rankables: @rankables))
     afterRender()
+    $('select#area_filter').multiselect(
+      noneSelectedText: 'Filter by Area',
+      selectedList: 6,
+    ).multiselectfilter()
 
   back: ->
     @navigate '', @item.id, 'edit_rankings', data: @data

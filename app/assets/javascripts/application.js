@@ -28,10 +28,6 @@ var
         }
       }).multiselectfilter();
     });
-    $('select#area_filter').multiselect({
-      noneSelectedText: 'Filter by Area',
-      selectedList: 6
-    }).multiselectfilter()
   },
   showSpinner = function() {
     $('body').append($('<div class="ui-widget-overlay"></div>'));
