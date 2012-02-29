@@ -18,7 +18,7 @@
             - start = Date.parse(time_slot.begin).toString('hh:mmtt')
             - finish = Date.parse(time_slot.end).toString('hh:mmtt')
             - if start == '12:00PM' or start == '12:30PM'
-              %td= "#{start} to #{finish} (ignore if not in CS)"
+              %td= "#{start} to #{finish} (EE Lunch in Woz)"
             - else
               %td= "#{start} to #{finish}"
             %td

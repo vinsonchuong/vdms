@@ -16,7 +16,7 @@
         %td= visitor.person.last_name
         %td= visitor.person.first_name
         %td= visitor.person.email
-        %td
+        %td{style: 'min-width:320px;'}
           %ul
             %li
               %a.action{'data-type' => 'edit'} Profile

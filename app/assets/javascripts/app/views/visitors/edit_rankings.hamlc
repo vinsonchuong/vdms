@@ -2,10 +2,10 @@
   %h2 Edit Rankings
 - else
   %h2 Edit Visitor's Rankings
-%p To change the rank of a host, drag and drop the corresponding row.
+%p To change the rank of a faculty, drag and drop the corresponding row.
 %ul#actions
   %li
-    %a.action{'data-type' => 'add_rankings'} Add Hosts
+    %a.action{'data-type' => 'add_rankings'} Add Faculty
 %form#edit_rankings
   %fieldset
     %table.records

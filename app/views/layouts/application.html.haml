@@ -43,20 +43,6 @@
                   -#%li= link_to 'Manage Meetings', event_meetings_path(@event)
                   %li= link_to 'Manage Goals', event_goals_path(@event)
                   %li= link_to 'Manage Constraints', event_constraints_path(@event)
-            - elsif is_facilitator
-              %li
-                %span Event
-                %ul
-                  %li= link_to 'Dashboard', event_path(@event)
-              %li
-                %span Hosts
-                %ul
-                  %li= link_to 'Manage Hosts', event_hosts_path(@event)
-              %li
-                %span Visitors
-                %ul
-                  %li= link_to 'Manage Visitors', event_visitors_path(@event)
-            - else
     #content
       - if content_for?(:title)
         %h2= yield :title

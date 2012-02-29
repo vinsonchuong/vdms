@@ -1,11 +1,11 @@
-%h2 Add Hosts
+%h2 Add Faculty
 %ul#actions
   %li
     %select#area_filter{multiple: 'multiple', style: 'width:400px;'}
       - for area in @areas
         %option{value: area}= area
   %li
-    %a.action{'data-type' => 'submit'} Add Selected Hosts
+    %a.action{'data-type' => 'submit'} Add Selected Faculty
   %li
     %a.action{'data-type' => 'back'} Cancel
 %table.records#add_rankings

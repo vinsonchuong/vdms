@@ -27,7 +27,7 @@ class EventsController < ApplicationController
     @person = Person.new
     unless @current_user.new_record?
       @current_user.update_attribute :role, 'facilitator' unless @current_user.role == 'administrator'
-      redirect_to @event
+      redirect_to event_visitors_url(@event)
     end
   end
 
@@ -38,7 +38,7 @@ class EventsController < ApplicationController
     @person.ldap_id = @current_user.ldap_id
     @person.role = 'facilitator'
     if @person.save
-      redirect_to @event
+      redirect_to event_visitors_url(@event)
     else
       render :action => 'facilitator_login_form'
     end
