@@ -197,6 +197,11 @@ class Index extends Spine.Controller
     Visitor.fetch()
     Host.fetch({id: app.role_id})
 
+    th = @
+    $('#primary_navigation [data-type=edit_profile]').click(-> th.navigate('/edit_profile'))
+    $('#primary_navigation [data-type=edit_availabilities]').click(-> th.navigate('/edit_availabilities'))
+    $('#primary_navigation [data-type=edit_rankings]').click(-> th.navigate('/edit_rankings'))
+
   render: =>
     @html @view('hosts/dashboard')()
     afterRender()

@@ -43,6 +43,13 @@
                   -#%li= link_to 'Manage Meetings', event_meetings_path(@event)
                   %li= link_to 'Manage Goals', event_goals_path(@event)
                   %li= link_to 'Manage Constraints', event_constraints_path(@event)
+            - elsif @event.id == 5 and !@current_role.nil? and @current_role.class.name == 'Host'
+              %li
+                %a{'data-type' => 'edit_profile'} Edit Profile
+              %li
+                %a{'data-type' => 'edit_availabilities'} Edit Availabilities
+              %li
+                %a{'data-type' => 'edit_rankings'} Edit Rankings
     #content
       - if content_for?(:title)
         %h2= yield :title
