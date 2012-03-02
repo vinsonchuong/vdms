@@ -88,4 +88,4 @@
     - else
       %button{type: 'submit'} Update Host Availabilities
     %span or
-    %a{'data-type' => 'back'} Cancel
+    %a.action{'data-type' => 'back'} Cancel
