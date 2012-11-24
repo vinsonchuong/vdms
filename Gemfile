@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 3.2.0'
+gem 'rails'
 
 gem 'cancan'
 gem 'coffee-filter'
@@ -21,7 +21,6 @@ gem 'validates_timeliness'
 
 # Vendorized and patched for Ruby 1.9
 gem 'net-ldap'
-gem 'echoe', '~> 4.5.6'
 gem 'ucb_ldap', :path => 'vendor/gems/ucb_ldap-1.4.2'
 
 gem 'eco' # used by spine-rails generators
