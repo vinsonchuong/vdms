@@ -15,6 +15,7 @@ gem 'spine-rails'
 gem 'thin'
 gem 'validates_existence'
 gem 'validates_timeliness'
+gem 'newrelic_rpm'
 
 # gem 'haml-rails' # view scaffolds generate HAML instead
 # gem 'coffeebeans' # allows CoffeeScript views (an alternative to .js.erb)
