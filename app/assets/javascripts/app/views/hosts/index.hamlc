@@ -20,7 +20,7 @@
           %ul
             %li
               %a.action{'data-type' => 'edit'} Profile
-            - if app.event_id == 5
+            - if app.event_id == 5 || app.event_id == 7
               %li
                 %a.action{'data-type' => 'edit_availabilities'} Availabilities
               %li

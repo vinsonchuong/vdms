@@ -286,7 +286,7 @@ q {
 /* line 64, ../../lib/assets/stylesheets/jquery-ui.css.scss */
 .ui-widget-header {
   border: 1px solid #959595;
-  background: #dcdcdc url(/assets/jquery-ui/ui-bg_highlight-soft_100_dcdcdc_1x100.png) 50% 50% repeat-x;
+  background: gainsboro url(/assets/jquery-ui/ui-bg_highlight-soft_100_dcdcdc_1x100.png) 50% 50% repeat-x;
   color: #333333;
   font-weight: bold;
 }
@@ -1797,8 +1797,8 @@ a.action:active {
 /* line 228, ../../app/assets/stylesheets/application.css.scss */
 #content ul#actions {
   zoom: 1;
-  border-top: 1px solid #dcdcdc;
-  border-bottom: 1px solid #dcdcdc;
+  border-top: 1px solid gainsboro;
+  border-bottom: 1px solid gainsboro;
   margin: 7.5px 0;
   padding: 7.5px 0;
 }
@@ -1826,12 +1826,12 @@ a.action:active {
 }
 /* line 248, ../../app/assets/stylesheets/application.css.scss */
 #content ol.records {
-  border-top: 1px solid #dcdcdc;
-  border-bottom: 1px solid #dcdcdc;
+  border-top: 1px solid gainsboro;
+  border-bottom: 1px solid gainsboro;
 }
 /* line 251, ../../app/assets/stylesheets/application.css.scss */
 #content ol.records > li {
-  border-bottom: 1px solid #dcdcdc;
+  border-bottom: 1px solid gainsboro;
   padding: 15px 0;
 }
 /* line 254, ../../app/assets/stylesheets/application.css.scss */
@@ -1878,7 +1878,7 @@ a.action:active {
 /* line 281, ../../app/assets/stylesheets/application.css.scss */
 #content table.records td {
   padding: 6px 4px;
-  border-bottom: 1px solid #dcdcdc;
+  border-bottom: 1px solid gainsboro;
 }
 /* line 285, ../../app/assets/stylesheets/application.css.scss */
 #content table.records td ul li {
